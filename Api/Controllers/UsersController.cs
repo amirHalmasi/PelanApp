@@ -29,8 +29,8 @@ namespace Api.Controllers
 
         //
         [HttpGet("{id}")]
-        public ActionResult<AppUser> GetUser(int id){
-            return _context.Users.Find(id);
+        public async Task<ActionResult<AppUser>> GetUser(int id){
+            return await _context.Users.FindAsync(id);
             
         }
 
