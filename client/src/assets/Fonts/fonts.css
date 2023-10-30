@@ -1,0 +1,49 @@
+@font-face {
+  font-family: "Badr";
+  src: url("assets/Fonts/badr/Badr.eot");
+  src: url("assets/Fonts/badr/Badr.eot?#iefix") format("embedded-opentype"),
+    url("assets/Fonts/badr/Badr.woff2") format("woff2"),
+    url("assets/Fonts/badr/Badr.woff") format("woff"),
+    url("assets/Fonts/badr/Badr.ttf") format("truetype"),
+    url("assets/Fonts/badr/Badr.svg#+Badr") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "B Nazanin";
+  src: url("assets/Fonts/nazanin/BNazanin.eot");
+  src: url("assets/Fonts/nazanin/BNazanin.eot?#iefix")
+      format("embedded-opentype"),
+    url("assets/Fonts/nazanin/BNazanin.woff2") format("woff2"),
+    url("assets/Fonts/nazanin/BNazanin.woff") format("woff"),
+    url("assets/Fonts/nazanin/BNazanin.ttf") format("truetype"),
+    url("assets/Fonts/nazanin/BNazanin.svg#BNazanin") format("svg");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "A Rezvan-fat";
+  src: url("assets/Fonts/rezvan/ARezvan-fat.eot");
+  src: url("assets/Fonts/rezvan/ARezvan-fat.eot?#iefix")
+      format("embedded-opentype"),
+    url("assets/Fonts/rezvan/ARezvan-fat.woff2") format("woff2"),
+    url("assets/Fonts/rezvan/ARezvan-fat.woff") format("woff"),
+    url("assets/Fonts/rezvan/ARezvan-fat.ttf") format("truetype"),
+    url("assets/Fonts/rezvan/ARezvan-fat.svg#ARezvan-fat") format("svg");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Sogand";
+  src: url("assets/Fonts/sogand/SOGAND.eot");
+  src: url("assets/Fonts/sogand/SOGAND.eot?#iefix") format("embedded-opentype"),
+    url("assets/Fonts/sogand/SOGAND.woff2") format("woff2"),
+    url("assets/Fonts/sogand/SOGAND.woff") format("woff"),
+    url("assets/Fonts/sogand/SOGAND.ttf") format("truetype"),
+    url("assets/Fonts/sogand/SOGAND.svg#SOGAND") format("svg");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}

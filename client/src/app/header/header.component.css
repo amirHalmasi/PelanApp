@@ -1,0 +1,18 @@
+header {
+  background-color: #87b7ff;
+  width: 90vw;
+  height: 10vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 0 2vw;
+  border-radius: 20px;
+  margin: 1vh 5vw 0 5vw;
+}
+a {
+  font-family: "Sogand", "arial", sans-serif;
+  display: inline-block;
+  font-size: 40px;
+  cursor: pointer;
+}

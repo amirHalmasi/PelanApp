@@ -33,12 +33,14 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            
             services.AddDbContext<DataContext>(options=>{
                 
                 options.UseSqlite(_config.GetConnectionString("DefaultConnection"));
                 //Shorthand for _config.GetSection("ConnectionStrings")["DefaultConnection"]
             });
+            services.AddControllers();
+            services.AddCors();
             // services.AddSwaggerGen(c =>
             // {
             //     c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
@@ -51,13 +53,17 @@ namespace API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                // app.UseSwagger();
-                // app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv5 v1"));
+               
             }
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(policy => {
+                policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+                policy.AllowCredentials(); // Include this if your client includes credentials.
+            });
 
             app.UseAuthorization();
 
