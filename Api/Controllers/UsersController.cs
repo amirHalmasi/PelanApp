@@ -27,7 +27,7 @@ namespace Api.Controllers
              
         }
 
-        //if you want to add your own query ask chatGpt
+        //if you want to add your own query ask chatGpt how to do?
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUser>> GetUser(int id){
             return await _context.Users.FindAsync(id);
