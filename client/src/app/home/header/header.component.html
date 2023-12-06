@@ -1,0 +1,81 @@
+<nav
+  style="direction: rtl"
+  class="navbar navbar-expand-md navbar-dark fixed-top custome-nav"
+>
+  <div class="container bg-dark custome-container">
+    <!-- <div class="container-fluid"> -->
+    <a class="navbar-brand logo-class" [routerLink]="['/']">پلان</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarCollapse"
+      aria-controls="navbarCollapse"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+      (click)="toggleNavbar()"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div
+      class="navbar-collapse collapse"
+      [ngClass]="{ show: isExpanded }"
+      id="navbarCollapse"
+    >
+      <ul class="navbar-nav me-auto mb-2 mb-md-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" routerLink=""
+            >اجاره منزل</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="">خرید منزل</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLinkActive="active" routerLink="/login"
+            >ورود / ثبت نام</a
+          >
+        </li>
+        <!-- drop down -->
+        <li class="nav-item">
+          <a class="nav-link" routerLink="">خروج </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="">حساب کاربری</a>
+        </li>
+        <!-- ---------- -->
+      </ul>
+      <!-- <form class="d-flex" role="search">
+        <input
+          class="form-control mx-2"
+          type="search"
+          placeholder="جستجو"
+          aria-label="جستجو"
+        />
+        <button class="btn btn-outline-success" type="submit">جستجو</button>
+      </form> -->
+      <button
+        [ngClass]="
+          selectedCity
+            ? 'btn btn-success justify-content-center align-items-center custome-button'
+            : 'btn btn-outline-danger justify-content-center align-items-center custome-button'
+        "
+        type="button"
+        (click)="openCities()"
+        (click)="toggleNavbar()"
+        [disabled]="isLoading"
+      >
+        <span *ngIf="!isLoading && !selectedCity">جستجوی شهر</span>
+        <span *ngIf="!isLoading && selectedCity">{{
+          selectedCity.cities
+        }}</span>
+
+        <app-loading-spinner
+          *ngIf="isLoading && !selectedCity"
+        ></app-loading-spinner>
+      </button>
+    </div>
+  </div>
+  <!-- </div> -->
+</nav>

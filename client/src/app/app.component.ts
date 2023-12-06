@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
   isLoading: boolean = true;
   constructor(private http: HttpClient) {}
   ngOnInit() {
-    this.getUsers();
+    // this.getUsers();
   }
   getUsers() {
     this.http.get<user[]>('https://localhost:5001/api/users').subscribe({

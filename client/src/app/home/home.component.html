@@ -1,0 +1,10 @@
+<div class="home-body">
+  <div class="myContainer">
+    <app-header [brandTitle]="title" (onOpenCityModal)="isModalOpen = $event">
+    </app-header>
+    <app-select-cities
+      (onCloseCityModal)="isModalOpen = $event"
+      *ngIf="isModalOpen"
+    ></app-select-cities>
+  </div>
+</div>

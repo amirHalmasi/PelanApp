@@ -1,0 +1,105 @@
+/* custom-modal.component.scss */
+.custom-modal {
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.15);
+
+  z-index: 5 !important;
+  justify-content: center;
+  align-items: center;
+}
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(226, 226, 226, 0);
+  z-index: 9 !important; /* Make sure the overlay is behind the modal content */
+}
+.custom-modal-dialog {
+  overflow: hidden;
+  height: 60vh !important;
+  /* width: 80%; */
+  box-sizing: border-box;
+  background: rgba(235, 235, 235, 0.493) !important;
+  backdrop-filter: blur(35px) !important;
+
+  border-radius: 8px;
+  /* color: #fff; */
+
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.custom-modal-content {
+  /* padding: 20px; */
+  overflow: hidden;
+  z-index: 12 !important;
+}
+
+.custom-modal-header {
+  background: rgba(0, 0, 0, 0.344) !important;
+  backdrop-filter: blur(35px) !important;
+  display: flex;
+  justify-self: flex-start;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  /* padding: 25px !important; */
+
+  /* background-color: #fff; */
+  height: 50px;
+  padding: 0 !important;
+}
+
+.custom-modal-title {
+  margin: 0;
+}
+
+.custom-modal-body {
+  /* margin-top: 10px; */
+  max-height: calc(60vh - 100px);
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 10px;
+    border-radius: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #5b5959;
+    border-radius: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #f1f1f16b;
+    border-radius: 6px;
+  }
+
+  /* Custom scrollbar styles for Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: #5b5959 #f1f1f16b;
+}
+
+.custom-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+
+  .btn {
+    margin-left: 10px;
+  }
+}
+.btn-close {
+  color: #fff !important;
+}
+h3 {
+  font-family: "B Nazanin", "arial", sans-serif;
+}

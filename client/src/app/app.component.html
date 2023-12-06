@@ -1,9 +1,10 @@
-<app-header [brandTitle]="title"> </app-header>
-<ul *ngIf="!isLoading" style="list-style-type: none">
+<!-- <ul *ngIf="!isLoading" style="list-style-type: none">
   <li *ngFor="let user of users">
     {{ user.userName }} ID is: {{ user.userId }}
   </li>
-</ul>
-<div *ngIf="isLoading" class="loadingContainer">
+</ul> -->
+<!-- <div *ngIf="isLoading" class="loadingContainer">
   <app-loading-spinner></app-loading-spinner>
-</div>
+</div> -->
+<!-- <app-home></app-home> -->
+<router-outlet></router-outlet>

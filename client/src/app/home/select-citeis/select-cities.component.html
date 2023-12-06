@@ -1,0 +1,94 @@
+<div class="custom-modal" tabindex="-1" role="dialog">
+  <div
+    class="modal-overlay"
+    data-bs-dismiss="modal"
+    (click)="closeCities()"
+  ></div>
+  <div
+    class="container col-lg-4 col-md-8 col-sm-10 col-xs-12"
+    style="z-index: 15 !important"
+  >
+    <div class="row justify-content-center align-items-center">
+      <div class="col">
+        <div class="custom-modal-dialog">
+          <div class="custom-modal-content">
+            <div class="container">
+              <div class="row">
+                <div class="custom-modal-header">
+                  <div class="container">
+                    <div class="row justify-content-between">
+                      <div class="col-9">
+                        <h3 class="custom-modal-title cus">انتخاب شهر</h3>
+                      </div>
+                      <div class="col-3 d-flex flex-row-reverse">
+                        <div
+                          class="btn-group"
+                          style="direction: ltr; padding: 0 10px"
+                        >
+                          <button
+                            type="button"
+                            class="btn btn-outline-danger"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"
+                            (click)="closeCities()"
+                            style="padding: 0 5px; font-size: 18px"
+                          >
+                            <i class="fa fa-times"></i>
+                          </button>
+                          <button
+                            type="button"
+                            class="btn btn-danger"
+                            style="padding: 0 5px; font-size: 18px"
+                            (click)="backToSelectProvince()"
+                          >
+                            <i class="fa fa-arrow-right"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="custom-modal-body">
+                  <div>
+                    <ng-container #outlet [ngTemplateOutlet]="content">
+                    </ng-container>
+                  </div>
+                  <ng-template #content>
+                    <div *ngIf="isLoading">
+                      <app-loading-spinner></app-loading-spinner>
+                    </div>
+                    <div *ngIf="!isLoading">
+                      <div *ngIf="!isShowCities">
+                        <app-province-list
+                          *ngFor="
+                            let item of provinceOrCities;
+                            let isLastItemIndex = last
+                          "
+                          [last]="isLastItemIndex"
+                          [item]="item"
+                          (click)="getProvinceCities(item.id)"
+                        ></app-province-list>
+                      </div>
+                      <div *ngIf="isShowCities">
+                        <app-city-list
+                          *ngFor="
+                            let item of provinceOrCities;
+                            let isLastItemIndex = last
+                          "
+                          [last]="isLastItemIndex"
+                          [item]="item"
+                        ></app-city-list>
+                      </div>
+                    </div>
+                  </ng-template>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

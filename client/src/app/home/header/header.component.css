@@ -1,0 +1,41 @@
+.custome-nav {
+  padding: 10px;
+  z-index: 0;
+}
+.custome-container {
+  border-radius: 25px 0 25px 0;
+  padding: 5px 10px;
+  background: rgba(0, 0, 0, 0.344) !important;
+  backdrop-filter: blur(35px) !important;
+  /* z-index: 1 !important; */
+}
+.custome-button {
+  margin: 15px 20px !important;
+  font-family: "B Nazanin", "arial", sans-serif;
+  font-weight: bolder;
+  min-width: 30px;
+}
+a {
+  font-family: "B Nazanin", "arial", sans-serif;
+  /* display: inline-block; */
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: rgb(255, 255, 255);
+}
+.logo-class {
+  font-family: "Sogand", "arial", sans-serif;
+  font-size: 40px;
+}
+
+.active {
+  --x-offset: -0.0625em;
+  --y-offset: 0.0625em;
+  --stroke: 0.025em;
+  --background-color: rgb(170, 78, 78);
+  --stroke-color: rgb(173, 37, 37);
+  color: white;
+
+  text-shadow: var(--x-offset) var(--y-offset) 0px var(--background-color),
+    calc(var(--x-offset) - var(--stroke)) calc(var(--y-offset) + var(--stroke))
+      0px var(--stroke-color);
+}

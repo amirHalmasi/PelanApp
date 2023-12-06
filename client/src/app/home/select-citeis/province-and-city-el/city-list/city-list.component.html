@@ -1,0 +1,13 @@
+<div class="row justify-content-around align-items-center">
+  <div
+    class="col-10 city-name-style"
+    (click)="onSelectCity(item)"
+    style="padding: 0 25px; cursor: pointer; font-size: 1.1rem; color: black"
+  >
+    {{ item.cities }}
+  </div>
+  <div class="col-2" style="font-size: 24px">
+    <i class="fa fa-angle-left"></i>
+  </div>
+  <hr *ngIf="!last" style="align-items: center; width: 60%; margin: 10px" />
+</div>

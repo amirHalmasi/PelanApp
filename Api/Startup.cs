@@ -10,8 +10,13 @@
 // using Microsoft.Extensions.DependencyInjection;
 // using Microsoft.Extensions.Hosting;
 // using Microsoft.Extensions.Logging;
+using System.Text;
 using Api.Data;
+using Api.Interfaces;
+using Api.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace API
@@ -45,6 +50,19 @@ namespace API
             // {
             //     c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
             // });
+            services.AddScoped<ITokenService,TokenService>();
+            //what is AddSingleton()?
+            //what is AddTransient()?
+            //what is AddScoped()?
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options=>{
+                options.TokenValidationParameters = new TokenValidationParameters{
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenKey"])),
+                    ValidateIssuer=false,
+                    ValidateAudience=false,
+
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,6 +82,8 @@ namespace API
                 policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
                 policy.AllowCredentials(); // Include this if your client includes credentials.
             });
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
