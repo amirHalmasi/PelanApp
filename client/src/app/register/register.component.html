@@ -1,12 +1,10 @@
-<div class="container-fluid example-container">
-  <div
-    class="form-container col-md-10 col-lg-8 col-sm-12 col-xs-12 px-5 py-3 m-1"
-  >
+<div class="container-fluid example-container py-2">
+  <div class="form-container col-md-10 col-lg-8 col-sm-12 col-xs-12 px-5 py-3">
     <h3 class="logo-class">
       <span class="custome-font" style="font-size: 30px">ثبت نام در</span>
       پلان
     </h3>
-    <form [formGroup]="signupForm" (ngSubmit)="onSubmit(isSpecialUser)">
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
       <h4 class="custome-font" style="text-align: right">اطلاعات فردی:</h4>
       <div formGroupName="userData" class="row">
         <mat-form-field
@@ -349,10 +347,19 @@
                 [required]="isSpecialUser"
               />
 
-              <mat-error *ngIf="getControls()[i]?.hasError('required')">
+              <mat-error
+                class="custome-font"
+                *ngIf="getControls()[i]?.hasError('required')"
+              >
                 تلفن رو خالی نذار.
               </mat-error>
-              <mat-error *ngIf="getControls()[i].hasError('invalidTelephone')">
+              <mat-error
+                class="custome-font"
+                *ngIf="
+                  !getControls()[i]?.hasError('required') &&
+                  getControls()[i].hasError('invalidTelephone')
+                "
+              >
                 فرمت تلفن صحیح نیست.
               </mat-error>
             </mat-form-field>
@@ -387,7 +394,7 @@
       </div>
 
       <div class="container col-md-2 col-xs-3 col-sm-6 col-lg-2">
-        <div class="row pt-5 mt-3">
+        <div class="row pt-4 mt-3">
           <button
             [disabled]="signupForm.invalid"
             type="submit"
@@ -398,7 +405,7 @@
                 rgba(0, 0, 0, 0.22) 0px 10px 10px;
             "
           >
-            ورود
+            ثبت اطلاعات
           </button>
         </div>
       </div>

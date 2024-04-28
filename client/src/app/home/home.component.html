@@ -1,4 +1,4 @@
-<div class="home-body">
+<!-- <div class="home-body">
   <div class="myContainer">
     <app-header [brandTitle]="title" (onOpenCityModal)="isModalOpen = $event">
     </app-header>
@@ -6,5 +6,26 @@
       (onCloseCityModal)="isModalOpen = $event"
       *ngIf="isModalOpen"
     ></app-select-cities>
+  </div>
+</div> -->
+
+<div class="home-body">
+  <div class="myContainer">
+    <div class="header-class">
+      <app-header [brandTitle]="title" (onOpenCityModal)="isModalOpen = $event">
+      </app-header>
+    </div>
+    <app-select-cities
+      (onCloseCityModal)="isModalOpen = $event"
+      *ngIf="isModalOpen"
+    ></app-select-cities>
+    <div
+      class="content-class container-fluid"
+      [@routeAnimations]="prepareRoute(outlet)"
+    >
+      <!-- <div class="row p-2" style="height: 100%"> -->
+      <router-outlet #outlet="outlet"></router-outlet>
+      <!-- </div> -->
+    </div>
   </div>
 </div>

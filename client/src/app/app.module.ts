@@ -13,24 +13,43 @@ import { SelectCitiesComponent } from './home/select-citeis/select-cities.compon
 import { CityListComponent } from './home/select-citeis/province-and-city-el/city-list/city-list.component';
 import { ProvinceListComponent } from './home/select-citeis/province-and-city-el/province-list/province-list.component';
 import { LoginComponent } from './login/login.component';
+// import {
+//   NgbCarouselConfig,
+//   NgbCarouselModule,
+// } from '@ng-';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './material.module';
 import { RegisterComponent } from './register/register.component';
+import { RentComponent } from './rentOrBuy/rent/rent.component';
+import { RentitemComponent } from './rentOrBuy/rent/rentitem/rentitem.component';
+import { AccountComponent } from './advertise/account/account.component';
+// import { CreateRentOrSellComponent } from './advertise/account/create-rent-or-sell/create-rent-or-sell.component';
+import { RentHomeAdvertiseComponent } from './advertise/account/rent-home-advertise/rent-home-advertise.component';
+import { CardComponent } from './rentOrBuy/rent/card/card.component';
+// import { IsSignInDirective } from './home/header/is-sign-in.directive';
+// import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 @NgModule({
   declarations: [
     AppComponent,
     LoadingSpinnerComponent,
     HeaderComponent,
-    HomeComponent,
+    RentComponent,
+    RentitemComponent,
+    CardComponent,
     SelectCitiesComponent,
     RegisterComponent,
-
+    HomeComponent,
     CityListComponent,
     ProvinceListComponent,
     LoginComponent,
+    AccountComponent,
+    // CreateRentOrSellComponent,
+    RentHomeAdvertiseComponent,
+    // IsSignInDirective,
   ],
   imports: [
+    // ProgressbarModule.forRoot(),
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,

@@ -11,7 +11,9 @@ export class ProvinceAndCitiesService {
   constructor(private http: HttpClient) {}
   provineCitiesList!: City[];
   selectedCity = new EventEmitter<City>();
+  onCloseCityModal = new EventEmitter<boolean>();
   isShowCities: boolean = false;
+  city: City | null = null;
   // provinceChange_cityName = new EventEmitter<City[]>();
   provinceNames!: Province[];
   getProvinces() {

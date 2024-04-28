@@ -1,0 +1,64 @@
+<!-- <p>account works!</p> -->
+<!-- <app-create-rent-or-sell></app-create-rent-or-sell> -->
+<div class="container-fluid parent-container py-2">
+  <div class="form-container col-md-10 col-lg-8 col-sm-12 col-xs-12 px-5 py-3">
+    <h3 class="logo-class">
+      <span class="custome-font" style="font-size: 30px">{{ this.title }}</span>
+      پلان
+    </h3>
+    <div class="container col-12 py-3 mt-1 mb-4 custome-align">
+      <div class="btn-group" role="group">
+        <button
+          type="button"
+          (click)="navigateTo('rentHome')"
+          class="btn btn-outline-dark custome-font"
+          style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px"
+          [class]="{
+            'btn-dark': createdAdvertiseType == 'rentHome' ? true : false,
+            'light-font': createdAdvertiseType == 'rentHome' ? true : false
+          }"
+        >
+          اجاره خانه
+        </button>
+
+        <button
+          type="button"
+          (click)="navigateTo('sellHome')"
+          class="btn btn-outline-dark custome-font"
+          style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px"
+          [class]="{
+            'btn-dark': createdAdvertiseType == 'sellHome' ? true : false,
+            'light-font': createdAdvertiseType == 'sellHome' ? true : false
+          }"
+        >
+          فروش خانه
+        </button>
+        <button
+          type="button"
+          (click)="navigateTo('sellShop')"
+          class="btn btn-outline-dark custome-font"
+          style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px"
+          [class]="{
+            'btn-dark': createdAdvertiseType == 'sellShop' ? true : false,
+            'light-font': createdAdvertiseType == 'sellShop' ? true : false
+          }"
+        >
+          فروش مغازه
+        </button>
+        <button
+          type="button"
+          (click)="navigateTo('rentShop')"
+          class="btn btn-outline-dark custome-font"
+          style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px"
+          [class]="{
+            'btn-dark': createdAdvertiseType == 'rentShop' ? true : false,
+            'light-font': createdAdvertiseType == 'rentShop' ? true : false
+          }"
+        >
+          اجاره مغازه
+        </button>
+      </div>
+    </div>
+    <app-rent-home-advertise></app-rent-home-advertise>
+  </div>
+</div>

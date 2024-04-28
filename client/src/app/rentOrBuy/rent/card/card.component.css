@@ -1,0 +1,317 @@
+/*=============== GOOGLE FONTS ===============*/
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap");
+
+/*=============== VARIABLES CSS ===============*/
+:root {
+  /*========== Colors ==========*/
+  /*Color mode HSL(hue, saturation, lightness)*/
+  --first-color: hsl(82, 60%, 28%);
+  --title-color: hsl(0, 0%, 15%);
+  --text-color: hsl(0, 0%, 35%);
+  --body-color: hsl(0, 0%, 95%);
+  --container-color: hsl(0, 0%, 100%);
+
+  /*========== Font and typography ==========*/
+  /*.5rem = 8px | 1rem = 16px ...*/
+  --body-font: "Poppins", sans-serif;
+  --h2-font-size: 1.25rem;
+  --small-font-size: 0.813rem;
+}
+
+/*========== Responsive typography ==========*/
+@media screen and (min-width: 1120px) {
+  :root {
+    --h2-font-size: 1.5rem;
+    --small-font-size: 0.875rem;
+  }
+}
+
+/*=============== BASE ===============*/
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+/* body {
+  font-family: var(--body-font);
+  background-color: var(--body-color);
+  color: var(--text-color);
+} */
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/*=============== CARD ===============*/
+.container-cust {
+  display: grid;
+  place-items: center;
+  /* margin-inline: 3.5rem; */
+  padding-block: 5rem;
+  width: 100% !important;
+}
+
+.card__container {
+  display: grid;
+  row-gap: 5.5rem;
+}
+
+.card__article {
+  position: relative;
+  overflow: hidden;
+  height: max-content;
+  border-radius: 1.5rem;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+  transition: all 1s ease-in-out;
+}
+
+.card__img {
+  width: 328px;
+  border-radius: 1.5rem;
+  /*
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px; */
+}
+.card__article:hover {
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+  border-radius: 1.5rem;
+}
+.card__data {
+  width: 280px;
+  background-color: white;
+  padding: 1.5rem;
+  /* box-shadow: rgba(169, 110, 1, 0.5) 2px 2px, rgba(169, 110, 1, 0.3) 4px 4px,
+    rgba(169, 110, 1, 0.2) 6px 6px; */
+  border-radius: 10px;
+  /* border-radius: 60% 40% 40% 20%; */
+  /* border-top-right-radius: 5px;
+  border-bottom-left-radius: 5px; */
+  position: absolute;
+  bottom: -11.8rem;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  opacity: 1;
+  transition: opacity 1s 1s;
+  /* border-top: 3px solid rgb(169, 110, 1); */
+
+  padding-bottom: 0.8rem;
+}
+.card__data::after {
+  /* https://blog.logrocket.com/how-to-create-fancy-corners-in-css/ */
+  content: "";
+  position: absolute;
+  bottom: 14.5rem;
+  margin: -1.25rem;
+
+  right: 2.5rem;
+  /* border-radius: 10px; 
+  width: 40px;
+  height: 40px;
+  transform: rotate(45deg);
+  background-color: #ffffff; */
+  border-style: solid;
+  /* border-style: solid; */
+  border-width: 8px 30px 20px 0;
+  border-radius: 3px;
+  border-color: orange orange transparent orange;
+  /* z-index: 3; */
+}
+.card__data::before {
+  /* https://albertwalicki.com/blog/creating-shapes-in-css */
+  content: "";
+  position: absolute;
+  bottom: 15.2rem;
+  margin: -1.25rem;
+
+  right: 2.5rem;
+  width: 30px;
+  height: 15px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  background: rgb(169, 110, 1);
+  /* border-color: transparent transparent rgb(200) transparent; */
+}
+
+.card__description {
+  display: block;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+  /* text-align: center; */
+  width: 100%;
+  font-size: var(--small-font-size);
+  padding: 7px;
+  border-bottom: 1px solid rgb(66, 66, 66);
+  margin-bottom: 0.35rem;
+}
+
+.card__title {
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+  font-size: var(--h2-font-size);
+  font-weight: bold;
+  padding: 5px;
+  border-radius: 50px 10px / 5px;
+  color: var(--title-color);
+}
+.last_card_title {
+  /* margin-bottom: 0.75rem; */
+  margin-bottom: 5px;
+}
+
+.card__button {
+  /* text-decoration: none; */
+  font-size: var(--small-font-size);
+
+  /* color: var(--first-color); */
+
+  border-radius: 5px;
+  font-weight: bolder;
+  background-color: #04aa6d; /* Green */
+  border: none;
+  color: white;
+  padding: 5px 10px !important;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  /* font-size: 16px; */
+  /* width: 80px; */
+
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  margin: 5px !important;
+  margin-top: 15px;
+  transition: all 1s ease-in-out;
+}
+
+.card__button:hover {
+  /* text-decoration: underline; */
+
+  /* transition: all 1s ease-in-out; */
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+    rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
+/* Naming animations in hover */
+.card__article:hover .card__data {
+  animation: show-data 1s forwards;
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+.card__article:hover {
+  animation: remove-overflow 2s forwards;
+}
+
+.card__article:not(:hover) {
+  animation: show-overflow 2s forwards;
+}
+
+.card__article:not(:hover) .card__data {
+  animation: remove-data 1s forwards;
+}
+
+/* Card animation */
+@keyframes show-data {
+  50% {
+    transform: translateY(-12.2rem);
+  }
+  100% {
+    transform: translateY(-8.2rem);
+    /* box-shadow: rgba(169, 110, 1, 0.5) 4px 4px, rgba(169, 110, 1, 0.3) 8px 8px,
+      rgba(169, 110, 1, 0.2) 12px 12px; */
+  }
+}
+
+@keyframes remove-overflow {
+  to {
+    overflow: initial;
+  }
+}
+
+@keyframes remove-data {
+  0% {
+    transform: translateY(-7rem);
+    /* box-shadow: rgba(169, 110, 1, 0.5) 4px 4px, rgba(169, 110, 1, 0.3) 8px 8px,
+      rgba(169, 110, 1, 0.2) 12px 12px; */
+  }
+  50% {
+    transform: translateY(-12.2rem);
+    /* box-shadow: rgba(169, 110, 1, 0.5) 3px 3px, rgba(169, 110, 1, 0.3) 6px 6px,
+      rgba(169, 110, 1, 0.2) 8px 8px; */
+  }
+  100% {
+    transform: translateY(0.5rem);
+    /* box-shadow: rgba(169, 110, 1, 0.5) 2px 2px, rgba(169, 110, 1, 0.3) 4px 4px,
+      rgba(169, 110, 1, 0.2) 6px 4px; */
+  }
+}
+
+@keyframes show-overflow {
+  0% {
+    overflow: initial;
+    pointer-events: none;
+  }
+  50% {
+    overflow: hidden;
+  }
+}
+
+/*=============== BREAKPOINTS ===============*/
+/* For small devices */
+@media screen and (max-width: 340px) {
+  .container-cust {
+    margin-inline: 1rem;
+  }
+
+  .card__data {
+    width: 250px;
+    padding: 1rem;
+  }
+}
+
+/* For medium devices */
+@media screen and (min-width: 768px) {
+  .card__container {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 2.5rem;
+  }
+}
+
+/* For large devices */
+@media screen and (min-width: 1120px) {
+  .container-cust {
+    height: 80vh;
+  }
+
+  .card__container {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .card__img {
+    width: 348px;
+  }
+  .card__data {
+    width: 316px;
+    padding-inline: 2.5rem;
+  }
+}
+@media screen and (min-width: 2560px) {
+  .container-cust {
+    height: 80vh;
+  }
+
+  .card__container {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .card__img {
+    width: 348px;
+  }
+  .card__data {
+    width: 316px;
+    padding-inline: 2.5rem;
+  }
+}
+.custome-font {
+  font-family: "B Nazanin", "arial", sans-serif;
+  font-size: 1rem;
+}

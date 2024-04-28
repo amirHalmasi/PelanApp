@@ -1,8 +1,8 @@
 <nav
-  style="direction: rtl"
-  class="navbar navbar-expand-md navbar-dark fixed-top custome-nav"
+  style="direction: rtl; min-height: 13vh"
+  class="navbar navbar-expand-lg fixed-top custome-nav row align-items-center justify-content-center"
 >
-  <div class="container bg-dark custome-container">
+  <div class="container custome-container">
     <!-- <div class="container-fluid"> -->
     <a class="navbar-brand logo-class" [routerLink]="['/']">پلان</a>
     <button
@@ -25,24 +25,49 @@
     >
       <ul class="navbar-nav me-auto mb-2 mb-md-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" routerLink=""
+          <a
+            *ngIf="isShowRentAndBuyLinks"
+            class="nav-link"
+            [routerLink]="['/rent']"
+            routerLinkActive="active"
+            aria-current="page"
+            routerLink=""
+            (click)="toggleNavbar()"
             >اجاره منزل</a
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="">خرید منزل</a>
+          <a
+            *ngIf="isShowRentAndBuyLinks"
+            class="nav-link"
+            routerLink=""
+            (click)="toggleNavbar()"
+            >خرید منزل</a
+          >
         </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLinkActive="active" routerLink="/login"
+        <li class="nav-item" *ngIf="!isUserLogedIn">
+          <a
+            class="nav-link"
+            routerLinkActive="active"
+            routerLink="/login"
+            (click)="toggleNavbar()"
             >ورود / ثبت نام</a
           >
         </li>
         <!-- drop down -->
-        <li class="nav-item">
-          <a class="nav-link" routerLink="">خروج </a>
+        <li class="nav-item" *ngIf="isUserLogedIn">
+          <a class="nav-link" routerLink="" (click)="toggleNavbar(); signOut()"
+            >خروج
+          </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="">حساب کاربری</a>
+        <li class="nav-item" *ngIf="isSpecialUserLogedIn">
+          <a
+            class="nav-link"
+            [routerLink]="['/createAdvertise']"
+            routerLinkActive="active"
+            (click)="toggleNavbar()"
+            >حساب کاربری</a
+          >
         </li>
         <!-- ---------- -->
       </ul>

@@ -3,6 +3,7 @@
 // using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Api.Data;
 using Api.DTOs;
@@ -27,7 +28,7 @@ namespace Api.Controllers
         public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto){
         // public async Task<ActionResult<AppUser>> Register(UserDto user){
 
-            if(await UserExist(registerDto.Username)){
+            if(await UserExist(registerDto.userid)){
 
                 return BadRequest("Username is taken by another person.");
                 //we get access to badrequest(400) simply because we are using an action result. and when we use an action result we able to return different http status codes as a response.
@@ -37,13 +38,27 @@ namespace Api.Controllers
             var user =new AppUser
             {
                 // UserName=username,
-                UserName=registerDto.Username,
+                
+                UserName=registerDto.userid,
+                FirstName=registerDto.firstname,
+                LastName=registerDto.lastname,
+                UserId=registerDto.userid,
+                Mobile=registerDto.mobile,
+                Email=registerDto.email,
+                Gender=registerDto.gender,
+                ProvinceId=registerDto.provinceid,
+                CityId=registerDto.cityid,
+                ShopName=registerDto.shopname,
+                ShopAddress=registerDto.shopaddress,
+                Tels =registerDto.tels,
+                Password = registerDto.mobile,
+                UserType = registerDto.usertype,
                 // PasswordHash=hmac.ComputeHash(Encoding.UTF8.GetBytes(password)),
-                PasswordHash=hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
+                PasswordHash=hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.mobile)),
                 PasswordSalt=hmac.Key,
                
                 // UserId=userId
-                UserId=registerDto.Userid
+                
             };
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
@@ -84,7 +99,10 @@ namespace Api.Controllers
             // return user;
            return new UserDto{
                 Username=user.UserName,
-                Token = _tokenService.CreateToken(user)
+                Usertype=user.UserType,
+                
+                Token = _tokenService.CreateToken(user),
+                Expires = DateTime.Now.AddDays(7),
             };
             
         }

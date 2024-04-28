@@ -54,11 +54,19 @@ namespace Api.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<AppCities>>> GetCity(int province_id)
         {
-            var city = await _context.Cities
-                .Where(dbTable => dbTable.ProvinceId == province_id)
-                .ToListAsync();
+            try
+            {
+                var city = await _context.Cities
+                    .Where(dbTable => dbTable.ProvinceId == province_id)
+                    .ToListAsync();
 
-            return city;
+                return city;
+            }
+            catch (FormatException ex)
+            {
+                // Log or handle the exception, and return a meaningful response
+                return BadRequest($"Error retrieving city data for province_id {province_id}: {ex.Message}");
+            }
         }
         
         

@@ -11,8 +11,8 @@ namespace Api.Entities
         public string ProvinceName { get; set; }
         public string ProvinceName_en { get; set; }
         public string Center { get; set; }
-        public decimal Latitude { get; set; }
-        public decimal Longitude { get; set; }
+        public string Latitude { get; set; }
+        public string Longitude { get; set; }
        
         
     }

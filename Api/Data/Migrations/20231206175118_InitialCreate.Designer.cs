@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Api.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231113163959_AddedCitiesAndProvincesBesideUsersTable")]
-    partial class AddedCitiesAndProvincesBesideUsersTable
+    [Migration("20231206175118_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,10 +31,10 @@ namespace Api.Data.Migrations
                     b.Property<string>("Cities_en")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Latitude")
+                    b.Property<string>("Latitude")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Longitude")
+                    b.Property<string>("Longitude")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("ProvinceId")
@@ -54,10 +54,10 @@ namespace Api.Data.Migrations
                     b.Property<string>("Center")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Latitude")
+                    b.Property<string>("Latitude")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Longitude")
+                    b.Property<string>("Longitude")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("ProvinceName")
@@ -77,16 +77,52 @@ namespace Api.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("CityId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Gender")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Mobile")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("TEXT");
+
                     b.Property<byte[]>("PasswordHash")
                         .HasColumnType("BLOB");
 
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("BLOB");
 
+                    b.Property<int>("ProvinceId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ShopAddress")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ShopName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Tels")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("UserId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserType")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

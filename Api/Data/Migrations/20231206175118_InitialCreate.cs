@@ -5,7 +5,7 @@
 namespace Api.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedCitiesAndProvincesBesideUsersTable : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,8 +19,8 @@ namespace Api.Data.Migrations
                     ProvinceId = table.Column<int>(type: "INTEGER", nullable: false),
                     Cities = table.Column<string>(type: "TEXT", nullable: true),
                     Cities_en = table.Column<string>(type: "TEXT", nullable: true),
-                    Latitude = table.Column<decimal>(type: "TEXT", nullable: true),
-                    Longitude = table.Column<decimal>(type: "TEXT", nullable: true)
+                    Latitude = table.Column<string>(type: "TEXT", nullable: true),
+                    Longitude = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -36,8 +36,8 @@ namespace Api.Data.Migrations
                     ProvinceName = table.Column<string>(type: "TEXT", nullable: true),
                     ProvinceName_en = table.Column<string>(type: "TEXT", nullable: true),
                     Center = table.Column<string>(type: "TEXT", nullable: true),
-                    Latitude = table.Column<decimal>(type: "TEXT", nullable: true),
-                    Longitude = table.Column<decimal>(type: "TEXT", nullable: true)
+                    Latitude = table.Column<string>(type: "TEXT", nullable: true),
+                    Longitude = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -50,10 +50,22 @@ namespace Api.Data.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    UserName = table.Column<string>(type: "TEXT", nullable: true),
+                    FirstName = table.Column<string>(type: "TEXT", nullable: true),
+                    LastName = table.Column<string>(type: "TEXT", nullable: true),
                     UserId = table.Column<string>(type: "TEXT", nullable: true),
+                    Mobile = table.Column<string>(type: "TEXT", nullable: true),
+                    Email = table.Column<string>(type: "TEXT", nullable: true),
+                    Gender = table.Column<string>(type: "TEXT", nullable: true),
+                    ProvinceId = table.Column<int>(type: "INTEGER", nullable: false),
+                    CityId = table.Column<int>(type: "INTEGER", nullable: false),
+                    ShopName = table.Column<string>(type: "TEXT", nullable: true),
+                    ShopAddress = table.Column<string>(type: "TEXT", nullable: true),
+                    Tels = table.Column<string>(type: "TEXT", nullable: true),
+                    UserName = table.Column<string>(type: "TEXT", nullable: true),
+                    Password = table.Column<string>(type: "TEXT", nullable: true),
                     PasswordHash = table.Column<byte[]>(type: "BLOB", nullable: true),
-                    PasswordSalt = table.Column<byte[]>(type: "BLOB", nullable: true)
+                    PasswordSalt = table.Column<byte[]>(type: "BLOB", nullable: true),
+                    UserType = table.Column<string>(type: "TEXT", nullable: true),
                 },
                 constraints: table =>
                 {

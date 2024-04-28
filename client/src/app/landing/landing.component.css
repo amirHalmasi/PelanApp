@@ -1,0 +1,19 @@
+.parent-container {
+  text-align: center;
+
+  width: 100%;
+  height: 98%;
+  /* background-image: url("../../assets/image/1700149541681.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center; */
+  /* padding: 30px; */
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; */
+}
+.logo-class {
+  font-family: "Sogand", "arial", sans-serif;
+  font-size: 80px;
+}

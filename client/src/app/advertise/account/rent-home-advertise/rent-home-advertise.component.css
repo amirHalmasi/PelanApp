@@ -1,0 +1,139 @@
+.parent-container {
+  text-align: center;
+  width: 100%;
+  height: 98%;
+  /* background-image: url("../../assets/image/1700149541681.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center; */
+  /* padding: 30px; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-container {
+  /* border-radius: 10px 100px / 120px; */
+  border-radius: 30px 120px / 100px 20px;
+  margin: 0;
+  background: rgba(255, 255, 255, 0.9) !important;
+  height: 100%;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  /* margin-top: 30px; */
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 0;
+    border-radius: 0;
+    /* how to add margin to my scrollbar or position it? */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(136, 136, 136);
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, 0.145);
+    border-radius: 6px;
+  }
+
+  /* Custom scrollbar styles for Firefox */
+  scrollbar-width: none;
+  scrollbar-color: rgb(136, 136, 136) rgba(255, 255, 255, 0.145);
+}
+/* .parent-container {
+      background-image: url("../../assets/image/1700149541681.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+    
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background-color: rgb(53, 53, 53);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    } */
+
+.logo-class {
+  text-align: center;
+  padding: 20px;
+  font-family: "Sogand", "arial", sans-serif;
+  font-size: 40px;
+}
+.form-control::placeholder {
+  /* color: rgb(19, 18, 18) !important; */
+  color: rgb(0, 0, 0) !important;
+}
+
+.custome-font {
+  font-family: "B Nazanin", "arial", sans-serif !important;
+  font-weight: bolder;
+}
+.btn-success {
+  font-size: medium;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
+    rgba(0, 0, 0, 0.22) 0px 10px 10px;
+  transition: box-shadow 0.3s ease-in-out; /* Add transition property */
+}
+.btn-success:hover {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px !important;
+}
+.btn-outline-primary {
+  transition: all 0.5s ease-in-out;
+}
+
+.btn-outline-primary:hover {
+  color: white;
+  background-color: #0d6efd;
+}
+input::placeholder {
+  font-family: "B Nazanin", "arial", sans-serif;
+  color: #232526 !important;
+  /* font-weight: bolder; */
+}
+.mdc-label {
+  font-family: "B Nazanin", "arial", sans-serif !important;
+  font-weight: bolder;
+}
+.custome-align {
+  direction: ltr;
+  text-align: center;
+}
+.light-font {
+  color: aliceblue;
+  /* border-bottom: 1px solid rgba(142, 13, 13, 0.7); */
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
+    rgba(0, 0, 0, 0.22) 0px 10px 10px !important;
+}
+.image-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.image-wrapper {
+  width: 100%;
+  padding-top: 100%; /* 1:1 aspect ratio */
+  position: relative;
+}
+
+.image-wrapper img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.on-image-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  /* You can adjust the positioning based on your preference */
+}

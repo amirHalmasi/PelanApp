@@ -1,0 +1,114 @@
+.card-body {
+  height: 0;
+  transform: translateY(0);
+  /* background-color: rgb(198, 91, 91); */
+  /* border-radius: 50px; */
+  padding: 0 10px;
+  margin: 0;
+  position: relative;
+}
+.card {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  max-height: 180px;
+  overflow-y: hidden;
+  /* transition: all 1s ease-in-out; */
+  &::-webkit-scrollbar {
+    /* width: 6px; */
+    width: 0;
+    border-radius: 6px;
+    /* how to add margin to my scrollbar or position it? */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgb(136, 136, 136);
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: rgba(255, 255, 255, 0.145);
+    border-radius: 6px;
+  }
+
+  /* Custom scrollbar styles for Firefox */
+  /* scrollbar-width: thin; */
+  scrollbar-width: none;
+  scrollbar-color: rgb(136, 136, 136) rgba(255, 255, 255, 0.145);
+}
+.card:hover {
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+
+  .card-body {
+    z-index: 2;
+    height: 250px;
+    background-color: white;
+    transform: translateY(0);
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+    &.card-body-animation {
+      transition: 1s 0.09s ease-in-out;
+    }
+  }
+  .card-body::before {
+    opacity: 0;
+    /* top: */
+    /* transform: translateX(100%); */
+
+    transition: all 0.3s ease-in-out;
+  }
+  .image-box {
+    transform: translateY(-100%);
+    height: 0;
+    /* opacity: 0.2; */
+    /* z-index: 1; */
+
+    &.image-box-animation {
+      transition: 1s 0.09s ease-in-out;
+    }
+  }
+}
+/* .card-body::before:hover {
+  content: "مشخصات";
+  background-color: #0535f6;
+  color: white;
+  position: absolute;
+  bottom: 207px;
+  padding: 5px;
+  right: 5px;
+  border-radius: 5px;
+  z-index: 0;
+} */
+.btn:hover {
+  box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
+    rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+}
+.custome-font {
+  font-family: "B Nazanin", "arial", sans-serif;
+  font-size: 1rem;
+}
+
+.image-box {
+  height: 150px;
+  margin: 0;
+  padding: 0;
+}
+.card-body::before {
+  /* transform: rotate(90 deg) !important; */
+  font-family: "B Nazanin", "arial", sans-serif;
+  font-weight: bold;
+  content: "مشخصات";
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  position: absolute;
+  bottom: -4px;
+  padding: 5px;
+  right: 5px;
+  border-radius: 5px;
+  z-index: 0;
+}
+.image-box > img {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+}

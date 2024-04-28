@@ -1,115 +1,115 @@
-<div class="center-x center-y parent-container">
-  <div
-    class="container col-md-6 col-xs-12 col-lg-4 col-xl-4 p-3 mt-3 justify-content-center custome-container"
-  >
-    <h3 class="logo-class">
-      <span class="custome-font" style="font-size: 30px">ورود به </span> پلان
-    </h3>
-    <div class="container col-12 py-3 mt-1 mb-4 custome-align">
-      <div class="btn-group" role="group">
-        <button
-          type="button"
-          (click)="navigateTo('regular user')"
-          class="btn btn-outline-dark custome-font"
-          style="box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px"
-        >
-          ثبت نام کاربران
-        </button>
+<!-- <div class="center-x center-y parent-container"> -->
+<div
+  class="container col-md-6 col-xs-12 col-lg-4 col-xl-4 justify-content-center custome-container my-4"
+>
+  <h3 class="logo-class">
+    <span class="custome-font" style="font-size: 30px">ورود به </span> پلان
+  </h3>
+  <div class="container col-12 py-3 mt-1 mb-4 custome-align">
+    <div class="btn-group" role="group">
+      <button
+        type="button"
+        (click)="navigateTo('regular user')"
+        class="btn btn-outline-dark custome-font"
+        style="box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px"
+      >
+        ثبت نام کاربران
+      </button>
 
-        <button
-          type="button"
-          (click)="navigateTo('special user')"
-          class="btn btn-outline-dark custome-font"
-          style="box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px"
-        >
-          ثبت نام غرفه داران
-        </button>
-      </div>
+      <button
+        type="button"
+        (click)="navigateTo('special user')"
+        class="btn btn-outline-dark custome-font"
+        style="box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px"
+      >
+        ثبت نام غرفه داران
+      </button>
     </div>
+  </div>
 
-    <form class="px-4" [formGroup]="signInForm" (ngSubmit)="onSubmit()">
-      <!-- <div class="mb-3"> -->
-      <mat-form-field
-        class="form-field w-100 custome-font mt-4"
-        appearance="outline"
+  <form class="px-4" [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+    <!-- <div class="mb-3"> -->
+    <mat-form-field
+      class="form-field w-100 custome-font mt-2"
+      appearance="outline"
+    >
+      <mat-label class="custome-font">نام کاربری</mat-label>
+      <input
+        matInput
+        formControlName="username"
+        placeholder="کدملی را وارد کنید"
+        (keydown)="isNumber()"
+      />
+      <mat-error
+        *ngIf="
+          signInForm.get('username')?.invalid &&
+          (signInForm.get('username')?.dirty ||
+            signInForm.get('username')?.touched)
+        "
       >
-        <mat-label class="custome-font">نام کاربری</mat-label>
-        <input
-          matInput
-          formControlName="username"
-          placeholder="کدملی را وارد کنید"
-          (keydown)="isNumber()"
-        />
-        <mat-error
-          *ngIf="
-            signInForm.get('username')?.invalid &&
-            (signInForm.get('username')?.dirty ||
-              signInForm.get('username')?.touched)
-          "
+        <span
+          class="custome-font"
+          *ngIf="signInForm.get('username')?.errors?.['required']"
+          >نام کاربری نباید خالی باشه.</span
         >
-          <span
-            class="custome-font"
-            *ngIf="signInForm.get('username')?.errors?.['required']"
-            >نام کاربری نباید خالی باشه.</span
-          >
-          <span
-            class="custome-font"
-            *ngIf="!signInForm.get('username')?.errors?.['required']&&signInForm.get('username')?.errors?.['invalidIdentityCode']"
-            >نام کاربریت همون کدملیه ،فرمتشو درست کن.</span
-          >
-        </mat-error>
-      </mat-form-field>
+        <span
+          class="custome-font"
+          *ngIf="!signInForm.get('username')?.errors?.['required']&&signInForm.get('username')?.errors?.['invalidIdentityCode']"
+          >نام کاربریت همون کدملیه ،فرمتشو درست کن.</span
+        >
+      </mat-error>
+    </mat-form-field>
 
-      <mat-form-field
-        class="form-field w-100 custome-font"
-        appearance="outline"
+    <mat-form-field
+      class="form-field w-100 custome-font mt-1"
+      appearance="outline"
+    >
+      <mat-label class="custome-font">کلمه عبور</mat-label>
+      <input
+        matInput
+        formControlName="password"
+        placeholder="کلمه عبور"
+        [type]="isPasswordHidden ? 'password' : 'text'"
+      />
+      <mat-icon matSuffix (click)="isPasswordHidden = !isPasswordHidden">{{
+        isPasswordHidden ? "visibility_off" : "visibility"
+      }}</mat-icon>
+      <mat-error
+        *ngIf="
+          signInForm.get('password')?.invalid &&
+          (signInForm.get('password')?.dirty ||
+            signInForm.get('password')?.touched)
+        "
       >
-        <mat-label class="custome-font">کلمه عبور</mat-label>
-        <input
-          matInput
-          formControlName="password"
-          placeholder="کلمه عبور"
-          [type]="isPasswordHidden ? 'password' : 'text'"
-        />
-        <mat-icon matSuffix (click)="isPasswordHidden = !isPasswordHidden">{{
-          isPasswordHidden ? "visibility_off" : "visibility"
-        }}</mat-icon>
-        <mat-error
-          *ngIf="
-            signInForm.get('password')?.invalid &&
-            (signInForm.get('password')?.dirty ||
-              signInForm.get('password')?.touched)
-          "
+        <span
+          class="custome-font"
+          *ngIf="signInForm.get('password')?.errors?.['required']"
+          >کلمه عبور نباید خالی باشه.</span
         >
-          <span
-            class="custome-font"
-            *ngIf="signInForm.get('password')?.errors?.['required']"
-            >کلمه عبور نباید خالی باشه.</span
-          >
-          <!-- <span
+        <!-- <span
             *ngIf="!signupForm.get('password')?.errors?.['required']&&signupForm.get('password')?.errors?.['invalidmobileNumber']"
             >فرمت شماره موبایلت درست نیست.</span
           > -->
-        </mat-error></mat-form-field
-      >
-      <!-- </div> -->
+      </mat-error></mat-form-field
+    >
+    <!-- </div> -->
 
-      <div class="container pt-2 col-xs-3 col-sm-6 col-lg-7">
-        <div class="row pt-5 mt-5">
-          <button
-            [disabled]="signInForm.invalid"
-            type="submit"
-            class="btn btn-success justify-content-center custome-font"
-            style="
-              font-size: medium;
-              box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
-                rgba(0, 0, 0, 0.22) 0px 10px 10px;
-            "
-          >
-            ورود
-          </button>
-        </div>
+    <div class="container p-2 col-xs-3 col-sm-6 col-lg-7">
+      <div class="row py-2 mt-4">
+        <button
+          [disabled]="signInForm.invalid"
+          type="submit"
+          class="btn btn-success justify-content-center custome-font"
+          style="
+            font-size: medium;
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
+              rgba(0, 0, 0, 0.22) 0px 10px 10px;
+          "
+        >
+          ورود
+        </button>
       </div>
-    </form>
-  </div>
+    </div>
+  </form>
 </div>
+<!-- </div> -->

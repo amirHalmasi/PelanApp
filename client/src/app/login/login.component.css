@@ -1,8 +1,8 @@
 .parent-container {
-  background-image: url("../../assets/image/1700149541681.jpg");
+  /* background-image: url("../../assets/image/1700149541681.jpg");
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: center center;
+  background-position: center center; */
 
   width: 100vw;
   height: 100vh;
@@ -27,24 +27,24 @@
     rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
   overflow: auto;
   &::-webkit-scrollbar {
-    width: 6px;
-    border-radius: 6px;
+    width: 0;
+    border-radius: 0;
     /* how to add margin to my scrollbar or position it? */
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: rgb(41, 44, 218);
+    background-color: rgb(136, 136, 136);
     border-radius: 5px;
   }
 
   &::-webkit-scrollbar-track {
-    background-color: #fcdddd25;
+    background-color: rgba(255, 255, 255, 0.145);
     border-radius: 6px;
   }
 
   /* Custom scrollbar styles for Firefox */
-  scrollbar-width: thin;
-  scrollbar-color: #5b5959 #f1f1f16b;
+  scrollbar-width: none;
+  scrollbar-color: rgb(136, 136, 136) rgba(255, 255, 255, 0.145);
 }
 .logo-class {
   text-align: center;

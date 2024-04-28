@@ -5,7 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { identityCodeValidator } from '../shared/validators/identityCode.validator';
 import { mobileNumberValidator } from '../shared/validators/mobileNumber.validation';
 import { SweetAlertService } from '../shared/sweet-alert.service';
-import { CanDeactivateType } from '../register/checkout.guard';
+import { CanDeactivateType } from '../shared/checkout.guard';
+import { AccountManagerService } from '../shared/account-manager.service';
 
 @Component({
   selector: 'app-login',
@@ -16,12 +17,14 @@ export class LoginComponent implements OnInit {
   signInForm!: FormGroup;
   isPasswordHidden: boolean = true;
   isSignIn: boolean = false;
+  isGoingToSignupPage: boolean = false;
   errorMessage!: { title: string; desc: string };
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
     private router: Router,
-    private sweetAlert: SweetAlertService
+    private sweetAlert: SweetAlertService,
+    private accountManagerServ: AccountManagerService
   ) {}
   ngOnInit(): void {
     this.signInForm = this.formCreater();
@@ -45,22 +48,30 @@ export class LoginComponent implements OnInit {
     this.http
       .post('https://localhost:5001/api/account/login', formData)
       .subscribe({
-        next: (data: { username: string; token: string }) => {
-          console.log('signIn data', data.token);
-          // const token = data.token;
-
-          // // Decode the token payload
-          // const decodedToken: any = jwtDecode.jwtDecode(token);
-
-          // console.log('Decoded Token:', decodedToken);
-
+        next: (data: {
+          username: string;
+          token: string;
+          expire: any;
+          usertype: string;
+        }) => {
+          // console.log('signIn data', data);
+          // localStorage.clear();
+          localStorage.removeItem('userData');
           localStorage.setItem('userData', JSON.stringify(data));
-          this.isSignIn = true;
-          //add to local storage
-          this.router.navigate(['/'], { relativeTo: this.route });
+
+          ////////////////////////////////////////////////////////////////////////////
+          // const storedUserData = JSON.parse(localStorage.getItem('userData'));   //
+          // const expireDate = new Date(storedUserData.expires);                   //
+          // const formattedExpireDate = expireDate.toLocaleDateString('en-CA', {   //
+          //   year: 'numeric',                                                     //
+          //   month: '2-digit',                                                    //
+          //   day: '2-digit',                                                      //
+          // });                                                                    //
+          // console.log('formated Date', formattedExpireDate);                     //
+          ////////////////////////////////////////////////////////////////////////////
         },
         error: (error) => {
-          console.log(error.error);
+          // console.log(error.error);
           switch (String(error.error).toLowerCase()) {
             case 'invalid password.':
             case 'invalid username.':
@@ -80,17 +91,27 @@ export class LoginComponent implements OnInit {
               break;
           }
         },
+        complete: () => {
+          this.accountManagerServ.isUserLoggedIn.emit(true);
+          this.isSignIn = true;
+          JSON.parse(localStorage.getItem('userData')).usertype === 'special'
+            ? this.accountManagerServ.isSpecialUserLogedIn.emit(true)
+            : this.accountManagerServ.isSpecialUserLogedIn.emit(false);
+          this.router.navigate(['/'], { relativeTo: this.route });
+        },
       });
   }
   isNumber() {}
   navigateTo(userType: string) {
+    this.isGoingToSignupPage = true;
     this.router.navigate(['../registeruser'], {
       relativeTo: this.route,
       queryParams: { 'user-type': userType },
     });
   }
   canDeactivateFn(): CanDeactivateType {
-    if (this.isSignIn) {
+    console.log('url is', this.route.url);
+    if (this.isSignIn || this.isGoingToSignupPage) {
       return true;
     }
 
@@ -110,6 +131,8 @@ export class LoginComponent implements OnInit {
             resolve(false); // In case of an error, consider it as not confirmed
           });
       });
+    } else {
+      return true;
     }
   }
   showAlert(errorMessage: { title: string; desc: string }) {

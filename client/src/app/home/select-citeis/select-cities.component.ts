@@ -91,7 +91,7 @@ import { City } from 'src/app/shared/citiy.model';
   styleUrls: ['./select-cities.component.css'],
 })
 export class SelectCitiesComponent implements OnInit {
-  @Output() onCloseCityModal = new EventEmitter<boolean>();
+  // @Output() onCloseCityModal = new EventEmitter<boolean>();
   provinceOrCities!: Province[] | City[];
 
   constructor(
@@ -120,13 +120,14 @@ export class SelectCitiesComponent implements OnInit {
     this.outletRef.createEmbeddedView(this.contentRef);
   }
   closeCities() {
-    this.onCloseCityModal.emit(false);
+    this.provinceAndCityServ.onCloseCityModal.emit(false);
 
     this.provinceAndCityServ.provineCitiesList = [];
     // console.log(this.provinceAndCityServ.provineCitiesList);
     this.isShowCities = false;
   }
   getProvinceCities(provinceId: number) {
+    // console.log(provinceId);
     this.isLoading = true;
     this.provinceAndCityServ.getCity(provinceId).subscribe({
       next: (response) => {
@@ -147,4 +148,7 @@ export class SelectCitiesComponent implements OnInit {
       },
     });
   }
+  //   selectedCityData(city) {
+  //     console.log('clicked city', city);
+  //   }
 }

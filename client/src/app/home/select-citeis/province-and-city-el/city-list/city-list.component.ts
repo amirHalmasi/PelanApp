@@ -25,6 +25,9 @@ export class CityListComponent implements OnInit {
   //{{}:City,status:boolean}
   onSelectCity(emitedData: City) {
     this.provinceAndCityServ.selectedCity.emit(emitedData);
+    this.provinceAndCityServ.onCloseCityModal.emit(false);
+    this.provinceAndCityServ.city = emitedData;
+
     //چون میخوام از تغییر این متغییر مطلع بشم
     // و از این تغییر مقدار متغیر برای اپدیت ویو خودم استفاده کنم
     // باید از ایونت امیتر استفاده کنم

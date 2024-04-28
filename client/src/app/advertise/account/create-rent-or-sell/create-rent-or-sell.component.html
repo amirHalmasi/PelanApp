@@ -1,0 +1,507 @@
+<div class="container-fluid parent-container py-2">
+  <div class="form-container col-md-10 col-lg-8 col-sm-12 col-xs-12 px-5 py-3">
+    <h3 class="logo-class">
+      <span class="custome-font" style="font-size: 30px">{{
+        createdAdvertiseType == "rent"
+          ? "ثبت آگهی اجاره ملک در "
+          : "ثبت آگهی فروش ملک در"
+      }}</span>
+      پلان
+    </h3>
+    <div class="container col-12 py-3 mt-1 mb-4 custome-align">
+      <div class="btn-group" role="group">
+        <button
+          type="button"
+          (click)="navigateTo('rent')"
+          class="btn btn-outline-dark custome-font"
+          style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px"
+          [class]="{
+            'btn-dark': createdAdvertiseType == 'rent' ? true : false,
+            'light-font': createdAdvertiseType == 'rent' ? true : false
+          }"
+        >
+          آگهی اجاره ملک
+        </button>
+
+        <button
+          type="button"
+          (click)="navigateTo('sell')"
+          class="btn btn-outline-dark custome-font"
+          style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px"
+          [class]="{
+            'btn-dark': createdAdvertiseType == 'sell' ? true : false,
+            'light-font': createdAdvertiseType == 'sell' ? true : false
+          }"
+        >
+          آگهی فروش ملک
+        </button>
+        <!-- <button
+          type="button"
+          (click)="navigateTo('sell')"
+          class="btn btn-outline-dark custome-font"
+          style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px"
+          [class]="{
+            'btn-dark': createdAdvertiseType == 'sell' ? true : false,
+            'light-font': createdAdvertiseType == 'sell' ? true : false
+          }"
+        >
+          آگهی فروش مغازه
+        </button>
+        <button
+          type="button"
+          (click)="navigateTo('sell')"
+          class="btn btn-outline-dark custome-font"
+          style="box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px"
+          [class]="{
+            'btn-dark': createdAdvertiseType == 'sell' ? true : false,
+            'light-font': createdAdvertiseType == 'sell' ? true : false
+          }"
+        >
+          آگهی اجاره مغازه
+        </button> -->
+      </div>
+    </div>
+
+    <form
+      [formGroup]="signupForm"
+      (ngSubmit)="createdAdvertiseType == 'rent' ? onSubmit() : ''"
+      enctype="multipart/form-data"
+    >
+      <h4 class="custome-font" style="text-align: right">اطلاعات کلی ملک:</h4>
+      <div formGroupName="houseData" class="row">
+        <mat-form-field
+          class="form-field col-xs-12 col-sm-6 col-md-6 col-lg-6 custome-font p-1 px-3"
+          appearance="outline"
+        >
+          <mat-label class="custome-font"> موقعیت بنا </mat-label>
+
+          <mat-select class="custome-font" formControlName="houseDirection">
+            @for (direction of houseDirections; track direction) {
+            <mat-option class="custome-font" [value]="direction.value">{{
+              direction.viewValue
+            }}</mat-option>
+            }
+          </mat-select>
+
+          @if (
+          signupForm.get('houseData.houseDirection')?.hasError('required')) {
+          <mat-error class="custome-font">این فیلد نباید خالی باشه.</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field
+          class="form-field col-xs-12 col-sm-6 col-md-6 col-lg-6 custome-font p-1 px-3"
+          appearance="outline"
+        >
+          <mat-label class="custome-font"> نام محله</mat-label>
+          <input
+            matInput
+            formControlName="neighborhood"
+            placeholder="موقعیت کلی ملک رو بگید: مثلا زعفرانیه "
+            #neighborhood
+            (change)="neighborhoodChange()"
+          />
+          <mat-error
+            class="custome-font"
+            *ngIf="
+              signupForm.get('houseData.neighborhood')?.invalid &&
+              (signupForm.get('houseData.neighborhood')?.dirty ||
+                signupForm.get('houseData.neighborhood')?.touched)
+            "
+          >
+            <span
+              *ngIf="signupForm.get('houseData.neighborhood')?.errors?.['required']"
+              >این فیلد نباید خالی باشه.</span
+            >
+            <span
+              *ngIf="!signupForm.get('houseData.neighborhood')?.errors?.['required']&&signupForm.get('houseData.neighborhood')?.errors?.['invalidPersianLetter']"
+              >نام محله باید فارسی باشد.</span
+            >
+          </mat-error>
+          <mat-hint class="custome-font">{{ neighborhoodHint }}</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field
+          appearance="outline"
+          class="form-field col-xs-12 col-sm-6 col-md-6 col-lg-6 custome-font p-1 px-3"
+        >
+          <mat-label class="custome-font">استان</mat-label>
+          <mat-select
+            #singleSelect
+            [formControl]="province"
+            placeholder="استان را انتخاب کنید."
+            class="custome-font"
+            (selectionChange)="
+              onSelectProvince(this.signupForm.get('houseData.province').value)
+            "
+          >
+            <mat-option>
+              <ngx-mat-select-search
+                placeholderLabel="جستجو"
+                [formControl]="provinceFilter"
+                class="custome-font"
+              ></ngx-mat-select-search>
+            </mat-option>
+            <mat-option
+              class="custome-font"
+              *ngFor="let provinceData of filteredProvinces | async"
+              [value]="provinceData.id"
+            >
+              {{ provinceData.provinceName }}</mat-option
+            >
+          </mat-select>
+          <mat-error
+            class="custome-font"
+            *ngIf="
+              signupForm.get('houseData.province')?.invalid &&
+              (signupForm.get('houseData.province')?.dirty ||
+                signupForm.get('houseData.province')?.touched)
+            "
+          >
+            <span
+              *ngIf="signupForm.get('houseData.province')?.errors?.['required']"
+              >این فیلد نباید خالی باشه.</span
+            >
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field
+          *ngIf="isProvinceSelected"
+          appearance="outline"
+          class="form-field col-xs-12 col-sm-6 col-md-6 col-lg-6 custome-font p-1 px-3"
+        >
+          <mat-label class="custome-font">شهر</mat-label>
+          <mat-select
+            #singleSelect
+            [formControl]="city"
+            placeholder="شهر را انتخاب کنید."
+            class="custome-font"
+          >
+            <!-- @for (food of foods; track food) {
+              <mat-option [value]="food.value">{{ food.viewValue }}</mat-option>
+              } -->
+            <mat-option>
+              <ngx-mat-select-search
+                placeholderLabel="جستجو"
+                [formControl]="cityFilter"
+                class="custome-font"
+              ></ngx-mat-select-search>
+            </mat-option>
+            <mat-option
+              class="custome-font"
+              *ngFor="let cityData of filteredCities | async"
+              [value]="cityData.id"
+            >
+              {{ cityData.cities }}</mat-option
+            >
+          </mat-select>
+          <mat-error
+            class="custome-font"
+            *ngIf="
+              signupForm.get('houseData.city')?.invalid &&
+              (signupForm.get('houseData.city')?.dirty ||
+                signupForm.get('houseData.city')?.touched)
+            "
+          >
+            <span *ngIf="signupForm.get('houseData.city')?.errors?.['required']"
+              >این فیلد نباید خالی باشه.</span
+            >
+          </mat-error>
+        </mat-form-field>
+        <!-- <button
+          type="button"
+          class="btn btn-outline-dark custome-font col-xs-12 col-sm-6 col-md-6 col-lg-4 custome-font p-1 px-3"
+          (click)="(fileuploader.click)"
+        >
+          بارگذاری عکس
+        </button> -->
+      </div>
+
+      <div class="row p-1 px-3">
+        <input
+          class="form-field col-xs-12 col-sm-6 col-md-6 col-lg-4 custome-font p-1 px-3"
+          formControlName="advertise"
+          type="file"
+          (change)="onchange($event); ProceedUpload()"
+          id="fileupload"
+          class="form-control"
+          multiple
+          #fileuploader
+          style="display: none"
+        />
+        <button
+          type="button"
+          (click)="fileuploader.click()"
+          class="btn btn-outline-danger col-xs-12 col-sm-4 col-md-3 col-lg-3 custome-font"
+        >
+          بارگذاری عکس
+        </button>
+        <div
+          class="custome-font"
+          *ngIf="
+            signupForm.get('advertise')?.invalid &&
+            (signupForm.get('advertise')?.dirty ||
+              signupForm.get('advertise')?.touched)
+          "
+        >
+          <span
+            *ngIf="signupForm.get('advertise')?.errors?.['invalidImageFormat']"
+            >عکس فرمتش درست نیست.</span
+          >
+          <!-- <span
+            *ngIf="signupForm.get('advertise')?.hasError('invalidImageSize')"
+          >
+            حداکثر حجم عکس باید
+            {{
+              signupForm.get("advertise")?.getError("invalidImageSize")
+                .maxSize / 1024
+            }}
+            کیلو بایت باشد.
+          </span> -->
+        </div>
+        <div class="row py-2">
+          <div *ngIf="isLoadingImage; else images" class="p-5">
+            <app-loading-spinner></app-loading-spinner>
+          </div>
+          <ng-template #images>
+            <div class="row w-100" *ngIf="advertiseImages">
+              <div
+                *ngFor="let image of advertiseImages; let i = index"
+                class="col-lg-4 col-xs-6 col-md-4 image-container"
+              >
+                <!-- Set a fixed height for the image container -->
+                <div class="image-wrapper">
+                  <img class="img-responsive img-thumbnail m-1" [src]="image" />
+                  <button
+                    *ngIf="!progressvalue"
+                    type="button"
+                    (click)="removeFile(i)"
+                    style="font-size: 15px"
+                    class="btn btn-outline-dark align-self-center custome-font on-image-button m-3 mx-2"
+                  >
+                    <i *ngIf="!progressvalue" class="fa fa-trash-o"></i>
+                    <!-- <i
+                      *ngIf="progressvalue"
+                      class="custome-font"
+                      style="color: white"
+                      >{{ progressvalue }}%</i
+                    > -->
+                  </button>
+                </div>
+
+                <h3 *ngIf="progressvalue">{{ progressvalue }}%</h3>
+              </div>
+            </div>
+            <span
+              class="custome-font"
+              style="color: black"
+              *ngIf="!advertiseImages"
+            >
+              عکس را آپلود کنید.
+            </span>
+          </ng-template>
+        </div>
+      </div>
+
+      <div
+        *ngIf="createdAdvertiseType == 'rent'"
+        formGroupName="rentHouseDetails"
+        class="row"
+      >
+        <h4 class="custome-font" style="text-align: right">
+          اطلاعات واحد اجاره:
+        </h4>
+        <mat-form-field
+          class="form-field col-xs-12 col-sm-6 col-md-6 col-lg-4 custome-font p-1 px-3"
+          appearance="outline"
+        >
+          <mat-label class="custome-font"> تعداد اتاق</mat-label>
+          <input
+            matInput
+            formControlName="roomCount"
+            placeholder="خونه چند تا اتاق داره؟"
+          />
+          <mat-error
+            class="custome-font"
+            *ngIf="
+              signupForm.get('rentHouseDetails.roomCount')?.invalid &&
+              (signupForm.get('rentHouseDetails.roomCount')?.dirty ||
+                signupForm.get('rentHouseDetails.roomCount')?.touched)
+            "
+          >
+            <span
+              *ngIf="signupForm.get('rentHouseDetails.roomCount')?.errors?.['required']"
+              >نگفتی چند تا اتاق داره؟</span
+            >
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field
+          class="form-field col-xs-12 col-sm-6 col-md-6 col-lg-4 custome-font p-1 px-3"
+          appearance="outline"
+        >
+          <mat-label class="custome-font"> طبقه</mat-label>
+          <input
+            matInput
+            formControlName="floor"
+            placeholder="واحد تو طبقه چنده؟"
+          />
+          <mat-error
+            class="custome-font"
+            *ngIf="
+              signupForm.get('rentHouseDetails.floor')?.invalid &&
+              (signupForm.get('rentHouseDetails.floor')?.dirty ||
+                signupForm.get('rentHouseDetails.floor')?.touched)
+            "
+          >
+            <span
+              *ngIf="signupForm.get('rentHouseDetails.floor')?.errors?.['required']"
+              >یادت رفت بگی واحد طبقه چنده؟</span
+            >
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field
+          class="form-field col-xs-12 col-sm-6 col-md-6 col-lg-4 custome-font p-1 px-3"
+          appearance="outline"
+        >
+          <mat-label class="custome-font"> متراژ</mat-label>
+          <input
+            matInput
+            formControlName="meterage"
+            placeholder="متراژ واحد چقدره؟"
+          />
+          <mat-error
+            class="custome-font"
+            *ngIf="
+              signupForm.get('rentHouseDetails.meterage')?.invalid &&
+              (signupForm.get('rentHouseDetails.meterage')?.dirty ||
+                signupForm.get('rentHouseDetails.meterage')?.touched)
+            "
+          >
+            <span
+              *ngIf="signupForm.get('rentHouseDetails.meterage')?.errors?.['required']"
+              >یادت رفت بگی واحد چند متره؟</span
+            >
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field
+          class="form-field col-xs-12 col-sm-12 col-md-6 col-lg-4 custome-font p-1 px-3"
+          appearance="outline"
+        >
+          <mat-label class="custome-font"> مبلغ رهن </mat-label>
+          <input
+            matInput
+            formControlName="mortgage"
+            placeholder="مبلغ رهن رو وارد کنید."
+          />
+          <mat-error
+            class="custome-font"
+            *ngIf="
+              signupForm.get('rentHouseDetails.mortgage')?.invalid &&
+              (signupForm.get('rentHouseDetails.mortgage')?.dirty ||
+                signupForm.get('rentHouseDetails.mortgage')?.touched)
+            "
+          >
+            <span
+              *ngIf="signupForm.get('rentHouseDetails.mortgage')?.errors?.['required']"
+              >مبلغ رهن واجبه که باشه.</span
+            >
+            <span
+              *ngIf="signupForm.get('rentHouseDetails.mortgage')?.errors?.['englishLetter']"
+              >مبلغ رهن باید رقم باشد.</span
+            >
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field
+          class="form-field col-xs-12 col-sm-12 col-md-6 col-lg-4 custome-font p-1 px-3"
+          appearance="outline"
+        >
+          <mat-label class="custome-font"> مبلغ اجاره </mat-label>
+          <input
+            matInput
+            formControlName="rentPrice"
+            placeholder="مبلغ اجاره رو وارد کنید."
+          />
+          <mat-error
+            class="custome-font"
+            *ngIf="
+              signupForm.get('rentHouseDetails.rentPrice')?.invalid &&
+              (signupForm.get('rentHouseDetails.rentPrice')?.dirty ||
+                signupForm.get('rentHouseDetails.rentPrice')?.touched)
+            "
+          >
+            <span
+              *ngIf="signupForm.get('rentHouseDetails.rentPrice')?.errors?.['required']"
+              >مبلغ اجاره واجبه که باشه.</span
+            >
+            <span
+              *ngIf="signupForm.get('rentHouseDetails.rentPrice')?.errors?.['englishLetter']"
+              >مبلغ اجاره باید رقم باشد.</span
+            >
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field
+          class="form-field col-xs-12 col-sm-6 col-md-6 col-lg-4 custome-font p-1 px-3"
+          appearance="outline"
+        >
+          <mat-label class="custome-font"> مناسب برای </mat-label>
+
+          <mat-select class="custome-font" formControlName="suitable">
+            @for (suitable of rentIsSuitableFor; track suitable) {
+            <mat-option class="custome-font" [value]="suitable.value">{{
+              suitable.viewValue
+            }}</mat-option>
+            }
+          </mat-select>
+
+          @if (
+          signupForm.get('rentHouseDetails.suitable')?.hasError('required')) {
+          <mat-error class="custome-font">این فیلد نباید خالی باشه.</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field
+          class="form-field col-xs-12 col-sm-12 custome-font p-1 px-3"
+          appearance="outline"
+        >
+          <mat-label class="custome-font">حرف های نگفته:</mat-label>
+          <textarea
+            matInput
+            formControlName="description"
+            placeholder="اگه چیزی هست که نگفتید میتونی اینجا بگید."
+          ></textarea>
+          <mat-error
+            class="custome-font"
+            *ngIf="
+              signupForm.get('rentHouseDetails.description')?.invalid &&
+              (signupForm.get('rentHouseDetails.description')?.dirty ||
+                signupForm.get('rentHouseDetails.description')?.touched)
+            "
+          >
+            <!-- <span
+              *ngIf="signupForm.get('rentHouseDetails.description')?.errors?.['required']"
+              >این فیلد نباید خالی باشه.</span
+            > -->
+            <span
+              *ngIf="signupForm.get('rentHouseDetails.description')?.errors?.['invalidPersianLetter']"
+              >توضیحات رو فارسی وارد کنید.</span
+            >
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="container col-md-2 col-xs-3 col-sm-6 col-lg-2">
+        <div class="row pt-4 mt-3">
+          <button
+            type="submit"
+            class="btn btn-success justify-content-center custome-font"
+            style="
+              font-size: medium;
+              box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
+                rgba(0, 0, 0, 0.22) 0px 10px 10px;
+            "
+          >
+            ورود
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

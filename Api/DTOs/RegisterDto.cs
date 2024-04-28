@@ -9,12 +9,23 @@ namespace Api.DTOs
     public class RegisterDto
     {
         [Required]
-        // [RegularExpression] only letters
-        public string Username{set;get;}
+        public string firstname { get; set; }
         [Required]
-        public string Password{set;get;}
+        public string lastname { get; set; }
         [Required]
-        // [RegularExpression] only numbers allowed
-        public string Userid{get;set;}
+        public string userid { get; set; } 
+        [Required]
+        public string mobile { get; set; } 
+        public string email { get; set; } 
+        
+        public string gender { get; set; } 
+        public int provinceid { get; set; } 
+        public int cityid { get; set; } 
+        public string shopname { get; set; } 
+        public string  shopaddress { get; set; } 
+        public string  tels { get; set; } 
+        public int  rate { get; set; } 
+        public string usertype { get; set; } 
+        
     }
 }

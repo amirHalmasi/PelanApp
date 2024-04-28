@@ -7,12 +7,17 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import {
+  ProgressSpinnerMode,
+  MatProgressSpinnerModule,
+} from '@angular/material/progress-spinner';
 
 // to add Angular Material Select Dropdown with Search Example:
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 // import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 const MATERIAL_MODULES: NgModule['imports'] & NgModule['exports'] = [
   MatRadioModule,
@@ -22,11 +27,12 @@ const MATERIAL_MODULES: NgModule['imports'] & NgModule['exports'] = [
   MatTableModule,
   MatPaginatorModule,
   MatSortModule,
-
+  MatProgressSpinnerModule,
   MatFormFieldModule,
   MatSelectModule,
   NgxMatSelectSearchModule,
   MatAutocompleteModule,
+  MatCheckboxModule,
 ];
 
 @NgModule({

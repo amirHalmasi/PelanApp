@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {
   Component,
   OnInit,
@@ -13,12 +13,13 @@ import { Province } from '../shared/province.model';
 import { MatSelect } from '@angular/material/select';
 import { ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { City } from '../shared/citiy.model';
-import { CanDeactivateType } from './checkout.guard';
+import { CanDeactivateType } from '../shared/checkout.guard';
 import { SweetAlertService } from '../shared/sweet-alert.service';
 import { telephoneValidator } from '../shared/validators/telePhone.validator';
 import { persianLetterValidator } from '../shared/validators/persianLetter.validator';
 import { identityCodeValidator } from '../shared/validators/identityCode.validator';
 import { mobileNumberValidator } from '../shared/validators/mobileNumber.validation';
+import { SpecialUserRegister } from '../shared/register.model';
 
 interface Food {
   value: string;
@@ -42,9 +43,11 @@ export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
     Validators.required,
     // englishLetterValidator(),
   ]);
+  submitedData!: SpecialUserRegister;
   isProvinceSelected: boolean = false;
   changeSaved: boolean = false;
   isSpecialUser: boolean = false;
+  isSignup: boolean = false;
 
   public provinceFilter: FormControl = new FormControl();
   public cityFilter: FormControl = new FormControl();
@@ -63,7 +66,10 @@ export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private activeRoute: ActivatedRoute,
     private provinceAndCityServ: ProvinceAndCitiesService,
-    private sweetAlert: SweetAlertService
+    private sweetAlert: SweetAlertService,
+    private http: HttpClient,
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
   ngOnInit(): void {
     this.isSpecialUser =
@@ -228,11 +234,72 @@ export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
   getLength() {
     return (<FormArray>this.signupForm.get('shopData.telePhone')).length;
   }
-  onSubmit(isSpecialUserEnterd: boolean) {
-    console.log('isSpecialUserEnterd', isSpecialUserEnterd);
+  onSubmit() {
     console.log(this.signupForm.value);
-    this.changeSaved = true;
+    if (this.isSpecialUser) {
+      this.submitedData = {
+        firstname: this.signupForm.value.userData.firstname,
+        lastname: this.signupForm.value.userData.lastname,
+        userid: this.signupForm.value.userData.identityCode,
+        email: this.signupForm.value.userData.email,
+        mobile: this.signupForm.value.userData.mobile,
+        gender: this.signupForm.value.userData.gender,
+        provinceid: this.signupForm.value.userData.province,
+        cityid: this.signupForm.value.userData.city,
+        shopname: this.signupForm.value.shopData.shopName,
+        shopaddress: this.signupForm.value.shopData.shopAddress,
+        tels: String(this.signupForm.value.shopData.telePhone),
+        usertype: 'special',
+      };
+    } else {
+      this.submitedData = {
+        firstname: this.signupForm.value.userData.firstname,
+        lastname: this.signupForm.value.userData.lastname,
+        userid: this.signupForm.value.userData.identityCode,
+        email: this.signupForm.value.userData.email,
+        mobile: this.signupForm.value.userData.mobile,
+        gender: this.signupForm.value.userData.gender,
+        provinceid: this.signupForm.value.userData.province,
+        cityid: this.signupForm.value.userData.city,
+        usertype: 'regular',
+      };
+    }
+
+    console.log(JSON.stringify(this.submitedData));
+
+    this.submitMyFormDataHttp(
+      'https://localhost:5001/api/account/register',
+      this.submitedData
+    );
   }
+
+  submitMyFormDataHttp(targetUrl: string, sendedData: SpecialUserRegister) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      }),
+    };
+    this.http
+      .post(targetUrl, JSON.stringify(sendedData), httpOptions)
+      // .post(targetUrl, sendedData)
+      .subscribe({
+        next: (data) => {
+          this.isSignup = true;
+          this.showAlert({
+            title: 'فقط محظ اطلاعت',
+            desc: 'کدملی نام کاربری و موبایلت کلمه عبورته.',
+          });
+        },
+        error: (error) => {
+          console.log(error.error);
+        },
+        complete: () => {
+          this.changeSaved = true;
+        },
+      });
+  }
+
   onSelectProvince(provinceId: number) {
     let codeString = 'console.log("this is eval result",provinceId);';
     eval(codeString);
@@ -263,7 +330,11 @@ export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
   canDeactivateFn(): CanDeactivateType {
-    if (!this.provinceAndCityServ.provinceNames || this.changeSaved) {
+    if (
+      !this.provinceAndCityServ.provinceNames ||
+      this.changeSaved ||
+      this.isSignup
+    ) {
       return true;
     }
 
@@ -292,6 +363,16 @@ export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
           });
       });
     }
+  }
+  showAlert(errorMessage: { title: string; desc: string }) {
+    return new Promise<boolean>((resolve) => {
+      this.sweetAlert
+        .alert(errorMessage.title, errorMessage.desc, 'info')
+        .then((result) => {
+          resolve(result.isConfirmed); // Resolve with the user's choice
+          this.router.navigate(['/login'], { relativeTo: this.route });
+        });
+    });
   }
 
   // protected setInitialValueProvince() {
