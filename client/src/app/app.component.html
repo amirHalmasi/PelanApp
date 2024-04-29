@@ -1,9 +1,3 @@
-<app-header [brandTitle]="title"> </app-header>
-<ul *ngIf="!isLoading" style="list-style-type: none">
-  <li *ngFor="let user of users">
-    {{ user.userName }} ID is: {{ user.userId }}
-  </li>
-</ul>
-<div *ngIf="isLoading" class="loadingContainer">
-  <app-loading-spinner></app-loading-spinner>
-</div>
+<app-nav-bar></app-nav-bar> <app-text-input [text]="'نام'"></app-text-input>
+<app-text-input [text]="'امیر'"></app-text-input>
+<app-text-input [text]="'علی'"></app-text-input>

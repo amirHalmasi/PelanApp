@@ -1,0 +1,18 @@
+<form [formGroup]="signupForm">
+  <mat-form-field appearance="outline">
+    <mat-label style="float: right">{{ text ? text : "نام" }}</mat-label>
+    <input matInput [placeholder]="text" formControlName="name" />
+    <!-- <mat-icon matSuffix>sentiment_very_satisfied</mat-icon> -->
+    <mat-hint>توضیحات</mat-hint>
+  </mat-form-field>
+  <!-- <mat-form-field appearance="outline">
+    <mat-label>نام خانوادگی</mat-label>
+    <input
+      matInput
+      placeholder="نام خانوادگی را وارد کنید"
+      formControlName="lastname"
+    />
+    
+    <mat-hint>توضیحات</mat-hint>
+  </mat-form-field> -->
+</form>

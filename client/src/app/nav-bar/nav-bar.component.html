@@ -1,0 +1,33 @@
+<nav class="navbar navbar-expand-lg bg-light rtl-dir">
+  <div class="container-fluid custome-header">
+    <!-- <div class="col justify-content-evenly"> -->
+    <a class="navbar-brand" href="#">پلان</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      (click)="isCollapsed = !isCollapsed"
+      [attr.aria-expanded]="!isCollapsed"
+      aria-controls="collapseExample"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div
+      class="collapse navbar-collapse container custome-width-8"
+      id="navbarCollapse"
+      [ngbCollapse]="isCollapsed"
+    >
+      <ul class="navbar-nav ml-auto custome-ul">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <button type="button" class="btn btn-outline-danger">Danger</button>
+        </li>
+      </ul>
+    </div>
+    <!-- </div> -->
+  </div>
+</nav>

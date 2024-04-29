@@ -477,3 +477,5 @@ $RECYCLE.BIN/
 *.lnk
 appsettings.json
 ssl
+*.git
+*.vscode

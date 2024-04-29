@@ -1,0 +1,22 @@
+.navbar {
+  direction: rtl;
+  background-color: transparent !important;
+  /* width: 80%; */
+}
+.navbar-brand {
+  font-family: "sogand", "Courier New", Courier, monospace;
+  font-size: x-large;
+}
+
+.custome-header {
+  background-color: rgb(187, 187, 187);
+  width: 90%;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.custome-ul {
+  display: flex;
+  margin-right: auto;
+}
