@@ -6,6 +6,7 @@
 using Api.Entities;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace Api.Data
 {
     public class DataContext :DbContext
@@ -14,5 +15,6 @@ namespace Api.Data
 
         
         public DbSet<AppUser> Users{get;set;}
+        public DbSet<AppProvince> Provinces{get;set;}
     }
 }
