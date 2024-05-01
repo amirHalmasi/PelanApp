@@ -1,5 +1,5 @@
 @font-face {
-  font-family: "Badr";
+  font-family: "badr";
   src: url("assets/Fonts/badr/Badr.eot");
   src: url("assets/Fonts/badr/Badr.eot?#iefix") format("embedded-opentype"),
     url("assets/Fonts/badr/Badr.woff2") format("woff2"),
@@ -10,7 +10,7 @@
   font-style: normal;
 }
 @font-face {
-  font-family: "B Nazanin";
+  font-family: "nazanin";
   src: url("assets/Fonts/nazanin/BNazanin.eot");
   src: url("assets/Fonts/nazanin/BNazanin.eot?#iefix")
       format("embedded-opentype"),
@@ -22,7 +22,7 @@
   font-style: normal;
   font-display: swap;
 }
-@font-face {
+/* @font-face {
   font-family: "A Rezvan-fat";
   src: url("assets/Fonts/rezvan/ARezvan-fat.eot");
   src: url("assets/Fonts/rezvan/ARezvan-fat.eot?#iefix")
@@ -34,9 +34,9 @@
   font-weight: normal;
   font-style: normal;
   font-display: swap;
-}
+} */
 @font-face {
-  font-family: "Sogand";
+  font-family: "sogand";
   src: url("assets/Fonts/sogand/SOGAND.eot");
   src: url("assets/Fonts/sogand/SOGAND.eot?#iefix") format("embedded-opentype"),
     url("assets/Fonts/sogand/SOGAND.woff2") format("woff2"),

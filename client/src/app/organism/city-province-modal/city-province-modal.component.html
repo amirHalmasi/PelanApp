@@ -1,0 +1,78 @@
+<p>{{ isModalOpen }}</p>
+<!-- <div class="container">
+  <div class="row justify-content-md-center"></div>
+</div> -->
+
+<div class="modal-custome" *ngIf="isModalOpen">
+  <div class="uc-modal container-fluid">
+    <div class="row justify-content-center align-item-center main-box-style">
+      <div
+        class="col col-xs-10 col-sm-10 col-md-8 col-lg-6 uc-modal-content m-3"
+      >
+        <div class="uc-modal-header">
+          <!-- <div class="row"> -->
+          <div class="col order-first">First in DOM, ordered last</div>
+
+          <div class="col order-last">
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="closeModal()"
+            >
+              <fa-icon
+                class="icon-class justify-content-center align-item-center"
+                [icon]="exitIcon"
+              ></fa-icon>
+            </button>
+            <!-- <button
+                class="btn btn-outline-danger justify-content-center align-item-center"
+                (click)="closeModal()"
+              >
+                <fa-icon class="icon-class" [icon]="exitIcon"></fa-icon>
+              </button> -->
+          </div>
+          <!-- </div> -->
+        </div>
+        <!-- <div class="uc-modal-header"> -->
+        <!-- <p class="header-title">استان</p>
+          <button class="btn btn-outline-danger" (click)="closeModal()">
+            <fa-icon class="icon-class" [icon]="exitIcon"></fa-icon>
+          </button> -->
+        <!-- </div> -->
+        <div class="uc-modal-body">
+          <!-- <p>انتخاب استانها</p> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 
+<div class="modal-custome" *ngIf="isModalOpen">
+  <div class="container">
+    <div class="row">
+      <div
+        class="col col-sm-10 col-md-8 offset-sm-1 offset-md-2 col-lg-6 offset-lg-3"
+        style="background-color: aquamarine"
+      >
+        
+        <div class="uc-modal">
+          <div
+            class="col col-xs-10 col-md-8 offset-xs-1 offset-md-2 col-lg-6 offset-lg-3 uc-modal-content"
+          >
+            <div class="uc-modal-header">
+              <p class="header-title">استان</p>
+              <button class="button" (click)="closeModal()">
+                <fa-icon class="icon-class" [icon]="exitIcon"></fa-icon>
+              </button>
+            </div>
+            <div class="uc-modal-body">
+              <p>انتخاب استانها</p>
+            </div>
+           
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
