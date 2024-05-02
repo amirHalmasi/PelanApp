@@ -5,6 +5,7 @@ import {
   province,
 } from 'src/app/services/modal-service.service';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { animate, style, transition, trigger } from '@angular/animations';
 // to add font awesome run this command bellow:
 // ng add @fortawesome/angular-fontawesome
 //https://piped.video/watch?v=AFVgwCtYgVo
@@ -12,6 +13,15 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
   selector: 'app-city-province-modal',
   templateUrl: './city-province-modal.component.html',
   styleUrls: ['./city-province-modal.component.css'],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('300ms', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [animate('300ms', style({ opacity: 0 }))]),
+    ]),
+  ],
 })
 export class CityProvinceModalComponent implements OnInit {
   isModalOpen!: boolean;
