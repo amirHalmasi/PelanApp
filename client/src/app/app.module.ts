@@ -10,11 +10,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TextInputComponent } from './form-field/text-input/text-input.component';
 import { MaterialModule } from './material.module';
-// import { BsModalRef, BsModalService, ModalModule } from 'ngx-bootstrap/modal';
 
 import { CityProvinceModalComponent } from './organism/city-province-modal/city-province-modal.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ActionBtnAtomComponent } from './organism/city-province-modal/action-btn-atom/action-btn-atom.component';
+import { HttpClientModule } from '@angular/common/http';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,6 +32,7 @@ import { ActionBtnAtomComponent } from './organism/city-province-modal/action-bt
     ReactiveFormsModule,
     MaterialModule,
     FontAwesomeModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent],
