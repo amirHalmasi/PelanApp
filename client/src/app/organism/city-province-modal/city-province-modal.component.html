@@ -32,7 +32,11 @@
 
         <div class="uc-modal-body">
           <!-- <p>انتخاب استانها</p> -->
-          <div style="width: 100%" *ngIf="isSelectProvinces; else cities">
+          <div
+            style="width: 100%"
+            *ngIf="isSelectProvinces; else cities"
+            [@flipInOut]
+          >
             <div
               *ngFor="let province of provinces"
               class="my-list-element space-element-on-side"
@@ -47,7 +51,7 @@
             </div>
           </div>
           <ng-template #cities>
-            <div class="my-list-element space-element-on-side">
+            <div class="my-list-element space-element-on-side" [@flipInOut]>
               <div class="my-list-cells province-name">
                 {{ provinceCenter }}
               </div>
