@@ -15,6 +15,7 @@ import { CityProvinceModalComponent } from './organism/city-province-modal/city-
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ActionBtnAtomComponent } from './organism/city-province-modal/action-btn-atom/action-btn-atom.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ModalListAtomComponent } from './organism/city-province-modal/modal-list-atom/modal-list-atom.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { HttpClientModule } from '@angular/common/http';
     TextInputComponent,
     CityProvinceModalComponent,
     ActionBtnAtomComponent,
+    ModalListAtomComponent,
   ],
   imports: [
     BrowserModule,

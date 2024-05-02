@@ -21,13 +21,18 @@ export interface province {
   providedIn: 'root',
 })
 export class ModalServiceService {
+  isModalOpen!: boolean;
   isOpenModal = new Subject<boolean>();
+  provinces = new Subject<province[]>();
+  isSelectProvinces = new Subject<boolean>();
 
   closeModal() {
     this.isOpenModal.next(false);
+    this.isSelectProvinces.next(true);
   }
   openModal() {
     this.isOpenModal.next(true);
+    this.isSelectProvinces.next(true);
   }
   constructor(private http: HttpClient) {}
   getProvinces() {

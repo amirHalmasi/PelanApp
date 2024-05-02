@@ -1,4 +1,4 @@
-<p>{{ isModalOpen }}</p>
+<!-- <p>{{ isModalOpen }}</p> -->
 
 <div class="modal-custome" *ngIf="isModalOpen">
   <div class="uc-modal container-fluid">
@@ -32,17 +32,30 @@
 
         <div class="uc-modal-body">
           <!-- <p>انتخاب استانها</p> -->
-          <div
-            *ngFor="let province of provinces"
-            class="my-list-element space-element-on-side"
-          >
-            <div class="my-list-cells province-name">
-              {{ province.province_name }}
-            </div>
-            <div class="my-list-cells icon-class">
-              <fa-icon class="icon-class" [icon]="leftArrowIcon"></fa-icon>
+          <div style="width: 100%" *ngIf="isSelectProvinces; else cities">
+            <div
+              *ngFor="let province of provinces"
+              class="my-list-element space-element-on-side"
+              (click)="selectCities(province.province_id)"
+            >
+              <div class="my-list-cells province-name">
+                {{ province.province_name }}
+              </div>
+              <div class="my-list-cells icon-class">
+                <fa-icon class="icon-class" [icon]="leftArrowIcon"></fa-icon>
+              </div>
             </div>
           </div>
+          <ng-template #cities>
+            <div class="my-list-element space-element-on-side">
+              <div class="my-list-cells province-name">
+                {{ provinceCenter }}
+              </div>
+              <div class="my-list-cells icon-class">
+                <fa-icon class="icon-class" [icon]="leftArrowIcon"></fa-icon>
+              </div>
+            </div>
+          </ng-template>
         </div>
       </div>
     </div>

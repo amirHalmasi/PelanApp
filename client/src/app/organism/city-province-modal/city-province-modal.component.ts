@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import {
   ModalServiceService,
   province,
-  
 } from 'src/app/services/modal-service.service';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 // to add font awesome run this command bellow:
@@ -19,6 +18,7 @@ export class CityProvinceModalComponent implements OnInit {
   isSelectProvinces: boolean = true;
   leftArrowIcon = faArrowLeft;
   provinces!: province[];
+  provinceCenter!: string;
   // provinces!: any;
 
   constructor(private modalServ: ModalServiceService) {}
@@ -27,8 +27,10 @@ export class CityProvinceModalComponent implements OnInit {
     this.modalServ.isOpenModal.subscribe((modalStatus: boolean) => {
       this.isModalOpen = modalStatus;
     });
-    // this.provinces
-    //get provinces from backend
+    this.modalServ.isSelectProvinces.subscribe((isSelectProvinces) => {
+      this.isSelectProvinces = isSelectProvinces;
+    });
+
     this.modalServ.getProvinces().subscribe((receivedProvinces) => {
       console.log(receivedProvinces);
       this.provinces = receivedProvinces;
@@ -36,5 +38,11 @@ export class CityProvinceModalComponent implements OnInit {
   }
   closeModal() {
     this.modalServ.closeModal();
+  }
+  selectCities(provinceId: any) {
+    provinceId = +provinceId;
+
+    this.isSelectProvinces = false;
+    this.provinceCenter = 'زنجان';
   }
 }
