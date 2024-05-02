@@ -14,12 +14,14 @@ import { MaterialModule } from './material.module';
 
 import { CityProvinceModalComponent } from './organism/city-province-modal/city-province-modal.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ActionBtnAtomComponent } from './organism/city-province-modal/action-btn-atom/action-btn-atom.component';
 @NgModule({
   declarations: [
     AppComponent,
     NavBarComponent,
     TextInputComponent,
     CityProvinceModalComponent,
+    ActionBtnAtomComponent,
   ],
   imports: [
     BrowserModule,
