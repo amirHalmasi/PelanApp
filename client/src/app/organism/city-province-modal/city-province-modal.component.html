@@ -38,33 +38,12 @@
             [@flipInOut]
           >
             <app-province-list-atm></app-province-list-atm>
-            <!-- <div
-              *ngFor="let province of provinces"
-              class="my-list-element space-element-on-side"
-              (click)="selectCities(province.province_id)"
-            >
-              <div class="my-list-cells province-name">
-                {{ province.province_name }}
-              </div>
-              <div class="my-list-cells icon-class">
-                <fa-icon class="icon-class" [icon]="leftArrowIcon"></fa-icon>
-              </div>
-            </div> -->
           </div>
 
           <ng-template #cities>
             <div style="width: 100%" [@flipInOut]>
               <app-city-list-atm></app-city-list-atm>
             </div>
-
-            <!-- <div class="my-list-element space-element-on-side" [@flipInOut]>
-              <div class="my-list-cells province-name">
-                {{ "زنجان" }}
-              </div>
-              <div class="my-list-cells icon-class">
-                <fa-icon class="icon-class" [icon]="leftArrowIcon"></fa-icon>
-              </div>
-            </div> -->
           </ng-template>
         </div>
       </div>
