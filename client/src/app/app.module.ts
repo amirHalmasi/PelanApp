@@ -15,7 +15,9 @@ import { CityProvinceModalComponent } from './organism/city-province-modal/city-
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ActionBtnAtomComponent } from './organism/city-province-modal/action-btn-atom/action-btn-atom.component';
 import { HttpClientModule } from '@angular/common/http';
-import { ModalListAtomComponent } from './organism/city-province-modal/modal-list-atom/modal-list-atom.component';
+
+import { ProvinceListAtmComponent } from './organism/city-province-modal/province-list-atm/province-list-atm.component';
+import { CityListAtmComponent } from './organism/city-province-modal/city-list-atm/city-list-atm.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { ModalListAtomComponent } from './organism/city-province-modal/modal-lis
     TextInputComponent,
     CityProvinceModalComponent,
     ActionBtnAtomComponent,
-    ModalListAtomComponent,
+    ProvinceListAtmComponent,
+    CityListAtmComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,7 +37,7 @@ import { ModalListAtomComponent } from './organism/city-province-modal/modal-lis
     ReactiveFormsModule,
     MaterialModule,
     FontAwesomeModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

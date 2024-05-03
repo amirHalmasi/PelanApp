@@ -1,0 +1,38 @@
+.icon-class {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* text-align: center; */
+  font-size: 1.3rem;
+}
+.my-list-element {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 10px;
+  width: calc(100% - 20px);
+  height: 4rem;
+  cursor: pointer;
+  /* border: 10px solid rgb(16, 44, 9); */
+}
+.my-list-cells {
+  font-size: 1.3rem;
+  font-weight: 500;
+  height: 100%;
+  width: 30%;
+  /* border: 10px solid rgb(51, 255, 0); */
+  margin: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 15px 10px;
+}
+.province-name {
+  width: 60% !important;
+  justify-content: flex-start;
+}
+.bottom-border {
+  border-bottom: 1px solid rgb(190, 190, 190);
+}

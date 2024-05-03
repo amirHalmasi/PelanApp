@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ModalListAtomComponent } from './modal-list-atom.component';
+import { CityListAtmComponent } from './city-list-atm.component';
 
-describe('ModalListAtomComponent', () => {
-  let component: ModalListAtomComponent;
-  let fixture: ComponentFixture<ModalListAtomComponent>;
+describe('CityListAtmComponent', () => {
+  let component: CityListAtmComponent;
+  let fixture: ComponentFixture<CityListAtmComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ModalListAtomComponent ]
+      declarations: [ CityListAtmComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ModalListAtomComponent);
+    fixture = TestBed.createComponent(CityListAtmComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

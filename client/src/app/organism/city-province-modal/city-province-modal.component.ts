@@ -16,10 +16,12 @@ import { animate, style, transition, trigger } from '@angular/animations';
   animations: [
     trigger('fadeInOut', [
       transition(':enter', [
-        style({ opacity: 0 }),
-        animate('300ms', style({ opacity: 1 })),
+        style({ opacity: 0, 'z-index': 0 }),
+        animate('300ms', style({ opacity: 1, 'z-index': 20 })),
       ]),
-      transition(':leave', [animate('300ms', style({ opacity: 0 }))]),
+      transition(':leave', [
+        animate('300ms', style({ opacity: 0, 'z-index': 10 })),
+      ]),
     ]),
     trigger('flipInOut', [
       transition(':enter', [
@@ -33,10 +35,10 @@ import { animate, style, transition, trigger } from '@angular/animations';
     trigger('slideRightInOut', [
       transition(':enter', [
         style({ transform: 'translateX(100%)', opacity: 0 }),
-        animate('300ms', style({ transform: 'translateX(0)', opacity: 1 })),
+        animate('500ms', style({ transform: 'translateX(0)', opacity: 1 })),
       ]),
       transition(':leave', [
-        animate('300ms', style({ transform: 'translateX(100%)', opacity: 0 })),
+        animate('500ms', style({ transform: 'translateX(100%)', opacity: 0 })),
       ]),
     ]),
   ],
@@ -66,11 +68,5 @@ export class CityProvinceModalComponent implements OnInit {
   }
   closeModal() {
     this.modalServ.closeModal();
-  }
-  selectCities(provinceId: any) {
-    provinceId = +provinceId;
-
-    this.isSelectProvinces = false;
-    this.provinceCenter = 'زنجان';
   }
 }
