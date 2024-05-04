@@ -24,6 +24,7 @@ namespace Api.Controllers
         // public ActionResult<List<AppUser>> 
         public async Task<ActionResult<IEnumerable<AppProvince>>> GetProvinces(){
             return await _context.Provinces.ToListAsync();
+            
              
         }
     }

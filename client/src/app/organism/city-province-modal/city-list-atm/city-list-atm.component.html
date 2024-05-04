@@ -1,8 +1,27 @@
-<div class="my-list-element space-element-on-side">
+<div
+  class="my-list-element space-element-on-side"
+  *ngFor="let city of cities; let lastItem = last"
+  [ngClass]="{ 'bottom-border': !lastItem }"
+>
   <div class="my-list-cells city-name">
-    {{ "زنجان" }}
+    {{ city.city_name }}
   </div>
   <div class="my-list-cells icon-class">
     <fa-icon class="icon-class" [icon]="leftArrowIcon"></fa-icon>
   </div>
 </div>
+<!-- 
+  <div
+  *ngFor="let province of provinces; let lastItem = last"
+  class="my-list-element space-element-on-side"
+  [ngClass]="{ 'bottom-border': !lastItem }"
+  (click)="selectCities(province.province_id)"
+>
+  <div class="my-list-cells province-name">
+    {{ province.province_name }}
+  </div>
+  <div class="my-list-cells icon-class">
+    <fa-icon class="icon-class" [icon]="leftArrowIcon"></fa-icon>
+  </div>
+</div>
+ -->

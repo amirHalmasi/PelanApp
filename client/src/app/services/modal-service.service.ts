@@ -9,6 +9,14 @@ interface provinceDto {
   longitude: string;
   center: string;
 }
+interface cityDto {
+  id: number;
+  province_id: number;
+  city_name: string;
+  city_name_en: string;
+  latitude: string;
+  longitude: string;
+}
 export interface province {
   province_id: number;
   province_name: string;
@@ -16,6 +24,14 @@ export interface province {
   province_latitude: string;
   province_longitude: string;
   province_center: string;
+}
+export interface city {
+  city_id: number;
+  province_id: number;
+  city_name: string;
+  city_name_en: string;
+  city_latitude: string;
+  city_longitude: string;
 }
 @Injectable({
   providedIn: 'root',
@@ -48,6 +64,24 @@ export class ModalServiceService {
             province_latitude: province.latitude,
             province_longitude: province.longitude,
             province_center: province.center,
+          };
+        })
+      )
+    );
+  }
+  getCities(province_id: number) {
+    let citiesUrl = 'https://localhost:5001/api/cities/' + province_id;
+    // return this.http.get<provinceDto[]>(provinceUrl);
+    return this.http.get<any>(citiesUrl).pipe(
+      map((cities) =>
+        cities.map((city:cityDto) => {
+          return {
+            city_id: city.id,
+            province_id: city.province_id,
+            city_name: city.city_name,
+            city_name_en: city.city_name_en,
+            city_latitude: city.latitude,
+            city_longitude: city.longitude,
           };
         })
       )

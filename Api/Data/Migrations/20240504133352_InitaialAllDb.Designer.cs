@@ -10,14 +10,40 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Api.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240430133127_Appprovince")]
-    partial class Appprovince
+    [Migration("20240504133352_InitaialAllDb")]
+    partial class InitaialAllDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.12");
+
+            modelBuilder.Entity("Api.Entities.AppCities", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("City_name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("City_name_en")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Latitude")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Longitude")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Province_id")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cities");
+                });
 
             modelBuilder.Entity("Api.Entities.AppProvince", b =>
                 {

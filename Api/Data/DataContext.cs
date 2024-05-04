@@ -16,5 +16,6 @@ namespace Api.Data
         
         public DbSet<AppUser> Users{get;set;}
         public DbSet<AppProvince> Provinces{get;set;}
+        public DbSet<AppCities> Cities{get;set;}
     }
 }

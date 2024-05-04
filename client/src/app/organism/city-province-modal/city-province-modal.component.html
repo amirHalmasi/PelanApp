@@ -14,16 +14,16 @@
       
       -->
       <div
-        class="col col-xs-10 col-sm-10 col-md-8 col-lg-6 uc-modal-content m-3"
+        class="col col-xs-10 col-sm-8 col-md-5 col-lg-4 uc-modal-content m-3"
         (click)="$event.stopPropagation()"
       >
         <div class="uc-modal-header space-element-on-side">
           <div class="col-xs-8 order-first title">
-            {{ isSelectProvinces ? "انتخاب استان" : "انتخاب استان" }}
+            {{ isSelectProvincesOpen ? "انتخاب استان" : "انتخاب استان" }}
           </div>
           <div class="col-xs-8 order-last">
             <app-action-btn-atom
-              *ngIf="!isSelectProvinces"
+              *ngIf="!isSelectProvincesOpen"
               [BtnType]="'back'"
             ></app-action-btn-atom>
             <app-action-btn-atom [BtnType]="'exit'"></app-action-btn-atom>
@@ -34,15 +34,54 @@
           <!-- <p>انتخاب استانها</p> -->
           <div
             style="width: 100%"
-            *ngIf="isSelectProvinces; else cities"
+            *ngIf="isSelectProvincesOpen; else cities"
             [@flipInOut]
           >
-            <app-province-list-atm></app-province-list-atm>
+            <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+              <div
+                class="my-list-element space-element-on-side"
+                style="padding: 5px 10px"
+              >
+                <div class="input-group">
+                  <input
+                    type="text"
+                    class="form-control m-1"
+                    placeholder="جستجو"
+                    formControlName="searchInput"
+                  />
+                  <div class="input-group-append">
+                    <button class="btn btn-primary m-1" type="submit">
+                      جستجو
+                    </button>
+                  </div>
+                </div>
+
+                <!-- <div class="my-list-cells province-name"></div>
+              <div class="my-list-cells icon-class"></div> -->
+              </div>
+            </form>
+            <app-province-list-atm
+              [provinces]="provinces"
+              (provinceId)="setProvinceId($event)"
+            ></app-province-list-atm>
+            <!-- <div
+              *ngFor="let province of provinces; let lastItem = last"
+              class="my-list-element space-element-on-side"
+              [ngClass]="{ 'bottom-border': !lastItem }"
+              (click)="selectCities(province.province_id)"
+            >
+              <div class="my-list-cells province-name">
+                {{ province.province_name }}
+              </div>
+              <div class="my-list-cells icon-class">
+                <fa-icon class="icon-class" [icon]="leftArrowIcon"></fa-icon>
+              </div>
+            </div> -->
           </div>
 
           <ng-template #cities>
             <div style="width: 100%" [@flipInOut]>
-              <app-city-list-atm></app-city-list-atm>
+              <app-city-list-atm [province_id]="provinceId"></app-city-list-atm>
             </div>
           </ng-template>
         </div>

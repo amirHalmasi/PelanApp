@@ -16,6 +16,32 @@ namespace Api.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.12");
 
+            modelBuilder.Entity("Api.Entities.AppCities", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("City_name")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("City_name_en")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Latitude")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Longitude")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Province_id")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cities");
+                });
+
             modelBuilder.Entity("Api.Entities.AppProvince", b =>
                 {
                     b.Property<int>("Id")

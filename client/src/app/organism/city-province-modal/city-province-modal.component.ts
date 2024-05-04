@@ -11,6 +11,7 @@ import {
   flipInOut,
   slideRightInOut,
 } from 'src/app/services/animation';
+import { FormBuilder, FormGroup } from '@angular/forms';
 // to add font awesome run this command bellow:
 // ng add @fortawesome/angular-fontawesome
 //https://piped.video/watch?v=AFVgwCtYgVo
@@ -22,28 +23,58 @@ import {
 })
 export class CityProvinceModalComponent implements OnInit {
   isModalOpen!: boolean;
-  isSelectProvinces: boolean = true;
+  isSelectProvincesOpen: boolean = true;
   leftArrowIcon = faArrowLeft;
   provinces!: province[];
+  provincesConstant!: province[];
   provinceCenter!: string;
+  provinceId!: number;
   // provinces!: any;
 
-  constructor(private modalServ: ModalServiceService) {}
+  constructor(
+    private modalServ: ModalServiceService,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit() {
+    this.searchForm = this.fb.group({
+      searchInput: [''], // You can set default value or validators here
+    });
     this.modalServ.isOpenModal.subscribe((modalStatus: boolean) => {
       this.isModalOpen = modalStatus;
     });
-    this.modalServ.isSelectProvinces.subscribe((isSelectProvinces) => {
-      this.isSelectProvinces = isSelectProvinces;
+    this.modalServ.isSelectProvinces.subscribe((isSelectProvincesOpen) => {
+      this.isSelectProvincesOpen = isSelectProvincesOpen;
     });
 
     this.modalServ.getProvinces().subscribe((receivedProvinces) => {
-      console.log(receivedProvinces);
+      console.log('main modal comp', receivedProvinces);
       this.provinces = receivedProvinces;
+      this.provincesConstant = receivedProvinces;
+      // this.modalServ.provinces.next(receivedProvinces);
     });
   }
   closeModal() {
     this.modalServ.closeModal();
   }
+  setProvinceId(province_id: number) {
+    this.provinceId = province_id;
+  }
+  // /////////////////////////////
+  ///            form           //
+  ////////////////////////////////
+  searchForm!: FormGroup;
+  onSubmit() {
+    const searchValue = this.searchForm.value.searchInput;
+    // Do whatever you want with the search value, like sending it to an API
+    console.log('Search Value:', searchValue);
+    const res = this.provincesConstant.filter(
+      ({ ['province_name']: name }) => name && name.includes(searchValue)
+    );
+    this.provinces = res;
+  }
+  // selectCities(provinceId: any) {
+  //   provinceId = +provinceId;
+  //   this.modalServ.isSelectProvinces.next(false);
+  // }
 }
