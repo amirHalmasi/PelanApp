@@ -39,12 +39,15 @@ export interface city {
 export class ModalServiceService {
   isModalOpen!: boolean;
   isOpenModal = new Subject<boolean>();
+  isLoading = new Subject<boolean>();
   provinces = new Subject<province[]>();
+  // isSearchEnable = new Subject<Boolean>();
   isSelectProvinces = new Subject<boolean>();
 
   closeModal() {
     this.isOpenModal.next(false);
     this.isSelectProvinces.next(true);
+    // this.isSearchEnable.next(false);
   }
   openModal() {
     this.isOpenModal.next(true);
@@ -74,7 +77,7 @@ export class ModalServiceService {
     // return this.http.get<provinceDto[]>(provinceUrl);
     return this.http.get<any>(citiesUrl).pipe(
       map((cities) =>
-        cities.map((city:cityDto) => {
+        cities.map((city: cityDto) => {
           return {
             city_id: city.id,
             province_id: city.province_id,

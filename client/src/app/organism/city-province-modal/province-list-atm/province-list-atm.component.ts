@@ -21,11 +21,10 @@ export class ProvinceListAtmComponent implements OnInit {
   constructor(private modalServ: ModalServiceService) {}
 
   ngOnInit() {
-    const res = this.provinces.filter(
-      ({ ['province_name']: name }) => name && name.includes('آذر')
-    );
-
-    console.log(res);
+    // const res = this.provinces.filter(
+    //   ({ ['province_name']: name }) => name && name.includes('آذر')
+    // );
+    // console.log(res);
     // this.modalServ.provinces.subscribe((receivedProvinces: province[]) => {
     //   console.log('Modal sevice province value ', receivedProvinces);
     //   this.provinces = receivedProvinces;

@@ -25,8 +25,12 @@
             <app-action-btn-atom
               *ngIf="!isSelectProvincesOpen"
               [BtnType]="'back'"
+              (exitBtnClicked)="bachwardModal()"
             ></app-action-btn-atom>
-            <app-action-btn-atom [BtnType]="'exit'"></app-action-btn-atom>
+            <app-action-btn-atom
+              [BtnType]="'exit'"
+              (exitBtnClicked)="closeModal()"
+            ></app-action-btn-atom>
           </div>
         </div>
 
@@ -55,9 +59,6 @@
                     </button>
                   </div>
                 </div>
-
-                <!-- <div class="my-list-cells province-name"></div>
-              <div class="my-list-cells icon-class"></div> -->
               </div>
             </form>
             <app-province-list-atm

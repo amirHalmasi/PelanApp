@@ -18,6 +18,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { ProvinceListAtmComponent } from './organism/city-province-modal/province-list-atm/province-list-atm.component';
 import { CityListAtmComponent } from './organism/city-province-modal/city-list-atm/city-list-atm.component';
+import { SearchFormComponent } from './organism/city-province-modal/search-form/search-form.component';
+import { LoadingAtmComponent } from './organism/loading-atm/loading-atm.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import { CityListAtmComponent } from './organism/city-province-modal/city-list-a
     ActionBtnAtomComponent,
     ProvinceListAtmComponent,
     CityListAtmComponent,
+    SearchFormComponent,
+    LoadingAtmComponent,
   ],
   imports: [
     BrowserModule,

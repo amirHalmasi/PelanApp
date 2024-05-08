@@ -29,6 +29,7 @@ export class CityProvinceModalComponent implements OnInit {
   provincesConstant!: province[];
   provinceCenter!: string;
   provinceId!: number;
+  // isLoading!: boolean;
   // provinces!: any;
 
   constructor(
@@ -47,15 +48,28 @@ export class CityProvinceModalComponent implements OnInit {
       this.isSelectProvincesOpen = isSelectProvincesOpen;
     });
 
-    this.modalServ.getProvinces().subscribe((receivedProvinces) => {
-      console.log('main modal comp', receivedProvinces);
-      this.provinces = receivedProvinces;
-      this.provincesConstant = receivedProvinces;
-      // this.modalServ.provinces.next(receivedProvinces);
+    this.modalServ.getProvinces().subscribe({
+      next: (receivedProvinces) => {
+        console.log('main modal comp', receivedProvinces);
+        this.provinces = receivedProvinces;
+        this.provincesConstant = receivedProvinces;
+
+        // this.modalServ.provinces.next(receivedProvinces);
+      },
+      error: (err) => {
+        console.error(err);
+      },
     });
   }
+
   closeModal() {
     this.modalServ.closeModal();
+    this.provinces = this.provincesConstant;
+    this.searchForm.reset();
+  }
+  bachwardModal() {
+    this.provinces = this.provincesConstant;
+    this.searchForm.reset();
   }
   setProvinceId(province_id: number) {
     this.provinceId = province_id;
@@ -65,6 +79,7 @@ export class CityProvinceModalComponent implements OnInit {
   ////////////////////////////////
   searchForm!: FormGroup;
   onSubmit() {
+    // this.modalServ.isSearchEnable.next(true);
     const searchValue = this.searchForm.value.searchInput;
     // Do whatever you want with the search value, like sending it to an API
     console.log('Search Value:', searchValue);

@@ -1,27 +1,55 @@
-<div
-  class="my-list-element space-element-on-side"
-  *ngFor="let city of cities; let lastItem = last"
-  [ngClass]="{ 'bottom-border': !lastItem }"
->
-  <div class="my-list-cells city-name">
-    {{ city.city_name }}
-  </div>
-  <div class="my-list-cells icon-class">
-    <fa-icon class="icon-class" [icon]="leftArrowIcon"></fa-icon>
-  </div>
-</div>
-<!-- 
+<div style="width: 100%" *ngIf="!isloading; else loading">
+  <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+    <div
+      class="my-list-element space-element-on-side"
+      style="padding: 5px 10px"
+    >
+      <div class="input-group">
+        <input
+          type="text"
+          class="form-control m-1"
+          placeholder="جستجو"
+          formControlName="searchInput"
+        />
+        <div class="input-group-append">
+          <button class="btn btn-primary m-1" type="submit">جستجو</button>
+        </div>
+      </div>
+    </div>
+  </form>
   <div
-  *ngFor="let province of provinces; let lastItem = last"
-  class="my-list-element space-element-on-side"
-  [ngClass]="{ 'bottom-border': !lastItem }"
-  (click)="selectCities(province.province_id)"
->
-  <div class="my-list-cells province-name">
-    {{ province.province_name }}
+    class="my-list-element space-element-on-side"
+    *ngFor="let city of cities; let lastItem = last"
+    [ngClass]="{ 'bottom-border': !lastItem }"
+  >
+    <div class="my-list-cells city-name">
+      {{ city.city_name }}
+    </div>
+    <div class="my-list-cells icon-class">
+      <fa-icon class="icon-class" [icon]="leftArrowIcon"></fa-icon>
+    </div>
   </div>
-  <div class="my-list-cells icon-class">
-    <fa-icon class="icon-class" [icon]="leftArrowIcon"></fa-icon>
+  <!-- 
+    <div
+    *ngFor="let province of provinces; let lastItem = last"
+    class="my-list-element space-element-on-side"
+    [ngClass]="{ 'bottom-border': !lastItem }"
+    (click)="selectCities(province.province_id)"
+  >
+    <div class="my-list-cells province-name">
+      {{ province.province_name }}
+    </div>
+    <div class="my-list-cells icon-class">
+      <fa-icon class="icon-class" [icon]="leftArrowIcon"></fa-icon>
+    </div>
   </div>
+   -->
 </div>
- -->
+<ng-template #loading>
+  <div
+    style="width: 100%; border: 1px solid red"
+    class="space-element-on-center"
+  >
+    <app-loading-atm></app-loading-atm>
+  </div>
+</ng-template>
