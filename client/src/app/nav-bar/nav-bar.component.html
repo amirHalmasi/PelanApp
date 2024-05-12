@@ -14,7 +14,8 @@
     <div
       class="collapse navbar-collapse container custome-width-8"
       id="navbarCollapse"
-      [ngbCollapse]="isCollapsed"
+      #collapse="ngbCollapse"
+      [(ngbCollapse)]="isCollapsed"
     >
       <ul class="navbar-nav ml-auto custome-ul">
         <li class="nav-item">
@@ -26,10 +27,15 @@
         <li class="nav-item">
           <button
             type="button"
-            class="btn btn-outline-danger"
+            class="btn"
             (click)="openModal()"
+            [ngClass]="{
+              'btn-outline-danger': !cityData || cityData.city_name == '',
+              'btn-success': cityData && cityData.city_name != ''
+            }"
+            [@changeButtonClass]="buttonState"
           >
-            Danger
+            {{ cityData ? cityData.city_name : "انتخاب شهر" }}
           </button>
         </li>
       </ul>

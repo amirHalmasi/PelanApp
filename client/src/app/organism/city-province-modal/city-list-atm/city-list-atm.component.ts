@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import {
@@ -14,6 +14,7 @@ import {
 })
 export class CityListAtmComponent implements OnInit {
   @Input() province_id!: number;
+  @Output() citySelected = new EventEmitter();
   leftArrowIcon = faArrowLeft;
   cities!: city[];
   citiesConstant!: city[];
@@ -48,5 +49,12 @@ export class CityListAtmComponent implements OnInit {
       ({ ['city_name']: name }) => name && name.includes(searchValue)
     );
     this.cities = res;
+  }
+  getData(cityIndex: number) {
+    console.log('selected ct data', this.cities[cityIndex]);
+    // localStorage.setItem('cityData', JSON.stringify(this.cities[cityIndex]));
+    this.modalServ.selectedCity.next(this.cities[cityIndex])
+    this.citySelected.emit();
+    // this.modalServ.
   }
 }

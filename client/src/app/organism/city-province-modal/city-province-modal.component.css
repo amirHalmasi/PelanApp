@@ -52,7 +52,7 @@
   width: 100%;
   height: calc(100% - 3.5rem) !important;
 }
-.uc-modal-body::-webkit-scrollbar {
+/* .uc-modal-body::-webkit-scrollbar {
   width: 15px;
 }
 
@@ -67,7 +67,7 @@
   border: 3px solid transparent;
   background-clip: content-box;
   background-color: #d55959;
-}
+} */
 /* modal style end */
 .title {
   font-size: 1.6rem;

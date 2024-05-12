@@ -39,8 +39,10 @@ export interface city {
 export class ModalServiceService {
   isModalOpen!: boolean;
   isOpenModal = new Subject<boolean>();
+  isCollapsed = new Subject<boolean>();
   isLoading = new Subject<boolean>();
   provinces = new Subject<province[]>();
+  selectedCity = new Subject<any>();
   // isSearchEnable = new Subject<Boolean>();
   isSelectProvinces = new Subject<boolean>();
 
@@ -52,6 +54,7 @@ export class ModalServiceService {
   openModal() {
     this.isOpenModal.next(true);
     this.isSelectProvinces.next(true);
+    this.isCollapsed.next(true);
   }
   constructor(private http: HttpClient) {}
   getProvinces() {

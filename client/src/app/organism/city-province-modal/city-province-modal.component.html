@@ -23,13 +23,15 @@
           </div>
           <div class="col-xs-8 order-last">
             <app-action-btn-atom
+              [ActionBtnClass]="'btn-primary'"
               *ngIf="!isSelectProvincesOpen"
-              [BtnType]="'back'"
-              (exitBtnClicked)="bachwardModal()"
+              [btnOptions]="backOption"
+              (btnClicked)="backwardModal()"
             ></app-action-btn-atom>
             <app-action-btn-atom
-              [BtnType]="'exit'"
-              (exitBtnClicked)="closeModal()"
+              [ActionBtnClass]="'btn-danger'"
+              [btnOptions]="exitOption"
+              (btnClicked)="closeModal()"
             ></app-action-btn-atom>
           </div>
         </div>
@@ -65,24 +67,14 @@
               [provinces]="provinces"
               (provinceId)="setProvinceId($event)"
             ></app-province-list-atm>
-            <!-- <div
-              *ngFor="let province of provinces; let lastItem = last"
-              class="my-list-element space-element-on-side"
-              [ngClass]="{ 'bottom-border': !lastItem }"
-              (click)="selectCities(province.province_id)"
-            >
-              <div class="my-list-cells province-name">
-                {{ province.province_name }}
-              </div>
-              <div class="my-list-cells icon-class">
-                <fa-icon class="icon-class" [icon]="leftArrowIcon"></fa-icon>
-              </div>
-            </div> -->
           </div>
 
           <ng-template #cities>
             <div style="width: 100%" [@flipInOut]>
-              <app-city-list-atm [province_id]="provinceId"></app-city-list-atm>
+              <app-city-list-atm
+                [province_id]="provinceId"
+                (citySelected)="closeModal()"
+              ></app-city-list-atm>
             </div>
           </ng-template>
         </div>

@@ -29,3 +29,8 @@ nav {
   display: flex;
   margin-right: auto;
 }
+.btn {
+  width: 6rem;
+  font-family: "nazanin", "Courier New", Courier, monospace;
+  font-weight: bold;
+}

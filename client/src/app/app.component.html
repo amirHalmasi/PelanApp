@@ -1,22 +1,26 @@
 <div
   style="
     width: 100%;
-    height: 13vh;
     display: flex;
-    border: 2px solid rgb(102, 255, 0);
-    flex-direction: row;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
+    margin: 10px 0;
+    height: auto; /* Allow div to grow in height */
+    transition: height 0.3s ease; /* Add smooth transition effect */
+    max-height: 13vh; /* Limit maximum height */
+    /* border: 2px solid rgb(102, 255, 0); */
   "
 >
   <app-nav-bar></app-nav-bar>
 </div>
+
 <div
   style="
     width: 100%;
     height: 87vh;
     display: flex;
-    border: 2px solid red;
+    /* border: 2px solid red; */
     flex-direction: row;
     justify-content: center;
     align-items: center;

@@ -1,12 +1,8 @@
 <!-- <p>{{ btnIsExitType }}</p> -->
 <button
   type="button"
-  class="btn m-1 my-button"
-  [ngClass]="{
-    'btn-danger': btnType == 'exit',
-    'btn-primary': btnType != 'exit'
-  }"
-  (click)="btnType == 'exit' ? closeModal() : goBack()"
+  class="btn m-1 my-button {{ btnClass }}"
+  (click)="btnClick(btnOption.btnType)"
 >
   <fa-icon
     class="icon-class justify-content-center align-item-center"

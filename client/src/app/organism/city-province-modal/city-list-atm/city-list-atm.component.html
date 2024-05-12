@@ -19,8 +19,9 @@
   </form>
   <div
     class="my-list-element space-element-on-side"
-    *ngFor="let city of cities; let lastItem = last"
+    *ngFor="let city of cities; let lastItem = last; let cityIndex = index"
     [ngClass]="{ 'bottom-border': !lastItem }"
+    (click)="getData(cityIndex)"
   >
     <div class="my-list-cells city-name">
       {{ city.city_name }}

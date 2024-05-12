@@ -32,6 +32,25 @@ export class CityProvinceModalComponent implements OnInit {
   // isLoading!: boolean;
   // provinces!: any;
 
+  exitOption: {
+    iconName: string;
+    btnClass: string;
+    btnType: string;
+  } = {
+    iconName: 'exit',
+    btnClass: 'btn m-1 my-button btn-danger',
+    btnType: 'exit',
+  };
+  backOption: {
+    iconName: string;
+    btnClass: string;
+    btnType: string;
+  } = {
+    iconName: 'back',
+    btnClass: 'btn m-1 my-button btn-primary',
+    btnType: 'back',
+  };
+
   constructor(
     private modalServ: ModalServiceService,
     private fb: FormBuilder
@@ -67,8 +86,9 @@ export class CityProvinceModalComponent implements OnInit {
     this.provinces = this.provincesConstant;
     this.searchForm.reset();
   }
-  bachwardModal() {
+  backwardModal() {
     this.provinces = this.provincesConstant;
+    this.modalServ.isSelectProvinces.next(true);
     this.searchForm.reset();
   }
   setProvinceId(province_id: number) {
