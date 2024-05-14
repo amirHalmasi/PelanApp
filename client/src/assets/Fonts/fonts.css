@@ -22,8 +22,8 @@
   font-style: normal;
   font-display: swap;
 }
-/* @font-face {
-  font-family: "A Rezvan-fat";
+@font-face {
+  font-family: "Rezvan";
   src: url("assets/Fonts/rezvan/ARezvan-fat.eot");
   src: url("assets/Fonts/rezvan/ARezvan-fat.eot?#iefix")
       format("embedded-opentype"),
@@ -34,7 +34,7 @@
   font-weight: normal;
   font-style: normal;
   font-display: swap;
-} */
+}
 @font-face {
   font-family: "sogand";
   src: url("assets/Fonts/sogand/SOGAND.eot");

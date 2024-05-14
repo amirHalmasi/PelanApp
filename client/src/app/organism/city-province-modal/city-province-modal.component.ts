@@ -34,21 +34,21 @@ export class CityProvinceModalComponent implements OnInit {
 
   exitOption: {
     iconName: string;
-    btnClass: string;
+
     btnType: string;
   } = {
     iconName: 'exit',
-    btnClass: 'btn m-1 my-button btn-danger',
-    btnType: 'exit',
+
+    btnType: 'button',
   };
   backOption: {
     iconName: string;
-    btnClass: string;
+
     btnType: string;
   } = {
     iconName: 'back',
-    btnClass: 'btn m-1 my-button btn-primary',
-    btnType: 'back',
+
+    btnType: 'button',
   };
 
   constructor(

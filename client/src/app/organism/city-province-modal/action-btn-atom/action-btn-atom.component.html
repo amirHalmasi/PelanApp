@@ -1,10 +1,12 @@
 <!-- <p>{{ btnIsExitType }}</p> -->
 <button
-  type="button"
-  class="btn m-1 my-button {{ btnClass }}"
+  type="{{ btnOption.btnType }}"
+  class="btn m-1 {{ btnClass }}"
   (click)="btnClick(btnOption.btnType)"
 >
+  {{ btnOption.btnText }}
   <fa-icon
+    *ngIf="icon"
     class="icon-class justify-content-center align-item-center"
     [icon]="icon"
   ></fa-icon>

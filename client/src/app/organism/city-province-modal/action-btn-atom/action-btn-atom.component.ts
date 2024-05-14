@@ -12,7 +12,7 @@ import { ModalServiceService } from 'src/app/services/modal-service.service';
 export class ActionBtnAtomComponent implements OnInit {
   @Input('btnOptions') btnOption!: {
     iconName: string;
-    btnClass: string;
+
     btnType: string;
     btnText?: string;
   };
@@ -55,6 +55,8 @@ export class ActionBtnAtomComponent implements OnInit {
       this.icon = faTimes;
     } else if (icon == 'back') {
       this.icon = faArrowRight;
+    } else {
+      this.icon = '';
     }
   }
   // closeModal() {

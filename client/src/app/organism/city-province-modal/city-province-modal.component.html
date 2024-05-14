@@ -19,17 +19,17 @@
       >
         <div class="uc-modal-header space-element-on-side">
           <div class="col-xs-8 order-first title">
-            {{ isSelectProvincesOpen ? "انتخاب استان" : "انتخاب استان" }}
+            {{ isSelectProvincesOpen ? "انتخاب استان" : "انتخاب شهر" }}
           </div>
           <div class="col-xs-8 order-last">
             <app-action-btn-atom
-              [ActionBtnClass]="'btn-primary'"
+              [ActionBtnClass]="'btn-primary my-button'"
               *ngIf="!isSelectProvincesOpen"
               [btnOptions]="backOption"
               (btnClicked)="backwardModal()"
             ></app-action-btn-atom>
             <app-action-btn-atom
-              [ActionBtnClass]="'btn-danger'"
+              [ActionBtnClass]="'btn-danger my-button'"
               [btnOptions]="exitOption"
               (btnClicked)="closeModal()"
             ></app-action-btn-atom>

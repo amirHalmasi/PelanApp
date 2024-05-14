@@ -32,7 +32,10 @@
   height: 3.5rem;
   width: 100%;
   font-family: "nazanin", "Courier New", Courier, monospace;
-  background-color: rgb(187, 187, 187);
+  background-color: rgba(225, 246, 252, 0.479);
+  border-bottom: 1px solid #ced5f5;
+  backdrop-filter: blur(10px);
+  margin-bottom: 5px;
   padding: 10px;
 }
 .space-element-on-side {

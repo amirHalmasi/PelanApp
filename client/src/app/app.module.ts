@@ -20,6 +20,9 @@ import { ProvinceListAtmComponent } from './organism/city-province-modal/provinc
 import { CityListAtmComponent } from './organism/city-province-modal/city-list-atm/city-list-atm.component';
 import { SearchFormComponent } from './organism/city-province-modal/search-form/search-form.component';
 import { LoadingAtmComponent } from './organism/loading-atm/loading-atm.component';
+import { LoginFromComponent } from './organism/login-from/login-from.component';
+import { HomeComponent } from './organism/home/home.component';
+import { SignupFromComponent } from './organism/signup-from/signup-from.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +35,9 @@ import { LoadingAtmComponent } from './organism/loading-atm/loading-atm.componen
     CityListAtmComponent,
     SearchFormComponent,
     LoadingAtmComponent,
+    LoginFromComponent,
+    HomeComponent,
+    SignupFromComponent,
   ],
   imports: [
     BrowserModule,

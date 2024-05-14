@@ -3,10 +3,24 @@ import { trigger, transition, style, animate } from '@angular/animations';
 export const fadeInOut = trigger('fadeInOut', [
   transition(':enter', [
     style({ opacity: 0, 'z-index': 0 }),
-    animate('300ms', style({ opacity: 1, 'z-index': 20 })),
+    animate(
+      '200ms',
+      style({
+        opacity: 1,
+        'z-index': 20,
+        'background-color': 'rgba(0, 0, 0, 0.199)',
+      })
+    ),
   ]),
   transition(':leave', [
-    animate('300ms', style({ opacity: 0, 'z-index': 10 })),
+    animate(
+      '200ms',
+      style({
+        opacity: 0,
+        'z-index': 10,
+        'background-color': 'rgba(0, 0, 0, 0)',
+      })
+    ),
   ]),
 ]);
 

@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg bg-light rtl-dir">
   <div class="container-fluid custome-header">
     <!-- <div class="col justify-content-evenly"> -->
-    <a class="navbar-brand" href="#">پلان</a>
+    <a class="navbar-brand" [routerLink]="'home'">پلان</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -18,11 +18,21 @@
       [(ngbCollapse)]="isCollapsed"
     >
       <ul class="navbar-nav ml-auto custome-ul">
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li> -->
+        <li
+          class="nav-item"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <a
+            class="nav-link active"
+            [routerLink]="'login'"
+            aria-current="page"
+            href="#"
+            >ورود / ثبت نام</a
+          >
         </li>
         <li class="nav-item">
           <button

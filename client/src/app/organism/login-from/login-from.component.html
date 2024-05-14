@@ -1,0 +1,51 @@
+<div class="container-fluid p-3">
+  <div class="row justify-content-center p-3">
+    <div class="col col-xs-10 col-sm-8 col-md-6 col-lg-4 card p-3">
+      <div class="card-body">
+        <div class="card-title text-center mb-5">
+          <h3 class="font-title">ورود <span class="brand-font">پلان</span></h3>
+          <div>
+            <app-action-btn-atom
+              [btnOptions]="linkBtnOption_user"
+              [ActionBtnClass]="'btn-outline-secondary no-border px-4'"
+              (btnClicked)="routeTO('signup', 'user')"
+            ></app-action-btn-atom>
+            <app-action-btn-atom
+              [btnOptions]="linkBtnOption_owner"
+              [ActionBtnClass]="'btn-outline-secondary no-border px-4'"
+              (btnClicked)="routeTO('signup', 'user')"
+            ></app-action-btn-atom>
+          </div>
+        </div>
+        <div>
+          <form>
+            <div class="mb-3">
+              <mat-form-field class="w-100" appearance="outline">
+                <mat-label>نام کاربری</mat-label>
+                <input matInput placeholder="نام کاربری" />
+
+                <!-- <mat-hint>Hint</mat-hint> -->
+              </mat-form-field>
+            </div>
+            <div class="mb-3">
+              <mat-form-field class="w-100" appearance="outline">
+                <mat-label>کلمه عبور</mat-label>
+                <input matInput placeholder="کلمه عبور" />
+
+                <!-- <mat-hint>Hint</mat-hint> -->
+              </mat-form-field>
+            </div>
+
+            <div class="text-center">
+              <app-action-btn-atom
+                [btnOptions]="loginBtnOption"
+                [ActionBtnClass]="'btn-primary  my-button px-4'"
+              ></app-action-btn-atom>
+              <!-- <button type="submit" class="btn btn-primary px-3">ورود</button> -->
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

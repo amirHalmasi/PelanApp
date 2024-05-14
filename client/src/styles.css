@@ -4,7 +4,11 @@
   margin: 0;
 }
 body {
-  overflow-x: hidden;
+  /* background-color: #fff; */
+  background: linear-gradient(#ffffff, #c5c5c5, #a7a7a7);
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
 }
 ::-webkit-scrollbar {
   width: 15px;
