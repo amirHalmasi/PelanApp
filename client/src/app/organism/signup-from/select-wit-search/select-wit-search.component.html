@@ -1,48 +1,61 @@
-<mat-form-field class="w-100" appearance="outline">
-  <mat-label>انتخاب استان</mat-label>
-  <mat-select
-    [formControl]="provinceCtrl"
-    placeholder="استان"
-    #singleSelect
-    (valueChange)="provinceValue(singleSelect)"
-  >
-    <mat-option
-      style="
-        background-color: rgb(255, 255, 255);
-        border-bottom: 1px solid gray;
-      "
-    >
-      <ngx-mat-select-search
-        placeholderLabel="جستجو"
-        [formControl]="provinceFilterSearchCtrl"
-      ></ngx-mat-select-search>
-    </mat-option>
+<div class="row">
+  <div class="col col-xs-12 col-sm-6 col-md-4 col-lg-4 p-3">
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-label>انتخاب استان</mat-label>
+      <mat-select
+        [formControl]="provinceCtrl"
+        placeholder="استان"
+        #singleSelect
+        (valueChange)="provinceValue(singleSelect)"
+      >
+        <mat-option
+          style="
+            background-color: rgb(255, 255, 255);
+            border-bottom: 1px solid gray;
+          "
+        >
+          <ngx-mat-select-search
+            placeholderLabel="جستجو"
+            [formControl]="provinceFilterSearchCtrl"
+            [noEntriesFoundLabel]="'موردی پیدا نشد.'"
+          ></ngx-mat-select-search>
+        </mat-option>
 
-    <mat-option
-      *ngFor="let province of filteredProvinces | async"
-      [value]="province"
+        <mat-option
+          *ngFor="let province of filteredProvinces | async"
+          [value]="province"
+        >
+          {{ province.province_name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="col col-xs-12 col-sm-6 col-md-4 col-lg-4 p-3">
+    <mat-form-field
+      *ngIf="isCityInitial"
+      [@slideRightInOut]
+      class="w-100"
+      appearance="outline"
     >
-      {{ province.province_name }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
-<mat-form-field *ngIf="isCityInitial" class="w-100" appearance="outline">
-  <mat-label>انتخاب شهر</mat-label>
-  <mat-select [formControl]="cityCtrl" placeholder="شهر" #singleSelectCity>
-    <mat-option
-      style="
-        background-color: rgb(255, 255, 255);
-        border-bottom: 1px solid gray;
-      "
-    >
-      <ngx-mat-select-search
-        placeholderLabel="جستجو"
-        [formControl]="cityFilterSearchCtrl"
-      ></ngx-mat-select-search>
-    </mat-option>
+      <mat-label>انتخاب شهر</mat-label>
+      <mat-select [formControl]="cityCtrl" placeholder="شهر" #singleSelectCity>
+        <mat-option
+          style="
+            background-color: rgb(255, 255, 255);
+            border-bottom: 1px solid gray;
+          "
+        >
+          <ngx-mat-select-search
+            placeholderLabel="جستجو"
+            [formControl]="cityFilterSearchCtrl"
+            [noEntriesFoundLabel]="'موردی پیدا نشد.'"
+          ></ngx-mat-select-search>
+        </mat-option>
 
-    <mat-option *ngFor="let city of cities" [value]="city">
-      {{ city.city_name }}
-    </mat-option>
-  </mat-select>
-</mat-form-field>
+        <mat-option *ngFor="let city of filteredCities | async" [value]="city">
+          {{ city.city_name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>

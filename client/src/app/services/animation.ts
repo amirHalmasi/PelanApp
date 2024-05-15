@@ -36,10 +36,10 @@ export const flipInOut = trigger('flipInOut', [
 
 export const slideRightInOut = trigger('slideRightInOut', [
   transition(':enter', [
-    style({ transform: 'translateX(100%)', opacity: 0 }),
-    animate('1s', style({ transform: 'translateX(0)', opacity: 1 })),
+    style({ transform: 'translateY(20%)', opacity: 0 }),
+    animate('1s', style({ transform: 'translateY(0)', opacity: 1 })),
   ]),
   transition(':leave', [
-    animate('1s', style({ transform: 'translateX(100%)', opacity: 0 })),
+    animate('1s', style({ transform: 'translateY(20%)', opacity: 0 })),
   ]),
 ]);

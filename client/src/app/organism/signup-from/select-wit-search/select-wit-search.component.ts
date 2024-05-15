@@ -19,11 +19,13 @@ import {
   city,
   province,
 } from 'src/app/services/modal-service.service';
+import { fadeInOut, slideRightInOut } from 'src/app/services/animation';
 
 @Component({
   selector: 'app-select-wit-search',
   templateUrl: './select-wit-search.component.html',
   styleUrls: ['./select-wit-search.component.css'],
+  animations: [slideRightInOut],
 })
 export class SelectWitSearchComponent
   implements OnInit, AfterViewInit, OnDestroy
@@ -43,7 +45,7 @@ export class SelectWitSearchComponent
   public filteredProvinces: ReplaySubject<province[]> = new ReplaySubject<
     province[]
   >(1);
-  public filteredPCities: ReplaySubject<city[]> = new ReplaySubject<city[]>(1);
+  public filteredCities: ReplaySubject<city[]> = new ReplaySubject<city[]>(1);
 
   @ViewChild('singleSelect') singleSelect!: MatSelect;
   @ViewChild('singleSelectCity') singleSelectCity!: MatSelect;
@@ -59,8 +61,12 @@ export class SelectWitSearchComponent
     this.modalServ.getCities(value.value.province_id).subscribe({
       next: (provinceCities) => {
         this.cities = provinceCities;
+
         console.log(this.cities);
         this.isCityInitial = true;
+      },
+      complete: () => {
+        this.filteredCities.next(this.cities);
       },
     });
 
@@ -124,8 +130,8 @@ export class SelectWitSearchComponent
           this.singleSelect.compareWith = (a: province, b: province) =>
             a && b && a.province_id === b.province_id;
         });
-    } else if (initialDataType == 'city') {
-      this.filteredPCities
+    } else if (initialDataType == 'city' && this.isCityInitial) {
+      this.filteredCities
         .pipe(take(1), takeUntil(this._onDestroy))
         .subscribe(() => {
           // setting the compareWith property to a comparison function
@@ -154,7 +160,7 @@ export class SelectWitSearchComponent
     if (!search) {
       type == 'provinces'
         ? this.filteredProvinces.next(enterdTypeVariable.slice())
-        : this.filteredPCities.next(enterdTypeVariable.slice());
+        : this.filteredCities.next(enterdTypeVariable.slice());
       return;
     } else {
       search = search.toLowerCase();
@@ -167,8 +173,8 @@ export class SelectWitSearchComponent
             province.province_name.toLowerCase().indexOf(search) > -1
         )
       );
-    } else if (type == 'cities') {
-      this.filteredPCities.next(
+    } else if (type == 'cities' && this.isCityInitial) {
+      this.filteredCities.next(
         this.cities.filter(
           (city: city) => city.city_name.toLowerCase().indexOf(search) > -1
         )
