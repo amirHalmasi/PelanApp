@@ -67,7 +67,7 @@ export class CityProvinceModalComponent implements OnInit {
       this.isSelectProvincesOpen = isSelectProvincesOpen;
     });
 
-    this.modalServ.getProvinces().subscribe({
+    this.modalServ.provinces.subscribe({
       next: (receivedProvinces) => {
         console.log('main modal comp', receivedProvinces);
         this.provinces = receivedProvinces;

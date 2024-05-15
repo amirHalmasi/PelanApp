@@ -3,6 +3,7 @@
   type="{{ btnOption.btnType }}"
   class="btn m-1 {{ btnClass }}"
   (click)="btnClick(btnOption.btnType)"
+  [disabled]="btnState"
 >
   {{ btnOption.btnText }}
   <fa-icon

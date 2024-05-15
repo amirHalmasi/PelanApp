@@ -11,10 +11,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Api.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-
-    public class CitiesController : ControllerBase
+    
+    public class CitiesController : BaseApiController
     {
         private readonly DataContext _context;
 

@@ -23,6 +23,8 @@ import { LoadingAtmComponent } from './organism/loading-atm/loading-atm.componen
 import { LoginFromComponent } from './organism/login-from/login-from.component';
 import { HomeComponent } from './organism/home/home.component';
 import { SignupFromComponent } from './organism/signup-from/signup-from.component';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { SelectWitSearchComponent } from './organism/signup-from/select-wit-search/select-wit-search.component';
 
 @NgModule({
   declarations: [
@@ -38,8 +40,10 @@ import { SignupFromComponent } from './organism/signup-from/signup-from.componen
     LoginFromComponent,
     HomeComponent,
     SignupFromComponent,
+    SelectWitSearchComponent,
   ],
   imports: [
+    NgxMatSelectSearchModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,

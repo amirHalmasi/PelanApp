@@ -18,20 +18,57 @@
           </div>
         </div>
         <div>
-          <form>
+          <form [formGroup]="loginForm" (ngSubmit)="login()">
             <div class="mb-3">
+              <!-- <app-text-input></app-text-input> -->
               <mat-form-field class="w-100" appearance="outline">
                 <mat-label>نام کاربری</mat-label>
-                <input matInput placeholder="نام کاربری" />
-
+                <input
+                  matInput
+                  formControlName="username"
+                  placeholder="نام کاربری"
+                />
+                <mat-error
+                  *ngIf="
+                    loginForm.get('username')?.invalid &&
+                    (loginForm.get('username')?.dirty ||
+                      loginForm.get('username')?.touched)
+                  "
+                >
+                  <span *ngIf="loginForm.get('username')?.errors?.['required'] "
+                    >این فیلد نباید خالی باشد.</span
+                  >
+                  <span
+                    *ngIf="loginForm.get('username')?.errors?.['invalidNumber'] && !loginForm.get('username')?.errors?.['required']"
+                    >نام کاربری را با فرمت درست وارد کنید</span
+                  >
+                </mat-error>
                 <!-- <mat-hint>Hint</mat-hint> -->
               </mat-form-field>
             </div>
             <div class="mb-3">
               <mat-form-field class="w-100" appearance="outline">
                 <mat-label>کلمه عبور</mat-label>
-                <input matInput placeholder="کلمه عبور" />
-
+                <input
+                  matInput
+                  formControlName="password"
+                  placeholder="کلمه عبور"
+                />
+                <mat-error
+                  *ngIf="
+                    loginForm.get('password')?.invalid &&
+                    (loginForm.get('password')?.dirty ||
+                      loginForm.get('password')?.touched)
+                  "
+                >
+                  <span *ngIf="loginForm.get('password')?.errors?.['required'] "
+                    >این فیلد نباید خالی باشد.</span
+                  >
+                  <span
+                    *ngIf="loginForm.get('password')?.errors?.['invalidNumber'] && !loginForm.get('password')?.errors?.['required']"
+                    >کلمه عبور را با فرمت درست وارد کنید</span
+                  >
+                </mat-error>
                 <!-- <mat-hint>Hint</mat-hint> -->
               </mat-form-field>
             </div>
@@ -40,6 +77,7 @@
               <app-action-btn-atom
                 [btnOptions]="loginBtnOption"
                 [ActionBtnClass]="'btn-primary  my-button px-4'"
+                [btnState]="!loginForm.valid"
               ></app-action-btn-atom>
               <!-- <button type="submit" class="btn btn-primary px-3">ورود</button> -->
             </div>

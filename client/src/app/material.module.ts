@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
+import { MatSelectModule } from '@angular/material/select';
 const MATERIAL_MODULES: NgModule['imports'] & NgModule['exports'] = [
   MatRadioModule,
   MatIconModule,
@@ -17,6 +18,7 @@ const MATERIAL_MODULES: NgModule['imports'] & NgModule['exports'] = [
   MatTableModule,
   MatPaginatorModule,
   MatSortModule,
+  MatSelectModule,
 ];
 
 @NgModule({

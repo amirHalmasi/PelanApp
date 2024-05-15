@@ -7,9 +7,9 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./text-input.component.css'],
 })
 export class TextInputComponent {
-  @Input() text = '';
-  signupForm = new FormGroup({
-    name: new FormControl('', { nonNullable: true }),
-    lastname: new FormControl('', { nonNullable: true }),
-  });
+  @Input('options') textInputOption!: any;
+  // signupForm = new FormGroup({
+  //   name: new FormControl('', { nonNullable: true }),
+  //   lastname: new FormControl('', { nonNullable: true }),
+  // });
 }

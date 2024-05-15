@@ -1,1 +1,90 @@
-<p>signup-from works!</p>
+<div class="container-fluid p-3" style="height: 80vh">
+  <div class="row justify-content-center p-3" style="height: 100%">
+    <div
+      class="col col-xs-10 col-sm-8 col-md-6 col-lg-4 card p-3"
+      style="height: 100%; width: 80%; overflow-y: auto"
+    >
+      <div class="card-body">
+        <div class="card-title text-center mb-5">
+          <h3 class="font-title">
+            ثبت نام <span class="brand-font">پلان</span>
+          </h3>
+        </div>
+        <div>
+          <form>
+            <div class="row mb-3">
+              <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+                <app-select-wit-search></app-select-wit-search>
+              </div>
+              <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>نام</mat-label>
+                  <input matInput placeholder="نام " />
+
+                  <!-- <mat-hint>Hint</mat-hint> -->
+                </mat-form-field>
+              </div>
+              <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>نام حانوادگی </mat-label>
+                  <input matInput placeholder="نام حانوادگی " />
+
+                  <!-- <mat-hint>Hint</mat-hint> -->
+                </mat-form-field>
+              </div>
+              <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>کدملی </mat-label>
+                  <input matInput placeholder="کدملی " />
+
+                  <!-- <mat-hint>Hint</mat-hint> -->
+                </mat-form-field>
+              </div>
+              <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>آدرس </mat-label>
+                  <input matInput placeholder="آدرس " />
+
+                  <!-- <mat-hint>Hint</mat-hint> -->
+                </mat-form-field>
+              </div>
+              <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>ایمیل </mat-label>
+                  <input matInput placeholder="ایمیل " />
+
+                  <!-- <mat-hint>Hint</mat-hint> -->
+                </mat-form-field>
+              </div>
+
+              <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>موبایل </mat-label>
+                  <input matInput placeholder="موبایل " />
+
+                  <!-- <mat-hint>Hint</mat-hint> -->
+                </mat-form-field>
+              </div>
+              <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>تلفن </mat-label>
+                  <input matInput placeholder="تلفن " />
+
+                  <!-- <mat-hint>Hint</mat-hint> -->
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="text-center">
+              <app-action-btn-atom
+                [btnOptions]="signupBtnOption"
+                [ActionBtnClass]="'btn-primary  my-button px-4'"
+              ></app-action-btn-atom>
+              <!-- <button type="submit" class="btn btn-primary px-3">ورود</button> -->
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -37,6 +37,17 @@ export class NavBarComponent implements OnInit {
       this.cityData = selectedCtData;
       this.buttonState = this.buttonState === 'initial' ? 'final' : 'initial';
     });
+    this.modalServ.getProvinces().subscribe({
+      next: (receivedProvinces) => {
+        console.log('main modal comp', receivedProvinces);
+        this.modalServ.provinces.next(receivedProvinces);
+
+        // this.modalServ.provinces.next(receivedProvinces);
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
   }
 
   openModal() {

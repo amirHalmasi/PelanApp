@@ -18,6 +18,7 @@ export class ActionBtnAtomComponent implements OnInit {
   };
   @Input('ActionBtnClass') btnClass!: string;
   icon!: any;
+  @Input() btnState: boolean = false;
   @Output() btnClicked = new EventEmitter<string>();
 
   //this one will get the type of button as boolean :is it exit button
