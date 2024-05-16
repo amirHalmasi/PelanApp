@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import {
   ModalServiceService,
@@ -12,6 +12,7 @@ import {
   slideRightInOut,
 } from 'src/app/services/animation';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Subscription } from 'rxjs';
 // to add font awesome run this command bellow:
 // ng add @fortawesome/angular-fontawesome
 //https://piped.video/watch?v=AFVgwCtYgVo
@@ -21,7 +22,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./city-province-modal.component.css'],
   animations: [fadeInOut, flipInOut, slideRightInOut],
 })
-export class CityProvinceModalComponent implements OnInit {
+export class CityProvinceModalComponent implements OnInit, OnDestroy {
   isModalOpen!: boolean;
   isSelectProvincesOpen: boolean = true;
   leftArrowIcon = faArrowLeft;
@@ -31,6 +32,7 @@ export class CityProvinceModalComponent implements OnInit {
   provinceId!: number;
   // isLoading!: boolean;
   // provinces!: any;
+  provinceSubscription!: Subscription;
 
   exitOption: {
     iconName: string;
@@ -55,6 +57,9 @@ export class CityProvinceModalComponent implements OnInit {
     private modalServ: ModalServiceService,
     private fb: FormBuilder
   ) {}
+  ngOnDestroy(): void {
+    this.provinceSubscription.unsubscribe();
+  }
 
   ngOnInit() {
     this.searchForm = this.fb.group({
@@ -67,12 +72,12 @@ export class CityProvinceModalComponent implements OnInit {
       this.isSelectProvincesOpen = isSelectProvincesOpen;
     });
 
-    this.modalServ.provinces.subscribe({
+    this.modalServ.getProvinces().subscribe({
       next: (receivedProvinces) => {
         console.log('main modal comp', receivedProvinces);
+        this.modalServ.provinces.next(receivedProvinces);
         this.provinces = receivedProvinces;
         this.provincesConstant = receivedProvinces;
-
         // this.modalServ.provinces.next(receivedProvinces);
       },
       error: (err) => {
@@ -108,8 +113,4 @@ export class CityProvinceModalComponent implements OnInit {
     );
     this.provinces = res;
   }
-  // selectCities(provinceId: any) {
-  //   provinceId = +provinceId;
-  //   this.modalServ.isSelectProvinces.next(false);
-  // }
 }

@@ -1,16 +1,16 @@
 import { AbstractControl, ValidatorFn } from '@angular/forms';
 
-export function numberValidator(): ValidatorFn {
+export function persianLetterValidator(): ValidatorFn {
   return (control: AbstractControl): { [key: string]: any } | null => {
-    // Number pattern (allowing for positive and negative numbers, and decimals)
-    const numberPattern = /^-?\d+(\.\d+)?$/;
+    // Persian letters pattern (including spaces)
+    const persianLettersPattern = /^[\u0600-\u06FF\s]+$/;
 
-    if (!numberPattern.test(control.value)) {
-      return { invalidNumber: true };
+    if (!persianLettersPattern.test(control.value)) {
+      return { invalidPersianLetter: true };
     }
 
-    // Optionally, you can modify the value to remove any non-numeric characters
-    // control.setValue(control.value.replace(/[^\d.-]/g, ''));
+    // Optionally, you can modify the value to only contain Persian letters and spaces
+    // control.setValue(control.value.replace(/[^\u0600-\u06FF\s]+/g, ''));
 
     return null;
   };

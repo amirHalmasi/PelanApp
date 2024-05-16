@@ -13,8 +13,11 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-size: 20px;
+  font-size: 1.1rem;
 }
 .no-border {
   border: 0;
+}
+.small-font {
+  font-size: smaller;
 }

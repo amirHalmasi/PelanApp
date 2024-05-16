@@ -1,8 +1,16 @@
-<div class="container-fluid p-3" style="height: 80vh">
+<!-- <div class="container-fluid p-3" style="height: 80vh">
   <div class="row justify-content-center p-3" style="height: 100%">
     <div
       class="col col-xs-10 col-sm-8 col-md-6 col-lg-4 card p-3"
       style="height: 100%; width: 80%; overflow-y: auto"
+    >
+      <div class="card-body"> -->
+<div class="container-fluid p-3">
+  <div class="row justify-content-center p-3">
+    <div
+      class="col col-xs-10 col-sm-8 col-md-6 col-lg-4 card p-3"
+      style="height: 100%; width: 80%"
+      [@flipInOut]
     >
       <div class="card-body">
         <div class="card-title text-center mb-5">
@@ -11,49 +19,194 @@
           </h3>
         </div>
         <div>
-          <form>
+          <form [formGroup]="signupform" (ngSubmit)="submit()">
+            <div class="row">
+              <mat-checkbox
+                #jobOwn
+                (change)="jobOwner = jobOwn.checked"
+                formControlName="isJobOwner"
+                >ثبت نام مشاغل</mat-checkbox
+              >
+            </div>
             <div class="row">
               <div class="col col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <app-select-wit-search></app-select-wit-search>
+                <div class="row">
+                  <h3>محل زندگی</h3>
+                  <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+                    <mat-form-field class="w-100" appearance="outline">
+                      <mat-label>انتخاب استان</mat-label>
+                      <mat-select
+                        [formControl]="provinceCtrl"
+                        placeholder="استان"
+                        #singleSelect
+                        (valueChange)="provinceValue(singleSelect)"
+                      >
+                        <mat-option
+                          style="
+                            background-color: rgb(255, 255, 255);
+                            border-bottom: 1px solid gray;
+                          "
+                        >
+                          <ngx-mat-select-search
+                            placeholderLabel="جستجو"
+                            [formControl]="provinceFilterSearchCtrl"
+                            [noEntriesFoundLabel]="'موردی پیدا نشد.'"
+                          ></ngx-mat-select-search>
+                        </mat-option>
+
+                        <mat-option
+                          *ngFor="let province of filteredProvinces | async"
+                          [value]="province"
+                        >
+                          {{ province.province_name }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+                    <mat-form-field
+                      *ngIf="isCityInitial"
+                      [@slideRightInOut]
+                      class="w-100"
+                      appearance="outline"
+                    >
+                      <mat-label>انتخاب شهر</mat-label>
+                      <mat-select
+                        [formControl]="cityCtrl"
+                        placeholder="شهر"
+                        #singleSelectCity
+                      >
+                        <mat-option
+                          style="
+                            background-color: rgb(255, 255, 255);
+                            border-bottom: 1px solid gray;
+                          "
+                        >
+                          <ngx-mat-select-search
+                            placeholderLabel="جستجو"
+                            [formControl]="cityFilterSearchCtrl"
+                            [noEntriesFoundLabel]="'موردی پیدا نشد.'"
+                          ></ngx-mat-select-search>
+                        </mat-option>
+
+                        <mat-option
+                          *ngFor="let city of filteredCities | async"
+                          [value]="city"
+                        >
+                          {{ city.city_name }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
               </div>
             </div>
+
             <div class="row mb-3">
+              <h3>اطلاعات فردی</h3>
               <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
                 <mat-form-field class="w-100" appearance="outline">
                   <mat-label>نام</mat-label>
-                  <input matInput placeholder="نام " />
-
+                  <input
+                    formControlName="firstname"
+                    matInput
+                    placeholder="نام "
+                  />
+                  <mat-error
+                    *ngIf="
+                      signupform.get('firstname')?.invalid &&
+                      (signupform.get('firstname')?.dirty ||
+                        signupform.get('firstname')?.touched)
+                    "
+                  >
+                    <span
+                      *ngIf="signupform.get('firstname')?.errors?.['required'] "
+                      >این فیلد نباید خالی باشد.</span
+                    >
+                    <span
+                      *ngIf="signupform.get('firstname')?.errors?.['invalidPersianLetter'] && !signupform.get('firstname')?.errors?.['required']"
+                      >نام را فارسی وارد کنید.</span
+                    >
+                  </mat-error>
                   <!-- <mat-hint>Hint</mat-hint> -->
                 </mat-form-field>
               </div>
               <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
                 <mat-form-field class="w-100" appearance="outline">
                   <mat-label>نام حانوادگی </mat-label>
-                  <input matInput placeholder="نام حانوادگی " />
-
+                  <input
+                    formControlName="lastname"
+                    matInput
+                    placeholder="نام حانوادگی "
+                  />
+                  <mat-error
+                    *ngIf="
+                      signupform.get('lastname')?.invalid &&
+                      (signupform.get('lastname')?.dirty ||
+                        signupform.get('lastname')?.touched)
+                    "
+                  >
+                    <span
+                      *ngIf="signupform.get('lastname')?.errors?.['required'] "
+                      >این فیلد نباید خالی باشد.</span
+                    >
+                    <span
+                      *ngIf="signupform.get('lastname')?.errors?.['invalidPersianLetter'] && !signupform.get('lastname')?.errors?.['required']"
+                      >نام خانوادگی را فارسی وارد کنید.</span
+                    >
+                  </mat-error>
                   <!-- <mat-hint>Hint</mat-hint> -->
                 </mat-form-field>
               </div>
               <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
                 <mat-form-field class="w-100" appearance="outline">
                   <mat-label>کدملی </mat-label>
-                  <input matInput placeholder="کدملی " />
-
+                  <input
+                    matInput
+                    formControlName="userId"
+                    placeholder="کدملی "
+                  />
+                  <mat-error
+                    *ngIf="
+                      signupform.get('userId')?.invalid &&
+                      (signupform.get('userId')?.dirty ||
+                        signupform.get('userId')?.touched)
+                    "
+                  >
+                    <span
+                      *ngIf="signupform.get('userId')?.errors?.['required'] "
+                      >این فیلد نباید خالی باشد.</span
+                    >
+                    <span
+                      *ngIf="signupform.get('userId')?.errors?.['invalidMelliCode'] && !signupform.get('userId')?.errors?.['required']"
+                    >
+                      کدملی صحیح نیست.</span
+                    >
+                  </mat-error>
                   <!-- <mat-hint>Hint</mat-hint> -->
                 </mat-form-field>
               </div>
-              <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
-                <mat-form-field class="w-100" appearance="outline">
-                  <mat-label>آدرس </mat-label>
-                  <input matInput placeholder="آدرس " />
 
-                  <!-- <mat-hint>Hint</mat-hint> -->
-                </mat-form-field>
-              </div>
               <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
                 <mat-form-field class="w-100" appearance="outline">
                   <mat-label>ایمیل </mat-label>
-                  <input matInput placeholder="ایمیل " />
+                  <input
+                    formControlName="email"
+                    matInput
+                    placeholder="ایمیل "
+                  />
+                  <mat-error
+                    *ngIf="
+                      signupform.get('email')?.invalid &&
+                      (signupform.get('email')?.dirty ||
+                        signupform.get('email')?.touched)
+                    "
+                  >
+                    <span *ngIf="signupform.get('email')?.errors?.['email'] "
+                      >ایمیل صحیح نیست.</span
+                    >
+                  </mat-error>
 
                   <!-- <mat-hint>Hint</mat-hint> -->
                 </mat-form-field>
@@ -62,25 +215,118 @@
               <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
                 <mat-form-field class="w-100" appearance="outline">
                   <mat-label>موبایل </mat-label>
-                  <input matInput placeholder="موبایل " />
-
+                  <input
+                    formControlName="mobile"
+                    matInput
+                    placeholder="موبایل "
+                  />
+                  <mat-error
+                    *ngIf="
+                      signupform.get('mobile')?.invalid &&
+                      (signupform.get('mobile')?.dirty ||
+                        signupform.get('mobile')?.touched)
+                    "
+                  >
+                    <span
+                      *ngIf="signupform.get('mobile')?.errors?.['required'] "
+                      >این فیلد نباید خالی باشد.</span
+                    >
+                    <span
+                      *ngIf="signupform.get('mobile')?.errors?.['invalidMobileNumber'] && !signupform.get('mobile')?.errors?.['required']"
+                    >
+                      موبایل صحیح نیست.</span
+                    >
+                  </mat-error>
                   <!-- <mat-hint>Hint</mat-hint> -->
+                </mat-form-field>
+              </div>
+
+              <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+                <div
+                  style="
+                    flex-direction: row;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-evenly;
+                  "
+                >
+                  <label style="font-size: 1.2rem">جنسیت: </label>
+                  <mat-radio-group formControlName="gender">
+                    <mat-radio-button
+                      *ngFor="let genderInfo of genders"
+                      value="{{ genderInfo.value }}"
+                      >{{ genderInfo.name }}</mat-radio-button
+                    >
+                  </mat-radio-group>
+                </div>
+              </div>
+            </div>
+            <div
+              *ngIf="jobOwner"
+              formGroupName="jobOwners"
+              [@slideRightInOut]
+              class="row mb-3"
+            >
+              <h3>اطلاعات شغلی</h3>
+              <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>تلفن </mat-label>
+                  <input
+                    formControlName="phone"
+                    matInput
+                    placeholder="تلفن: 33123456-033"
+                  />
+                  <mat-error
+                    *ngIf="
+                      signupform.get('jobOwners.phone')?.invalid &&
+                      (signupform.get('jobOwners.phone')?.dirty ||
+                        signupform.get('jobOwners.phone')?.touched)
+                    "
+                  >
+                    <span
+                      *ngIf="signupform.get('jobOwners.phone')?.errors?.['required'] "
+                      >این فیلد نباید خالی باشد.</span
+                    >
+                    <span
+                      *ngIf="signupform.get('jobOwners.phone')?.errors?.['invalidPhoneNumber'] && !signupform.get('jobOwners.phone')?.errors?.['required']"
+                    >
+                      تلفن صحیح نیست.</span
+                    >
+                  </mat-error>
                 </mat-form-field>
               </div>
               <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
                 <mat-form-field class="w-100" appearance="outline">
-                  <mat-label>تلفن </mat-label>
-                  <input matInput placeholder="تلفن " />
-
-                  <!-- <mat-hint>Hint</mat-hint> -->
+                  <mat-label>آدرس محل کار </mat-label>
+                  <input
+                    matInput
+                    formControlName="address"
+                    placeholder="آدرس "
+                  />
+                  <mat-error
+                    *ngIf="
+                      signupform.get('jobOwners.address')?.invalid &&
+                      (signupform.get('jobOwners.address')?.dirty ||
+                        signupform.get('jobOwners.address')?.touched)
+                    "
+                  >
+                    <span
+                      *ngIf="signupform.get('jobOwners.address')?.errors?.['required'] "
+                      >این فیلد نباید خالی باشد.</span
+                    >
+                    <span
+                      *ngIf="signupform.get('jobOwners.address')?.errors?.['invalidPersianLetter'] && !signupform.get('jobOwners.address')?.errors?.['required']"
+                      >آدرس را فارسی وارد کنید.</span
+                    >
+                  </mat-error>
                 </mat-form-field>
               </div>
             </div>
-
             <div class="text-center">
               <app-action-btn-atom
                 [btnOptions]="signupBtnOption"
                 [ActionBtnClass]="'btn-primary  my-button px-4'"
+                [btnState]="!signupform.valid"
               ></app-action-btn-atom>
               <!-- <button type="submit" class="btn btn-primary px-3">ورود</button> -->
             </div>

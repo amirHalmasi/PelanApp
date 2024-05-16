@@ -6,19 +6,35 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { ActivatedRoute, Router } from '@angular/router';
+import {
+  fadeInOut,
+  flipInOut,
+  slideRightInOut,
+} from 'src/app/services/animation';
 import { numberValidator } from 'src/assets/validation/password.validator';
+import { SweetAlertService } from 'src/app/services/sweetalert.service';
 
 @Component({
   selector: 'app-login-from',
   templateUrl: './login-from.component.html',
   styleUrls: ['./login-from.component.css'],
+  animations: [flipInOut],
 })
 export class LoginFromComponent implements OnInit {
-  constructor(private router: Router, private http: HttpClient) {}
+  hidden: boolean = true;
+  show = faEye;
+  hide = faEyeSlash;
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    private sweetAlertService: SweetAlertService
+  ) {}
   loginBtnOption: {
     iconName: string;
-   
+
     btnType: string;
     btnText?: string;
   } = {
@@ -26,7 +42,17 @@ export class LoginFromComponent implements OnInit {
     btnType: 'submit',
     btnText: 'ورود',
   };
-  linkBtnOption_owner: {
+  // linkBtnOption_owner: {
+  //   iconName: string;
+
+  //   btnType: string;
+  //   btnText?: string;
+  // } = {
+  //   iconName: '',
+  //   btnType: 'button',
+  //   btnText: 'ثبت نام مشاغل',
+  // };
+  signupLinkBtnOption: {
     iconName: string;
 
     btnType: string;
@@ -34,51 +60,48 @@ export class LoginFromComponent implements OnInit {
   } = {
     iconName: '',
     btnType: 'button',
-    btnText: 'ثبت نام مشاغل',
+    btnText: 'ثبت نام',
   };
-  linkBtnOption_user: {
-    iconName: string;
 
-    btnType: string;
-    btnText?: string;
-  } = {
-    iconName: '',
-    btnType: 'button',
-    btnText: 'ثبت نام کاربران',
-  };
-  textInputOption = {
-    labelText: 'نام کاربری',
-    placeholderText: 'نام کاربری را وارد کنید ',
-    FormControlName: 'username',
-  };
   loginForm!: FormGroup;
   ngOnInit(): void {
     this.loginForm = new FormGroup({
       username: new FormControl('', [Validators.required, numberValidator()]),
-      password: new FormControl('', [
-        Validators.required,
-        // passwordValidator(),
-        numberValidator(),
-      ]),
+      password: new FormControl('', [Validators.required, numberValidator()]),
     });
   }
-  routeTO(goto: string, query: string) {
-    this.router.navigate(['/' + goto]);
+  // routeTO(goto: string, query: string) {
+  routeTO(goto: string) {
+    this.router.navigate(['/' + goto], {
+      relativeTo: this.route,
+      // queryParams: { signin: query },
+    });
   }
   // get passwordErrors() {
   //   return this.loginForm.get('password')?.errors;
   // }
   login() {
     console.log(this.loginForm.value);
-    // let provinceUrl = 'https://localhost:5001/api/account/login';
+    let loginUrl = 'https://localhost:5001/api/account/login';
     // // return this.http.get<provinceDto[]>(provinceUrl);
-    // this.http.post(provinceUrl, this.loginForm.value).subscribe({
-    //   next: (res) => {
-    //     console.log(res);
-    //   },
-    //   error: (err) => {
-    //     console.error(err);
-    //   },
-    // });
+    this.http.post(loginUrl, this.loginForm.value).subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+      error: (err) => {
+        // console.error(err.error);
+        // let errorMessage = '';
+
+        return new Promise<boolean>(() => {
+          this.sweetAlertService.floatAlert(
+            'نام کاربری یا کلمه عبور اشتباه است',
+            'error'
+          );
+        });
+      },
+      complete: () => {
+        this.router.navigate(['/']);
+      },
+    });
   }
 }

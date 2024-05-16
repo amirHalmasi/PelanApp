@@ -24,7 +24,7 @@ namespace Api.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<AppUser>> Register(RegisterDto registerDto)
         {
-            if (await UserExists(registerDto.Username))
+            if (await UserExists(registerDto.UserId))
             {
                 return BadRequest("username is taken by aother person.");
             }
@@ -32,9 +32,22 @@ namespace Api.Controllers
         
             var user = new AppUser
             {
-                UserName = registerDto.Username.ToLower(),
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
-                PasswordSalt = hmac.Key
+                UserName = registerDto.UserId,
+                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Mobile)),
+                PasswordSalt = hmac.Key,
+                UserId = registerDto.UserId,
+                Mobile = registerDto.Mobile,
+                Phone = registerDto.Phone,
+                FirstName = registerDto.FirstName,
+                LastName = registerDto.LastName,
+                Email = registerDto.Email,
+                Address = registerDto.Address,
+                ProvinceId = registerDto.Province,
+                CityId = registerDto.City,
+                Shop=registerDto.Shop,
+                Gender=registerDto.Gender,
+                IsJobOwner=registerDto.IsJobOwner
+
             };
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
@@ -43,7 +56,7 @@ namespace Api.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<AppUser>> Login(LoginDto loginDto)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName.ToLower() == loginDto.Username.ToLower());
+            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
 
             if(user == null){
                 return Unauthorized("Invalid username");
@@ -55,16 +68,16 @@ namespace Api.Controllers
 
             for (int i = 0; i < computedHash.Length; i++){
                 if (computedHash[i] != user.PasswordHash[i]){
-                    return Unauthorized("invalid password");
+                    return Unauthorized("Invalid password");
                 }
             }
             return user;
 
         } 
 
-        private async Task<bool> UserExists(string username){
+        private async Task<bool> UserExists(string UserId){
             return await _context.Users.AnyAsync(x=>
-            x.UserName.ToLower() == username.ToLower());
+            x.UserId == UserId);
         }
     }
 }

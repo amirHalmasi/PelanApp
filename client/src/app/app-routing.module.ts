@@ -3,10 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginFromComponent } from './organism/login-from/login-from.component';
 import { HomeComponent } from './organism/home/home.component';
 import { SignupFromComponent } from './organism/signup-from/signup-from.component';
+import { canDeactivateGuardFn } from './organism/signup-from/can-deactivate-gaurde';
 
 const routes: Routes = [
   {
     path: 'login',
+
     component: LoginFromComponent,
   },
   {
@@ -15,6 +17,7 @@ const routes: Routes = [
   },
   {
     path: 'signup',
+    canDeactivate: [canDeactivateGuardFn],
     component: SignupFromComponent,
   },
   {
