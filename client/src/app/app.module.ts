@@ -25,6 +25,8 @@ import { HomeComponent } from './organism/home/home.component';
 import { SignupFromComponent } from './organism/signup-from/signup-from.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { SelectWitSearchComponent } from './organism/signup-from/select-wit-search/select-wit-search.component';
+import { AdvertiseComponent } from './organism/advertise/advertise.component';
+import { UploadfileComponent } from './organism/advertise/uploadfile/uploadfile.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +43,8 @@ import { SelectWitSearchComponent } from './organism/signup-from/select-wit-sear
     HomeComponent,
     SignupFromComponent,
     SelectWitSearchComponent,
+    AdvertiseComponent,
+    UploadfileComponent,
   ],
   imports: [
     NgxMatSelectSearchModule,

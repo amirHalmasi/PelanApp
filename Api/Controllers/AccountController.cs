@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Api.Data;
 using Api.DTOs;
 using Api.Entities;
+using Api.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,15 +16,27 @@ namespace Api.Controllers
 {
     public class AccountController : BaseApiController
     {
-        private readonly DataContext _context;
+        // private readonly DataContext _context;
+        // private readonly ITokenService _tokenservice;
 
-        public AccountController(DataContext context)
+        // public AccountController(DataContext context,ITokenService tokenService)
+        // {
+        //     _context = context;
+        //     _tokenservice = tokenService;
+        // }
+        private readonly DataContext _context;
+        private readonly ITokenService _tokenService;
+        private readonly ITokenBlacklistService _tokenBlacklistService;
+
+        public AccountController(DataContext context, ITokenService tokenService, ITokenBlacklistService tokenBlacklistService)
         {
             _context = context;
+            _tokenService = tokenService;
+            _tokenBlacklistService = tokenBlacklistService;
         }
-
+        
         [HttpPost("register")]
-        public async Task<ActionResult<AppUser>> Register(RegisterDto registerDto)
+        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
             if (await UserExists(registerDto.UserId))
             {
@@ -51,10 +65,14 @@ namespace Api.Controllers
             };
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
-            return user;
+            return new UserDto
+            {
+                Username = user.UserName,
+                Token = _tokenService.CreateToken(user),
+            };
         }
         [HttpPost("login")]
-        public async Task<ActionResult<AppUser>> Login(LoginDto loginDto)
+        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
             var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
 
@@ -71,7 +89,11 @@ namespace Api.Controllers
                     return Unauthorized("Invalid password");
                 }
             }
-            return user;
+            return new UserDto
+            {
+                Username = user.UserName,
+                Token = _tokenService.CreateToken(user),
+            };
 
         } 
 
@@ -79,5 +101,24 @@ namespace Api.Controllers
             return await _context.Users.AnyAsync(x=>
             x.UserId == UserId);
         }
+        
+        [Authorize]
+        [HttpPost("logout")]
+        public async Task<ActionResult> Logout()
+        {
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest("Token is missing");
+            }
+
+            // Add token to blacklist
+            await _tokenBlacklistService.AddTokenToBlacklistAsync(token);
+
+            return Ok("Logged out successfully");
+        }
+
+       
     }
 }

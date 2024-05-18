@@ -26,12 +26,17 @@
           routerLinkActive="active-link"
           [routerLinkActiveOptions]="{ exact: true }"
         >
-          <a
-            class="nav-link active"
-            [routerLink]="'login'"
-            aria-current="page"
-            href="#"
+          <a class="nav-link" [routerLink]="'login'" aria-current="page"
             >ورود / ثبت نام</a
+          >
+        </li>
+        <li
+          class="nav-item"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+        >
+          <a class="nav-link" [routerLink]="'advertise'" aria-current="page"
+            >درج آگهی</a
           >
         </li>
         <li class="nav-item">

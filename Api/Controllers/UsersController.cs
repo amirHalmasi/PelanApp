@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Api.Data;
 using Api.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,8 +19,9 @@ namespace Api.Controllers
         {
             _context = context;
         }
-
+        
         [HttpGet]
+        [AllowAnonymous]
         // public ActionResult<List<AppUser>> 
         public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers(){
             return await _context.Users.ToListAsync();
@@ -27,6 +29,7 @@ namespace Api.Controllers
         }
 
         //if you want to add your own query ask chatGpt how to do?
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUser>> GetUser(int id){
             return await _context.Users.FindAsync(id);

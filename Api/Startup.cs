@@ -10,8 +10,15 @@
 // using Microsoft.Extensions.DependencyInjection;
 // using Microsoft.Extensions.Hosting;
 // using Microsoft.Extensions.Logging;
+using System.Text;
 using Api.Data;
+using Api.Interfaces;
+using Api.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace API
@@ -33,7 +40,7 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            
+            services.AddScoped<ITokenService,TokenService>();
             services.AddDbContext<DataContext>(options=>{
                 
                 options.UseSqlite(_config.GetConnectionString("DefaultConnection"));
@@ -41,6 +48,26 @@ namespace API
             });
             services.AddControllers();
             services.AddCors();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options=>{
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenKey"])),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+
+                };
+            });
+             services.AddScoped<ITokenBlacklistService, InMemoryTokenBlacklistService>();
+
+            services.Configure<FormOptions>( o=>
+            {
+                o.ValueLengthLimit = int.MaxValue;            
+                o.MultipartBoundaryLengthLimit = int.MaxValue;            
+                o.MemoryBufferThreshold = int.MaxValue ;           
+
+            });
             // services.AddSwaggerGen(c =>
             // {
             //     c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
@@ -59,13 +86,22 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider =new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+                RequestPath = new PathString("/Resources")
+            });
             app.UseCors(policy => {
                 policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
                 policy.AllowCredentials(); // Include this if your client includes credentials.
             });
+            app.UseAuthentication();
+            
 
             app.UseAuthorization();
+
+
 
             app.UseEndpoints(endpoints =>
             {
