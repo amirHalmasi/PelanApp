@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { flipInOut } from 'src/app/services/animation';
 
 @Component({
@@ -7,6 +7,8 @@ import { flipInOut } from 'src/app/services/animation';
   styleUrls: ['./home.component.css'],
   animations: [flipInOut],
 })
-export class HomeComponent {
-
+export class HomeComponent implements OnInit {
+  ngOnInit(): void {
+    // localStorage.clear();
+  }
 }

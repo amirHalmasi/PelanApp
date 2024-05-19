@@ -68,6 +68,7 @@ namespace Api.Controllers
             return new UserDto
             {
                 Username = user.UserName,
+                IsJobOwner = user.IsJobOwner.ToString(),
                 Token = _tokenService.CreateToken(user),
             };
         }
@@ -92,6 +93,7 @@ namespace Api.Controllers
             return new UserDto
             {
                 Username = user.UserName,
+                IsJobOwner = user.IsJobOwner.ToString(),
                 Token = _tokenService.CreateToken(user),
             };
 
@@ -101,6 +103,7 @@ namespace Api.Controllers
             return await _context.Users.AnyAsync(x=>
             x.UserId == UserId);
         }
+        
         
         [Authorize]
         [HttpPost("logout")]

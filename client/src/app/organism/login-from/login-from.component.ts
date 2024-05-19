@@ -15,7 +15,11 @@ import {
 } from 'src/app/services/animation';
 import { numberValidator } from 'src/assets/validation/password.validator';
 import { SweetAlertService } from 'src/app/services/sweetalert.service';
-
+interface loginDto {
+  token: string;
+  username: string;
+  isJobOwner: string;
+}
 @Component({
   selector: 'app-login-from',
   templateUrl: './login-from.component.html',
@@ -84,9 +88,12 @@ export class LoginFromComponent implements OnInit {
     console.log(this.loginForm.value);
     let loginUrl = 'https://localhost:5001/api/account/login';
     // // return this.http.get<provinceDto[]>(provinceUrl);
-    this.http.post(loginUrl, this.loginForm.value).subscribe({
-      next: (res) => {
+    this.http.post<loginDto>(loginUrl, this.loginForm.value).subscribe({
+      next: (res: loginDto) => {
         console.log(res);
+        if (res && res.token) {
+          localStorage.setItem('authUser', JSON.stringify(res));
+        }
       },
       error: (err) => {
         // console.error(err.error);

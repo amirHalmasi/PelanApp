@@ -8,6 +8,8 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-nav-bar',
@@ -27,7 +29,11 @@ export class NavBarComponent implements OnInit {
   cityData!: any;
   buttonState: string = 'initial';
 
-  constructor(private modalServ: ModalServiceService) {}
+  constructor(
+    private modalServ: ModalServiceService,
+    private http: HttpClient,
+    private router: Router
+  ) {}
   ngOnInit(): void {
     this.modalServ.isCollapsed.subscribe((iscolaps) => {
       this.isCollapsed = iscolaps;
@@ -42,5 +48,24 @@ export class NavBarComponent implements OnInit {
   openModal() {
     this.buttonState = 'initial';
     this.modalServ.openModal();
+  }
+  logout() {
+    const headers = {
+      Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+    };
+
+    this.http
+      .post('https://localhost:5001/api/account/logout', {}, { headers })
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+          // alertify.success('Logged out successfully');
+          localStorage.removeItem('authToken'); // Remove the token from local storage or wherever it's stored
+          this.router.navigate(['/login']); // Navigate to the login page or home page
+        },
+        error: (err) => {
+          // alertify.error('Logout failed: ' + err.message);
+        },
+      });
   }
 }

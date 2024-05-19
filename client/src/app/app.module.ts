@@ -14,7 +14,7 @@ import { MaterialModule } from './material.module';
 import { CityProvinceModalComponent } from './organism/city-province-modal/city-province-modal.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ActionBtnAtomComponent } from './organism/city-province-modal/action-btn-atom/action-btn-atom.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { ProvinceListAtmComponent } from './organism/city-province-modal/province-list-atm/province-list-atm.component';
 import { CityListAtmComponent } from './organism/city-province-modal/city-list-atm/city-list-atm.component';
@@ -27,6 +27,8 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { SelectWitSearchComponent } from './organism/signup-from/select-wit-search/select-wit-search.component';
 import { AdvertiseComponent } from './organism/advertise/advertise.component';
 import { UploadfileComponent } from './organism/advertise/uploadfile/uploadfile.component';
+import { AlertComponent } from './organism/advertise/uploadfile/alert/alert.component';
+import { AuthInterceptor } from './services/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -45,6 +47,7 @@ import { UploadfileComponent } from './organism/advertise/uploadfile/uploadfile.
     SelectWitSearchComponent,
     AdvertiseComponent,
     UploadfileComponent,
+    AlertComponent,
   ],
   imports: [
     NgxMatSelectSearchModule,
@@ -59,7 +62,9 @@ import { UploadfileComponent } from './organism/advertise/uploadfile/uploadfile.
     FormsModule,
     ReactiveFormsModule,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

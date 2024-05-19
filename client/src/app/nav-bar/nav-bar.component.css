@@ -7,6 +7,9 @@ nav {
   font-family: "nazanin", "Courier New", Courier, monospace;
   font-weight: bold;
 }
+a {
+  cursor: pointer;
+}
 .navbar {
   /* direction: rtl; */
   background-color: transparent !important;
