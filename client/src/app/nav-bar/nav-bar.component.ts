@@ -50,20 +50,30 @@ export class NavBarComponent implements OnInit {
     this.modalServ.openModal();
   }
   logout() {
+    const authUser = JSON.parse(
+      localStorage.getItem('authUser') || '{isJobOwner:"",token:"",username:""}'
+    );
+    // console.log(authUser.token);
     const headers = {
-      Authorization: `Bearer ${localStorage.getItem('authToken')}`,
+      Authorization: `Bearer ${authUser.token}`,
     };
-
+    console.log();
     this.http
-      .post('https://localhost:5001/api/account/logout', {}, { headers })
+      .post(
+        'https://localhost:5001/api/account/logout',
+        {},
+        { headers: headers }
+      )
       .subscribe({
         next: (res) => {
           console.log(res);
           // alertify.success('Logged out successfully');
-          localStorage.removeItem('authToken'); // Remove the token from local storage or wherever it's stored
+          localStorage.removeItem('authUser'); // Remove the token from local storage or wherever it's stored
+          // localStorage.clear();
           this.router.navigate(['/login']); // Navigate to the login page or home page
         },
         error: (err) => {
+          console.error(err);
           // alertify.error('Logout failed: ' + err.message);
         },
       });

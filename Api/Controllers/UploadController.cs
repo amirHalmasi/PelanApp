@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -12,6 +13,7 @@ namespace Api.Controllers
     
   public class UploadController : BaseApiController
 {
+    [Authorize]
     [HttpGet("files")]
     public IActionResult GetFiles(string username, string advertiseCode)
     {
@@ -40,10 +42,16 @@ namespace Api.Controllers
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
-
-   [HttpPost, DisableRequestSizeLimit]
+    [Authorize]
+    [HttpPost, DisableRequestSizeLimit]
     public async Task<IActionResult> Upload()
     {
+         var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest(new { message = "Token is missing" });
+            }
         try
         {
             var files = Request.Form.Files;
@@ -96,10 +104,16 @@ namespace Api.Controllers
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
-
+    [Authorize]
     [HttpDelete("delete")]
     public IActionResult DeleteFile(string username, string advertiseCode, string fileName)
     {
+         var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest(new { message = "Token is missing" });
+            }
         try
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(advertiseCode) || string.IsNullOrEmpty(fileName))

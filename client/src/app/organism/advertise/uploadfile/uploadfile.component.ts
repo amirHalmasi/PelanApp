@@ -48,11 +48,18 @@ export class UploadfileComponent {
     for (let i = 0; i < files.length; i++) {
       formData.append('files', files[i], files[i].name);
     }
-
+    const authUser = JSON.parse(
+      localStorage.getItem('authUser') || '{isJobOwner:"",token:"",username:""}'
+    );
+    // console.log(authUser.token);
+    const headers = {
+      Authorization: `Bearer ${authUser.token}`,
+    };
     this.http
       .post<ImageDto[]>('https://localhost:5001/api/upload', formData, {
         reportProgress: true,
         observe: 'events',
+        headers: headers,
       })
       .subscribe({
         next: (event) => {

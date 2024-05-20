@@ -37,11 +37,19 @@ export class AdvertiseComponent implements OnInit {
   }
 
   deleteImage(image: ImageDto) {
+    const authUser = JSON.parse(
+      localStorage.getItem('authUser') || '{isJobOwner:"",token:"",username:""}'
+    );
+    // console.log(authUser.token);
+    const headers = {
+      Authorization: `Bearer ${authUser.token}`,
+    };
     this.http
       .delete(
         `https://localhost:5001/api/upload/delete?username=${this.getUsername()}&advertiseCode=${this.getAdvertiseCode()}&fileName=${
           image.fileName
-        }`
+        }`,
+        { headers: headers }
       )
       .subscribe({
         next: (res) => {

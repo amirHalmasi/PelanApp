@@ -6,19 +6,19 @@ using Api.Interfaces;
 
 namespace Api.Services
 {
-      public class InMemoryTokenBlacklistService : ITokenBlacklistService
+    public class InMemoryTokenBlacklistService : ITokenBlacklistService
+    {
+        private readonly HashSet<string> _blacklist = new HashSet<string>();
+
+        public Task AddTokenToBlacklistAsync(string token)
         {
-            private readonly HashSet<string> _blacklist = new HashSet<string>();
-
-            public Task AddTokenToBlacklistAsync(string token)
-            {
-                _blacklist.Add(token);
-                return Task.CompletedTask;
-            }
-
-            public Task<bool> IsTokenBlacklistedAsync(string token)
-            {
-                return Task.FromResult(_blacklist.Contains(token));
-            }
+            _blacklist.Add(token);
+            return Task.CompletedTask;
         }
+
+        public Task<bool> IsTokenBlacklistedAsync(string token)
+        {
+            return Task.FromResult(_blacklist.Contains(token));
+        }
+    }
 }

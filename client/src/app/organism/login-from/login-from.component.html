@@ -52,7 +52,12 @@
                     placeholder="کلمه عبور"
                     [type]="hidden ? 'password' : 'text'"
                   />
-                  <button mat-icon-button matSuffix (click)="hidden = !hidden">
+                  <button
+                    type="button"
+                    mat-icon-button
+                    matSuffix
+                    (click)="hidden = !hidden"
+                  >
                     <mat-icon>
                       <fa-icon
                         class="icon-class"

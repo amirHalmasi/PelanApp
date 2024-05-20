@@ -113,15 +113,14 @@ namespace Api.Controllers
 
             if (string.IsNullOrEmpty(token))
             {
-                return BadRequest("Token is missing");
+                return BadRequest(new { message = "Token is missing" });
             }
 
             // Add token to blacklist
             await _tokenBlacklistService.AddTokenToBlacklistAsync(token);
 
-            return Ok("Logged out successfully");
+            return Ok(new { message = "Logged out successfully" });
         }
-
        
     }
 }

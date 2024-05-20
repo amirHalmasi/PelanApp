@@ -96,15 +96,15 @@ export class LoginFromComponent implements OnInit {
         }
       },
       error: (err) => {
-        // console.error(err.error);
+        console.error(err);
         // let errorMessage = '';
 
-        return new Promise<boolean>(() => {
-          this.sweetAlertService.floatAlert(
-            'نام کاربری یا کلمه عبور اشتباه است',
-            'error'
-          );
-        });
+        // return new Promise<boolean>(() => {
+        this.sweetAlertService.floatAlert(
+          'نام کاربری یا کلمه عبور اشتباه است',
+          'error'
+        );
+        // });
       },
       complete: () => {
         this.router.navigate(['/']);
