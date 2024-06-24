@@ -5,6 +5,9 @@ import {
   ImageDto,
   UploadFinishedEvent,
 } from './uploadfile/uploadfile.component';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { persianLetterValidator } from 'src/assets/validation/persian-letters.validator';
+import { numberValidator } from 'src/assets/validation/password.validator';
 interface deleteResponse {
   folderName: string;
   deletedFile: string;
@@ -20,9 +23,19 @@ export class AdvertiseComponent implements OnInit {
   username!: string;
   advertiseCode!: string;
   icon!: any;
-  constructor(private http: HttpClient) {}
+  advertiseForm!: FormGroup;
+  hintDescription!: string;
+  constructor(private http: HttpClient, private fb: FormBuilder) {}
   ngOnInit(): void {
     this.icon = faTrash;
+    this.advertiseForm = this.fb.group({
+      groundMeter: [null, [Validators.required, numberValidator()]],
+      houseMeter: [null, [Validators.required, numberValidator()]],
+      rooms: [null, [Validators.required, numberValidator()]],
+      wareHouse: [null, [Validators.email]],
+      price: [null, [Validators.required, numberValidator()]],
+      neighbourhood: [null, persianLetterValidator()],
+    });
   }
   public uploadFinish = (event: UploadFinishedEvent) => {
     this.imageData = event.imageData;
@@ -78,5 +91,10 @@ export class AdvertiseComponent implements OnInit {
   private getAdvertiseCode(): string {
     // Implement logic to get the advertise code
     return this.advertiseCode;
+  }
+  hint(event: any, inputField: string) {
+    const value = this.advertiseForm.get(inputField)?.value;
+    console.log('hint', value);
+    this.hintDescription = value + 'متر مربع';
   }
 }
