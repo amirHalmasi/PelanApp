@@ -5,10 +5,17 @@
       style="height: 100%; width: 80%"
     >
       <div class="card-body">
-        <div class="card-title text-center mb-5">
+        <div class="row card-title text-center justify-content-center mb-5">
           <h3 class="font-title">
             ثبت آگهی <span class="brand-font">پلان</span>
           </h3>
+          <div
+            class="col-xs-12 col-sm-6 col-md-4 col-lg-3 btn-group btn-group"
+            role="group"
+          >
+            <button type="button" class="btn btn-outline-danger">خانه</button>
+            <button type="button" class="btn btn-outline-danger">مغازه</button>
+          </div>
         </div>
 
         <!-- ///////////////////////////////////// -->
@@ -41,11 +48,15 @@
             </div>
           </div>
         </div>
-        <div>
+        <div class="mt-5">
           <form [formGroup]="advertiseForm">
             <div class="row mb-3">
-              <h3>مشحصات ملک مسکونی</h3>
-              <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+              <h3>مشحصات ملک</h3>
+              <div
+                *ngIf="!isApartment"
+                [@slideRightInOut]
+                class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+              >
                 <mat-form-field class="w-100" appearance="outline">
                   <mat-label>متراژ زمین</mat-label>
                   <input
@@ -78,12 +89,13 @@
               </div>
               <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
                 <mat-form-field class="w-100" appearance="outline">
-                  <mat-label>متراژ واحد</mat-label>
+                  <mat-label>{{
+                    isApartment ? "متراژ واحد" : "زیربنا"
+                  }}</mat-label>
                   <input
                     formControlName="houseMeter"
                     matInput
-                    placeholder="متراژ واحد"
-                    (change)="hint($event, 'houseMeter')"
+                    placeholder="{{ isApartment ? 'متراژ واحد' : 'زیربنا' }}"
                   />
                   <mat-error
                     *ngIf="
@@ -101,41 +113,274 @@
                       >متراژ را به عدد وارد کنید.</span
                     >
                   </mat-error>
-                  <mat-hint *ngIf="hintDescription">{{
-                    hintDescription
-                  }}</mat-hint>
-                  <!-- <mat-hint>Hint</mat-hint> -->
                 </mat-form-field>
               </div>
               <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
                 <mat-form-field class="w-100" appearance="outline">
-                  <mat-label>متراژ واحد</mat-label>
+                  <mat-label>تعداد اتاق</mat-label>
                   <input
-                    formControlName="houseMeter"
+                    formControlName="rooms"
                     matInput
-                    placeholder="متراژ واحد"
-                    (change)="hint($event, 'houseMeter')"
+                    placeholder="تعداد اتاق"
                   />
                   <mat-error
                     *ngIf="
-                      advertiseForm.get('houseMeter')?.invalid &&
-                      (advertiseForm.get('houseMeter')?.dirty ||
-                        advertiseForm.get('houseMeter')?.touched)
+                      advertiseForm.get('rooms')?.invalid &&
+                      (advertiseForm.get('rooms')?.dirty ||
+                        advertiseForm.get('rooms')?.touched)
                     "
                   >
                     <span
-                      *ngIf="advertiseForm.get('houseMeter')?.errors?.['required'] "
+                      *ngIf="advertiseForm.get('rooms')?.errors?.['required'] "
                       >این فیلد نباید خالی باشد.</span
                     >
                     <span
-                      *ngIf="advertiseForm.get('houseMeter')?.errors?.['invalidNumber'] && !advertiseForm.get('houseMeter')?.errors?.['required']"
-                      >متراژ را به عدد وارد کنید.</span
+                      *ngIf="advertiseForm.get('rooms')?.errors?.['invalidNumber'] && !advertiseForm.get('rooms')?.errors?.['required']"
+                      >تعداد اتاق را به عدد وارد کنید.</span
                     >
                   </mat-error>
-                  <mat-hint *ngIf="hintDescription">{{
-                    hintDescription
-                  }}</mat-hint>
+                </mat-form-field>
+              </div>
+              <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+                <mat-checkbox
+                  class="align-item-center mx-2"
+                  #housewareCheckbox
+                  (change)="hasHouseWare = housewareCheckbox.checked"
+                  formControlName="hasHouseWare"
+                  >انباری</mat-checkbox
+                >
+                <mat-form-field
+                  *ngIf="hasHouseWare"
+                  [@slideRightInOut]
+                  class="w-50"
+                  appearance="outline"
+                >
+                  <mat-label>متراژ انباری</mat-label>
+                  <input
+                    formControlName="wareHouse"
+                    matInput
+                    placeholder="متراژانباری "
+                  />
+                  <mat-error
+                    *ngIf="
+                      advertiseForm.get('wareHouse')?.invalid &&
+                      (advertiseForm.get('wareHouse')?.dirty ||
+                        advertiseForm.get('wareHouse')?.touched)
+                    "
+                  >
+                    <span
+                      *ngIf="advertiseForm.get('wareHouse')?.errors?.['required'] "
+                      >این فیلد نباید خالی باشد.</span
+                    >
+                    <span
+                      *ngIf="advertiseForm.get('wareHouse')?.errors?.['invalidNumber'] && !advertiseForm.get('wareHouse')?.errors?.['required']"
+                      >متراژ انباری را به عدد وارد کنید.</span
+                    >
+                  </mat-error>
+
                   <!-- <mat-hint>Hint</mat-hint> -->
+                </mat-form-field>
+              </div>
+              <div
+                *ngIf="!isApartment"
+                [@slideRightInOut]
+                class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+              >
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>تعداد طبقات</mat-label>
+                  <input
+                    formControlName="floors"
+                    matInput
+                    placeholder="تعداد طبقات"
+                  />
+                  <mat-error
+                    *ngIf="
+                      advertiseForm.get('floors')?.invalid &&
+                      (advertiseForm.get('floors')?.dirty ||
+                        advertiseForm.get('floors')?.touched)
+                    "
+                  >
+                    <span
+                      *ngIf="advertiseForm.get('floors')?.errors?.['required'] "
+                      >این فیلد نباید خالی باشد.</span
+                    >
+                    <span
+                      *ngIf="advertiseForm.get('floors')?.errors?.['invalidNumber'] && !advertiseForm.get('floors')?.errors?.['required']"
+                      >تعداد طبقات را به عدد وارد کنید.</span
+                    >
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>موقعیت</mat-label>
+                  <mat-select formControlName="location" placeholder="موقعیت">
+                    <mat-option
+                      *ngFor="let location of locations"
+                      [value]="location.value"
+                    >
+                      {{ location.desc }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="
+                      advertiseForm.get('location')?.invalid &&
+                      (advertiseForm.get('location')?.dirty ||
+                        advertiseForm.get('location')?.touched)
+                    "
+                  >
+                    <span
+                      *ngIf="advertiseForm.get('location')?.errors?.['required'] "
+                      >این فیلد نباید خالی باشد.</span
+                    ></mat-error
+                  >
+                </mat-form-field>
+              </div>
+              <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>ضلع زمین</mat-label>
+                  <mat-select
+                    formControlName="situation"
+                    placeholder="ضلع زمین"
+                  >
+                    <mat-option
+                      *ngFor="let situation of situations"
+                      [value]="situation.value"
+                    >
+                      {{ situation.desc }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="
+                      advertiseForm.get('situation')?.invalid &&
+                      (advertiseForm.get('situation')?.dirty ||
+                        advertiseForm.get('situation')?.touched)
+                    "
+                  >
+                    <span
+                      *ngIf="advertiseForm.get('situation')?.errors?.['required'] "
+                      >این فیلد نباید خالی باشد.</span
+                    ></mat-error
+                  >
+                </mat-form-field>
+              </div>
+              <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>نوع واحد مسکونی</mat-label>
+                  <mat-select
+                    (selectionChange)="determineHouseType($event)"
+                    formControlName="houseType"
+                    placeholder="نوع واحد مسکونی"
+                  >
+                    <mat-option
+                      *ngFor="let houseType of houseTypes"
+                      [value]="houseType.value"
+                    >
+                      {{ houseType.desc }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="
+                      advertiseForm.get('houseType')?.invalid &&
+                      (advertiseForm.get('houseType')?.dirty ||
+                        advertiseForm.get('houseType')?.touched)
+                    "
+                  >
+                    <span
+                      *ngIf="advertiseForm.get('houseType')?.errors?.['required'] "
+                      >این فیلد نباید خالی باشد.</span
+                    ></mat-error
+                  >
+                </mat-form-field>
+              </div>
+              <div
+                *ngIf="isApartment"
+                [@slideRightInOut]
+                class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+              >
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>ظبقه</mat-label>
+                  <input
+                    formControlName="floor"
+                    matInput
+                    placeholder="طبقه واحد فروشی"
+                  />
+                  <mat-error
+                    *ngIf="
+                      advertiseForm.get('floor')?.invalid &&
+                      (advertiseForm.get('floor')?.dirty ||
+                        advertiseForm.get('floor')?.touched)
+                    "
+                  >
+                    <span
+                      *ngIf="advertiseForm.get('floor')?.errors?.['required'] "
+                      >این فیلد نباید خالی باشد.</span
+                    >
+                    <span
+                      *ngIf="advertiseForm.get('floor')?.errors?.['invalidNumber'] && !advertiseForm.get('floor')?.errors?.['required']"
+                      >طبقه واحد را به عدد وارد کنید.</span
+                    >
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div
+                *ngIf="isApartment"
+                [@slideRightInOut]
+                class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+              >
+                <mat-checkbox
+                  class="align-item-center mx-2"
+                  formControlName="hasElevator"
+                  >آسانسور دارد؟</mat-checkbox
+                >
+              </div>
+              <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>قیمت</mat-label>
+                  <input
+                    formControlName="price"
+                    matInput
+                    placeholder="قیمت را وارد کنید"
+                  />
+                  <mat-error
+                    *ngIf="
+                      advertiseForm.get('price')?.invalid &&
+                      (advertiseForm.get('price')?.dirty ||
+                        advertiseForm.get('price')?.touched)
+                    "
+                  >
+                    <span
+                      *ngIf="advertiseForm.get('price')?.errors?.['required'] "
+                      >این فیلد نباید خالی باشد.</span
+                    >
+                    <span
+                      *ngIf="advertiseForm.get('price')?.errors?.['invalidNumber'] && !advertiseForm.get('price')?.errors?.['required']"
+                      >قیمت را به عدد وارد کنید.</span
+                    >
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col col-12 p-3">
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>توضیحات</mat-label>
+                  <textarea
+                    rows="4"
+                    cols="50"
+                    matInput
+                    formControlName="desc"
+                    placeholder="توضیحاتی راجع به منزل بدهید مثلا نوساز است یا تعمیر شده است"
+                  ></textarea>
+                  <mat-error
+                    *ngIf="
+                      advertiseForm.get('desc')?.invalid ||
+                      advertiseForm.get('desc')?.dirty
+                    "
+                  >
+                    <span
+                      *ngIf="advertiseForm.get('desc')?.errors?.['invalidPersianLetter'] "
+                      >توضیحات را فارسی وارد کنید.</span
+                    >
+                  </mat-error>
                 </mat-form-field>
               </div>
             </div>

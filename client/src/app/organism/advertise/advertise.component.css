@@ -1,6 +1,6 @@
 * {
   font-family: "nazanin", "Courier New", Courier, monospace;
-  color: #080710 !important;
+  /* color: #080710 !important; */
 }
 
 .card {
@@ -52,7 +52,18 @@
 .rtl {
   direction: rtl;
 }
-.rtl .btn-group {
+.btn-group {
   display: flex;
+  justify-content: center; /* Center the button group */
   flex-direction: row-reverse;
+  flex-wrap: wrap; /* Make it responsive */
+}
+
+/* .btn-sm-custome {
+  padding: 2px 5px !important;
+  font-size: 1.5rem !important;
+  color: aliceblue !important;
+} */
+.btn {
+  /* color: aliceblue; */
 }
