@@ -29,6 +29,7 @@ import { AdvertiseComponent } from './organism/advertise/advertise.component';
 import { UploadfileComponent } from './organism/advertise/uploadfile/uploadfile.component';
 import { AlertComponent } from './organism/advertise/uploadfile/alert/alert.component';
 import { AuthInterceptor } from './services/auth.interceptor';
+import { ProvinceAndCityComponent } from './organism/province-and-city/province-and-city.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { AuthInterceptor } from './services/auth.interceptor';
     AdvertiseComponent,
     UploadfileComponent,
     AlertComponent,
+    ProvinceAndCityComponent,
   ],
   imports: [
     NgxMatSelectSearchModule,

@@ -10,17 +10,21 @@ import {
 } from '@angular/animations';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { NavBarService } from './nav-bar.service';
+import { slideRightInOut } from '../services/animation';
 
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
   styleUrls: ['./nav-bar.component.css'],
+
   animations: [
     trigger('changeButtonClass', [
       state('initial', style({ transform: 'rotateX(0deg)', opacity: 1 })),
       state('final', style({ transform: 'rotateX(360deg)', opacity: 1 })),
       transition('initial <=> final', animate('200ms ease-in')),
     ]),
+    slideRightInOut,
   ],
 })
 export class NavBarComponent implements OnInit {
@@ -28,13 +32,25 @@ export class NavBarComponent implements OnInit {
   isModalOpen: boolean = false;
   cityData!: any;
   buttonState: string = 'initial';
+  authUser: any;
+  isTokenExist!: boolean;
 
   constructor(
     private modalServ: ModalServiceService,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private navbarServ: NavBarService
   ) {}
   ngOnInit(): void {
+    const authUser = this.getAuthUserFromLocalStorage();
+    this.handleTokenExistence(authUser.token);
+
+    this.navbarServ.isTokenExist.subscribe((isToken) => {
+      this.isTokenExist = isToken;
+      console.log('///////////////////isToken////////////////', isToken);
+    });
+
+    // localStorage.getItem('authUser') || '{isJobOwner:"",token:"",username:""}'
     this.modalServ.isCollapsed.subscribe((iscolaps) => {
       this.isCollapsed = iscolaps;
     });
@@ -43,6 +59,17 @@ export class NavBarComponent implements OnInit {
       this.cityData = selectedCtData;
       this.buttonState = this.buttonState === 'initial' ? 'final' : 'initial';
     });
+  }
+  private getAuthUserFromLocalStorage(): any {
+    const data = localStorage.getItem('authUser');
+    return data
+      ? JSON.parse(data)
+      : { isJobOwner: 'null', token: 'null', username: '' };
+  }
+
+  private handleTokenExistence(token: string): void {
+    const tokenExists = token !== 'null';
+    this.navbarServ.isTokenExist.next(tokenExists);
   }
 
   openModal() {
@@ -75,6 +102,9 @@ export class NavBarComponent implements OnInit {
         error: (err) => {
           console.error(err);
           // alertify.error('Logout failed: ' + err.message);
+        },
+        complete: () => {
+          this.navbarServ.isTokenExist.next(false);
         },
       });
   }

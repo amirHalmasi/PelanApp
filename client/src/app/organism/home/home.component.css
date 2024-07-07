@@ -1,0 +1,62 @@
+* {
+  font-family: "nazanin", "Courier New", Courier, monospace !important;
+  /* color: #080710 !important; */
+  color: black !important;
+}
+h1 {
+  text-align: center;
+  font-family: "sogand", "Courier New", Courier, monospace !important;
+  font-size: 8rem !important;
+}
+.tracking-in-contract {
+  -webkit-animation: tracking-in-contract 0.8s
+    cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s;
+  animation: tracking-in-contract 0.8s cubic-bezier(0.645, 0.045, 0.355, 1) 0.2s;
+}
+@-webkit-keyframes tracking-in-contract {
+  0% {
+    letter-spacing: 0.5em;
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.6;
+  }
+  100% {
+    letter-spacing: normal;
+    opacity: 1;
+  }
+}
+@keyframes tracking-in-contract {
+  0% {
+    letter-spacing: 1em;
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.6;
+  }
+  100% {
+    letter-spacing: normal;
+    opacity: 1;
+  }
+}
+/* .animation-text {
+  text-align: center;
+  direction: rtl;
+  font-size: 34px;
+  font-weight: 600;
+  min-width: 280px;
+}
+.animated-text span {
+  position: relative;
+}
+.animated-text span::before {
+  content: "developer";
+  color: #ff7f59;
+}
+.animated-text span::after {
+  content: "";
+  position: absolute;
+  height: 1rem;
+  width: 0.2rem;
+  background-color: #ff7f59;
+} */

@@ -15,6 +15,7 @@ import {
 } from 'src/app/services/animation';
 import { numberValidator } from 'src/assets/validation/password.validator';
 import { SweetAlertService } from 'src/app/services/sweetalert.service';
+import { NavBarService } from 'src/app/nav-bar/nav-bar.service';
 interface loginDto {
   token: string;
   username: string;
@@ -31,6 +32,7 @@ export class LoginFromComponent implements OnInit {
   show = faEye;
   hide = faEyeSlash;
   constructor(
+    private navbarServ: NavBarService,
     private router: Router,
     private route: ActivatedRoute,
     private http: HttpClient,
@@ -108,6 +110,7 @@ export class LoginFromComponent implements OnInit {
       },
       complete: () => {
         this.router.navigate(['/']);
+        this.navbarServ.isTokenExist.next(true);
       },
     });
   }
