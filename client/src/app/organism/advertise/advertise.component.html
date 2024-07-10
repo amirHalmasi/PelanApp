@@ -50,8 +50,40 @@
         </div>
         <div class="mt-5">
           <form [formGroup]="advertiseForm">
+            <div class="row">
+              <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>نوع آگهی</mat-label>
+                  <mat-select
+                    (selectionChange)="determineAdvertiveType($event)"
+                    formControlName="advertiseType"
+                    placeholder="نوع آگهی را انتخاب کنید"
+                  >
+                    <mat-option
+                      *ngFor="let advertiseType of advertiseTypes"
+                      [value]="advertiseType.value"
+                    >
+                      {{ advertiseType.desc }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="
+                      advertiseForm.get('advertiseType')?.invalid &&
+                      (advertiseForm.get('advertiseType')?.dirty ||
+                        advertiseForm.get('advertiseType')?.touched)
+                    "
+                  >
+                    <span
+                      *ngIf="advertiseForm.get('advertiseType')?.errors?.['required'] "
+                      >این فیلد نباید خالی باشد.</span
+                    ></mat-error
+                  >
+                </mat-form-field>
+              </div>
+            </div>
             <div class="row mb-3">
               <h3>مشحصات ملک</h3>
+
               <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
                 <mat-form-field class="w-100" appearance="outline">
                   <mat-label>نوع واحد مسکونی</mat-label>
@@ -91,11 +123,14 @@
                   <!-- <mat-label>{{
                     buildingType !== "Villaie" ? "متراژ واحد" : "زیربنا"
                   }}</mat-label> -->
-                  <mat-label>{{
+                  <mat-label *ngIf="advertiseType === 'sell'">{{
                     buildingType && buildingType !== "Villaie"
                       ? "متراژ واحد"
                       : "زیربنا"
                   }}</mat-label>
+                  <mat-label *ngIf="advertiseType === 'rent'"
+                    >متراژ واحد</mat-label
+                  >
                   <input
                     formControlName="houseMeter"
                     matInput
@@ -163,6 +198,7 @@
               </div>
               <div
                 *ngIf="hasHouseWare"
+                [@slideRightInOut]
                 class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
               >
                 <mat-form-field
@@ -199,7 +235,8 @@
               <!-- /////////////////////// -->
               <div
                 *ngIf="
-                  buildingType === 'Villaie' || buildingType === 'ShakhsiSaz'
+                  advertiseType === 'sell' &&
+                  (buildingType === 'Villaie' || buildingType === 'ShakhsiSaz')
                 "
                 [@slideRightInOut]
                 class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
@@ -236,7 +273,8 @@
               </div>
               <div
                 *ngIf="
-                  buildingType === 'Villaie' || buildingType === 'ShakhsiSaz'
+                  advertiseType === 'sell' &&
+                  (buildingType === 'Villaie' || buildingType === 'ShakhsiSaz')
                 "
                 [@slideRightInOut]
                 class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
@@ -267,7 +305,8 @@
                 </mat-form-field>
               </div>
               <div
-                *ngIf="buildingType === 'Villaie'"
+                *ngIf="buildingType === 'Villaie' && advertiseType === 'sell'"
+                [@slideRightInOut]
                 class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
               >
                 <mat-form-field class="w-100" appearance="outline">
@@ -298,6 +337,7 @@
                 *ngIf="
                   buildingType === 'Villaie' || buildingType === 'ShakhsiSaz'
                 "
+                [@slideRightInOut]
                 class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
               >
                 <mat-form-field class="w-100" appearance="outline">
@@ -339,7 +379,11 @@
                   <input
                     formControlName="floor"
                     matInput
-                    placeholder="طبقه واحد فروشی"
+                    placeholder="{{
+                      advertiseType === 'rent'
+                        ? 'طبقه واحد اجاره'
+                        : 'طبقه واحد فروشی'
+                    }}"
                   />
                   <mat-error
                     *ngIf="
@@ -364,6 +408,7 @@
                 *ngIf="
                   buildingType === 'Mojtama' || buildingType === 'ShakhsiSaz'
                 "
+                [@slideRightInOut]
                 class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
               >
                 <mat-form-field class="w-100" appearance="outline">
@@ -400,7 +445,10 @@
                 </mat-form-field>
               </div>
               <div
-                *ngIf="buildingType === 'ShakhsiSaz'"
+                [@slideRightInOut]
+                *ngIf="
+                  buildingType === 'ShakhsiSaz' && advertiseType === 'rent'
+                "
                 class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
               >
                 <mat-form-field class="w-100" appearance="outline">
@@ -430,8 +478,12 @@
               </div>
               <div
                 *ngIf="
-                  buildingType === 'Mojtama' || buildingType === 'ShakhsiSaz'
+                  advertiseType === 'rent' ||
+                  (advertiseType === 'sell' &&
+                    (buildingType === 'Mojtama' ||
+                      buildingType === 'ShakhsiSaz'))
                 "
+                [@slideRightInOut]
                 class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
               >
                 <mat-form-field class="w-100" appearance="outline">
@@ -461,13 +513,20 @@
                   >
                 </mat-form-field>
               </div>
-              <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+              <div
+                [@slideRightInOut]
+                *ngIf="advertiseType === 'sell'"
+                class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+              >
                 <mat-form-field class="w-100" appearance="outline">
                   <mat-label>قیمت</mat-label>
                   <input
                     formControlName="price"
                     matInput
                     placeholder="قیمت را وارد کنید"
+                    #price
+                    (keypress)="onKeyPress_onlyNumber($event)"
+                    (input)="onInputChange(price, 'price')"
                   />
                   <mat-error
                     *ngIf="
@@ -485,8 +544,209 @@
                       >قیمت را به عدد وارد کنید.</span
                     >
                   </mat-error>
+                  <mat-hint *ngIf="priceHint">{{ priceHint }}</mat-hint>
                 </mat-form-field>
               </div>
+              <!-- rent fields -->
+
+              <div
+                [@slideRightInOut]
+                *ngIf="advertiseType === 'rent'"
+                class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+              >
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>وضعیت انشعابات</mat-label>
+                  <mat-select
+                    formControlName="controlType"
+                    placeholder="انشعابات"
+                  >
+                    <mat-option
+                      *ngFor="let controlType of controlTypes"
+                      [value]="controlType.value"
+                    >
+                      {{ controlType.desc }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="
+                      advertiseForm.get('controlType')?.invalid &&
+                      (advertiseForm.get('controlType')?.dirty ||
+                        advertiseForm.get('controlType')?.touched)
+                    "
+                  >
+                    <span
+                      *ngIf="advertiseForm.get('controlType')?.errors?.['required'] "
+                      >این فیلد نباید خالی باشد.</span
+                    ></mat-error
+                  >
+                </mat-form-field>
+              </div>
+              <div
+                [@slideRightInOut]
+                *ngIf="advertiseType === 'rent'"
+                class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+              >
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>نوع واحد اجاره ای</mat-label>
+                  <mat-select
+                    formControlName="rentFlatType"
+                    placeholder="واحد اجاره"
+                  >
+                    <mat-option
+                      *ngFor="let rentFlatType of rentFlatTypes"
+                      [value]="rentFlatType.value"
+                    >
+                      {{ rentFlatType.desc }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="
+                      advertiseForm.get('rentFlatType')?.invalid &&
+                      (advertiseForm.get('rentFlatType')?.dirty ||
+                        advertiseForm.get('rentFlatType')?.touched)
+                    "
+                  >
+                    <span
+                      *ngIf="advertiseForm.get('rentFlatType')?.errors?.['required'] "
+                      >این فیلد نباید خالی باشد.</span
+                    ></mat-error
+                  >
+                </mat-form-field>
+              </div>
+              <div
+                [@slideRightInOut]
+                *ngIf="advertiseType === 'rent'"
+                class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+              >
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>وضعیت واحد اجاره </mat-label>
+                  <mat-select
+                    formControlName="flatStatusType"
+                    placeholder="وضعیت واحد اجاره"
+                  >
+                    <mat-option
+                      *ngFor="let flatStatusType of flatStatusTypes"
+                      [value]="flatStatusType.value"
+                    >
+                      {{ flatStatusType.desc }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="
+                      advertiseForm.get('flatStatusType')?.invalid &&
+                      (advertiseForm.get('flatStatusType')?.dirty ||
+                        advertiseForm.get('flatStatusType')?.touched)
+                    "
+                  >
+                    <span
+                      *ngIf="advertiseForm.get('flatStatusType')?.errors?.['required'] "
+                      >این فیلد نباید خالی باشد.</span
+                    ></mat-error
+                  >
+                </mat-form-field>
+              </div>
+              <div
+                [@slideRightInOut]
+                *ngIf="advertiseType === 'rent'"
+                class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+              >
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>ورودی </mat-label>
+                  <mat-select
+                    formControlName="entryType"
+                    placeholder=" ورودی واحد"
+                  >
+                    <mat-option
+                      *ngFor="let entryType of entryTypes"
+                      [value]="entryType.value"
+                    >
+                      {{ entryType.desc }}
+                    </mat-option>
+                  </mat-select>
+                  <mat-error
+                    *ngIf="
+                      advertiseForm.get('entryType')?.invalid &&
+                      (advertiseForm.get('entryType')?.dirty ||
+                        advertiseForm.get('entryType')?.touched)
+                    "
+                  >
+                    <span
+                      *ngIf="advertiseForm.get('entryType')?.errors?.['required'] "
+                      >این فیلد نباید خالی باشد.</span
+                    ></mat-error
+                  >
+                </mat-form-field>
+              </div>
+              <div
+                [@slideRightInOut]
+                *ngIf="advertiseType === 'rent'"
+                class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+              >
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>مبلغ رهن</mat-label>
+                  <input
+                    formControlName="depositPrice"
+                    matInput
+                    placeholder="مبلغ رهن"
+                    #depositPrice
+                    (keypress)="onKeyPress_onlyNumber($event)"
+                    (input)="onInputChange(depositPrice, 'deposit')"
+                  />
+                  <mat-error
+                    *ngIf="
+                      advertiseForm.get('depositPrice')?.invalid &&
+                      (advertiseForm.get('depositPrice')?.dirty ||
+                        advertiseForm.get('depositPrice')?.touched)
+                    "
+                  >
+                    <span
+                      *ngIf="advertiseForm.get('depositPrice')?.errors?.['required'] "
+                      >این فیلد نباید خالی باشد.</span
+                    >
+                    <span
+                      *ngIf="advertiseForm.get('depositPrice')?.errors?.['invalidNumber'] && !advertiseForm.get('depositPrice')?.errors?.['required']"
+                      >مبلغ رهن را به ریال وارد کنید.</span
+                    >
+                  </mat-error>
+                  <mat-hint *ngIf="depositHint">{{ depositHint }}</mat-hint>
+                </mat-form-field>
+              </div>
+              <div
+                [@slideRightInOut]
+                *ngIf="advertiseType === 'rent'"
+                class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+              >
+                <mat-form-field class="w-100" appearance="outline">
+                  <mat-label>مبلغ اجاره</mat-label>
+                  <input
+                    formControlName="rentPrice"
+                    matInput
+                    placeholder="مبلغ اجاره"
+                    #rentPrice
+                    (keypress)="onKeyPress_onlyNumber($event)"
+                    (input)="onInputChange(rentPrice, 'rent')"
+                  />
+                  <mat-error
+                    *ngIf="
+                      advertiseForm.get('rentPrice')?.invalid &&
+                      (advertiseForm.get('rentPrice')?.dirty ||
+                        advertiseForm.get('rentPrice')?.touched)
+                    "
+                  >
+                    <span
+                      *ngIf="advertiseForm.get('rentPrice')?.errors?.['required'] "
+                      >این فیلد نباید خالی باشد.</span
+                    >
+                    <span
+                      *ngIf="advertiseForm.get('rentPrice')?.errors?.['invalidNumber'] && !advertiseForm.get('rentPrice')?.errors?.['required']"
+                      >مبلغ اجاره را به ریال وارد کنید.</span
+                    >
+                  </mat-error>
+                  <mat-hint *ngIf="rentHint">{{ rentHint }}</mat-hint>
+                </mat-form-field>
+              </div>
+
+              <!-- /////////////////////////////// -->
               <div class="col col-12 p-3">
                 <mat-form-field class="w-100" appearance="outline">
                   <mat-label>توضیحات</mat-label>
@@ -510,6 +770,7 @@
                   </mat-error>
                 </mat-form-field>
               </div>
+
               <app-province-and-city title="محل ملک"></app-province-and-city>
               <div class="row">
                 <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">

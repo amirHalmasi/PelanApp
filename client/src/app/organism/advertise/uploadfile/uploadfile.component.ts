@@ -32,7 +32,7 @@ export class UploadfileComponent {
     const user = JSON.parse(localStorage.getItem('authUser') || '{}');
     this.username = user.username;
     this.advertiseCode = Math.floor(Math.random() * 1000000000); // Generate random advertise code
-    console.log(this.advertiseCode);
+    console.log('advertise Code', this.advertiseCode);
   }
 
   public uploadFiles(files: FileList): void {

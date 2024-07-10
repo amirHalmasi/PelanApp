@@ -33,6 +33,7 @@ export class NavBarComponent implements OnInit {
   cityData!: any;
   buttonState: string = 'initial';
   authUser: any;
+
   isTokenExist!: boolean;
 
   constructor(
