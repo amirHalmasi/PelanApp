@@ -18,7 +18,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { ProvinceListAtmComponent } from './organism/city-province-modal/province-list-atm/province-list-atm.component';
 import { CityListAtmComponent } from './organism/city-province-modal/city-list-atm/city-list-atm.component';
-import { SearchFormComponent } from './organism/city-province-modal/search-form/search-form.component';
+
 import { LoadingAtmComponent } from './organism/loading-atm/loading-atm.component';
 import { LoginFromComponent } from './organism/login-from/login-from.component';
 import { HomeComponent } from './organism/home/home.component';
@@ -30,6 +30,11 @@ import { UploadfileComponent } from './organism/advertise/uploadfile/uploadfile.
 import { AlertComponent } from './organism/advertise/uploadfile/alert/alert.component';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { ProvinceAndCityComponent } from './organism/province-and-city/province-and-city.component';
+import { SellComponent } from './organism/advertise/house-advertise/sell/sell.component';
+import { RentComponent } from './organism/advertise/house-advertise/rent/rent.component';
+import { CommonComponent } from './organism/advertise/house-advertise/common/common.component';
+import { HouseAdvertiseComponent } from './organism/advertise/house-advertise/house-advertise.component';
+import { StoreadvertiseComponent } from './organism/advertise/storeadvertise/storeadvertise.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +45,7 @@ import { ProvinceAndCityComponent } from './organism/province-and-city/province-
     ActionBtnAtomComponent,
     ProvinceListAtmComponent,
     CityListAtmComponent,
-    SearchFormComponent,
+    // SearchFormComponent,
     LoadingAtmComponent,
     LoginFromComponent,
     HomeComponent,
@@ -50,6 +55,11 @@ import { ProvinceAndCityComponent } from './organism/province-and-city/province-
     UploadfileComponent,
     AlertComponent,
     ProvinceAndCityComponent,
+    SellComponent,
+    RentComponent,
+    CommonComponent,
+    HouseAdvertiseComponent,
+    StoreadvertiseComponent,
   ],
   imports: [
     NgxMatSelectSearchModule,

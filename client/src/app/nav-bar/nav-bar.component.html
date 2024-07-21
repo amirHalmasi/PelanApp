@@ -28,23 +28,36 @@
           *ngIf="!isTokenExist"
           [@slideRightInOut]
         >
-          <a class="nav-link" [routerLink]="'login'" aria-current="page"
+          <a
+            class="nav-link"
+            [routerLink]="'login'"
+            aria-current="page"
+            (click)="isCollapsed = !isCollapsed"
             >ورود / ثبت نام</a
           >
         </li>
         <li
           class="nav-item"
           routerLinkActive="active-link"
-          [routerLinkActiveOptions]="{ exact: true }"
           *ngIf="isTokenExist"
           [@slideRightInOut]
         >
-          <a class="nav-link" [routerLink]="'advertise'" aria-current="page"
+          <a
+            class="nav-link"
+            [routerLink]="['/advertise']"
+            aria-current="page"
+            (click)="isCollapsed = !isCollapsed"
             >درج آگهی</a
           >
         </li>
         <li class="nav-item" *ngIf="isTokenExist" [@slideRightInOut]>
-          <a class="nav-link" (click)="logout()" aria-current="page">خروج</a>
+          <a
+            class="nav-link"
+            (click)="isCollapsed = !isCollapsed"
+            (click)="logout()"
+            aria-current="page"
+            >خروج</a
+          >
         </li>
         <li class="nav-item">
           <button

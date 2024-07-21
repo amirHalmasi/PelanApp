@@ -1,0 +1,292 @@
+<!-- <p>common works!</p> -->
+<ng-container [formGroup]="form">
+  <h3>مشحصات کلی ملک</h3>
+  <div formGroupName="commonFields" class="row mb-3">
+    <!-- House Type -->
+    <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>نوع واحد مسکونی</mat-label>
+        <mat-select
+          (selectionChange)="determineHouseType($event)"
+          formControlName="houseType"
+          placeholder="نوع واحد مسکونی"
+        >
+          <mat-option
+            *ngFor="let houseType of houseTypes"
+            [value]="houseType.value"
+          >
+            {{ houseType.desc }}
+          </mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="
+            form.get('commonFields.houseType')?.invalid &&
+            (form.get('commonFields.houseType')?.dirty ||
+              form.get('commonFields.houseType')?.touched)
+          "
+        >
+          <span
+            *ngIf="form.get('commonFields.houseType')?.errors?.['required']"
+          >
+            این فیلد نباید خالی باشد.
+          </span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- House Meter -->
+    <div
+      *ngIf="buildingType"
+      class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+    >
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>{{
+          buildingType === "Villaie" && advertiseType === "sell"
+            ? "زیربنا"
+            : "متراژ واحد"
+        }}</mat-label>
+        <!-- <mat-label *ngIf="advertiseType === 'rent'">متراژ واحد</mat-label> -->
+        <input
+          formControlName="houseMeter"
+          matInput
+          placeholder="{{ buildingType ? 'متراژ واحد' : 'زیربنا' }}"
+          (input)="hint(houseMeter)"
+          #houseMeter
+          (keypress)="onKeyPress_onlyNumber($event)"
+        />
+        <mat-error
+          *ngIf="
+            form.get('commonFields.houseMeter')?.invalid &&
+            (form.get('commonFields.houseMeter')?.dirty ||
+              form.get('commonFields.houseMeter')?.touched)
+          "
+        >
+          <span
+            *ngIf="form.get('commonFields.houseMeter')?.errors?.['required']"
+          >
+            این فیلد نباید خالی باشد.
+          </span>
+          <span
+            *ngIf="form.get('commonFields.houseMeter')?.errors?.['invalidNumber'] && !form.get('commonFields.houseMeter')?.errors?.['required']"
+          >
+            متراژ را به عدد وارد کنید.
+          </span>
+        </mat-error>
+        <mat-hint *ngIf="hintDescription">{{ hintDescription }}</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <!-- Rooms -->
+    <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>تعداد اتاق</mat-label>
+        <input formControlName="rooms" matInput placeholder="تعداد اتاق" />
+        <mat-error
+          *ngIf="
+            form.get('commonFields.rooms')?.invalid &&
+            (form.get('commonFields.rooms')?.dirty ||
+              form.get('commonFields.rooms')?.touched)
+          "
+        >
+          <span *ngIf="form.get('commonFields.rooms')?.errors?.['required']">
+            این فیلد نباید خالی باشد.
+          </span>
+          <span
+            *ngIf="form.get('commonFields.rooms')?.errors?.['invalidNumber'] && !form.get('commonFields.rooms')?.errors?.['required']"
+          >
+            تعداد اتاق را به عدد وارد کنید.
+          </span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Has Elevator -->
+    <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+      <mat-checkbox class="align-item-center mx-2" formControlName="hasElevator"
+        >آسانسور دارد؟</mat-checkbox
+      >
+    </div>
+
+    <!-- Has House Ware -->
+    <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+      <mat-checkbox
+        class="align-item-center mx-2"
+        #housewareCheckbox
+        (change)="hasHouseWare = housewareCheckbox.checked"
+        formControlName="hasHouseWare"
+        >انباری دارد؟</mat-checkbox
+      >
+    </div>
+
+    <!-- Ware House Meter -->
+    <div
+      class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+      *ngIf="hasHouseWare"
+      [@slideRightInOut]
+    >
+      <mat-form-field [@slideRightInOut] class="w-100" appearance="outline">
+        <mat-label>متراژ انباری</mat-label>
+        <input
+          formControlName="wareHouse"
+          matInput
+          placeholder="متراژانباری "
+        />
+        <mat-error
+          *ngIf="
+            form.get('commonFields.wareHouse')?.invalid &&
+            (form.get('commonFields.wareHouse')?.dirty ||
+              form.get('commonFields.wareHouse')?.touched)
+          "
+        >
+          <span
+            *ngIf="form.get('commonFields.wareHouse')?.errors?.['required']"
+          >
+            این فیلد نباید خالی باشد.
+          </span>
+          <span
+            *ngIf="form.get('commonFields.wareHouse')?.errors?.['invalidNumber'] && !form.get('commonFields.wareHouse')?.errors?.['required']"
+          >
+            متراژ انباری را به عدد وارد کنید.
+          </span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Parking Type -->
+    <div
+      class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+      [@slideRightInOut]
+    >
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>پارکینگ</mat-label>
+        <mat-select formControlName="parkingType" placeholder="پارکینگ">
+          <mat-option
+            *ngFor="let parkingType of parkingTypes"
+            [value]="parkingType.value"
+          >
+            {{ parkingType.desc }}
+          </mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="
+            form.get('commonFields.parkingType')?.invalid &&
+            (form.get('commonFields.parkingType')?.dirty ||
+              form.get('commonFields.parkingType')?.touched)
+          "
+        >
+          <span
+            *ngIf="form.get('commonFields.parkingType')?.errors?.['required']"
+          >
+            این فیلد نباید خالی باشد.
+          </span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Building Name -->
+    <div
+      class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+      *ngIf="buildingType === 'Mojtama' || buildingType === 'ShakhsiSaz'"
+      [@slideRightInOut]
+    >
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>{{
+          buildingType === "Mojtama" ? "نام مجتمع" : "نام ساختمان"
+        }}</mat-label>
+        <input
+          formControlName="buildingName"
+          matInput
+          placeholder="{{
+            buildingType === 'Mojtama' ? 'نام مجتمع' : 'نام ساختمان'
+          }}"
+        />
+        <mat-error
+          *ngIf="
+            form.get('commonFields.buildingName')?.invalid &&
+            (form.get('commonFields.buildingName')?.dirty ||
+              form.get('commonFields.buildingName')?.touched)
+          "
+        >
+          <span
+            *ngIf="form.get('commonFields.buildingName')?.errors?.['required']"
+          >
+            این فیلد نباید خالی باشد.
+          </span>
+          <span
+            *ngIf="form.get('commonFields.buildingName')?.errors?.['invalidPersianLetter'] && !form.get('commonFields.buildingName')?.errors?.['required']"
+          >
+            نام مجتمع را به فارسی وارد کنید.
+          </span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Floor -->
+    <div
+      class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+      *ngIf="buildingType === 'Mojtama' || buildingType === 'ShakhsiSaz'"
+      [@slideRightInOut]
+    >
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>{{
+          advertiseType === "rent" ? "طبقه واحد اجاره" : "طبقه واحد فروشی"
+        }}</mat-label>
+        <input
+          formControlName="floor"
+          matInput
+          placeholder="{{
+            advertiseType === 'rent' ? 'طبقه واحد اجاره' : 'طبقه واحد فروشی'
+          }}"
+        />
+        <mat-error
+          *ngIf="
+            form.get('commonFields.floor')?.invalid &&
+            (form.get('commonFields.floor')?.dirty ||
+              form.get('commonFields.floor')?.touched)
+          "
+        >
+          <span *ngIf="form.get('commonFields.floor')?.errors?.['required']">
+            این فیلد نباید خالی باشد.
+          </span>
+          <span
+            *ngIf="form.get('commonFields.floor')?.errors?.['invalidNumber'] && !form.get('commonFields.floor')?.errors?.['required']"
+          >
+            طبقه واحد را به عدد وارد کنید.
+          </span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- Orientations -->
+    <div
+      class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+      *ngIf="buildingType === 'Villaie' || buildingType === 'ShakhsiSaz'"
+      [@slideRightInOut]
+    >
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>ضلع زمین</mat-label>
+        <mat-select formControlName="orientations" placeholder="ضلع زمین">
+          <mat-option
+            *ngFor="let orientation of orientations"
+            [value]="orientation.value"
+          >
+            {{ orientation.desc }}
+          </mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="
+            form.get('commonFields.orientations')?.invalid &&
+            (form.get('commonFields.orientations')?.dirty ||
+              form.get('commonFields.orientations')?.touched)
+          "
+        >
+          <span
+            *ngIf="form.get('commonFields.orientations')?.errors?.['required']"
+          >
+            این فیلد نباید خالی باشد.
+          </span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+  </div></ng-container
+>

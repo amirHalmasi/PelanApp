@@ -14,22 +14,7 @@ import Typed from 'typed.js';
   styleUrls: ['./home.component.css'],
   animations: [flipInOut],
 })
-export class HomeComponent implements OnInit, AfterViewInit {
-  @ViewChild('typedElement') typedElement!: ElementRef;
-
-  ngAfterViewInit(): void {
-    const options = {
-      strings: ['پلان'],
-      typeSpeed: 100,
-      backSpeed: 100,
-      cursorChar: '_',
-      backDelay: 500,
-      startDelay: 1000,
-      loop: false,
-    };
-
-    new Typed('#typed', options);
-  }
+export class HomeComponent implements OnInit {
   ngOnInit(): void {
     // localStorage.clear();
     // authUser ??

@@ -19,6 +19,34 @@
   font-size: 2rem;
   padding: 0 10px;
 }
+.rtl {
+  direction: rtl;
+}
+.btn-group {
+  display: flex;
+  justify-content: center; /* Center the button group */
+  flex-direction: row-reverse;
+  flex-wrap: wrap; /* Make it responsive */
+}
+.bold-shadow {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  color: black;
+}
+/* .btn {
+  background-color: #dc3545;
+  color: aliceblue;
+} */
+.active-link {
+  background-color: #dc3545 !important; /* Example: Change background color */
+  color: white !important; /* Example: Change text color */
+  box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em,
+    rgba(90, 125, 188, 0.05) 0px 0.25em 1em !important;
+}
+.disactive {
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px,
+    rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 48px;
+}
 .square-image-container {
   position: relative;
   width: 100%;
@@ -48,22 +76,4 @@
   height: 100%;
   object-fit: cover; /* Cover the entire container */
   object-position: center; /* Center the image within the container */
-}
-.rtl {
-  direction: rtl;
-}
-.btn-group {
-  display: flex;
-  justify-content: center; /* Center the button group */
-  flex-direction: row-reverse;
-  flex-wrap: wrap; /* Make it responsive */
-}
-
-/* .btn-sm-custome {
-  padding: 2px 5px !important;
-  font-size: 1.5rem !important;
-  color: aliceblue !important;
-} */
-.btn {
-  /* color: aliceblue; */
 }

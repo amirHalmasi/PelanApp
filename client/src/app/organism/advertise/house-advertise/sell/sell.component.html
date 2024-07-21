@@ -1,0 +1,160 @@
+<ng-container [formGroup]="form">
+  <h3 *ngIf="advertiseType === 'sell'">اطلاعات ملک فروشی</h3>
+  <div formGroupName="sellFields" class="row mb-3">
+    <div
+      *ngIf="
+        advertiseType === 'sell' &&
+        (buildingType === 'Villaie' || buildingType === 'ShakhsiSaz')
+      "
+      [@slideRightInOut]
+      class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+    >
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>متراژ زمین</mat-label>
+        <input
+          formControlName="groundMeter"
+          matInput
+          placeholder="متراژ زمین "
+          (input)="hint(groundMeter)"
+          #groundMeter
+          (keypress)="onKeyPress_onlyNumber($event)"
+        />
+        <mat-error
+          *ngIf="
+            form.get('sellFields.groundMeter')?.invalid &&
+            (form.get('sellFields.groundMeter')?.dirty ||
+              form.get('sellFields.groundMeter')?.touched)
+          "
+        >
+          <span
+            *ngIf="form.get('sellFields.groundMeter')?.errors?.['required'] "
+            >این فیلد نباید خالی باشد.</span
+          >
+          <span
+            *ngIf="form.get('sellFields.groundMeter')?.errors?.['invalidNumber'] && !form.get('sellFields.groundMeter')?.errors?.['required']"
+            >متراژ زمین را به عدد وارد کنید.</span
+          >
+        </mat-error>
+        <mat-hint *ngIf="hintDescription">{{ hintDescription }}</mat-hint>
+        <!-- <mat-hint>Hint</mat-hint> -->
+      </mat-form-field>
+    </div>
+    <div
+      *ngIf="
+        advertiseType === 'sell' &&
+        (buildingType === 'Villaie' || buildingType === 'ShakhsiSaz')
+      "
+      [@slideRightInOut]
+      class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+    >
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>تعداد طبقات</mat-label>
+        <input formControlName="floors" matInput placeholder="تعداد طبقات" />
+        <mat-error
+          *ngIf="
+            form.get('sellFields.floors')?.invalid &&
+            (form.get('sellFields.floors')?.dirty ||
+              form.get('sellFields.floors')?.touched)
+          "
+        >
+          <span *ngIf="form.get('sellFields.floors')?.errors?.['required'] "
+            >این فیلد نباید خالی باشد.</span
+          >
+          <span
+            *ngIf="form.get('sellFields.floors')?.errors?.['invalidNumber'] && !form.get('sellFields.floors')?.errors?.['required']"
+            >تعداد طبقات را به عدد وارد کنید.</span
+          >
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div
+      *ngIf="buildingType === 'Villaie' && advertiseType === 'sell'"
+      [@slideRightInOut]
+      class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+    >
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>موقعیت</mat-label>
+        <mat-select formControlName="state" placeholder="موقعیت">
+          <mat-option *ngFor="let state of states" [value]="state.value">
+            {{ state.desc }}
+          </mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="
+            form.get('sellFields.state')?.invalid &&
+            (form.get('sellFields.state')?.dirty ||
+              form.get('sellFields.state')?.touched)
+          "
+        >
+          <span *ngIf="form.get('sellFields.state')?.errors?.['required'] "
+            >این فیلد نباید خالی باشد.</span
+          ></mat-error
+        >
+      </mat-form-field>
+    </div>
+
+    <div
+      [@slideRightInOut]
+      *ngIf="buildingType === 'ShakhsiSaz' && advertiseType === 'sell'"
+      class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+    >
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>تعداد واحد ها</mat-label>
+        <input
+          formControlName="allUnits"
+          matInput
+          placeholder=".تعداد واحدها را وارد کنید"
+        />
+        <mat-error
+          *ngIf="
+            form.get('sellFields.allUnits')?.invalid &&
+            (form.get('sellFields.allUnits')?.dirty ||
+              form.get('sellFields.allUnits')?.touched)
+          "
+        >
+          <span *ngIf="form.get('sellFields.allUnits')?.errors?.['required'] "
+            >این فیلد نباید خالی باشد.</span
+          >
+          <span
+            *ngIf="form.get('sellFields.allUnits')?.errors?.['invalidNumber'] && !form.get('sellFields.allUnits')?.errors?.['required']"
+            >تعداد واحدها را به عدد وارد کنید.</span
+          >
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div
+      [@slideRightInOut]
+      *ngIf="advertiseType === 'sell'"
+      class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+    >
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>قیمت</mat-label>
+        <input
+          formControlName="price"
+          matInput
+          placeholder="قیمت را وارد کنید"
+          #price
+          (keypress)="onKeyPress_onlyNumber($event)"
+          (input)="onInputChange(price, 'price')"
+        />
+        <mat-error
+          *ngIf="
+            form.get('sellFields.price')?.invalid &&
+            (form.get('sellFields.price')?.dirty ||
+              form.get('sellFields.price')?.touched)
+          "
+        >
+          <span *ngIf="form.get('sellFields.price')?.errors?.['required'] "
+            >این فیلد نباید خالی باشد.</span
+          >
+          <span
+            *ngIf="form.get('sellFields.price')?.errors?.['invalidNumber'] && !form.get('sellFields.price')?.errors?.['required']"
+            >قیمت را به عدد وارد کنید.</span
+          >
+        </mat-error>
+        <mat-hint *ngIf="priceHint">{{ priceHint }}</mat-hint>
+      </mat-form-field>
+    </div>
+  </div></ng-container
+>

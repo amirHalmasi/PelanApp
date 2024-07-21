@@ -5,6 +5,8 @@ import { HomeComponent } from './organism/home/home.component';
 import { SignupFromComponent } from './organism/signup-from/signup-from.component';
 import { canDeactivateGuardFn } from './organism/signup-from/can-deactivate-gaurde';
 import { AdvertiseComponent } from './organism/advertise/advertise.component';
+import { HouseAdvertiseComponent } from './organism/advertise/house-advertise/house-advertise.component';
+import { StoreadvertiseComponent } from './organism/advertise/storeadvertise/storeadvertise.component';
 
 const routes: Routes = [
   {
@@ -25,6 +27,21 @@ const routes: Routes = [
     path: 'advertise',
     // canDeactivate: [canDeactivateGuardFn],
     component: AdvertiseComponent,
+    children: [
+      {
+        path: 'house',
+        component: HouseAdvertiseComponent,
+      },
+      {
+        path: 'store',
+        component: StoreadvertiseComponent,
+      },
+      {
+        path: '',
+        redirectTo: 'house',
+        pathMatch: 'full',
+      },
+    ],
   },
   {
     path: '',

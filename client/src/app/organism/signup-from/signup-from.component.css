@@ -1,25 +1,25 @@
 * {
-    font-family: "nazanin", "Courier New", Courier, monospace;
-    color: #080710 !important;
-  }
-  
-  .card {
-    background-color: rgba(229, 249, 255, 0.527);
-    border: 1px solid #ced5f5;
-    border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-    backdrop-filter: blur(10px);
-  }
-  .font-title {
-    font-family: "Rezvan", "Courier New", Courier, monospace !important;
-    font-size: 2rem;
-  }
-  .brand-font {
-    font-family: "sogand", "Courier New", Courier, monospace !important;
-    font-size: 2rem;
-    padding: 0 10px;
-  }
-  /* .background {
+  font-family: "nazanin", "Courier New", Courier, monospace;
+  /* color: #080710 !important; */
+}
+
+.card {
+  background-color: rgba(229, 249, 255, 0.527);
+  border: 1px solid #ced5f5;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  backdrop-filter: blur(10px);
+}
+.font-title {
+  font-family: "Rezvan", "Courier New", Courier, monospace !important;
+  font-size: 2rem;
+}
+.brand-font {
+  font-family: "sogand", "Courier New", Courier, monospace !important;
+  font-size: 2rem;
+  padding: 0 10px;
+}
+/* .background {
     width: 430px;
     height: 520px;
     position: absolute;
@@ -124,4 +124,3 @@
   .social i {
     margin-right: 4px;
   } */
-  

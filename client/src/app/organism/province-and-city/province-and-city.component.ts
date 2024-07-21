@@ -1,6 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, EventEmitter, Input, ViewChild } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormGroupDirective,
+  Validators,
+} from '@angular/forms';
 import { MatSelect } from '@angular/material/select';
 import { ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { slideRightInOut } from 'src/app/services/animation';
@@ -24,8 +30,8 @@ export class ProvinceAndCityComponent {
 
   /** control for the selected bank */
   // hideRequiredControl = ;
-  public provinceCtrl: FormControl = new FormControl('', [Validators.required]);
-  public cityCtrl: FormControl = new FormControl('', [Validators.required]);
+  // public provinceCtrl: FormControl = new FormControl('', [Validators.required]);
+  // public cityCtrl: FormControl = new FormControl('', [Validators.required]);
   // hideRequiredControl: FormControl = new FormControl(false);
 
   /** control for the MatSelect filter keyword */
@@ -44,6 +50,7 @@ export class ProvinceAndCityComponent {
   /** Subject that emits when the component has been destroyed. */
   protected _onDestroy = new Subject<void>();
   isCityInitial: boolean = false;
+  form!: FormGroup;
 
   constructor(
     private modalServ: ModalServiceService,
@@ -51,6 +58,7 @@ export class ProvinceAndCityComponent {
     // private router: Router,
     // private sweetAlertService: SweetAlertService,
     private http: HttpClient,
+    private rootFormGroup: FormGroupDirective,
     private fb: FormBuilder
   ) {}
 
@@ -72,7 +80,7 @@ export class ProvinceAndCityComponent {
   }
   ngOnInit() {
     // console.log(this.hideRequiredControl.value);
-
+    this.form = this.rootFormGroup.control;
     this.modalServ.getProvinces().subscribe({
       next: (receivedProvinces: province[]) => {
         // console.log('select input receivedProvinces', receivedProvinces);
