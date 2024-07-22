@@ -145,6 +145,49 @@ namespace Api.Controllers
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
+    [Authorize]
+    [HttpDelete("deleteAllImages")]
+    public IActionResult deleteAllImages(string username, string advertiseCode)
+    {
+         var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest(new { message = "Token is missing" });
+            }
+        try
+        {
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(advertiseCode) )
+            {
+                return BadRequest("Username, advertise code are required.");
+            }
+
+            var folderName = Path.Combine("Resources", "Images", username, advertiseCode);
+            var deleteFilesPath = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+
+            // if (!System.IO.File.Exists(deleteFilesPath))
+            if (!Directory.Exists(deleteFilesPath))
+            {
+                return NotFound("Directory not found.");
+            }
+
+            // System.IO.File.Delete(deleteFilesPath);
+            Directory.Delete(deleteFilesPath, true);
+            var deleteObject = new
+                {
+                    _folderName = folderName,
+                    _deletedDir = deleteFilesPath,
+                    _message="Directory deleted successfully."
+                };
+
+            return Ok(deleteObject);
+        }
+        catch (Exception ex)
+        {
+            // Log the exception
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
 
 }
 

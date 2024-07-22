@@ -10,21 +10,27 @@
             ثبت آگهی <span class="brand-font">پلان</span>
           </h3>
           <div
-            class="col-xs-12 col-sm-6 col-md-4 col-lg-3 btn-group btn-group"
+            class="col-xs-12 col-sm-6 col-md-4 col-lg-3 btn-group btn-group red-border"
             role="group"
           >
             <a
-              type="button"
+              type="button "
               routerLinkActive="active-link"
               [routerLink]="['house']"
-              class="btn btn-outline-danger"
+              class="btn btn-outline-danger border-x-not disactive"
               >خانه</a
             >
             <a
-              type="button"
+              type="button "
+              routerLinkActive="active-link"
+              class="btn btn-outline-danger border-x-not disactive"
+              >زمین</a
+            >
+            <a
+              type="button "
               routerLinkActive="active-link"
               [routerLink]="['store']"
-              class="btn btn-outline-danger"
+              class="btn btn-outline-danger border-x-not disactive"
               >مغازه</a
             >
           </div>
@@ -36,13 +42,25 @@
           <router-outlet #o="outlet"></router-outlet>
         </main> -->
         <main [@routeAnimations]="prepareRoute(outlet)">
-          <app-uploadfile
+          <!-- <app-uploadfile
             (onUploadFinished)="uploadFinish($event)"
           ></app-uploadfile>
-          <div *ngIf="imageData && imageData.length > 0">
+          <button
+            type="button"
+            class="btn m-1 btn-primary"
+            (click)="deleteAllImages()"
+            *ngIf="fileUploadData?.imageData"
+          >
+            delete All images
+          </button>
+          <div
+            *ngIf="
+              fileUploadData?.imageData && fileUploadData.imageData.length > 0
+            "
+          >
             <div class="row">
               <div
-                *ngFor="let data of imageData"
+                *ngFor="let data of fileUploadData?.imageData"
                 class="col-xs-4 col-sm-4 col-md-3 col-lg-3 col-xl-2 mb-3"
               >
                 <div class="square-image-container my-2">
@@ -64,7 +82,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
           <router-outlet #outlet="outlet"></router-outlet>
         </main>
         <!-- <router-outlet></router-outlet> -->

@@ -30,6 +30,7 @@ const routes: Routes = [
     children: [
       {
         path: 'house',
+        canDeactivate: [canDeactivateGuardFn],
         component: HouseAdvertiseComponent,
       },
       {

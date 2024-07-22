@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { HttpClient, HttpEventType } from '@angular/common/http';
+import { FileUploadservice } from './fileUpload.service';
 
 export interface ImageDto {
   dbPath: string;
@@ -26,7 +27,10 @@ export class UploadfileComponent {
   public alertType!: string;
   @Output() onUploadFinished = new EventEmitter<UploadFinishedEvent>();
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private fileUploadServ: FileUploadservice
+  ) {}
 
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('authUser') || '{}');
@@ -80,6 +84,11 @@ export class UploadfileComponent {
           this.alertType = 'error';
         },
         complete: () => {
+          this.fileUploadServ.uploadedImageData.next({
+            imageData: this.uploadedFiles,
+            username: this.username,
+            advertiseCode: this.advertiseCode.toString(),
+          });
           this.onUploadFinished.emit({
             imageData: this.uploadedFiles,
             username: this.username,

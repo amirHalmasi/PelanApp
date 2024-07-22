@@ -26,8 +26,36 @@
   </div>
 </div> -->
 <!-- ///////////////////////////////////// -->
+<app-uploadfile (onUploadFinished)="uploadFinish($event)"></app-uploadfile>
+
+<div *ngIf="fileUploadData?.imageData && fileUploadData.imageData.length > 0">
+  <div class="row">
+    <div
+      *ngFor="let data of fileUploadData?.imageData"
+      class="col-xs-4 col-sm-4 col-md-3 col-lg-3 col-xl-2 mb-3"
+    >
+      <div class="square-image-container my-2">
+        <button
+          type="button"
+          class="btn m-1 btn-danger"
+          (click)="deleteImage(data)"
+        >
+          <fa-icon
+            class="icon-class justify-content-center align-item-center"
+            [icon]="icon"
+          ></fa-icon>
+        </button>
+        <img
+          [src]="createImagePath(data.dbPath)"
+          class="img-thumbnail square-image rounded"
+          alt="Uploaded Image"
+        />
+      </div>
+    </div>
+  </div>
+</div>
 <div class="mt-5">
-  <form [formGroup]="advertiseForm" (ngSubmit)="submit()">
+  <form [formGroup]="advertiseHouseForm" (ngSubmit)="submit()">
     <div class="row">
       <div
         formGroupName="type"
@@ -49,13 +77,13 @@
           </mat-select>
           <mat-error
             *ngIf="
-              advertiseForm.get('type.advertiseType')?.invalid &&
-              (advertiseForm.get('type.advertiseType')?.dirty ||
-                advertiseForm.get('type.advertiseType')?.touched)
+              advertiseHouseForm.get('type.advertiseType')?.invalid &&
+              (advertiseHouseForm.get('type.advertiseType')?.dirty ||
+                advertiseHouseForm.get('type.advertiseType')?.touched)
             "
           >
             <span
-              *ngIf="advertiseForm.get('type.advertiseType')?.errors?.['required']"
+              *ngIf="advertiseHouseForm.get('type.advertiseType')?.errors?.['required']"
             >
               این فیلد نباید خالی باشد.
             </span>
@@ -99,12 +127,12 @@
           ></textarea>
           <mat-error
             *ngIf="
-              advertiseForm.get('desc')?.invalid ||
-              advertiseForm.get('desc')?.dirty
+              advertiseHouseForm.get('desc')?.invalid ||
+              advertiseHouseForm.get('desc')?.dirty
             "
           >
             <span
-              *ngIf="advertiseForm.get('desc')?.errors?.['invalidPersianLetter'] "
+              *ngIf="advertiseHouseForm.get('desc')?.errors?.['invalidPersianLetter'] "
               >توضیحات را فارسی وارد کنید.</span
             >
           </mat-error>
@@ -124,17 +152,17 @@
           />
           <mat-error
             *ngIf="
-              advertiseForm.get('neighbourhood')?.invalid &&
-              (advertiseForm.get('neighbourhood')?.dirty ||
-                advertiseForm.get('neighbourhood')?.touched)
+              advertiseHouseForm.get('neighbourhood')?.invalid &&
+              (advertiseHouseForm.get('neighbourhood')?.dirty ||
+                advertiseHouseForm.get('neighbourhood')?.touched)
             "
           >
             <span
-              *ngIf="advertiseForm.get('neighbourhood')?.errors?.['required'] "
+              *ngIf="advertiseHouseForm.get('neighbourhood')?.errors?.['required'] "
               >این فیلد نباید خالی باشد.</span
             >
             <span
-              *ngIf="advertiseForm.get('neighbourhood')?.errors?.['invalidPersianLetter'] && !advertiseForm.get('neighbourhood')?.errors?.['required']"
+              *ngIf="advertiseHouseForm.get('neighbourhood')?.errors?.['invalidPersianLetter'] && !advertiseHouseForm.get('neighbourhood')?.errors?.['required']"
               >نام محله را به فارسی وارد کنید.</span
             >
           </mat-error>
@@ -159,7 +187,7 @@
       width: fit-content;
     "
   >
-    {{ advertiseForm.value | json }}
+    {{ advertiseHouseForm.value | json }}
   </pre> -->
   </form>
 </div>

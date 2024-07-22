@@ -1,7 +1,9 @@
 <nav class="navbar navbar-expand-lg bg-light rtl-dir">
   <div class="container-fluid custome-header">
     <!-- <div class="col justify-content-evenly"> -->
-    <a class="navbar-brand" [routerLink]="'home'">پلان</a>
+    <a class="navbar-brand" (click)="isCollapsed = true" [routerLink]="'home'"
+      >پلان</a
+    >
     <button
       class="navbar-toggler"
       type="button"

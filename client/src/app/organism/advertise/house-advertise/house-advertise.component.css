@@ -20,6 +20,37 @@
   padding: 0 10px;
 }
 
+.square-image-container {
+  position: relative;
+  width: 100%;
+  padding-top: 100%; /* Maintain 1:1 aspect ratio (Square) */
+  overflow: hidden;
+}
+
+.square-image-container button {
+  position: absolute;
+  top: 5px; /* Adjust the top position as needed */
+  right: 5px; /* Adjust the right position as needed */
+  z-index: 1; /* Ensure button is above the image */
+}
+
+.icon-class {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 0.8rem;
+}
+.square-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Cover the entire container */
+  object-position: center; /* Center the image within the container */
+}
+
 /* .btn-sm-custome {
     padding: 2px 5px !important;
     font-size: 1.5rem !important;

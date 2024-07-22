@@ -40,40 +40,24 @@
 .active-link {
   background-color: #dc3545 !important; /* Example: Change background color */
   color: white !important; /* Example: Change text color */
-  box-shadow: rgba(67, 71, 85, 0.27) 0px 0px 0.25em,
-    rgba(90, 125, 188, 0.05) 0px 0.25em 1em !important;
+  box-shadow: #dc3546 1px 0px 15px !important;
 }
+
 .disactive {
-  box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px,
-    rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 48px;
-}
-.square-image-container {
-  position: relative;
-  width: 100%;
-  padding-top: 100%; /* Maintain 1:1 aspect ratio (Square) */
-  overflow: hidden;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  transition: box-shadow 0.5s ease-in-out;
 }
 
-.square-image-container button {
-  position: absolute;
-  top: 5px; /* Adjust the top position as needed */
-  right: 5px; /* Adjust the right position as needed */
-  z-index: 1; /* Ensure button is above the image */
+.disactive:hover {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px !important;
 }
-
-.icon-class {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  font-size: 0.8rem;
+.border-x-not {
+  border: 0 !important;
+  /* border-right: 0 !important;
+  border-left: 0 !important; */
 }
-.square-image {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Cover the entire container */
-  object-position: center; /* Center the image within the container */
+.red-border {
+  box-sizing: border-box !important;
+  padding: 0;
+  border: 1px solid #dc3545 !important;
 }

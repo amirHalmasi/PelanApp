@@ -1,1 +1,138 @@
-<p>storeadvertise works!</p>
+<p>store</p>
+<div class="mt-5">
+  <form [formGroup]="advertiseStoreForm" (ngSubmit)="submit()">
+    <div class="row">
+      <div
+        formGroupName="type"
+        class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+      >
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>نوع آگهی</mat-label>
+          <mat-select
+            (selectionChange)="advertiseType = $event.value"
+            formControlName="advertiseType"
+            placeholder="نوع آگهی را انتخاب کنید"
+          >
+            <mat-option
+              *ngFor="let advertiseType of advertiseTypes"
+              [value]="advertiseType.value"
+            >
+              {{ advertiseType.desc }}
+            </mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="
+              advertiseStoreForm.get('type.advertiseType')?.invalid &&
+              (advertiseStoreForm.get('type.advertiseType')?.dirty ||
+                advertiseStoreForm.get('type.advertiseType')?.touched)
+            "
+          >
+            <span
+              *ngIf="advertiseStoreForm.get('type.advertiseType')?.errors?.['required']"
+            >
+              این فیلد نباید خالی باشد.
+            </span>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- *************************** -->
+    <!-- *** common fields input *** -->
+    <!-- *************************** -->
+    <!-- <app-common
+      (buildingTypeEvent)="buildingType = $event"
+      [advertiseTypeInput]="advertiseType"
+    ></app-common> -->
+    <!-- /////////////////////// -->
+    <!-- /// for sell fields /// -->
+    <!-- /////////////////////// -->
+    <!-- <app-sell
+      [buildingType]="buildingType"
+      [advertiseType]="advertiseType"
+    ></app-sell> -->
+    <!-- /////////////////////// -->
+    <!-- ///// rent fields ///// -->
+    <!-- /////////////////////// -->
+    <!-- <app-rent
+      [buildingType]="buildingType"
+      [advertiseType]="advertiseType"
+    ></app-rent> -->
+    <!-- /////////////////////////////// -->
+    <div class="row mb-3">
+      <div class="col col-12 p-3">
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>توضیحات</mat-label>
+          <textarea
+            rows="4"
+            cols="50"
+            matInput
+            formControlName="desc"
+            placeholder="توضیحاتی راجع به منزل بدهید مثلا نوساز است یا تعمیر شده است"
+          ></textarea>
+          <mat-error
+            *ngIf="
+              advertiseStoreForm.get('desc')?.invalid ||
+              advertiseStoreForm.get('desc')?.dirty
+            "
+          >
+            <span
+              *ngIf="advertiseStoreForm.get('desc')?.errors?.['invalidPersianLetter'] "
+              >توضیحات را فارسی وارد کنید.</span
+            >
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <!-- <div formGroupName="location" class="row mb-3"> -->
+      <app-province-and-city title="محل ملک"></app-province-and-city>
+
+      <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>نام محله</mat-label>
+          <input
+            formControlName="neighbourhood"
+            matInput
+            placeholder="نام محله"
+          />
+          <mat-error
+            *ngIf="
+              advertiseStoreForm.get('neighbourhood')?.invalid &&
+              (advertiseStoreForm.get('neighbourhood')?.dirty ||
+                advertiseStoreForm.get('neighbourhood')?.touched)
+            "
+          >
+            <span
+              *ngIf="advertiseStoreForm.get('neighbourhood')?.errors?.['required'] "
+              >این فیلد نباید خالی باشد.</span
+            >
+            <span
+              *ngIf="advertiseStoreForm.get('neighbourhood')?.errors?.['invalidPersianLetter'] && !advertiseStoreForm.get('neighbourhood')?.errors?.['required']"
+              >نام محله را به فارسی وارد کنید.</span
+            >
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <!-- </div> -->
+    <div class="text-center">
+      <p [ngClass]="{ 'text-danger': imageUploadMessage }">
+        {{ imageUploadMessage }}
+      </p>
+      <app-action-btn-atom
+        [btnOptions]="signupBtnOption"
+        [ActionBtnClass]="'btn-primary  my-button px-4'"
+      ></app-action-btn-atom>
+      <!-- <button type="submit" class="btn btn-primary px-3">ورود</button> -->
+    </div>
+    <!-- <pre
+      style="
+        margin-top: 50px;
+        border: 1px solid red;
+        width: fit-content;
+      "
+    >
+      {{ advertiseStoreForm.value | json }}
+    </pre> -->
+  </form>
+</div>

@@ -154,6 +154,11 @@
 
     <!-- Parking Type -->
     <div
+      *ngIf="
+        advertiseType === 'rent' ||
+        (advertiseType === 'sell' &&
+          (buildingType === 'Mojtama' || buildingType === 'ShakhsiSaz'))
+      "
       class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
       [@slideRightInOut]
     >
