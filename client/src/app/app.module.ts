@@ -28,13 +28,16 @@ import { SelectWitSearchComponent } from './organism/signup-from/select-wit-sear
 import { AdvertiseComponent } from './organism/advertise/advertise.component';
 import { UploadfileComponent } from './organism/advertise/uploadfile/uploadfile.component';
 import { AlertComponent } from './organism/advertise/uploadfile/alert/alert.component';
-import { AuthInterceptor } from './services/auth.interceptor';
+// import { AuthInterceptor } from './services/auth.interceptor';
 import { ProvinceAndCityComponent } from './organism/province-and-city/province-and-city.component';
 import { SellComponent } from './organism/advertise/house-advertise/sell/sell.component';
 import { RentComponent } from './organism/advertise/house-advertise/rent/rent.component';
-import { CommonComponent } from './organism/advertise/house-advertise/common/common.component';
+// import { CommonComponent } from './organism/advertise/house-advertise/common-house/common.component';
 import { HouseAdvertiseComponent } from './organism/advertise/house-advertise/house-advertise.component';
 import { StoreadvertiseComponent } from './organism/advertise/storeadvertise/storeadvertise.component';
+import { CommonHouseComponent } from './organism/advertise/house-advertise/common-house/common-house.component';
+import { CommonComponent } from './organism/advertise/storeadvertise/common/common.component';
+import { SellStoreComponent } from './organism/advertise/storeadvertise/sell-store/sell-store.component';
 
 @NgModule({
   declarations: [
@@ -57,9 +60,11 @@ import { StoreadvertiseComponent } from './organism/advertise/storeadvertise/sto
     ProvinceAndCityComponent,
     SellComponent,
     RentComponent,
+    CommonHouseComponent,
     CommonComponent,
     HouseAdvertiseComponent,
     StoreadvertiseComponent,
+    SellStoreComponent,
   ],
   imports: [
     NgxMatSelectSearchModule,

@@ -1,3 +1,31 @@
+<app-uploadfile (onUploadFinished)="uploadFinish($event)"></app-uploadfile>
+
+<div *ngIf="fileUploadData?.imageData && fileUploadData.imageData.length > 0">
+  <div class="row">
+    <div
+      *ngFor="let data of fileUploadData?.imageData"
+      class="col-xs-4 col-sm-4 col-md-3 col-lg-3 col-xl-2 mb-3"
+    >
+      <div class="square-image-container my-2">
+        <button
+          type="button"
+          class="btn m-1 btn-danger"
+          (click)="deleteImage(data)"
+        >
+          <fa-icon
+            class="icon-class justify-content-center align-item-center"
+            [icon]="icon"
+          ></fa-icon>
+        </button>
+        <img
+          [src]="createImagePath(data.dbPath)"
+          class="img-thumbnail square-image rounded"
+          alt="Uploaded Image"
+        />
+      </div>
+    </div>
+  </div>
+</div>
 <p>store</p>
 <div class="mt-5">
   <form [formGroup]="advertiseStoreForm" (ngSubmit)="submit()">
@@ -40,10 +68,7 @@
     <!-- *************************** -->
     <!-- *** common fields input *** -->
     <!-- *************************** -->
-    <!-- <app-common
-      (buildingTypeEvent)="buildingType = $event"
-      [advertiseTypeInput]="advertiseType"
-    ></app-common> -->
+    <app-common [advertiseTypeInput]="advertiseType"></app-common>
     <!-- /////////////////////// -->
     <!-- /// for sell fields /// -->
     <!-- /////////////////////// -->
@@ -68,7 +93,7 @@
             cols="50"
             matInput
             formControlName="desc"
-            placeholder="توضیحاتی راجع به منزل بدهید مثلا نوساز است یا تعمیر شده است"
+            placeholder="توضیحاتی راجع به مغازه بدهید مثلا پر رفت آمد است یا تعمیر شده است و ..."
           ></textarea>
           <mat-error
             *ngIf="
@@ -125,14 +150,8 @@
       ></app-action-btn-atom>
       <!-- <button type="submit" class="btn btn-primary px-3">ورود</button> -->
     </div>
-    <!-- <pre
-      style="
-        margin-top: 50px;
-        border: 1px solid red;
-        width: fit-content;
-      "
-    >
+    <pre style="margin-top: 50px; border: 1px solid red; width: fit-content">
       {{ advertiseStoreForm.value | json }}
-    </pre> -->
+    </pre>
   </form>
 </div>

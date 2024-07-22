@@ -110,7 +110,7 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
         rooms: [null, [Validators.required, numberValidator()]],
         hasElevator: [this.hasElevator],
         hasHouseWare: [this.hasHouseWare],
-        wareHouse: [null, [Validators.required, numberValidator()]],
+        wareHouse: [null],
         parkingType: [null],
         buildingName: [null],
         floor: [null],

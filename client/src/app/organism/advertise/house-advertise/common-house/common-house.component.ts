@@ -8,18 +8,18 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormGroup, FormGroupDirective, Validators } from '@angular/forms';
-import { NumberToWordsService } from '../../numberToword.service';
+// import { NumberToWordsService } from '../../numberToword.service';
 import { numberValidator } from 'src/assets/validation/password.validator';
 import { persianLetterValidator } from 'src/assets/validation/persian-letters.validator';
 import { slideRightInOut } from 'src/app/services/animation';
 
 @Component({
-  selector: 'app-common',
-  templateUrl: './common.component.html',
-  styleUrls: ['./common.component.css'],
+  selector: 'app-common-house',
+  templateUrl: './common-house.component.html',
+  styleUrls: ['./common-house.component.css'],
   animations: [slideRightInOut],
 })
-export class CommonComponent implements OnInit, OnChanges {
+export class CommonHouseComponent implements OnInit, OnChanges {
   @Output() buildingTypeEvent = new EventEmitter<string>();
   @Input() advertiseTypeInput!: string;
   advertiseType!: string;
@@ -100,8 +100,12 @@ export class CommonComponent implements OnInit, OnChanges {
   }
   hint(input: HTMLInputElement) {
     const value = input.value;
-    // console.log('hint', value);
-    this.hintDescription = value + ' متر مربع';
+    if (value.length > 0) {
+      // console.log('hint', value);
+      this.hintDescription = value + ' متر مربع';
+    } else {
+      this.hintDescription = '';
+    }
   }
 
   onKeyPress_onlyNumber(event: KeyboardEvent): void {
@@ -142,6 +146,15 @@ export class CommonComponent implements OnInit, OnChanges {
       // this.buildingTypeEvent.emit('ShakhsiSaz');
       this.setMyValidators('ShakhsiSaz');
     }
+  }
+  determineWareHouseValidator(hasWareHouse: boolean) {
+    const wareHouseControl = this.form.get('commonFields.wareHouse');
+    if (hasWareHouse) {
+      wareHouseControl?.setValidators([Validators.required, numberValidator()]);
+    } else {
+      wareHouseControl?.setValidators(null);
+    }
+    wareHouseControl?.updateValueAndValidity();
   }
   private setMyValidators(buildingName: string): void {
     // const groundMeterControl = this.form.get('sellFields.groundMeter');
