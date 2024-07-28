@@ -8,18 +8,30 @@ import {
 import { FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { numberValidator } from 'src/assets/validation/password.validator';
 import { NumberToWordsService } from '../../numberToword.service';
+import { slideRightInOut } from 'src/app/services/animation';
 
 @Component({
   selector: 'app-sell-store',
   templateUrl: './sell-store.component.html',
   styleUrls: ['./sell-store.component.css'],
+  animations: [slideRightInOut],
 })
 export class SellStoreComponent implements OnInit, OnChanges {
-  states: any = [
-    { value: 'Tejari_Maskuni', desc: 'تجاری مسکونی ' },
-    { value: 'Maskuni', desc: 'مسکونی' },
+  priceHint!: string | null;
+  storeDocuments: any = [
+    { value: 'has-document', desc: 'دارد ' },
+    { value: 'has-document-diposite', desc: 'دارد در رهن' },
+    { value: 'contract', desc: 'قولنامه' },
+
+    { value: 'other', desc: 'سایر' },
   ];
-  @Input() buildingType!: string;
+
+  owneringTypes: any = [
+    { value: 'melkiat', desc: 'ملکیت ' },
+    { value: 'sarghofli', desc: 'سرقفلی ' },
+  ];
+
+  @Input() storeType!: string;
   @Input() advertiseType!: string;
   form!: FormGroup;
   hintDescription!: string;
@@ -32,22 +44,22 @@ export class SellStoreComponent implements OnInit, OnChanges {
 
     if (changes['advertiseType'] && !changes['advertiseType'].firstChange) {
       this.determineAdvertiseType(changes['advertiseType'].currentValue);
-      this.determineHouseTypeValidators(
-        this.buildingType,
+      this.determineStoreTypeValidators(
+        this.storeType,
         changes['advertiseType'].currentValue
       );
       this.advertiseType = changes['advertiseType'].currentValue;
     }
-    if (changes['buildingType'] && !changes['buildingType'].firstChange) {
-      this.determineHouseTypeValidators(
-        changes['buildingType'].currentValue,
+    if (changes['storeType'] && !changes['storeType'].firstChange) {
+      this.determineStoreTypeValidators(
+        changes['storeType'].currentValue,
         this.advertiseType
       );
-      this.buildingType = changes['buildingType'].currentValue;
+      // this.buildingType = changes['buildingType'].currentValue;
     }
   }
   ngOnInit(): void {
-    console.log('buildingType', this.buildingType);
+    // console.log('buildingType', this.buildingType);
     this.form = this.rootFormGroup.control;
   }
   hint(input: HTMLInputElement) {
@@ -55,7 +67,7 @@ export class SellStoreComponent implements OnInit, OnChanges {
     // console.log('hint', value);
     this.hintDescription = value + ' متر مربع';
   }
-  priceHint!: string | null;
+
   onKeyPress_onlyNumber(event: KeyboardEvent): void {
     const charCode = event.which ? event.which : event.keyCode;
     if (charCode < 48 || charCode > 57) {
@@ -68,46 +80,36 @@ export class SellStoreComponent implements OnInit, OnChanges {
       const tomanValue = Math.floor(rialValue / 10);
 
       switch (priceVariableType) {
-        // case 'rent':
-        //   this.rentHint =
-        //     this.numberToWordsService.convertToWords(tomanValue) + ' تومان';
-        //   break;
-
-        // case 'deposit':
-        //   this.depositHint =
-        //     this.numberToWordsService.convertToWords(tomanValue) + ' تومان';
-        //   break;
-
         case 'price':
           this.priceHint =
             this.numberToLetter.convertToWords(tomanValue) + ' تومان';
+          break;
+        default:
+          this.priceHint = '';
           break;
       }
     } else {
       this.priceHint = null;
     }
   }
-  determineHouseTypeValidators(
-    houseTypeSelectValue: string,
+  determineStoreTypeValidators(
+    storeTypeSelectValue: string,
     advertiseType: string
   ) {
-    console.log(houseTypeSelectValue);
+    console.log(storeTypeSelectValue);
     console.log(advertiseType);
     switch (advertiseType) {
       case 'sell':
-        if (houseTypeSelectValue === 'Villaie') {
-          // this.buildingType = 'Villaie';
-          // this.buildingTypeEvent.emit('Villaie');
-
-          this.setMyValidators('Villaie');
-        } else if (houseTypeSelectValue === 'Mojtama') {
-          // this.buildingType = 'Mojtama';
-          // this.buildingTypeEvent.emit('Mojtama');
-          this.setMyValidators('Mojtama');
-        } else {
-          // this.buildingType = 'ShakhsiSaz';
-          // this.buildingTypeEvent.emit('ShakhsiSaz');
-          this.setMyValidators('ShakhsiSaz');
+        if (storeTypeSelectValue === 'bazar') {
+          this.setMyValidators('bazar');
+        } else if (storeTypeSelectValue === 'bazar-che') {
+          this.setMyValidators('bazar-che');
+        } else if (storeTypeSelectValue === 'pasajh') {
+          this.setMyValidators('pasajh');
+        } else if (storeTypeSelectValue === 'city-center') {
+          this.setMyValidators('city-center');
+        } else if (storeTypeSelectValue === 'other') {
+          this.setMyValidators('other');
         }
 
         break;
@@ -115,91 +117,69 @@ export class SellStoreComponent implements OnInit, OnChanges {
         this.resetMyValidators();
     }
   }
-  private setMyValidators(buildingName: string): void {
+  private setMyValidators(storeType: string): void {
     const groundMeterControl = this.form.get('sellFields.groundMeter');
-    // const buildingNameControl = this.form.get('commonFields.buildingName');
-    // const parkingTypeControl = this.form.get('commonFields.parkingType');
-    // const floorControl = this.form.get('commonFields.floor');
-    const floorsControl = this.form.get('sellFields.floors');
-    const statesControl = this.form.get('sellFields.state');
-    // const orientationsControl = this.form.get('commonFields.orientations');
-    const allUnitsControl = this.form.get('sellFields.allUnits');
+    const storeDocumentControl = this.form.get('sellFields.storeDocument');
+    const owneringTypeControl = this.form.get('sellFields.owneringType');
 
-    switch (buildingName) {
-      case 'Villaie':
+    switch (storeType) {
+      case 'other':
+      case 'city-center':
         groundMeterControl?.setValidators([
           Validators.required,
           numberValidator(),
         ]);
-        // buildingNameControl?.setValidators(null);
-        // this.advertiseType === 'sell'
-        //   ? parkingTypeControl?.setValidators(null)
-        //   : parkingTypeControl?.setValidators([Validators.required]);
-        // floorControl?.setValidators(null);
-        statesControl?.setValidators(Validators.required);
-        // orientationsControl?.setValidators(Validators.required);
-        floorsControl?.setValidators([Validators.required, numberValidator()]);
-        allUnitsControl?.setValidators(null);
+
+        storeDocumentControl?.setValidators(Validators.required);
+        owneringTypeControl?.setValidators(Validators.required);
 
         break;
 
-      case 'Mojtama':
+      case 'pasajh':
         groundMeterControl?.setValidators(null);
-        // buildingNameControl?.setValidators([
-        //   Validators.required,
-        //   persianLetterValidator(),
-        // ]);
-        // parkingTypeControl?.setValidators(Validators.required);
-        // floorControl?.setValidators([Validators.required, numberValidator()]);
-        floorsControl?.setValidators(null);
-        statesControl?.setValidators(null);
-        // orientationsControl?.setValidators(null);
-        allUnitsControl?.setValidators(null);
+
+        storeDocumentControl?.setValidators(Validators.required);
+        owneringTypeControl?.setValidators(Validators.required);
+
         break;
-      case 'ShakhsiSaz':
-        groundMeterControl?.setValidators([
+      case 'bazar-che':
+        groundMeterControl?.setValidators(null);
+
+        owneringTypeControl?.setValidators([
           Validators.required,
           numberValidator(),
         ]);
-        // buildingNameControl?.setValidators(null);
-        // buildingNameControl?.updateValueAndValidity();
-        // buildingNameControl?.setValidators(persianLetterValidator());
-        // parkingTypeControl?.setValidators(Validators.required);
-        // floorControl?.setValidators([Validators.required, numberValidator()]);
-        floorsControl?.setValidators([Validators.required, numberValidator()]);
-        statesControl?.setValidators(null);
-        // orientationsControl?.setValidators(Validators.required);
-        allUnitsControl?.setValidators([
+        storeDocumentControl?.setValidators(null);
+
+        break;
+      case 'bazar':
+        groundMeterControl?.setValidators(null);
+
+        owneringTypeControl?.setValidators([
           Validators.required,
           numberValidator(),
         ]);
+        storeDocumentControl?.setValidators(null);
+
         break;
     }
 
     groundMeterControl?.updateValueAndValidity();
-    // buildingNameControl?.updateValueAndValidity();
-    // parkingTypeControl?.updateValueAndValidity();
-    // floorControl?.updateValueAndValidity();
-    floorsControl?.updateValueAndValidity();
-    statesControl?.updateValueAndValidity();
-    // orientationsControl?.updateValueAndValidity();
-    allUnitsControl?.updateValueAndValidity();
+    owneringTypeControl?.updateValueAndValidity();
+    storeDocumentControl?.updateValueAndValidity();
   }
   private resetMyValidators(): void {
     const groundMeterControl = this.form.get('sellFields.groundMeter');
-    const floorsControl = this.form.get('sellFields.floors');
-    const statesControl = this.form.get('sellFields.state');
-    const allUnitsControl = this.form.get('sellFields.allUnits');
+    const storeDocumentControl = this.form.get('sellFields.storeDocument');
+    const owneringTypeControl = this.form.get('sellFields.owneringType');
 
     groundMeterControl?.setValidators(null);
-    statesControl?.setValidators(null);
-    floorsControl?.setValidators(null);
-    allUnitsControl?.setValidators(null);
+    storeDocumentControl?.setValidators(null);
+    owneringTypeControl?.setValidators(null);
 
     groundMeterControl?.updateValueAndValidity();
-    floorsControl?.updateValueAndValidity();
-    statesControl?.updateValueAndValidity();
-    allUnitsControl?.updateValueAndValidity();
+    owneringTypeControl?.updateValueAndValidity();
+    storeDocumentControl?.updateValueAndValidity();
   }
   determineAdvertiseType(advertiseTypeSelectValue: string) {
     const priceControl = this.form.get('sellFields.price');
@@ -211,3 +191,36 @@ export class SellStoreComponent implements OnInit, OnChanges {
     priceControl?.updateValueAndValidity();
   }
 }
+
+// private setMyValidators(storeType: string): void {
+//   const groundMeterControl = this.form.get('sellFields.groundMeter');
+//   const storeDocumentControl = this.form.get('sellFields.storeDocument');
+//   const owneringTypeControl = this.form.get('sellFields.owneringType');
+
+//   switch (storeType) {
+//     case 'other':
+//     case 'city-center':
+//       groundMeterControl?.setValidators([
+//         Validators.required,
+//         numberValidator(),
+//       ]);
+
+//       break;
+
+//     case 'pasajh':
+//     case 'bazar-che':
+//     case 'bazar':
+//       groundMeterControl?.setValidators(null);
+//       break;
+
+//       default:
+//         storeDocumentControl?.setValidators(Validators.required);
+//         owneringTypeControl?.setValidators(Validators.required);
+//         break;
+
+//   }
+
+//   groundMeterControl?.updateValueAndValidity();
+//   owneringTypeControl?.updateValueAndValidity();
+//   storeDocumentControl?.updateValueAndValidity();
+// }

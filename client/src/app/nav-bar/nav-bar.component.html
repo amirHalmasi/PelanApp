@@ -41,6 +41,34 @@
         <li
           class="nav-item"
           routerLinkActive="active-link"
+          *ngIf="cityData"
+          [@slideRightInOut]
+        >
+          <a
+            class="nav-link"
+            [routerLink]="['/rent']"
+            aria-current="page"
+            (click)="isCollapsed = !isCollapsed"
+            >اجاره</a
+          >
+        </li>
+        <li
+          class="nav-item"
+          routerLinkActive="active-link"
+          *ngIf="cityData"
+          [@slideRightInOut]
+        >
+          <a
+            class="nav-link"
+            [routerLink]="['/sell']"
+            aria-current="page"
+            (click)="isCollapsed = !isCollapsed"
+            >فروش</a
+          >
+        </li>
+        <li
+          class="nav-item"
+          routerLinkActive="active-link"
           *ngIf="isTokenExist"
           [@slideRightInOut]
         >
@@ -52,6 +80,7 @@
             >درج آگهی</a
           >
         </li>
+
         <li class="nav-item" *ngIf="isTokenExist" [@slideRightInOut]>
           <a
             class="nav-link"

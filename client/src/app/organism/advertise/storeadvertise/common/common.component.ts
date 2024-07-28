@@ -1,7 +1,16 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { slideRightInOut } from 'src/app/services/animation';
 import { numberValidator } from 'src/assets/validation/password.validator';
+import { persianLetterValidator } from 'src/assets/validation/persian-letters.validator';
 
 @Component({
   selector: 'app-common',
@@ -9,8 +18,9 @@ import { numberValidator } from 'src/assets/validation/password.validator';
   styleUrls: ['./common.component.css'],
   animations: [slideRightInOut],
 })
-export class CommonComponent implements OnChanges {
+export class CommonComponent implements OnChanges, OnInit {
   @Input() advertiseTypeInput!: string;
+  @Output() storeStateEvent = new EventEmitter<string>();
   advertiseType!: string;
   storeType!: string;
   form!: FormGroup;
@@ -40,14 +50,6 @@ export class CommonComponent implements OnChanges {
     { value: 'other', desc: 'سایر' },
   ];
 
-  storeDocuments: any = [
-    { value: 'has-document', desc: 'دارد ' },
-    { value: 'has-document-diposite', desc: 'دارد در رهن' },
-    { value: 'contract', desc: 'قولنامه' },
-
-    { value: 'other', desc: 'سایر' },
-  ];
-
   constructor(private rootFormGroup: FormGroupDirective) {} // this.rootFormGroup is the instant of parent form group component
   ngOnInit(): void {
     this.form = this.rootFormGroup.control;
@@ -60,49 +62,58 @@ export class CommonComponent implements OnChanges {
       changes['advertiseTypeInput'] &&
       !changes['advertiseTypeInput'].firstChange
     ) {
-      // this.determineAdvertiseType(changes['advertiseTypeInput'].currentValue);
-      // this.determineHouseTypeValidators(
-      //   changes['advertiseTypeInput'].currentValue
-      // );
       this.advertiseType = changes['advertiseTypeInput'].currentValue;
     }
   }
 
   determineStoreType(storeStateTypeSelectValue: any) {
-    // console.log(storeStateTypeSelectValue);
-    // console.log(this.form.get('commonFields.floor'));
-    // console.log(this.form.value);
     if (storeStateTypeSelectValue.value === 'bazar') {
       this.storeType = 'bazar';
-      // this.storeStateEvent.emit('Villaie');
-      // const buildingNameControl = this.form.get('commonFields.buildingName');
-      // buildingNameControl?.setValidators([]);
-      // buildingNameControl?.updateValueAndValidity();
-      // this.determineHouseTypeValidators('Villaie');
-
-      // this.setValidators('Villaie');
+      this.storeStateEvent.emit('bazar');
+      this.determineStoreTypeValidators('bazar');
     } else if (storeStateTypeSelectValue.value === 'bazar-che') {
       this.storeType = 'bazar-che';
-      // this.storeStateEvent.emit('Mojtama');
-
-      // const buildingNameControl = this.form.get('commonFields.buildingName');
-      // buildingNameControl?.setValidators([
-      //   Validators.required,
-      //   persianLetterValidator(),
-      // ]);
-      // buildingNameControl?.updateValueAndValidity();
-      // this.determineHouseTypeValidators('Mojtama');
-      // this.setValidators('Mojtama');
+      this.storeStateEvent.emit('bazar-che');
+      this.determineStoreTypeValidators('bazar-che');
     } else if (storeStateTypeSelectValue.value === 'pasajh') {
       this.storeType = 'pasajh';
-      // this.storeStateEvent.emit('ShakhsiSaz');
-      // this.determineHouseTypeValidators('ShakhsiSaz');
-      // this.setValidators('ShakhsiSaz');
+      this.storeStateEvent.emit('pasajh');
+      this.determineStoreTypeValidators('pasajh');
     } else if (storeStateTypeSelectValue.value === 'city-center') {
       this.storeType = 'city-center';
+      this.storeStateEvent.emit('city-center');
+      this.determineStoreTypeValidators('city-center');
     } else if (storeStateTypeSelectValue.value === 'other') {
       this.storeType = 'other';
+      this.storeStateEvent.emit('other');
+      this.determineStoreTypeValidators('other');
     }
+  }
+  private determineStoreTypeValidators(storeTypeSelectValue: string) {
+    console.log(storeTypeSelectValue);
+    if (storeTypeSelectValue === 'pasajh') {
+      this.setMyValidators('pasajh');
+    } else {
+      this.setMyValidators(storeTypeSelectValue);
+    }
+  }
+  private setMyValidators(buildingType: string): void {
+    const floorControl = this.form.get('commonFields.floor');
+    // const orientationsControl = this.form.get('commonFields.orientations');
+    switch (buildingType) {
+      case 'pasajh':
+        floorControl?.setValidators([Validators.required, numberValidator()]);
+        // orientationsControl?.setValidators(Validators.required);
+        break;
+
+      default:
+        floorControl?.setValidators(null);
+        // orientationsControl?.setValidators(null);
+        break;
+    }
+
+    floorControl?.updateValueAndValidity();
+    // orientationsControl?.updateValueAndValidity();
   }
 
   determineBalconyeMeterValidator(hasBalconyeMeter: boolean) {
@@ -140,7 +151,6 @@ export class CommonComponent implements OnChanges {
       this.hintStoreWidth = '';
     }
   }
-
   onKeyPress_onlyNumber(event: KeyboardEvent): void {
     const charCode = event.which ? event.which : event.keyCode;
     if (charCode < 48 || charCode > 57) {

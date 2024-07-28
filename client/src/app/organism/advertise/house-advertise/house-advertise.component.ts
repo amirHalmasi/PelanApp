@@ -126,6 +126,7 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
         state: [null],
         price: [null],
         floors: [null],
+        tejariMeter: [null],
       }),
       //////////////////////////////
       //for rent advertise fields //

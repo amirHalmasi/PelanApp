@@ -1,12 +1,10 @@
-<p>sell-store works!</p>
-
 <ng-container [formGroup]="form">
-  <h3 *ngIf="advertiseType === 'sell'">اطلاعات ملک فروشی</h3>
+  <h3 *ngIf="advertiseType === 'sell'">اطلاعات مغازه فروشی</h3>
   <div formGroupName="sellFields" class="row mb-3">
     <div
       *ngIf="
         advertiseType === 'sell' &&
-        (buildingType === 'Villaie' || buildingType === 'ShakhsiSaz')
+        (storeType === 'other' || storeType === 'city-center')
       "
       [@slideRightInOut]
       class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
@@ -41,86 +39,67 @@
         <!-- <mat-hint>Hint</mat-hint> -->
       </mat-form-field>
     </div>
+
+    <!-- Store Document -->
     <div
-      *ngIf="
-        advertiseType === 'sell' &&
-        (buildingType === 'Villaie' || buildingType === 'ShakhsiSaz')
-      "
-      [@slideRightInOut]
+      *ngIf="advertiseType === 'sell'"
+      @slideRightInOut
       class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
     >
       <mat-form-field class="w-100" appearance="outline">
-        <mat-label>تعداد طبقات</mat-label>
-        <input formControlName="floors" matInput placeholder="تعداد طبقات" />
-        <mat-error
-          *ngIf="
-            form.get('sellFields.floors')?.invalid &&
-            (form.get('sellFields.floors')?.dirty ||
-              form.get('sellFields.floors')?.touched)
-          "
-        >
-          <span *ngIf="form.get('sellFields.floors')?.errors?.['required'] "
-            >این فیلد نباید خالی باشد.</span
+        <mat-label>وضعیت سند </mat-label>
+        <mat-select formControlName="storeDocument" placeholder="وضعیت سند ">
+          <mat-option
+            *ngFor="let storeDocument of storeDocuments"
+            [value]="storeDocument.value"
           >
-          <span
-            *ngIf="form.get('sellFields.floors')?.errors?.['invalidNumber'] && !form.get('sellFields.floors')?.errors?.['required']"
-            >تعداد طبقات را به عدد وارد کنید.</span
-          >
-        </mat-error>
-      </mat-form-field>
-    </div>
-    <div
-      *ngIf="buildingType === 'Villaie' && advertiseType === 'sell'"
-      [@slideRightInOut]
-      class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
-    >
-      <mat-form-field class="w-100" appearance="outline">
-        <mat-label>موقعیت</mat-label>
-        <mat-select formControlName="state" placeholder="موقعیت">
-          <mat-option *ngFor="let state of states" [value]="state.value">
-            {{ state.desc }}
+            {{ storeDocument.desc }}
           </mat-option>
         </mat-select>
         <mat-error
           *ngIf="
-            form.get('sellFields.state')?.invalid &&
-            (form.get('sellFields.state')?.dirty ||
-              form.get('sellFields.state')?.touched)
+            form.get('commonFields.storeDocument')?.invalid &&
+            (form.get('commonFields.storeDocument')?.dirty ||
+              form.get('commonFields.storeDocument')?.touched)
           "
         >
-          <span *ngIf="form.get('sellFields.state')?.errors?.['required'] "
-            >این فیلد نباید خالی باشد.</span
-          ></mat-error
-        >
+          <span
+            *ngIf="form.get('commonFields.storeDocument')?.errors?.['required']"
+          >
+            این فیلد نباید خالی باشد.
+          </span>
+        </mat-error>
       </mat-form-field>
     </div>
 
+    <!-- Store Own type -->
     <div
-      [@slideRightInOut]
-      *ngIf="buildingType === 'ShakhsiSaz' && advertiseType === 'sell'"
+      *ngIf="advertiseType === 'sell'"
+      @slideRightInOut
       class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
     >
       <mat-form-field class="w-100" appearance="outline">
-        <mat-label>تعداد واحد ها</mat-label>
-        <input
-          formControlName="allUnits"
-          matInput
-          placeholder=".تعداد واحدها را وارد کنید"
-        />
+        <mat-label>وضعیت ملکیت </mat-label>
+        <mat-select formControlName="owneringType" placeholder="وضعیت ملکیت ">
+          <mat-option
+            *ngFor="let owneringType of owneringTypes"
+            [value]="owneringType.value"
+          >
+            {{ owneringType.desc }}
+          </mat-option>
+        </mat-select>
         <mat-error
           *ngIf="
-            form.get('sellFields.allUnits')?.invalid &&
-            (form.get('sellFields.allUnits')?.dirty ||
-              form.get('sellFields.allUnits')?.touched)
+            form.get('commonFields.owneringType')?.invalid &&
+            (form.get('commonFields.owneringType')?.dirty ||
+              form.get('commonFields.owneringType')?.touched)
           "
         >
-          <span *ngIf="form.get('sellFields.allUnits')?.errors?.['required'] "
-            >این فیلد نباید خالی باشد.</span
-          >
           <span
-            *ngIf="form.get('sellFields.allUnits')?.errors?.['invalidNumber'] && !form.get('sellFields.allUnits')?.errors?.['required']"
-            >تعداد واحدها را به عدد وارد کنید.</span
+            *ngIf="form.get('commonFields.owneringType')?.errors?.['required']"
           >
+            این فیلد نباید خالی باشد.
+          </span>
         </mat-error>
       </mat-form-field>
     </div>

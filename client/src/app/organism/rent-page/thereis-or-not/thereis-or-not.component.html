@@ -1,0 +1,6 @@
+<span *ngIf="determineCheckedOrUnchecked; else uncheck">
+  <app-checked-svg></app-checked-svg>
+</span>
+<ng-template #uncheck>
+  <app-unchecked-svg></app-unchecked-svg>
+</ng-template>

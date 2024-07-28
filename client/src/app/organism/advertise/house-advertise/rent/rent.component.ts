@@ -45,6 +45,9 @@ export class RentComponent implements OnInit, OnChanges {
   ];
   @Input() buildingType!: string;
   @Input() advertiseType!: string;
+  depositHint!: string | null;
+  rentHint!: string | null;
+  priceHint!: string | null;
   form!: FormGroup;
   hintDescription!: string;
   constructor(
@@ -63,9 +66,7 @@ export class RentComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.form = this.rootFormGroup.control;
   }
-  depositHint!: string | null;
-  rentHint!: string | null;
-  priceHint!: string | null;
+
   onKeyPress_onlyNumber(event: KeyboardEvent): void {
     const charCode = event.which ? event.which : event.keyCode;
     if (charCode < 48 || charCode > 57) {

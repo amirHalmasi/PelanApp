@@ -38,6 +38,19 @@ import { StoreadvertiseComponent } from './organism/advertise/storeadvertise/sto
 import { CommonHouseComponent } from './organism/advertise/house-advertise/common-house/common-house.component';
 import { CommonComponent } from './organism/advertise/storeadvertise/common/common.component';
 import { SellStoreComponent } from './organism/advertise/storeadvertise/sell-store/sell-store.component';
+import { RentStoreComponent } from './organism/advertise/storeadvertise/rent-store/rent-store.component';
+import { GroundAdvertiseComponent } from './organism/advertise/ground-advertise/ground-advertise.component';
+import { RentPageComponent } from './organism/rent-page/rent-page.component';
+import { SellPageComponent } from './organism/sell-page/sell-page.component';
+import { ImageSliderComponent } from './organism/image-slider/image-slider.component';
+// import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { CustomeCarouselModule } from './organism/carousel/carousel.module';
+import { ElevatorSvgComponent } from './organism/rent-page/elevator-svg/elevator-svg.component';
+import { ParkingSvgComponent } from './organism/rent-page/parking-svg/parking-svg.component';
+import { BedroomSvgComponent } from './organism/rent-page/bedroom-svg/bedroom-svg.component';
+import { CheckedSvgComponent } from './organism/rent-page/thereis-or-not/checked-svg/checked-svg.component';
+import { UncheckedSvgComponent } from './organism/rent-page/thereis-or-not/unchecked-svg/unchecked-svg.component';
+import { ThereisOrNotComponent } from './organism/rent-page/thereis-or-not/thereis-or-not.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +78,17 @@ import { SellStoreComponent } from './organism/advertise/storeadvertise/sell-sto
     HouseAdvertiseComponent,
     StoreadvertiseComponent,
     SellStoreComponent,
+    RentStoreComponent,
+    GroundAdvertiseComponent,
+    RentPageComponent,
+    SellPageComponent,
+    ImageSliderComponent,
+    ElevatorSvgComponent,
+    ParkingSvgComponent,
+    BedroomSvgComponent,
+    CheckedSvgComponent,
+    UncheckedSvgComponent,
+    ThereisOrNotComponent,
   ],
   imports: [
     NgxMatSelectSearchModule,
@@ -78,6 +102,8 @@ import { SellStoreComponent } from './organism/advertise/storeadvertise/sell-sto
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    // CarouselModule.forRoot(),
+    CustomeCarouselModule,
   ],
   providers: [
     // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

@@ -7,6 +7,9 @@ import { canDeactivateGuardFn } from './organism/signup-from/can-deactivate-gaur
 import { AdvertiseComponent } from './organism/advertise/advertise.component';
 import { HouseAdvertiseComponent } from './organism/advertise/house-advertise/house-advertise.component';
 import { StoreadvertiseComponent } from './organism/advertise/storeadvertise/storeadvertise.component';
+import { GroundAdvertiseComponent } from './organism/advertise/ground-advertise/ground-advertise.component';
+import { RentPageComponent } from './organism/rent-page/rent-page.component';
+import { SellPageComponent } from './organism/sell-page/sell-page.component';
 
 const routes: Routes = [
   {
@@ -24,6 +27,14 @@ const routes: Routes = [
     component: SignupFromComponent,
   },
   {
+    path: 'rent',
+    component: RentPageComponent,
+  },
+  {
+    path: 'sell',
+    component: SellPageComponent,
+  },
+  {
     path: 'advertise',
     // canDeactivate: [canDeactivateGuardFn],
     component: AdvertiseComponent,
@@ -36,6 +47,10 @@ const routes: Routes = [
       {
         path: 'store',
         component: StoreadvertiseComponent,
+      },
+      {
+        path: 'ground',
+        component: GroundAdvertiseComponent,
       },
       {
         path: '',

@@ -26,7 +26,7 @@
     </div>
   </div>
 </div>
-<p>store</p>
+
 <div class="mt-5">
   <form [formGroup]="advertiseStoreForm" (ngSubmit)="submit()">
     <div class="row">
@@ -68,21 +68,25 @@
     <!-- *************************** -->
     <!-- *** common fields input *** -->
     <!-- *************************** -->
-    <app-common [advertiseTypeInput]="advertiseType"></app-common>
+
+    <app-common
+      [advertiseTypeInput]="advertiseType"
+      (storeStateEvent)="storeType = $event"
+    ></app-common>
     <!-- /////////////////////// -->
     <!-- /// for sell fields /// -->
     <!-- /////////////////////// -->
-    <!-- <app-sell
-      [buildingType]="buildingType"
+    <app-sell-store
+      [storeType]="storeType"
       [advertiseType]="advertiseType"
-    ></app-sell> -->
+    ></app-sell-store>
     <!-- /////////////////////// -->
     <!-- ///// rent fields ///// -->
     <!-- /////////////////////// -->
-    <!-- <app-rent
-      [buildingType]="buildingType"
+    <app-rent-store
+      [storeType]="storeType"
       [advertiseType]="advertiseType"
-    ></app-rent> -->
+    ></app-rent-store>
     <!-- /////////////////////////////// -->
     <div class="row mb-3">
       <div class="col col-12 p-3">

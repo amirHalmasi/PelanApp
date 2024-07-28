@@ -22,6 +22,7 @@ export class SellComponent implements OnInit, OnChanges {
     { value: 'Tejari_Maskuni', desc: 'تجاری مسکونی ' },
     { value: 'Maskuni', desc: 'مسکونی' },
   ];
+  stateType!: string;
   @Input() buildingType!: string;
   @Input() advertiseType!: string;
   form!: FormGroup;
@@ -212,5 +213,21 @@ export class SellComponent implements OnInit, OnChanges {
       priceControl?.setValidators(null);
     }
     priceControl?.updateValueAndValidity();
+  }
+  determineStateType(stateValueSelected: any) {
+    // { value: 'Tejari_Maskuni', desc: 'تجاری مسکونی ' },
+    // { value: 'Maskuni', desc: 'مسکونی' },
+    const tejariMeterControl = this.form.get('sellFields.tejariMeter');
+    if (stateValueSelected.value === 'Maskuni') {
+      this.stateType = 'Maskuni';
+      tejariMeterControl?.setValidators(null);
+    } else if (stateValueSelected.value === 'Tejari_Maskuni') {
+      this.stateType = 'Tejari_Maskuni';
+      tejariMeterControl?.setValidators([
+        Validators.required,
+        numberValidator(),
+      ]);
+    }
+    tejariMeterControl?.updateValueAndValidity();
   }
 }

@@ -74,7 +74,11 @@
     >
       <mat-form-field class="w-100" appearance="outline">
         <mat-label>موقعیت</mat-label>
-        <mat-select formControlName="state" placeholder="موقعیت">
+        <mat-select
+          (selectionChange)="determineStateType($event)"
+          formControlName="state"
+          placeholder="موقعیت"
+        >
           <mat-option *ngFor="let state of states" [value]="state.value">
             {{ state.desc }}
           </mat-option>
@@ -90,6 +94,37 @@
             >این فیلد نباید خالی باشد.</span
           ></mat-error
         >
+      </mat-form-field>
+    </div>
+
+    <div
+      [@slideRightInOut]
+      *ngIf="stateType === 'Tejari_Maskuni' && advertiseType === 'sell'"
+      class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+    >
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>متراژ تجاری</mat-label>
+        <input
+          formControlName="tejariMeter"
+          matInput
+          placeholder=".متراژ تجاری را وارد کنید"
+        />
+        <mat-error
+          *ngIf="
+            form.get('sellFields.tejariMeter')?.invalid &&
+            (form.get('sellFields.tejariMeter')?.dirty ||
+              form.get('sellFields.tejariMeter')?.touched)
+          "
+        >
+          <span
+            *ngIf="form.get('sellFields.tejariMeter')?.errors?.['required'] "
+            >این فیلد نباید خالی باشد.</span
+          >
+          <span
+            *ngIf="form.get('sellFields.tejariMeter')?.errors?.['invalidNumber'] && !form.get('sellFields.tejariMeter')?.errors?.['required']"
+            >متراژ تجاری را به عدد وارد کنید.</span
+          >
+        </mat-error>
       </mat-form-field>
     </div>
 

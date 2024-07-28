@@ -1,0 +1,134 @@
+<!-- <p>rent-store works!</p> -->
+<ng-container [formGroup]="form">
+  <h3 *ngIf="advertiseType === 'rent'">اطلاعات منزل اجاره ای</h3>
+  <div formGroupName="rentFields" class="row mb-3">
+    <div
+      [@slideRightInOut]
+      *ngIf="advertiseType === 'rent'"
+      class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+    >
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>وضعیت انشعابات</mat-label>
+        <mat-select formControlName="controlType" placeholder="انشعابات">
+          <mat-option
+            *ngFor="let controlType of controlTypes"
+            [value]="controlType.value"
+          >
+            {{ controlType.desc }}
+          </mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="
+            form.get('rentFields.controlType')?.invalid &&
+            (form.get('rentFields.controlType')?.dirty ||
+              form.get('rentFields.controlType')?.touched)
+          "
+        >
+          <span
+            *ngIf="form.get('crentields.controlType')?.errors?.['required'] "
+            >این فیلد نباید خالی باشد.</span
+          ></mat-error
+        >
+      </mat-form-field>
+    </div>
+
+    <div
+      [@slideRightInOut]
+      *ngIf="advertiseType === 'rent'"
+      class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+    >
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>نوع اجاره مغازه</mat-label>
+        <mat-select formControlName="rentStoreType" placeholder="نوع اجاره ">
+          <mat-option
+            *ngFor="let rentStoreType of rentStoreTypes"
+            [value]="rentStoreType.value"
+          >
+            {{ rentStoreType.desc }}
+          </mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="
+            form.get('rentFields.rentStoreType')?.invalid &&
+            (form.get('rentFields.rentStoreType')?.dirty ||
+              form.get('rentFields.rentStoreType')?.touched)
+          "
+        >
+          <span
+            *ngIf="form.get('crentields.rentStoreType')?.errors?.['required'] "
+            >این فیلد نباید خالی باشد.</span
+          ></mat-error
+        >
+      </mat-form-field>
+    </div>
+
+    <div
+      [@slideRightInOut]
+      *ngIf="advertiseType === 'rent'"
+      class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+    >
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>مبلغ رهن</mat-label>
+        <input
+          formControlName="depositPrice"
+          matInput
+          placeholder="مبلغ رهن به ریال"
+          #depositPrice
+          (keypress)="onKeyPress_onlyNumber($event)"
+          (input)="onInputChange(depositPrice, 'deposit')"
+        />
+        <mat-error
+          *ngIf="
+            form.get('rentFields.depositPrice')?.invalid &&
+            (form.get('rentFields.depositPrice')?.dirty ||
+              form.get('rentFields.depositPrice')?.touched)
+          "
+        >
+          <span
+            *ngIf="form.get('crentields.depositPrice')?.errors?.['required'] "
+            >این فیلد نباید خالی باشد.</span
+          >
+          <span
+            *ngIf="form.get('rentFields.depositPrice')?.errors?.['invalidNumber'] && !form.get('rentFields.depositPrice')?.errors?.['required']"
+            >مبلغ رهن را به ریال وارد کنید.</span
+          >
+        </mat-error>
+        <mat-hint *ngIf="depositHint">{{ depositHint }}</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <div
+      [@slideRightInOut]
+      *ngIf="advertiseType === 'rent'"
+      class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+    >
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>مبلغ اجاره</mat-label>
+        <input
+          formControlName="rentPrice"
+          matInput
+          placeholder="مبلغ اجاره به ریال"
+          #rentPrice
+          (keypress)="onKeyPress_onlyNumber($event)"
+          (input)="onInputChange(rentPrice, 'rent')"
+        />
+        <mat-error
+          *ngIf="
+            form.get('rentFields.rentPrice')?.invalid &&
+            (form.get('rentFields.rentPrice')?.dirty ||
+              form.get('rentFields.rentPrice')?.touched)
+          "
+        >
+          <span *ngIf="form.get('rentFields.rentPrice')?.errors?.['required'] "
+            >این فیلد نباید خالی باشد.</span
+          >
+          <span
+            *ngIf="form.get('rentFields.rentPrice')?.errors?.['invalidNumber'] && !form.get('rentFields.rentPrice')?.errors?.['required']"
+            >مبلغ اجاره را به ریال وارد کنید.</span
+          >
+        </mat-error>
+        <mat-hint *ngIf="rentHint">{{ rentHint }}</mat-hint>
+      </mat-form-field>
+    </div>
+  </div>
+</ng-container>

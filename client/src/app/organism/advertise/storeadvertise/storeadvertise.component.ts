@@ -28,6 +28,7 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
   // storeState: string = 'Villaie';
 
   advertiseType!: string;
+  storeType!: string;
   imageUploadMessage!: string;
   @Input() uploadedImageData!: string;
   fileUploadData!: fileUploadData;
@@ -103,9 +104,8 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
         hasRestroom: [false],
         hasCeramic: [false],
         balconyeMeter: [null],
-        orientations: [null],
+        // orientations: [null],
         floor: [null],
-        storeDocument: [null],
       }),
 
       // sell fields will add next time
@@ -113,24 +113,22 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
       /////////////////////////////
       //for sell advertise fields//
       /////////////////////////////
-      // sellFields: this.fb.group({
-      //   allUnits: [null],
-      //   groundMeter: [null],
-      //   state: [null],
-      //   price: [null],
-      //   floors: [null],
-      // }),
+      sellFields: this.fb.group({
+        groundMeter: [null],
+        price: [null],
+        storeDocument: [null],
+        owneringType: [null],
+      }),
       //////////////////////////////
       //for rent advertise fields //
       //////////////////////////////
-      // rentFields: this.fb.group({
-      //   entryType: [null],
-      //   depositPrice: [null],
-      //   rentPrice: [null],
-      //   rentFlatType: [null],
-      //   controlType: [null],
-      //   flatStatusType: [null],
-      // }),
+      rentFields: this.fb.group({
+        depositPrice: [null],
+        rentPrice: [null],
+        rentStoreType: [null],
+        controlType: [null],
+        flatStatusType: [null],
+      }),
       // location: this.fb.group({
       neighbourhood: [null, [persianLetterValidator(), Validators.required]],
       city: [null, Validators.required],

@@ -73,9 +73,9 @@ export class CommonHouseComponent implements OnInit, OnChanges {
     if (houseTypeSelectValue.value === 'Villaie') {
       this.buildingType = 'Villaie';
       this.buildingTypeEvent.emit('Villaie');
-      const buildingNameControl = this.form.get('commonFields.buildingName');
-      buildingNameControl?.setValidators([]);
-      buildingNameControl?.updateValueAndValidity();
+      // const buildingNameControl = this.form.get('commonFields.buildingName');
+      // buildingNameControl?.setValidators([]);
+      // buildingNameControl?.updateValueAndValidity();
       this.determineHouseTypeValidators('Villaie');
 
       // this.setValidators('Villaie');
@@ -84,11 +84,11 @@ export class CommonHouseComponent implements OnInit, OnChanges {
       this.buildingTypeEvent.emit('Mojtama');
 
       const buildingNameControl = this.form.get('commonFields.buildingName');
-      buildingNameControl?.setValidators([
-        Validators.required,
-        persianLetterValidator(),
-      ]);
-      buildingNameControl?.updateValueAndValidity();
+      // buildingNameControl?.setValidators([
+      //   Validators.required,
+      //   persianLetterValidator(),
+      // ]);
+      // buildingNameControl?.updateValueAndValidity();
       this.determineHouseTypeValidators('Mojtama');
       // this.setValidators('Mojtama');
     } else {
@@ -133,16 +133,16 @@ export class CommonHouseComponent implements OnInit, OnChanges {
   determineHouseTypeValidators(houseTypeSelectValue: string) {
     console.log(houseTypeSelectValue);
     if (houseTypeSelectValue === 'Villaie') {
-      this.buildingType = 'Villaie';
+      // this.buildingType = 'Villaie';
       // this.buildingTypeEvent.emit('Villaie');
 
       this.setMyValidators('Villaie');
     } else if (houseTypeSelectValue === 'Mojtama') {
-      this.buildingType = 'Mojtama';
+      // this.buildingType = 'Mojtama';
       // this.buildingTypeEvent.emit('Mojtama');
       this.setMyValidators('Mojtama');
     } else {
-      this.buildingType = 'ShakhsiSaz';
+      // this.buildingType = 'ShakhsiSaz';
       // this.buildingTypeEvent.emit('ShakhsiSaz');
       this.setMyValidators('ShakhsiSaz');
     }
@@ -156,13 +156,13 @@ export class CommonHouseComponent implements OnInit, OnChanges {
     }
     wareHouseControl?.updateValueAndValidity();
   }
-  private setMyValidators(buildingName: string): void {
+  private setMyValidators(buildingType: string): void {
     // const groundMeterControl = this.form.get('sellFields.groundMeter');
     const buildingNameControl = this.form.get('commonFields.buildingName');
     const parkingTypeControl = this.form.get('commonFields.parkingType');
     const floorControl = this.form.get('commonFields.floor');
     const orientationsControl = this.form.get('commonFields.orientations');
-    switch (buildingName) {
+    switch (buildingType) {
       case 'Villaie':
         buildingNameControl?.setValidators(null);
         this.advertiseType === 'sell'

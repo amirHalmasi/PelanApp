@@ -1,0 +1,35 @@
+<div *ngIf="images && images.length > 0" class="carousel-container">
+  <img
+    *ngFor="let image of images; let i = index"
+    [src]="image.imageSrc"
+    [alt]="image.imageAlt"
+    [ngClass]="{ 'image-active': selectedIndex === i }"
+  />
+  <div *ngIf="indicators && images.length < 11" class="carousel-dot-container">
+    <span
+      *ngFor="let dot of images; let i = index"
+      class="dot"
+      [ngClass]="{ active: selectedIndex === i }"
+      (click)="selectedImage(i)"
+    ></span>
+  </div>
+  <button *ngIf="controls" class="btn-carousel btn-prev">
+    <fa-icon
+      class="icon-class justify-content-center align-item-center icon-carousel icon-prev"
+      [icon]="icon.right"
+      (click)="onPreviousClick()"
+    ></fa-icon>
+  </button>
+  <button *ngIf="controls" class="btn-carousel btn-next">
+    <fa-icon
+      class="icon-class justify-content-center align-item-center icon-carousel icon-prev"
+      [icon]="icon.left"
+      (click)="onNextClick()"
+    ></fa-icon>
+  </button>
+  <!-- <div *ngIf="indicators && images.length > 10" class="carousel-dot-container">
+    <span *ngFor="let dot of images; let i = index" style="color: white">{{
+      "عکس" + i + "از" + images.length
+    }}</span>
+  </div> -->
+</div>

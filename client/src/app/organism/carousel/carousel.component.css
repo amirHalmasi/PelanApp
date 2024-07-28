@@ -1,0 +1,108 @@
+* {
+  font-family: "nazanin", "Courier New", Courier, monospace !important;
+  /* color: #080710 !important; */
+}
+.carousel-container {
+  position: relative;
+  margin: auto;
+  text-align: center;
+  width: inherit;
+  height: inherit;
+  border-radius: 2px;
+  box-shadow: 0 4px 8px #dce1e1;
+}
+.carousel-container img {
+  display: none;
+  border-radius: 2px;
+}
+.carousel-container img.image-active {
+  display: block;
+  width: 100%;
+  height: 10rem;
+}
+
+/* dots indicators  */
+.carousel-dot-container {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  width: 100%;
+  margin-bottom: 1rem;
+  /* overflow: scroll; */
+  /* stroke-width: 0; */
+}
+.dot {
+  cursor: pointer;
+  width: 8px;
+  height: 8px;
+  margin: 0 3px;
+  border-radius: 50%;
+  background-color: rgba(187, 187, 187, 0.53);
+  border: 2px solid rgb(187, 187, 187);
+  transition: opacity 0.6s ease;
+  opacity: 0.5;
+}
+.dot:hover,
+.active {
+  cursor: pointer;
+  background-color: white !important;
+  border: 2px solid white;
+  opacity: 0.9;
+}
+
+.btn-carousel {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 15%;
+  padding: 0;
+  color: white;
+  text-align: center;
+  background-color: 0 0;
+  border: 0;
+  cursor: pointer;
+}
+.btn-next {
+  background-color: transparent;
+  font-size: 1.5rem;
+  left: 0;
+}
+.btn-prev {
+  background-color: transparent;
+  font-size: 1.5rem;
+  /* border: 2px solid red; */
+  right: 0;
+}
+
+.icon-carousel {
+  color: white;
+  opacity: 0.6;
+  transition: all 0.5s ease;
+}
+.icon-carousel:hover {
+  opacity: 0.9;
+}
+.icon-carousel:active {
+  opacity: 0.6;
+}
+/* animate image slider */
+.fade {
+  animation-name: fadeIn;
+  animation-duration: 1.5s;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 1;
+  }
+}
