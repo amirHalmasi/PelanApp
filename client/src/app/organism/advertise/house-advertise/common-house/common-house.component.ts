@@ -25,6 +25,8 @@ export class CommonHouseComponent implements OnInit, OnChanges {
   advertiseType!: string;
   buildingType!: string;
   hasHouseWare: boolean = false;
+  houseMeterHintDesc: string = '';
+  wareHouseMeterHintDesc: string = '';
   hintDescription!: string;
   form!: FormGroup;
   orientations: any = [
@@ -98,13 +100,26 @@ export class CommonHouseComponent implements OnInit, OnChanges {
       // this.setValidators('ShakhsiSaz');
     }
   }
-  hint(input: HTMLInputElement) {
+  hint(input: HTMLInputElement, hintVariable: string) {
     const value = input.value;
     if (value.length > 0) {
       // console.log('hint', value);
       this.hintDescription = value + ' متر مربع';
     } else {
       this.hintDescription = '';
+    }
+    this.hintDescription;
+    switch (hintVariable) {
+      case 'houseMeter':
+        this.houseMeterHintDesc = this.hintDescription;
+        // this.wareHouseMeterHintDesc = this.hintDescription;
+        break;
+      case 'wareHouseMeter':
+        this.wareHouseMeterHintDesc = this.hintDescription;
+        break;
+
+      default:
+        break;
     }
   }
 
@@ -148,7 +163,7 @@ export class CommonHouseComponent implements OnInit, OnChanges {
     }
   }
   determineWareHouseValidator(hasWareHouse: boolean) {
-    const wareHouseControl = this.form.get('commonFields.wareHouse');
+    const wareHouseControl = this.form.get('commonFields.wareHouseMeter');
     if (hasWareHouse) {
       wareHouseControl?.setValidators([Validators.required, numberValidator()]);
     } else {

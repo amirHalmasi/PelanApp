@@ -135,12 +135,6 @@ export class SignupFromComponent implements OnInit, AfterViewInit, OnDestroy {
         ...formValue.jobOwners,
       };
       delete transformedValue.jobOwners;
-      // transformedValue.phone = formValue.jobOwners.phone
-      //   ? formValue.jobOwners.phone.toString()
-      //   : null;
-      // transformedValue.address = formValue.jobOwners.address
-      //   ? formValue.jobOwners.address.toString()
-      //   : null;
     }
 
     return transformedValue;

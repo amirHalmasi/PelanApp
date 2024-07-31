@@ -1,40 +1,9 @@
-<div
-  style="
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    margin: 10px 0;
-    height: auto; /* Allow div to grow in height */
-    transition: height 0.3s ease; /* Add smooth transition effect */
-    max-height: 13vh; /* Limit maximum height */
-    /* border: 2px solid rgb(102, 255, 0); */
-  "
->
+<div class="navbar-style">
   <app-nav-bar></app-nav-bar>
 </div>
 
-<div
-  style="
-    width: 100%;
-    height: 82vh;
-    margin: 2vh 0;
-    /* border: 2px solid red; */
-    overflow-y: auto;
-    padding: 10px;
-    /* z-index: -10 !important; */
-    /* display: flex;
-
-    flex-direction: row;
-    justify-content: center;
-    align-items: center; */
-  "
-  class="row justify-content-center"
->
+<div class="row justify-content-center router-outlet-style">
   <router-outlet></router-outlet>
 </div>
-<!-- <app-text-input [text]="'نام'"></app-text-input>
-<app-text-input [text]="'امیر'"></app-text-input>
-<app-text-input [text]="'علی'"></app-text-input> -->
+
 <app-city-province-modal></app-city-province-modal>

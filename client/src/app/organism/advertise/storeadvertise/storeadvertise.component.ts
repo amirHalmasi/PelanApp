@@ -69,11 +69,14 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
     // );
   }
   ngOnDestroy(): void {
-    this.fileUploadSubscription.unsubscribe();
+    // this.fileUploadSubscription.unsubscribe();
   }
 
   ngOnInit(): void {
     this.icon = faTrash;
+    const user = JSON.parse(localStorage.getItem('authUser') || '{}');
+    this.username = user.username;
+    this.advertiseCode = Math.floor(Math.random() * 1000000000).toString();
     this.fileUploadSubscription =
       this.fileUploadServ.uploadedImageData.subscribe(
         (data: fileUploadData) => {
@@ -87,6 +90,10 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
           this.username = data.username;
         }
       );
+
+    //
+    //
+    //
     // this.determineHouseType(this.houseTypeSelect.value);
     this.advertiseStoreForm = this.fb.group({
       ////////////////////////////////////

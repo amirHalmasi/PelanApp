@@ -37,6 +37,7 @@
     <!-- House Meter -->
     <div
       *ngIf="buildingType"
+      [@slideRightInOut]
       class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
     >
       <mat-form-field class="w-100" appearance="outline">
@@ -50,7 +51,7 @@
           formControlName="houseMeter"
           matInput
           placeholder="{{ buildingType ? 'متراژ واحد' : 'زیربنا' }}"
-          (input)="hint(houseMeter)"
+          (input)="hint(houseMeter, 'houseMeter')"
           #houseMeter
           (keypress)="onKeyPress_onlyNumber($event)"
         />
@@ -72,7 +73,7 @@
             متراژ را به عدد وارد کنید.
           </span>
         </mat-error>
-        <mat-hint *ngIf="hintDescription">{{ hintDescription }}</mat-hint>
+        <mat-hint *ngIf="houseMeterHintDesc">{{ houseMeterHintDesc }}</mat-hint>
       </mat-form-field>
     </div>
 
@@ -80,7 +81,12 @@
     <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
       <mat-form-field class="w-100" appearance="outline">
         <mat-label>تعداد اتاق</mat-label>
-        <input formControlName="rooms" matInput placeholder="تعداد اتاق" />
+        <input
+          (keypress)="onKeyPress_onlyNumber($event)"
+          formControlName="rooms"
+          matInput
+          placeholder="تعداد اتاق"
+        />
         <mat-error
           *ngIf="
             form.get('commonFields.rooms')?.invalid &&
@@ -128,15 +134,18 @@
       <mat-form-field [@slideRightInOut] class="w-100" appearance="outline">
         <mat-label>متراژ انباری</mat-label>
         <input
-          formControlName="wareHouse"
+          formControlName="wareHouseMeter"
           matInput
           placeholder="متراژانباری "
+          (input)="hint(wareHouseMeter, 'wareHouseMeter')"
+          #wareHouseMeter
+          (keypress)="onKeyPress_onlyNumber($event)"
         />
         <mat-error
           *ngIf="
-            form.get('commonFields.wareHouse')?.invalid &&
-            (form.get('commonFields.wareHouse')?.dirty ||
-              form.get('commonFields.wareHouse')?.touched)
+            form.get('commonFields.wareHouseMeter')?.invalid &&
+            (form.get('commonFields.wareHouseMeter')?.dirty ||
+              form.get('commonFields.wareHouseMeter')?.touched)
           "
         >
           <span
@@ -151,6 +160,9 @@
           </span>
         </mat-error>
       </mat-form-field>
+      <mat-hint *ngIf="wareHouseMeterHintDesc">{{
+        wareHouseMeterHintDesc
+      }}</mat-hint>
     </div>
 
     <!-- Parking Type -->
@@ -230,7 +242,10 @@
     <!-- Floor -->
     <div
       class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
-      *ngIf="buildingType === 'Mojtama' || buildingType === 'ShakhsiSaz'"
+      *ngIf="
+        advertiseType &&
+        (buildingType === 'Mojtama' || buildingType === 'ShakhsiSaz')
+      "
       [@slideRightInOut]
     >
       <mat-form-field class="w-100" appearance="outline">

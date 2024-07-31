@@ -1,5 +1,5 @@
 // import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 // import { faTrash } from '@fortawesome/free-solid-svg-icons';
 // import {
 //   ImageDto,
@@ -51,147 +51,62 @@ export class AdvertiseComponent implements OnInit {
 
   fileUploadData!: fileUploadData;
   currentRoute: string = '';
-  constructor(
-    private router: Router,
-    private http: HttpClient,
-    private activeRoute: ActivatedRoute,
-    private fileUploadServ: FileUploadservice
-  ) {
-    // this.router.events
-    //   .pipe(filter((event) => event instanceof NavigationEnd))
-    //   .subscribe((event: NavigationEnd) => {
-    //     console.log(event);
-    //     // this.currentRoute = event.urlAfterRedirects.split('/').pop() || '';
-    //   });
-  }
-  // isActive(route: string) {
-  //   // return this.currentRoute === route;
-  // }
-  // navigateTo(routAddress: string) {
-  //   this.router.navigate([routAddress], {
-  //     relativeTo: this.activeRoute,
-  //     state: {
-  //       username: this.fileUploadData?.username,
-  //       advertiseCode: this.fileUploadData?.advertiseCode,
-  //       imageData: this.fileUploadData?.imageData,
-  //     },
-  //   });
-  // }
-  // /////////////////////////////////////////////
-  // public uploadFinish = (event: UploadFinishedEvent) => {
-  //   // this.imageData = event.imageData;
-  //   // this.username = event.username;
-  //   // this.advertiseCode = event.advertiseCode;
-  //   this.fileUploadData = {
-  //     imageData: event.imageData,
-  //     username: event.username,
-  //     advertiseCode: event.advertiseCode,
-  //   };
-  //   console.log('uploadFinish', event);
-  //   console.log('FileUploadFinish', this.fileUploadData);
-  //   console.log('event uploaded finish', event);
-  // };
-
-  // createImagePath(serverPath: string) {
-  //   serverPath = serverPath.replace(/\\/g, '/');
-  //   return `https://localhost:5001/${serverPath}`;
-  // }
-  // deleteAllImages() {
-  //   const authUser = JSON.parse(
-  //     localStorage.getItem('authUser') || '{isJobOwner:"",token:"",username:""}'
-  //   );
-  //   // console.log(authUser.token);
-  //   const headers = {
-  //     Authorization: `Bearer ${authUser.token}`,
-  //   };
-  //   this.http
-  //     .delete(
-  //       `https://localhost:5001/api/upload/deleteAllImages?username=${this.getUsername()}&advertiseCode=${this.getAdvertiseCode()}`,
-  //       { headers: headers }
-  //     )
-  //     .subscribe({
-  //       next: (res) => {
-  //         console.log('delete Image response', res);
-  //         // Remove the deleted image from imageData array
-  //         this.fileUploadData.imageData = [];
-  //         console.log(
-  //           'this.imageData delete function next',
-  //           this.fileUploadData.imageData
-  //         );
-  //       },
-  //       error: (error) => {
-  //         console.error('Error deleting image:', error);
-  //         // Handle error
-  //       },
-  //       complete: () => {
-  //         console.log(
-  //           'this.imageData delete function complete',
-  //           this.fileUploadData.imageData
-  //         );
-  //         this.fileUploadServ.uploadedImageData.next({
-  //           ...this.fileUploadData,
-  //           imageData: this.fileUploadData.imageData,
-  //         });
-  //       },
-  //     });
-  // }
-  // deleteImage(image: ImageDto) {
-  //   const authUser = JSON.parse(
-  //     localStorage.getItem('authUser') || '{isJobOwner:"",token:"",username:""}'
-  //   );
-  //   // console.log(authUser.token);
-  //   const headers = {
-  //     Authorization: `Bearer ${authUser.token}`,
-  //   };
-  //   this.http
-  //     .delete(
-  //       `https://localhost:5001/api/upload/delete?username=${this.getUsername()}&advertiseCode=${this.getAdvertiseCode()}&fileName=${
-  //         image.fileName
-  //       }`,
-  //       { headers: headers }
-  //     )
-  //     .subscribe({
-  //       next: (res) => {
-  //         console.log('deleteImage response', res);
-  //         // Remove the deleted image from imageData array
-  //         this.fileUploadData.imageData = this.fileUploadData.imageData.filter(
-  //           (img) => img.dbPath !== image.dbPath
-  //         );
-  //         console.log(
-  //           'this.imageData delete function next',
-  //           this.fileUploadData.imageData
-  //         );
-  //       },
-  //       error: (error) => {
-  //         console.error('Error deleting image:', error);
-  //         // Handle error
-  //       },
-  //       complete: () => {
-  //         console.log(
-  //           'this.imageData delete function complete',
-  //           this.fileUploadData.imageData
-  //         );
-  //         this.fileUploadServ.uploadedImageData.next({
-  //           ...this.fileUploadData,
-  //           imageData: this.fileUploadData.imageData,
-  //         });
-  //       },
-  //     });
-  // }
-
-  // private getUsername(): string {
-  //   // Implement logic to get the username
-  //   return this.fileUploadData.username;
-  // }
-
-  // private getAdvertiseCode(): string {
-  //   // Implement logic to get the advertise code
-  //   return this.fileUploadData.advertiseCode;
-  // }
-
-  ngOnInit(): void {
+  constructor(private renderer: Renderer2, private route: ActivatedRoute) {}
+  // url!: string;
+  ngOnInit() {
     this.icon = faTrash;
+    this.route.url.subscribe((event) => {
+      console.log(event[0].path);
+      // this.updateBackground(event[0].path);
+    }); // UrlSegment[]
+
+    // localStorage.clear();
+    // authUser ??
+    // return data ? JSON.parse(data) : null;
+    // this.getProvinceAndCityData();
   }
+
+  // updateBackground(url: string) {
+  //   const body = document.body;
+  //   console.log(url);
+  //   const homeStyles = {
+  //     backgroundImage: 'url("../../../assets/backiee-70679.jpg")',
+  //     backgroundSize: 'cover',
+  //     backgroundRepeat: 'no-repeat',
+  //     backgroundPosition: 'center center',
+  //   };
+
+  //   const otherRoutes = {
+  //     background: 'linear-gradient(#ffffff, #c5c5c5, #a7a7a7) !important',
+  //   };
+
+  //   if (url !== 'home') {
+  //     this.removeStyles(body, homeStyles);
+  //     this.applyStyles(body, otherRoutes);
+  //   } else {
+  //     this.removeStyles(body, homeStyles);
+  //     // this.applyStyles(body, otherRoutes);
+  //   }
+  // }
+
+  // private applyStyles(element: HTMLElement, styles: { [key: string]: string }) {
+  //   for (const [key, value] of Object.entries(styles)) {
+  //     this.renderer.setStyle(element, key, value);
+  //   }
+  // }
+
+  // private removeStyles(
+  //   element: HTMLElement,
+  //   styles: { [key: string]: string }
+  // ) {
+  //   for (const key of Object.keys(styles)) {
+  //     this.renderer.removeStyle(element, key);
+  //   }
+  // }
+
+  // ngOnInit(): void {
+
+  // }
   prepareRoute(outlet: RouterOutlet) {
     return (
       outlet &&

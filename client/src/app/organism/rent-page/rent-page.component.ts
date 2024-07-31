@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { faBed, faCar } from '@fortawesome/free-solid-svg-icons';
+import { fadeInOut } from 'src/app/services/animation';
 // import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-rent-page',
   templateUrl: './rent-page.component.html',
   styleUrls: ['./rent-page.component.css'],
+  animations: [fadeInOut],
 })
 export class RentPageComponent {
   icons = { bed: faBed, parking: faCar };

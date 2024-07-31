@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { FileUploadservice } from './fileUpload.service';
 
@@ -22,8 +22,8 @@ export class UploadfileComponent {
   public message: string = '';
   public progress: number = 0;
   public uploadedFiles: ImageDto[] = [];
-  public username!: string;
-  public advertiseCode!: number;
+  @Input() username!: string;
+  @Input() advertiseCode!: string;
   public alertType!: string;
   @Output() onUploadFinished = new EventEmitter<UploadFinishedEvent>();
 
@@ -33,9 +33,9 @@ export class UploadfileComponent {
   ) {}
 
   ngOnInit(): void {
-    const user = JSON.parse(localStorage.getItem('authUser') || '{}');
-    this.username = user.username;
-    this.advertiseCode = Math.floor(Math.random() * 1000000000); // Generate random advertise code
+    // const user = JSON.parse(localStorage.getItem('authUser') || '{}');
+    // this.username = user.username;
+    // this.advertiseCode = Math.floor(Math.random() * 1000000000); // Generate random advertise code
     console.log('advertise Code', this.advertiseCode);
   }
 

@@ -49,6 +49,17 @@ export class SellStoreComponent implements OnInit, OnChanges {
         changes['advertiseType'].currentValue
       );
       this.advertiseType = changes['advertiseType'].currentValue;
+      const storeDocumentControl = this.form.get('sellFields.storeDocument');
+      const owneringTypeControl = this.form.get('sellFields.owneringType');
+      if (changes['advertiseType'].currentValue === 'sell') {
+        storeDocumentControl?.setValidators([Validators.required]);
+        owneringTypeControl?.setValidators([Validators.required]);
+      } else {
+        storeDocumentControl?.setValidators(null);
+        owneringTypeControl?.setValidators(null);
+      }
+      storeDocumentControl?.updateValueAndValidity();
+      owneringTypeControl?.updateValueAndValidity();
     }
     if (changes['storeType'] && !changes['storeType'].firstChange) {
       this.determineStoreTypeValidators(
@@ -96,8 +107,8 @@ export class SellStoreComponent implements OnInit, OnChanges {
     storeTypeSelectValue: string,
     advertiseType: string
   ) {
-    console.log(storeTypeSelectValue);
-    console.log(advertiseType);
+    // console.log(storeTypeSelectValue);
+    // console.log(advertiseType);
     switch (advertiseType) {
       case 'sell':
         if (storeTypeSelectValue === 'bazar') {

@@ -22,6 +22,13 @@ export class SellComponent implements OnInit, OnChanges {
     { value: 'Tejari_Maskuni', desc: 'تجاری مسکونی ' },
     { value: 'Maskuni', desc: 'مسکونی' },
   ];
+  houseDocuments: any = [
+    { value: 'has-document', desc: 'دارد ' },
+    { value: 'has-document-diposite', desc: 'دارد در رهن' },
+    { value: 'contract', desc: 'قولنامه' },
+
+    { value: 'other', desc: 'سایر' },
+  ];
   stateType!: string;
   @Input() buildingType!: string;
   @Input() advertiseType!: string;
@@ -41,6 +48,14 @@ export class SellComponent implements OnInit, OnChanges {
         changes['advertiseType'].currentValue
       );
       this.advertiseType = changes['advertiseType'].currentValue;
+
+      const houseDocumentControl = this.form.get('sellFields.houseDocument');
+      if (changes['advertiseType'].currentValue === 'sell') {
+        houseDocumentControl?.setValidators([Validators.required]);
+      } else {
+        houseDocumentControl?.setValidators(null);
+      }
+      houseDocumentControl?.updateValueAndValidity();
     }
     if (changes['buildingType'] && !changes['buildingType'].firstChange) {
       this.determineHouseTypeValidators(
@@ -135,13 +150,7 @@ export class SellComponent implements OnInit, OnChanges {
           Validators.required,
           numberValidator(),
         ]);
-        // buildingNameControl?.setValidators(null);
-        // this.advertiseType === 'sell'
-        //   ? parkingTypeControl?.setValidators(null)
-        //   : parkingTypeControl?.setValidators([Validators.required]);
-        // floorControl?.setValidators(null);
         statesControl?.setValidators(Validators.required);
-        // orientationsControl?.setValidators(Validators.required);
         floorsControl?.setValidators([Validators.required, numberValidator()]);
         allUnitsControl?.setValidators(null);
 

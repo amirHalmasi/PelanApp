@@ -1,4 +1,8 @@
-<app-uploadfile (onUploadFinished)="uploadFinish($event)"></app-uploadfile>
+<app-uploadfile
+  [username]="username"
+  [advertiseCode]="advertiseCode"
+  (onUploadFinished)="uploadFinish($event)"
+></app-uploadfile>
 
 <div *ngIf="fileUploadData?.imageData && fileUploadData.imageData.length > 0">
   <div class="row">

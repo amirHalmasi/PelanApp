@@ -49,7 +49,12 @@
     >
       <mat-form-field class="w-100" appearance="outline">
         <mat-label>تعداد طبقات</mat-label>
-        <input formControlName="floors" matInput placeholder="تعداد طبقات" />
+        <input
+          (keypress)="onKeyPress_onlyNumber($event)"
+          formControlName="floors"
+          matInput
+          placeholder="تعداد طبقات"
+        />
         <mat-error
           *ngIf="
             form.get('sellFields.floors')?.invalid &&
@@ -108,6 +113,7 @@
           formControlName="tejariMeter"
           matInput
           placeholder=".متراژ تجاری را وارد کنید"
+          (keypress)="onKeyPress_onlyNumber($event)"
         />
         <mat-error
           *ngIf="
@@ -136,6 +142,7 @@
       <mat-form-field class="w-100" appearance="outline">
         <mat-label>تعداد واحد ها</mat-label>
         <input
+          (keypress)="onKeyPress_onlyNumber($event)"
           formControlName="allUnits"
           matInput
           placeholder=".تعداد واحدها را وارد کنید"
@@ -189,6 +196,38 @@
           >
         </mat-error>
         <mat-hint *ngIf="priceHint">{{ priceHint }}</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <!-- Store Document -->
+    <div
+      *ngIf="advertiseType === 'sell'"
+      @slideRightInOut
+      class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+    >
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>وضعیت سند </mat-label>
+        <mat-select formControlName="houseDocument" placeholder="وضعیت سند ">
+          <mat-option
+            *ngFor="let houseDocument of houseDocuments"
+            [value]="houseDocument.value"
+          >
+            {{ houseDocument.desc }}
+          </mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="
+            form.get('commonFields.houseDocument')?.invalid &&
+            (form.get('commonFields.houseDocument')?.dirty ||
+              form.get('commonFields.houseDocument')?.touched)
+          "
+        >
+          <span
+            *ngIf="form.get('commonFields.houseDocument')?.errors?.['required']"
+          >
+            این فیلد نباید خالی باشد.
+          </span>
+        </mat-error>
       </mat-form-field>
     </div>
   </div></ng-container

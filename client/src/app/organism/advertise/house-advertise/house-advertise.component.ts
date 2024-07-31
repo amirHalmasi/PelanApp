@@ -24,7 +24,12 @@ import {
 import { Subscription } from 'rxjs';
 import { CanDeactivateType } from '../../signup-from/can-deactivate-gaurde';
 import { SweetAlertService } from 'src/app/services/sweetalert.service';
-
+interface advertiseSuccesDto {
+  AdvertiseType: string;
+  AdvertiseSubmitDate: string;
+  Username: string;
+  AdvertiseCode: string;
+}
 @Component({
   selector: 'app-house-advertise',
   templateUrl: './house-advertise.component.html',
@@ -78,11 +83,14 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
     // );
   }
   ngOnDestroy(): void {
-    this.fileUploadSubscription.unsubscribe();
+    // this.fileUploadSubscription.unsubscribe();
   }
 
   ngOnInit(): void {
     this.icon = faTrash;
+    const user = JSON.parse(localStorage.getItem('authUser') || '{}');
+    this.username = user.username;
+    this.advertiseCode = Math.floor(Math.random() * 1000000000).toString();
     this.fileUploadSubscription =
       this.fileUploadServ.uploadedImageData.subscribe(
         (data: fileUploadData) => {
@@ -96,6 +104,9 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
           this.username = data.username;
         }
       );
+    //
+    // /////////////////////
+    //
     // this.determineHouseType(this.houseTypeSelect.value);
     this.advertiseHouseForm = this.fb.group({
       ////////////////////////////////////
@@ -110,7 +121,7 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
         rooms: [null, [Validators.required, numberValidator()]],
         hasElevator: [this.hasElevator],
         hasHouseWare: [this.hasHouseWare],
-        wareHouse: [null],
+        wareHouseMeter: [null],
         parkingType: [null],
         buildingName: [null],
         floor: [null],
@@ -127,6 +138,7 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
         price: [null],
         floors: [null],
         tejariMeter: [null],
+        houseDocument: [null],
       }),
       //////////////////////////////
       //for rent advertise fields //
@@ -145,71 +157,74 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
       province: [null, Validators.required],
       // }),
 
-      desc: [null, persianLetterValidator()],
+      desc: [
+        null,
+        // persianLetterValidator()
+      ],
     });
   }
-  submit() {
-    // this.imageData = event.imageData;
-    // this.username = event.username;
-    // this.advertiseCode = event.advertiseCode;
-    if (!this.imageData.length) {
-      this.imageUploadMessage = 'عکس آگهی را آپلود کنید.';
-      return;
-    }
-    // this.fileUploadServ.uploadedImageData.subscribe((data: fileUploadData) => {
-    //   console.log('upload image Data house', data);
-    //   if (data.imageData.length > 0) {
-    //     this.imageData = data.imageData;
-    //   }
-    //   this.imageData = [];
-    // });
-    this.imageUploadMessage = '';
-    console.log(this.advertiseCode, this.imageData, this.username);
-    console.log(this.advertiseHouseForm.value);
+  // submit() {
+  //   // this.imageData = event.imageData;
+  //   // this.username = event.username;
+  //   // this.advertiseCode = event.advertiseCode;
+  //   // this.fileUploadServ.uploadedImageData.subscribe((data: fileUploadData) => {
+  //   //   console.log('upload image Data house', data);
+  //   //   if (data.imageData.length > 0) {
+  //   //     this.imageData = data.imageData;
+  //   //   }
+  //   //   this.imageData = [];
+  //   // });
+  //   if (!this.imageData.length) {
+  //     this.imageUploadMessage = 'عکس آگهی را آپلود کنید.';
+  //     return;
+  //   }
+  //   this.imageUploadMessage = '';
+  //   console.log(this.advertiseCode, this.imageData, this.username);
+  //   console.log(this.advertiseHouseForm.value);
 
-    // console.log(transformedValue);
+  //   // console.log(transformedValue);
 
-    // let registerUrl = 'https://localhost:5001/api/account/register';
+  //   // let registerUrl = 'https://localhost:5001/api/account/register';
 
-    // this.http.post(registerUrl, transformedValue).subscribe({
-    //   next: (res) => {
-    //     console.log(res);
-    //   },
-    //   error: (err) => {
-    //     // console.error(err);
-    //     return new Promise<boolean>(() => {
-    //       this.sweetAlertService.floatAlert('مشخصات فردی تکراری است ', 'error');
-    //     });
-    //   },
-    //   complete: () => {
-    //     this.isSignin = true;
-    //     if (this.isSignin) {
-    //       // return confirm('Do you really want to leave?');
-    //       //convert defalt confirm to sweetalert2 one👇
-    //       return new Promise<boolean>((resolve) => {
-    //         this.sweetAlertService
-    //           .alert(
-    //             'توجه',
-    //             'نام کاربری کد ملی و کلمه عبور شماره موبایل است',
-    //             'warning'
-    //           )
-    //           .then((result) => {
-    //             // console.log('sweetalert result');
-    //             // console.log(result);
-    //             if (result.isConfirmed) {
-    //               this.router.navigate(['/login']);
-    //             } // Resolve with the user's choice
-    //           })
-    //           .catch(() => {
-    //             resolve(false); // In case of an error, consider it as not confirmed
-    //           });
-    //       });
-    //     } else {
-    //       return true;
-    //     }
-    //   },
-    // });
-  }
+  //   // this.http.post(registerUrl, transformedValue).subscribe({
+  //   //   next: (res) => {
+  //   //     console.log(res);
+  //   //   },
+  //   //   error: (err) => {
+  //   //     // console.error(err);
+  //   //     return new Promise<boolean>(() => {
+  //   //       this.sweetAlertService.floatAlert('مشخصات فردی تکراری است ', 'error');
+  //   //     });
+  //   //   },
+  //   //   complete: () => {
+  //   //     this.isSignin = true;
+  //   //     if (this.isSignin) {
+  //   //       // return confirm('Do you really want to leave?');
+  //   //       //convert defalt confirm to sweetalert2 one👇
+  //   //       return new Promise<boolean>((resolve) => {
+  //   //         this.sweetAlertService
+  //   //           .alert(
+  //   //             'توجه',
+  //   //             'نام کاربری کد ملی و کلمه عبور شماره موبایل است',
+  //   //             'warning'
+  //   //           )
+  //   //           .then((result) => {
+  //   //             // console.log('sweetalert result');
+  //   //             // console.log(result);
+  //   //             if (result.isConfirmed) {
+  //   //               this.router.navigate(['/login']);
+  //   //             } // Resolve with the user's choice
+  //   //           })
+  //   //           .catch(() => {
+  //   //             resolve(false); // In case of an error, consider it as not confirmed
+  //   //           });
+  //   //       });
+  //   //     } else {
+  //   //       return true;
+  //   //     }
+  //   //   },
+  //   // });
+  // }
 
   public uploadFinish = (event: UploadFinishedEvent) => {
     // this.imageData = event.imageData;
@@ -291,11 +306,114 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
   private getUsername(): string {
     // Implement logic to get the username
     return this.fileUploadData.username;
+    // return this.username;
   }
 
   private getAdvertiseCode(): string {
     // Implement logic to get the advertise code
     return this.fileUploadData.advertiseCode;
+    // return this.advertiseCode;
+  }
+
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //submit house advertise
+
+  private transformFormValue(formValue: any): any {
+    let transformedValue = {
+      ...formValue.commonFields,
+      ...formValue.rentFields,
+      ...formValue.sellFields,
+      ...formValue.type,
+      ...formValue,
+      city: formValue.city.city_id.toString(),
+      province: formValue.province.province_id.toString(),
+      username: this.username,
+      advertiseCode: this.advertiseCode,
+    };
+    delete transformedValue.commonFields;
+    delete transformedValue.sellFields;
+    delete transformedValue.rentFields;
+    delete transformedValue.type;
+
+    // If the user is a job owner, add `phone` and `address` from `jobOwners`
+    // if (jobOwner && formValue.jobOwners) {
+    //   transformedValue = {
+    //     ...transformedValue,
+    //     ...formValue.jobOwners,
+    //   };
+    //   delete transformedValue.jobOwners;
+
+    // }
+
+    return transformedValue;
+  }
+  submitHouseAdvertise() {
+    const transformedValue = this.transformFormValue(
+      this.advertiseHouseForm.value
+    );
+    console.log(transformedValue);
+    if (!this.imageData.length) {
+      this.imageUploadMessage = 'عکس آگهی را آپلود کنید.';
+      return;
+    }
+    this.imageUploadMessage = '';
+    console.log(this.advertiseHouseForm.value);
+    let loginUrl = 'https://localhost:5001/api/houseadvertise/rent';
+    const authUser = JSON.parse(
+      localStorage.getItem('authUser') || '{isJobOwner:"",token:"",username:""}'
+    );
+
+    const headers = {
+      Authorization: `Bearer ${authUser.token}`,
+    };
+
+    this.http
+      .post<advertiseSuccesDto>(loginUrl, this.advertiseHouseForm.value, {
+        headers: headers,
+      })
+      .subscribe({
+        next: (res: advertiseSuccesDto) => {
+          console.log(res);
+          if (res) {
+            console.log(res);
+          }
+        },
+        error: (err) => {
+          console.error(err.error);
+          // let errorMessage = '';
+
+          // return new Promise<boolean>(() => {
+          this.sweetAlertService.floatAlert('خطا در ثبت آگهی', 'error');
+          // });
+        },
+        complete: () => {
+          this.router.navigate(['/']);
+          // this.navbarServ.isTokenExist.next(true);
+        },
+      });
+  }
+
+  //
+  //
+  //
+  //
+  //
+  //
+  onKeyPress_onlyPersianLettersAndSpace(event: KeyboardEvent): void {
+    const charCode = event.which ? event.which : event.keyCode;
+    const charStr = String.fromCharCode(charCode);
+
+    const persianRegex = /^[\u0600-\u06FF\s]+$/;
+
+    if (!persianRegex.test(charStr)) {
+      event.preventDefault();
+    }
   }
 
   canDeactivateFn(): CanDeactivateType {

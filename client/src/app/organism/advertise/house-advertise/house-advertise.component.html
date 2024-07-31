@@ -26,7 +26,11 @@
   </div>
 </div> -->
 <!-- ///////////////////////////////////// -->
-<app-uploadfile (onUploadFinished)="uploadFinish($event)"></app-uploadfile>
+<app-uploadfile
+  [username]="username"
+  [advertiseCode]="advertiseCode"
+  (onUploadFinished)="uploadFinish($event)"
+></app-uploadfile>
 
 <div *ngIf="fileUploadData?.imageData && fileUploadData.imageData.length > 0">
   <div class="row">
@@ -55,7 +59,7 @@
   </div>
 </div>
 <div class="mt-5">
-  <form [formGroup]="advertiseHouseForm" (ngSubmit)="submit()">
+  <form [formGroup]="advertiseHouseForm" (ngSubmit)="submitHouseAdvertise()">
     <div class="row">
       <div
         formGroupName="type"
@@ -119,13 +123,14 @@
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>توضیحات</mat-label>
           <textarea
+            (keypress)="onKeyPress_onlyPersianLettersAndSpace($event)"
             rows="4"
             cols="50"
             matInput
             formControlName="desc"
             placeholder="توضیحاتی راجع به منزل بدهید مثلا نوساز است یا تعمیر شده است"
           ></textarea>
-          <mat-error
+          <!-- <mat-error
             *ngIf="
               advertiseHouseForm.get('desc')?.invalid ||
               advertiseHouseForm.get('desc')?.dirty
@@ -135,7 +140,7 @@
               *ngIf="advertiseHouseForm.get('desc')?.errors?.['invalidPersianLetter'] "
               >توضیحات را فارسی وارد کنید.</span
             >
-          </mat-error>
+          </mat-error> -->
         </mat-form-field>
       </div>
 
@@ -177,6 +182,7 @@
       <app-action-btn-atom
         [btnOptions]="signupBtnOption"
         [ActionBtnClass]="'btn-primary  my-button px-4'"
+        [btnState]="!advertiseHouseForm.valid"
       ></app-action-btn-atom>
       <!-- <button type="submit" class="btn btn-primary px-3">ورود</button> -->
     </div>

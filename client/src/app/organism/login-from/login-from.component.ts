@@ -87,7 +87,7 @@ export class LoginFromComponent implements OnInit {
   //   return this.loginForm.get('password')?.errors;
   // }
   login() {
-    console.log(this.loginForm.value);
+    // console.log(this.loginForm.value);
     let loginUrl = 'https://localhost:5001/api/account/login';
     // // return this.http.get<provinceDto[]>(provinceUrl);
     this.http.post<loginDto>(loginUrl, this.loginForm.value).subscribe({
