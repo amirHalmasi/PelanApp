@@ -24,18 +24,15 @@ export class CommonComponent implements OnChanges, OnInit {
   advertiseType!: string;
   storeType!: string;
   form!: FormGroup;
-  hintHouseMeter!: string;
+  hintStoreMeter!: string;
   hintBalconyeMeter!: string;
   hintStoreWidth!: string;
   hasBalconye: boolean = false;
+  hasParking: boolean = false;
 
-  orientations: any = [
-    { value: 'shomali', desc: 'شمالی' },
-    { value: 'Jonobi', desc: 'جنوبی' },
-    { value: 'Nabsh_Shomali', desc: 'نبش شمالی' },
-    { value: 'Nabsh_Junobi', desc: 'نبش جنوبی' },
-    { value: 'Do_Bahr', desc: 'دوکله' },
-    { value: 'Do_Bahr_Do_Nabsh', desc: 'دوکله دونبش' },
+  parkingTypes: any = [
+    { value: 'mosaghaf', desc: 'مسقف' },
+    { value: 'mohavate', desc: 'محوطه' },
   ];
 
   advertiseTypes: any = [
@@ -48,6 +45,7 @@ export class CommonComponent implements OnChanges, OnInit {
     { value: 'pasajh', desc: 'پاساژ' },
     { value: 'city-center', desc: 'مرکزشهر' },
     { value: 'other', desc: 'سایر' },
+    { value: 'majmoeh', desc: 'مجموعه تجاری' },
   ];
 
   constructor(private rootFormGroup: FormGroupDirective) {} // this.rootFormGroup is the instant of parent form group component
@@ -79,6 +77,10 @@ export class CommonComponent implements OnChanges, OnInit {
       this.storeType = 'pasajh';
       this.storeStateEvent.emit('pasajh');
       this.determineStoreTypeValidators('pasajh');
+    } else if (storeStateTypeSelectValue.value === 'majmoeh') {
+      this.storeType = 'majmoeh';
+      this.storeStateEvent.emit('majmoeh');
+      this.determineStoreTypeValidators('majmoeh');
     } else if (storeStateTypeSelectValue.value === 'city-center') {
       this.storeType = 'city-center';
       this.storeStateEvent.emit('city-center');
@@ -91,31 +93,58 @@ export class CommonComponent implements OnChanges, OnInit {
   }
   private determineStoreTypeValidators(storeTypeSelectValue: string) {
     console.log(storeTypeSelectValue);
-    if (storeTypeSelectValue === 'pasajh') {
-      this.setMyValidators('pasajh');
-    } else {
-      this.setMyValidators(storeTypeSelectValue);
-    }
+
+    this.setMyValidators(storeTypeSelectValue);
   }
   private setMyValidators(buildingType: string): void {
     const floorControl = this.form.get('commonFields.floor');
+    const pasajhNameControl = this.form.get('commonFields.pasajhName');
+    const majmoehNameControl = this.form.get('commonFields.majmoehName');
     // const orientationsControl = this.form.get('commonFields.orientations');
     switch (buildingType) {
       case 'pasajh':
         floorControl?.setValidators([Validators.required, numberValidator()]);
-        // orientationsControl?.setValidators(Validators.required);
+        pasajhNameControl?.setValidators([
+          Validators.required,
+          persianLetterValidator(),
+        ]);
+        majmoehNameControl?.setValidators(null);
+        break;
+
+      case 'majmoeh':
+        pasajhNameControl?.setValidators([
+          Validators.required,
+          persianLetterValidator(),
+        ]);
+        floorControl?.setValidators([Validators.required, numberValidator()]);
+        majmoehNameControl?.setValidators([
+          Validators.required,
+          persianLetterValidator(),
+        ]);
+
         break;
 
       default:
         floorControl?.setValidators(null);
-        // orientationsControl?.setValidators(null);
+        pasajhNameControl?.setValidators(null);
+        majmoehNameControl?.setValidators(null);
         break;
     }
 
     floorControl?.updateValueAndValidity();
-    // orientationsControl?.updateValueAndValidity();
+    pasajhNameControl?.updateValueAndValidity();
+    majmoehNameControl?.updateValueAndValidity();
   }
 
+  determineParkingMeterValidator(hasBalconyeMeter: boolean) {
+    const parkingTypeControl = this.form.get('commonFields.parkingType');
+    if (hasBalconyeMeter) {
+      parkingTypeControl?.setValidators([Validators.required]);
+    } else {
+      parkingTypeControl?.setValidators(null);
+    }
+    parkingTypeControl?.updateValueAndValidity();
+  }
   determineBalconyeMeterValidator(hasBalconyeMeter: boolean) {
     const balconyeMeterControl = this.form.get('commonFields.balconyeMeter');
     if (hasBalconyeMeter) {
@@ -128,6 +157,7 @@ export class CommonComponent implements OnChanges, OnInit {
     }
     balconyeMeterControl?.updateValueAndValidity();
   }
+
   hint(input: HTMLInputElement, type: string) {
     const value = input.value;
     let desc;
@@ -138,22 +168,26 @@ export class CommonComponent implements OnChanges, OnInit {
       desc = '';
     }
     if (type === 'storeMeter') {
-      this.hintHouseMeter = desc;
+      this.hintStoreMeter = desc;
       // this.hintBalconyeMeter = '';
     } else if (type === 'balconyeMeter') {
       // this.hintDescription = '';
       this.hintBalconyeMeter = desc;
     }
-
-    if (type === 'storeWidth' && value.length > 0 && value !== '0') {
-      this.hintStoreWidth = value + ' متر';
-    } else {
-      this.hintStoreWidth = '';
-    }
   }
   onKeyPress_onlyNumber(event: KeyboardEvent): void {
     const charCode = event.which ? event.which : event.keyCode;
     if (charCode < 48 || charCode > 57) {
+      event.preventDefault();
+    }
+  }
+  onKeyPress_onlyPersianLettersAndSpace(event: KeyboardEvent): void {
+    const charCode = event.which ? event.which : event.keyCode;
+    const charStr = String.fromCharCode(charCode);
+
+    const persianRegex = /^[\u0600-\u06FF\s]+$/;
+
+    if (!persianRegex.test(charStr)) {
       event.preventDefault();
     }
   }

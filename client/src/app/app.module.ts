@@ -40,17 +40,24 @@ import { CommonComponent } from './organism/advertise/storeadvertise/common/comm
 import { SellStoreComponent } from './organism/advertise/storeadvertise/sell-store/sell-store.component';
 import { RentStoreComponent } from './organism/advertise/storeadvertise/rent-store/rent-store.component';
 import { GroundAdvertiseComponent } from './organism/advertise/ground-advertise/ground-advertise.component';
-import { RentPageComponent } from './organism/rent-page/rent-page.component';
+// import { RentPageComponent } from './organism/rent-page/rent-page.component';
 import { SellPageComponent } from './organism/sell-page/sell-page.component';
-import { ImageSliderComponent } from './organism/image-slider/image-slider.component';
+// import { ImageSliderComponent } from './organism/image-slider/image-slider.component';
 // import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { CustomeCarouselModule } from './organism/carousel/carousel.module';
-import { ElevatorSvgComponent } from './organism/rent-page/elevator-svg/elevator-svg.component';
-import { ParkingSvgComponent } from './organism/rent-page/parking-svg/parking-svg.component';
-import { BedroomSvgComponent } from './organism/rent-page/bedroom-svg/bedroom-svg.component';
-import { CheckedSvgComponent } from './organism/rent-page/thereis-or-not/checked-svg/checked-svg.component';
-import { UncheckedSvgComponent } from './organism/rent-page/thereis-or-not/unchecked-svg/unchecked-svg.component';
-import { ThereisOrNotComponent } from './organism/rent-page/thereis-or-not/thereis-or-not.component';
+import { ThereisOrNotComponent } from './organism/house-page/thereis-or-not/thereis-or-not.component';
+import { UncheckedSvgComponent } from './organism/house-page/thereis-or-not/unchecked-svg/unchecked-svg.component';
+import { CheckedSvgComponent } from './organism/house-page/thereis-or-not/checked-svg/checked-svg.component';
+import { BedroomSvgComponent } from './organism/house-page/bedroom-svg/bedroom-svg.component';
+import { ParkingSvgComponent } from './organism/house-page/parking-svg/parking-svg.component';
+import { ElevatorSvgComponent } from './organism/house-page/elevator-svg/elevator-svg.component';
+import { HouseAdvertisePageComponent } from './organism/house-page/house-advertise-page.component';
+// import { ElevatorSvgComponent } from './organism/rent-page/elevator-svg/elevator-svg.component';
+// import { ParkingSvgComponent } from './organism/rent-page/parking-svg/parking-svg.component';
+// import { BedroomSvgComponent } from './organism/rent-page/bedroom-svg/bedroom-svg.component';
+// import { CheckedSvgComponent } from './organism/rent-page/thereis-or-not/checked-svg/checked-svg.component';
+// import { UncheckedSvgComponent } from './organism/rent-page/thereis-or-not/unchecked-svg/unchecked-svg.component';
+// import { ThereisOrNotComponent } from './organism/rent-page/thereis-or-not/thereis-or-not.component';
 
 @NgModule({
   declarations: [
@@ -80,9 +87,9 @@ import { ThereisOrNotComponent } from './organism/rent-page/thereis-or-not/there
     SellStoreComponent,
     RentStoreComponent,
     GroundAdvertiseComponent,
-    RentPageComponent,
+    HouseAdvertisePageComponent,
     SellPageComponent,
-    ImageSliderComponent,
+    // ImageSliderComponent,
     ElevatorSvgComponent,
     ParkingSvgComponent,
     BedroomSvgComponent,

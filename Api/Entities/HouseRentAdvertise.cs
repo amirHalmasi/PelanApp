@@ -26,7 +26,6 @@ namespace Api.Entities
         public string CityId { get; set; }    
         public string Description { get; set; }    
         public string Neighborhood { get; set; }    
-        public string FlatStatusType { get; set; }    
         public int AdvertiseViews { get; set; }    
         public DateTime AdvertiseSubmitDate { get; set; }    
         public DateTime HouseEmptyDate { get; set; }    
@@ -36,6 +35,7 @@ namespace Api.Entities
         public string RentPrice { get; set; }    
         public string BranchStatus { get; set; }    
         public string RentFlatType { get; set; }  
+        public string FlatStatusType { get; set; }    
 
     }
 }

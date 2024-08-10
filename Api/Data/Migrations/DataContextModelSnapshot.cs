@@ -223,7 +223,7 @@ namespace Api.Data.Migrations
                     b.Property<string>("AdvertiseCode")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("AdvertiseSubmitDate")
+                    b.Property<DateTime>("AdvertiseSubmitDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("AdvertiseType")
@@ -244,9 +244,6 @@ namespace Api.Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("FlatStatusType")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Floor")
                         .HasColumnType("TEXT");
 
@@ -265,7 +262,7 @@ namespace Api.Data.Migrations
                     b.Property<string>("HouseDocument")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("HouseEmptyDate")
+                    b.Property<DateTime>("HouseEmptyDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("HouseMeter")
@@ -307,6 +304,141 @@ namespace Api.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("HouseSellAdvertise");
+                });
+
+            modelBuilder.Entity("Api.Entities.StoreRentAdvertise", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("AdvertiseCode")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("BranchesControlStatus")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DepositPrice")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RentPrice")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("StoreRentType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StoreRentAdvertises");
+                });
+
+            modelBuilder.Entity("Api.Entities.StoreSellAdvertise", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("AdvertiseCode")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("GroundMeter")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("OwneringType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Price")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("StoreDocument")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("StoreWidth")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StoreSellAdvertises");
+                });
+
+            modelBuilder.Entity("Api.Entities.storeCommonAdvertise", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("AdvertiseCode")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("AdvertiseSubmitDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("AdvertiseType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("AdvertiseViews")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CityId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Floor")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("HasBalconey")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("HasCeramic")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("HasElevator")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("HasParking")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("HasRestroom")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("MajmoehName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Neighborhood")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ParkingType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PasajhName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProvinceId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("StoreEmptyDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("StoreMeter")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("StoreType")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Username")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StoreCommonAdvertises");
                 });
 #pragma warning restore 612, 618
         }

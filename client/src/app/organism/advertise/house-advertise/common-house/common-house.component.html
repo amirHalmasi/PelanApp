@@ -1,7 +1,7 @@
 <!-- <p>common works!</p> -->
 <ng-container [formGroup]="form">
   <h3>مشحصات کلی ملک</h3>
-  <div formGroupName="commonFields" class="row mb-3">
+  <div class="row mb-3">
     <!-- House Type -->
     <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
       <mat-form-field class="w-100" appearance="outline">
@@ -20,14 +20,11 @@
         </mat-select>
         <mat-error
           *ngIf="
-            form.get('commonFields.houseType')?.invalid &&
-            (form.get('commonFields.houseType')?.dirty ||
-              form.get('commonFields.houseType')?.touched)
+            form.get('houseType')?.invalid &&
+            (form.get('houseType')?.dirty || form.get('houseType')?.touched)
           "
         >
-          <span
-            *ngIf="form.get('commonFields.houseType')?.errors?.['required']"
-          >
+          <span *ngIf="form.get('houseType')?.errors?.['required']">
             این فیلد نباید خالی باشد.
           </span>
         </mat-error>
@@ -57,18 +54,15 @@
         />
         <mat-error
           *ngIf="
-            form.get('commonFields.houseMeter')?.invalid &&
-            (form.get('commonFields.houseMeter')?.dirty ||
-              form.get('commonFields.houseMeter')?.touched)
+            form.get('houseMeter')?.invalid &&
+            (form.get('houseMeter')?.dirty || form.get('houseMeter')?.touched)
           "
         >
-          <span
-            *ngIf="form.get('commonFields.houseMeter')?.errors?.['required']"
-          >
+          <span *ngIf="form.get('houseMeter')?.errors?.['required']">
             این فیلد نباید خالی باشد.
           </span>
           <span
-            *ngIf="form.get('commonFields.houseMeter')?.errors?.['invalidNumber'] && !form.get('commonFields.houseMeter')?.errors?.['required']"
+            *ngIf="form.get('houseMeter')?.errors?.['invalidNumber'] && !form.get('houseMeter')?.errors?.['required']"
           >
             متراژ را به عدد وارد کنید.
           </span>
@@ -89,16 +83,15 @@
         />
         <mat-error
           *ngIf="
-            form.get('commonFields.rooms')?.invalid &&
-            (form.get('commonFields.rooms')?.dirty ||
-              form.get('commonFields.rooms')?.touched)
+            form.get('rooms')?.invalid &&
+            (form.get('rooms')?.dirty || form.get('rooms')?.touched)
           "
         >
-          <span *ngIf="form.get('commonFields.rooms')?.errors?.['required']">
+          <span *ngIf="form.get('rooms')?.errors?.['required']">
             این فیلد نباید خالی باشد.
           </span>
           <span
-            *ngIf="form.get('commonFields.rooms')?.errors?.['invalidNumber'] && !form.get('commonFields.rooms')?.errors?.['required']"
+            *ngIf="form.get('rooms')?.errors?.['invalidNumber'] && !form.get('rooms')?.errors?.['required']"
           >
             تعداد اتاق را به عدد وارد کنید.
           </span>
@@ -143,18 +136,16 @@
         />
         <mat-error
           *ngIf="
-            form.get('commonFields.wareHouseMeter')?.invalid &&
-            (form.get('commonFields.wareHouseMeter')?.dirty ||
-              form.get('commonFields.wareHouseMeter')?.touched)
+            form.get('wareHouseMeter')?.invalid &&
+            (form.get('wareHouseMeter')?.dirty ||
+              form.get('wareHouseMeter')?.touched)
           "
         >
-          <span
-            *ngIf="form.get('commonFields.wareHouse')?.errors?.['required']"
-          >
+          <span *ngIf="form.get('wareHouseMeter')?.errors?.['required']">
             این فیلد نباید خالی باشد.
           </span>
           <span
-            *ngIf="form.get('commonFields.wareHouse')?.errors?.['invalidNumber'] && !form.get('commonFields.wareHouse')?.errors?.['required']"
+            *ngIf="form.get('wareHouseMeter')?.errors?.['invalidNumber'] && !form.get('wareHouseMeter')?.errors?.['required']"
           >
             متراژ انباری را به عدد وارد کنید.
           </span>
@@ -187,14 +178,11 @@
         </mat-select>
         <mat-error
           *ngIf="
-            form.get('commonFields.parkingType')?.invalid &&
-            (form.get('commonFields.parkingType')?.dirty ||
-              form.get('commonFields.parkingType')?.touched)
+            form.get('parkingType')?.invalid &&
+            (form.get('parkingType')?.dirty || form.get('parkingType')?.touched)
           "
         >
-          <span
-            *ngIf="form.get('commonFields.parkingType')?.errors?.['required']"
-          >
+          <span *ngIf="form.get('parkingType')?.errors?.['required']">
             این فیلد نباید خالی باشد.
           </span>
         </mat-error>
@@ -220,18 +208,16 @@
         />
         <mat-error
           *ngIf="
-            form.get('commonFields.buildingName')?.invalid &&
-            (form.get('commonFields.buildingName')?.dirty ||
-              form.get('commonFields.buildingName')?.touched)
+            form.get('buildingName')?.invalid &&
+            (form.get('buildingName')?.dirty ||
+              form.get('buildingName')?.touched)
           "
         >
-          <span
-            *ngIf="form.get('commonFields.buildingName')?.errors?.['required']"
-          >
+          <span *ngIf="form.get('buildingName')?.errors?.['required']">
             این فیلد نباید خالی باشد.
           </span>
           <span
-            *ngIf="form.get('commonFields.buildingName')?.errors?.['invalidPersianLetter'] && !form.get('commonFields.buildingName')?.errors?.['required']"
+            *ngIf="form.get('buildingName')?.errors?.['invalidPersianLetter'] && !form.get('buildingName')?.errors?.['required']"
           >
             نام مجتمع را به فارسی وارد کنید.
           </span>
@@ -261,16 +247,15 @@
         />
         <mat-error
           *ngIf="
-            form.get('commonFields.floor')?.invalid &&
-            (form.get('commonFields.floor')?.dirty ||
-              form.get('commonFields.floor')?.touched)
+            form.get('floor')?.invalid &&
+            (form.get('floor')?.dirty || form.get('floor')?.touched)
           "
         >
-          <span *ngIf="form.get('commonFields.floor')?.errors?.['required']">
+          <span *ngIf="form.get('floor')?.errors?.['required']">
             این فیلد نباید خالی باشد.
           </span>
           <span
-            *ngIf="form.get('commonFields.floor')?.errors?.['invalidNumber'] && !form.get('commonFields.floor')?.errors?.['required']"
+            *ngIf="form.get('floor')?.errors?.['invalidNumber'] && !form.get('floor')?.errors?.['required']"
           >
             طبقه واحد را به عدد وارد کنید.
           </span>
@@ -296,14 +281,12 @@
         </mat-select>
         <mat-error
           *ngIf="
-            form.get('commonFields.orientations')?.invalid &&
-            (form.get('commonFields.orientations')?.dirty ||
-              form.get('commonFields.orientations')?.touched)
+            form.get('orientations')?.invalid &&
+            (form.get('orientations')?.dirty ||
+              form.get('orientations')?.touched)
           "
         >
-          <span
-            *ngIf="form.get('commonFields.orientations')?.errors?.['required']"
-          >
+          <span *ngIf="form.get('orientations')?.errors?.['required']">
             این فیلد نباید خالی باشد.
           </span>
         </mat-error>

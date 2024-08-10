@@ -10,5 +10,6 @@ namespace Api.DTOs
         public string Username { get; set; }
         public string IsJobOwner { get; set; }
         public string Token { get; set; }
+        public DateTime LoginDate { get; set; }
     }
 }

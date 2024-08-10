@@ -26,7 +26,7 @@ namespace Api.Controllers
         public async Task<ActionResult<IEnumerable<AppCities>>> GetProvinces(int id){
             // return await _context.Cities.ToListAsync();
             //.FindAsync(id);
-            return await _context.Cities.Where(cities => cities.Province_id ==id).ToListAsync();
+            return await _context.Cities.Where(cities => cities.Province_id == id).ToListAsync();
              
         }
         

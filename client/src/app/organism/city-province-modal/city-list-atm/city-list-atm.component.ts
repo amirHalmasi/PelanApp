@@ -5,6 +5,8 @@ import {
   ModalServiceService,
   city,
 } from 'src/app/services/modal-service.service';
+import { HouseAdvetisePageService } from '../../house-page/house-advertise-page.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-city-list-atm',
@@ -19,11 +21,14 @@ export class CityListAtmComponent implements OnInit {
   cities!: city[];
   citiesConstant!: city[];
   isloading!: boolean;
+  currentUrl!: string;
 
   searchForm!: FormGroup;
   constructor(
     private modalServ: ModalServiceService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router,
+    private houseAdvertiseServ: HouseAdvetisePageService
   ) {}
 
   ngOnInit() {
@@ -52,9 +57,39 @@ export class CityListAtmComponent implements OnInit {
   }
   getData(cityIndex: number) {
     console.log('selected ct data', this.cities[cityIndex]);
-    // localStorage.setItem('cityData', JSON.stringify(this.cities[cityIndex]));
-    this.modalServ.selectedCity.next(this.cities[cityIndex])
+    localStorage.setItem('cityData', JSON.stringify(this.cities[cityIndex]));
+    this.modalServ.selectedCity.next(this.cities[cityIndex]);
     this.citySelected.emit();
     // this.modalServ.
+    const cityDataString = localStorage.getItem('cityData');
+
+    let cityData = null;
+
+    if (cityDataString) {
+      try {
+        cityData = JSON.parse(cityDataString);
+      } catch (e) {
+        console.error('Error parsing cityData from localStorage:', e);
+      }
+    }
+
+    // Get the full URL path including query parameters
+    this.currentUrl = this.router.url;
+
+    if (this.currentUrl === '/houseAdvertise' && cityData) {
+      this.getAllAdvertises(cityData.city_id);
+    }
+  }
+
+  getAllAdvertises(city_id: string) {
+    this.houseAdvertiseServ.getHouseAdvertises(city_id).subscribe({
+      next: (data) => {
+        console.log('advertises select city', data);
+        this.houseAdvertiseServ.houseAdvertises.next(data);
+      },
+      error: (err) => {
+        console.error('Error fetching advertises', err);
+      },
+    });
   }
 }

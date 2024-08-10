@@ -5,7 +5,12 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { numberValidator } from 'src/assets/validation/password.validator';
 import { persianLetterValidator } from 'src/assets/validation/persian-letters.validator';
 import {
@@ -24,12 +29,8 @@ import {
 import { Subscription } from 'rxjs';
 import { CanDeactivateType } from '../../signup-from/can-deactivate-gaurde';
 import { SweetAlertService } from 'src/app/services/sweetalert.service';
-interface advertiseSuccesDto {
-  AdvertiseType: string;
-  AdvertiseSubmitDate: string;
-  Username: string;
-  AdvertiseCode: string;
-}
+import { advertiseSuccesDto } from '../advertises.service';
+
 @Component({
   selector: 'app-house-advertise',
   templateUrl: './house-advertise.component.html',
@@ -97,6 +98,7 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
           console.log('upload image Data house', data);
           if (data.imageData.length > 0) {
             this.imageData = data.imageData;
+            this.imageUploadMessage = '';
           } else {
             this.imageData = [];
           }
@@ -227,9 +229,7 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
   // }
 
   public uploadFinish = (event: UploadFinishedEvent) => {
-    // this.imageData = event.imageData;
-    // this.username = event.username;
-    // this.advertiseCode = event.advertiseCode;
+    this.imageUploadMessage;
     this.fileUploadData = {
       imageData: event.imageData,
       username: event.username,
@@ -331,10 +331,12 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
       ...formValue.sellFields,
       ...formValue.type,
       ...formValue,
-      city: formValue.city.city_id.toString(),
-      province: formValue.province.province_id.toString(),
+      city: formValue?.city?.city_id.toString(),
+      province: formValue?.province?.province_id.toString(),
       username: this.username,
       advertiseCode: this.advertiseCode,
+      hasElevator: formValue.commonFields.hasElevator.toString(),
+      hasHouseWare: formValue.commonFields.hasHouseWare.toString(),
     };
     delete transformedValue.commonFields;
     delete transformedValue.sellFields;
@@ -353,18 +355,43 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
 
     return transformedValue;
   }
+
+  markAllControlsAsTouchedAndDirty(control: AbstractControl) {
+    if (control instanceof FormGroup) {
+      Object.values(control.controls).forEach((ctrl) => {
+        // console.log('ctrl', ctrl);
+        this.markAllControlsAsTouchedAndDirty(ctrl);
+      });
+    } else {
+      control.markAsTouched();
+      control.markAsDirty();
+    }
+  }
   submitHouseAdvertise() {
+    this.markAllControlsAsTouchedAndDirty(this.advertiseHouseForm);
     const transformedValue = this.transformFormValue(
       this.advertiseHouseForm.value
     );
-    console.log(transformedValue);
+    console.log(transformedValue.advertiseType);
+
     if (!this.imageData.length) {
       this.imageUploadMessage = 'عکس آگهی را آپلود کنید.';
       return;
+    } else {
+      this.imageUploadMessage = '';
     }
-    this.imageUploadMessage = '';
-    console.log(this.advertiseHouseForm.value);
-    let loginUrl = 'https://localhost:5001/api/houseadvertise/rent';
+
+    if (!this.advertiseHouseForm.valid) {
+      this.sweetAlertService.floatAlert(
+        'قبل از درج آگهی، اطلاعات را کامل کنید.',
+        'error'
+      );
+      return;
+    }
+
+    let loginUrl =
+      'https://localhost:5001/api/houseadvertise/' +
+      transformedValue.advertiseType;
     const authUser = JSON.parse(
       localStorage.getItem('authUser') || '{isJobOwner:"",token:"",username:""}'
     );
@@ -374,7 +401,7 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
     };
 
     this.http
-      .post<advertiseSuccesDto>(loginUrl, this.advertiseHouseForm.value, {
+      .post<advertiseSuccesDto>(loginUrl, transformedValue, {
         headers: headers,
       })
       .subscribe({
@@ -393,6 +420,7 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
           // });
         },
         complete: () => {
+          this.isSubmitAdvertise = true;
           this.router.navigate(['/']);
           // this.navbarServ.isTokenExist.next(true);
         },
@@ -424,6 +452,9 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
     if (!this.isSubmitAdvertise) {
       // return confirm('Do you really want to leave?');
       //convert defalt confirm to sweetalert2 one👇
+      if (this.imageData.length === 0) {
+        return true;
+      }
 
       return new Promise<boolean>((resolve) => {
         this.sweetAlertService

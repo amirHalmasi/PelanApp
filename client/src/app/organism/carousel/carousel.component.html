@@ -1,11 +1,15 @@
 <div *ngIf="images && images.length > 0" class="carousel-container">
   <img
     *ngFor="let image of images; let i = index"
-    [src]="image.imageSrc"
-    [alt]="image.imageAlt"
+    [src]="'https://localhost:5001/' + image"
+    [alt]="i"
     [ngClass]="{ 'image-active': selectedIndex === i }"
+    loading="lazy"
   />
-  <div *ngIf="indicators && images.length < 11" class="carousel-dot-container">
+  <div
+    *ngIf="indicators && isMoreThanOneImageExist && images.length < 11"
+    class="carousel-dot-container"
+  >
     <span
       *ngFor="let dot of images; let i = index"
       class="dot"
@@ -13,14 +17,20 @@
       (click)="selectedImage(i)"
     ></span>
   </div>
-  <button *ngIf="controls" class="btn-carousel btn-prev">
+  <button
+    *ngIf="controls && isMoreThanOneImageExist"
+    class="btn-carousel btn-prev"
+  >
     <fa-icon
       class="icon-class justify-content-center align-item-center icon-carousel icon-prev"
       [icon]="icon.right"
       (click)="onPreviousClick()"
     ></fa-icon>
   </button>
-  <button *ngIf="controls" class="btn-carousel btn-next">
+  <button
+    *ngIf="controls && isMoreThanOneImageExist"
+    class="btn-carousel btn-next"
+  >
     <fa-icon
       class="icon-class justify-content-center align-item-center icon-carousel icon-prev"
       [icon]="icon.left"

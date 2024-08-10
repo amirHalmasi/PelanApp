@@ -37,6 +37,16 @@
               {{ province.province_name }}
             </mat-option>
           </mat-select>
+          <mat-error
+            *ngIf="
+              form.get('province')?.invalid &&
+              (form.get('province')?.dirty || form.get('province')?.touched)
+            "
+          >
+            <span *ngIf="form.get('province')?.errors?.['required'] "
+              >این فیلد نباید خالی باشد.</span
+            ></mat-error
+          >
         </mat-form-field>
       </div>
 
@@ -76,6 +86,16 @@
               {{ city.city_name }}
             </mat-option>
           </mat-select>
+          <mat-error
+            *ngIf="
+              form.get('city')?.invalid &&
+              (form.get('city')?.dirty || form.get('city')?.touched)
+            "
+          >
+            <span *ngIf="form.get('city')?.errors?.['required'] "
+              >این فیلد نباید خالی باشد.</span
+            ></mat-error
+          >
         </mat-form-field>
       </div>
     </div>

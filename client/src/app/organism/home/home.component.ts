@@ -10,7 +10,7 @@ import { flipInOut } from 'src/app/services/animation';
 import { ProvinceAndCityService } from '../province-and-city/province-and-city.service';
 import Typed from 'typed.js';
 import { Title } from '@angular/platform-browser';
-import { SlideInterface } from '../image-slider/image-slider.component';
+
 import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-home',

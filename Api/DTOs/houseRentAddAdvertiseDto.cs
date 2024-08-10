@@ -11,12 +11,8 @@ namespace Api.DTOs
     {
        
         public string advertiseType { get; set; }  
-
-          
         public string username { get; set; }   
-        
         public string advertiseCode { get; set; }   
-
         public string buildingName { get; set; }       
         public string floor { get; set; }       
         public string hasElevator { get; set; }       
@@ -44,3 +40,5 @@ namespace Api.DTOs
 
     }
 }
+
+// "The JSON value could not be converted to System.String. Path: $.city | LineNumber: 0 | BytePositionInLine: 573."

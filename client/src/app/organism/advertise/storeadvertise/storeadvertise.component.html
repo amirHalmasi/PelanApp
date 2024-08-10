@@ -32,7 +32,7 @@
 </div>
 
 <div class="mt-5">
-  <form [formGroup]="advertiseStoreForm" (ngSubmit)="submit()">
+  <form [formGroup]="advertiseStoreForm" (ngSubmit)="submitStoreAdvertise()">
     <div class="row">
       <div
         formGroupName="type"
@@ -97,6 +97,7 @@
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>توضیحات</mat-label>
           <textarea
+            (keypress)="onKeyPress_onlyPersianLettersAndSpace($event)"
             rows="4"
             cols="50"
             matInput
@@ -158,8 +159,8 @@
       ></app-action-btn-atom>
       <!-- <button type="submit" class="btn btn-primary px-3">ورود</button> -->
     </div>
-    <pre style="margin-top: 50px; border: 1px solid red; width: fit-content">
+    <!-- <pre style="margin-top: 50px; border: 1px solid red; width: fit-content">
       {{ advertiseStoreForm.value | json }}
-    </pre>
+    </pre> -->
   </form>
 </div>

@@ -22,6 +22,7 @@ import { slideRightInOut } from 'src/app/services/animation';
 export class CommonHouseComponent implements OnInit, OnChanges {
   @Output() buildingTypeEvent = new EventEmitter<string>();
   @Input() advertiseTypeInput!: string;
+  @Input() formGroupName!: string;
   advertiseType!: string;
   buildingType!: string;
   hasHouseWare: boolean = false;
@@ -52,7 +53,7 @@ export class CommonHouseComponent implements OnInit, OnChanges {
   priceHint!: string | null;
   constructor(private rootFormGroup: FormGroupDirective) {} // this.rootFormGroup is the instant of parent form group component
   ngOnInit(): void {
-    this.form = this.rootFormGroup.control;
+    this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;
   }
   ngOnChanges(changes: SimpleChanges): void {
     console.log('changes sell component', changes);
@@ -85,7 +86,7 @@ export class CommonHouseComponent implements OnInit, OnChanges {
       this.buildingType = 'Mojtama';
       this.buildingTypeEvent.emit('Mojtama');
 
-      const buildingNameControl = this.form.get('commonFields.buildingName');
+      const buildingNameControl = this.form.get('buildingName');
       // buildingNameControl?.setValidators([
       //   Validators.required,
       //   persianLetterValidator(),
@@ -130,7 +131,7 @@ export class CommonHouseComponent implements OnInit, OnChanges {
     }
   }
   determineAdvertiseType(advertiseTypeSelectValue: string) {
-    const parkingTypeControl = this.form.get('commonFields.parkingType');
+    const parkingTypeControl = this.form.get('parkingType');
 
     if (advertiseTypeSelectValue === 'rent') {
       this.advertiseType = 'rent';
@@ -163,7 +164,7 @@ export class CommonHouseComponent implements OnInit, OnChanges {
     }
   }
   determineWareHouseValidator(hasWareHouse: boolean) {
-    const wareHouseControl = this.form.get('commonFields.wareHouseMeter');
+    const wareHouseControl = this.form.get('wareHouseMeter');
     if (hasWareHouse) {
       wareHouseControl?.setValidators([Validators.required, numberValidator()]);
     } else {
@@ -173,10 +174,10 @@ export class CommonHouseComponent implements OnInit, OnChanges {
   }
   private setMyValidators(buildingType: string): void {
     // const groundMeterControl = this.form.get('sellFields.groundMeter');
-    const buildingNameControl = this.form.get('commonFields.buildingName');
-    const parkingTypeControl = this.form.get('commonFields.parkingType');
-    const floorControl = this.form.get('commonFields.floor');
-    const orientationsControl = this.form.get('commonFields.orientations');
+    const buildingNameControl = this.form.get('buildingName');
+    const parkingTypeControl = this.form.get('parkingType');
+    const floorControl = this.form.get('floor');
+    const orientationsControl = this.form.get('orientations');
     switch (buildingType) {
       case 'Villaie':
         buildingNameControl?.setValidators(null);

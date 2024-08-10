@@ -33,40 +33,7 @@
             متراژ را به عدد وارد کنید.
           </span>
         </mat-error>
-        <mat-hint *ngIf="hintHouseMeter">{{ hintHouseMeter }}</mat-hint>
-      </mat-form-field>
-    </div>
-    <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
-      <mat-form-field class="w-100" appearance="outline">
-        <mat-label>بر مغازه</mat-label>
-        <!-- <mat-label *ngIf="advertiseType === 'rent'">متراژ واحد</mat-label> -->
-        <input
-          formControlName="storeWidth"
-          matInput
-          placeholder="بر مغازه وارد کنید:"
-          (input)="hint(storeWidth, 'storeWidth')"
-          #storeWidth
-          (keypress)="onKeyPress_onlyNumber($event)"
-        />
-        <mat-error
-          *ngIf="
-            form.get('commonFields.storeWidth')?.invalid &&
-            (form.get('commonFields.storeWidth')?.dirty ||
-              form.get('commonFields.storeWidth')?.touched)
-          "
-        >
-          <span
-            *ngIf="form.get('commonFields.storeWidth')?.errors?.['required']"
-          >
-            این فیلد نباید خالی باشد.
-          </span>
-          <span
-            *ngIf="form.get('commonFields.storeWidth')?.errors?.['invalidNumber'] && !form.get('commonFields.storeWidth')?.errors?.['required']"
-          >
-            بر را به عدد وارد کنید.
-          </span>
-        </mat-error>
-        <mat-hint *ngIf="hintStoreWidth">{{ hintStoreWidth }}</mat-hint>
+        <mat-hint *ngIf="hintStoreMeter">{{ hintStoreMeter }}</mat-hint>
       </mat-form-field>
     </div>
 
@@ -102,38 +69,78 @@
       </mat-form-field>
     </div>
 
-    <!-- Orientations -->
-    <!-- <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+    <!-- اسم پاساژ -->
+    <div
+      *ngIf="(storeType && storeType === 'pasajh') || storeType === 'majmoeh'"
+      class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+    >
       <mat-form-field class="w-100" appearance="outline">
-        <mat-label>ضلع مغازه</mat-label>
-        <mat-select formControlName="orientations" placeholder="ضلع مغازه">
-          <mat-option
-            *ngFor="let orientation of orientations"
-            [value]="orientation.value"
-          >
-            {{ orientation.desc }}
-          </mat-option>
-        </mat-select>
+        <mat-label> نام پاساژ</mat-label>
+        <input
+          formControlName="pasajhName"
+          matInput
+          placeholder="نام پاساژ"
+          (keypress)="onKeyPress_onlyPersianLettersAndSpace($event)"
+        />
         <mat-error
           *ngIf="
-            form.get('commonFields.orientations')?.invalid &&
-            (form.get('commonFields.orientations')?.dirty ||
-              form.get('commonFields.orientations')?.touched)
+            form.get('commonFields.pasajhName')?.invalid &&
+            (form.get('commonFields.pasajhName')?.dirty ||
+              form.get('commonFields.pasajhName')?.touched)
           "
         >
           <span
-            *ngIf="form.get('commonFields.orientations')?.errors?.['required']"
+            *ngIf="form.get('commonFields.pasajhName')?.errors?.['required'] "
+            >این فیلد نباید خالی باشد.</span
           >
-            این فیلد نباید خالی باشد.
-          </span>
+          <span
+            *ngIf="form.get('commonFields.pasajhName')?.errors?.['invalidPersianLetter'] && !form.get('commonFields.pasajhName')?.errors?.['required']"
+            >نام پاساژ را به فارسی وارد کنید.</span
+          >
         </mat-error>
       </mat-form-field>
-    </div> -->
+    </div>
+
+    <!-- اسم مجموعه -->
+    <div
+      *ngIf="storeType && storeType === 'majmoeh'"
+      class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+    >
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>نام مجموعه</mat-label>
+        <input
+          formControlName="majmoehName"
+          matInput
+          placeholder="نام مجموعه"
+          (keypress)="onKeyPress_onlyPersianLettersAndSpace($event)"
+        />
+        <mat-error
+          *ngIf="
+            form.get('commonFields.majmoehName')?.invalid &&
+            (form.get('commonFields.majmoehName')?.dirty ||
+              form.get('commonFields.majmoehName')?.touched)
+          "
+        >
+          <span
+            *ngIf="form.get('commonFields.majmoehName')?.errors?.['required'] "
+            >این فیلد نباید خالی باشد.</span
+          >
+          <span
+            *ngIf="form.get('commonFields.majmoehName')?.errors?.['invalidPersianLetter'] && !form.get('commonFields.majmoehName')?.errors?.['required']"
+            >نام مجموعه را به فارسی وارد کنید.</span
+          >
+        </mat-error>
+      </mat-form-field>
+    </div>
 
     <!-- Floor -->
     <div
       class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
-      *ngIf="advertiseType && storeType === 'pasajh'"
+      *ngIf="
+        advertiseType &&
+        storeType &&
+        (storeType === 'pasajh' || storeType === 'majmoeh')
+      "
       [@slideRightInOut]
     >
       <mat-form-field class="w-100" appearance="outline">
@@ -169,7 +176,7 @@
     <!-- Has Elevator -->
     <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
       <mat-checkbox class="align-item-center mx-2" formControlName="hasElevator"
-        >آسانسور باری دارد؟</mat-checkbox
+        >آسانسور دارد؟</mat-checkbox
       >
     </div>
     <!-- Has Restroom -->
@@ -188,6 +195,50 @@
       >
     </div>
 
+    <!-- Has Parking -->
+    <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+      <mat-checkbox
+        class="align-item-center mx-2"
+        #ParkingCheckbox
+        (change)="hasParking = ParkingCheckbox.checked"
+        (change)="determineParkingMeterValidator(ParkingCheckbox.checked)"
+        formControlName="hasParking"
+        >پارگینگ دارد؟</mat-checkbox
+      >
+    </div>
+
+    <!-- parking -->
+    <div
+      *ngIf="hasParking"
+      @slideRightInOut
+      class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+    >
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>پارکینگ مغازه</mat-label>
+        <mat-select formControlName="parkingType" placeholder="پارکینگ مغازه">
+          <mat-option
+            *ngFor="let parkingType of parkingTypes"
+            [value]="parkingType.value"
+          >
+            {{ parkingType.desc }}
+          </mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="
+            form.get('commonFields.parkingType')?.invalid &&
+            (form.get('commonFields.parkingType')?.dirty ||
+              form.get('commonFields.parkingType')?.touched)
+          "
+        >
+          <span
+            *ngIf="form.get('commonFields.parkingType')?.errors?.['required']"
+          >
+            این فیلد نباید خالی باشد.
+          </span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
     <!-- Has Balconye -->
     <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
       <mat-checkbox
@@ -195,7 +246,7 @@
         #balconyeCheckbox
         (change)="hasBalconye = balconyeCheckbox.checked"
         (change)="determineBalconyeMeterValidator(balconyeCheckbox.checked)"
-        formControlName="hasBalconye"
+        formControlName="hasBalconey"
         >بالکن دارد؟</mat-checkbox
       >
     </div>

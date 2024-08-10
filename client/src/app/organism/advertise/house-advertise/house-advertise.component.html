@@ -100,6 +100,7 @@
     <!-- *** common fields input *** -->
     <!-- *************************** -->
     <app-common-house
+      formGroupName="commonFields"
       (buildingTypeEvent)="buildingType = $event"
       [advertiseTypeInput]="advertiseType"
     ></app-common-house>
@@ -182,7 +183,6 @@
       <app-action-btn-atom
         [btnOptions]="signupBtnOption"
         [ActionBtnClass]="'btn-primary  my-button px-4'"
-        [btnState]="!advertiseHouseForm.valid"
       ></app-action-btn-atom>
       <!-- <button type="submit" class="btn btn-primary px-3">ورود</button> -->
     </div>

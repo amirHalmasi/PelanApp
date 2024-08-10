@@ -18,8 +18,10 @@ export class CarouselComponent implements OnInit {
   @Input() controls: boolean = true;
   @Input() icon = { right: faChevronRight, left: faChevronLeft };
   selectedIndex = 0;
+  isMoreThanOneImageExist!: boolean;
   ngOnInit(): void {
     console.log(this.images);
+    this.isMoreThanOneImageExist = this.images.length > 1;
   }
   //sets index of image on dot/ indicator click
   selectedImage(imageIndex: number) {

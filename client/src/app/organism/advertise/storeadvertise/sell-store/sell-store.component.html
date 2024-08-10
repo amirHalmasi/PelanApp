@@ -15,7 +15,7 @@
           formControlName="groundMeter"
           matInput
           placeholder="متراژ زمین "
-          (input)="hint(groundMeter)"
+          (input)="hint(groundMeter, 'groundMeter')"
           #groundMeter
           (keypress)="onKeyPress_onlyNumber($event)"
         />
@@ -35,7 +35,7 @@
             >متراژ زمین را به عدد وارد کنید.</span
           >
         </mat-error>
-        <mat-hint *ngIf="hintDescription">{{ hintDescription }}</mat-hint>
+        <mat-hint *ngIf="hintGroundMeter">{{ hintGroundMeter }}</mat-hint>
         <!-- <mat-hint>Hint</mat-hint> -->
       </mat-form-field>
     </div>
@@ -101,6 +101,42 @@
             این فیلد نباید خالی باشد.
           </span>
         </mat-error>
+      </mat-form-field>
+    </div>
+
+    <!-- store width -->
+    <div
+      *ngIf="advertiseType === 'sell'"
+      class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+    >
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>بر مغازه</mat-label>
+        <!-- <mat-label *ngIf="advertiseType === 'rent'">متراژ واحد</mat-label> -->
+        <input
+          formControlName="storeWidth"
+          matInput
+          placeholder="بر مغازه وارد کنید:"
+          (input)="hint(storeWidth, 'storeWidth')"
+          #storeWidth
+          (keypress)="onKeyPress_onlyNumber($event)"
+        />
+        <mat-error
+          *ngIf="
+            form.get('sellFields.storeWidth')?.invalid &&
+            (form.get('sellFields.storeWidth')?.dirty ||
+              form.get('sellFields.storeWidth')?.touched)
+          "
+        >
+          <span *ngIf="form.get('sellFields.storeWidth')?.errors?.['required']">
+            این فیلد نباید خالی باشد.
+          </span>
+          <span
+            *ngIf="form.get('sellFields.storeWidth')?.errors?.['invalidNumber'] && !form.get('sellFields.storeWidth')?.errors?.['required']"
+          >
+            بر را به عدد وارد کنید.
+          </span>
+        </mat-error>
+        <mat-hint *ngIf="hintStoreWidth">{{ hintStoreWidth }}</mat-hint>
       </mat-form-field>
     </div>
 

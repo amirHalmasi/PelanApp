@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 ///////////////////////////////////////////////
 
 @Component({
@@ -7,8 +7,12 @@ import { Component, ViewEncapsulation } from '@angular/core';
   styleUrls: ['./app.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+  ngOnInit(): void {
+    localStorage.removeItem('cityData');
+  }
   title = 'Client';
   isMOdalOpen!: boolean;
+
   //////////////////////////////
 }

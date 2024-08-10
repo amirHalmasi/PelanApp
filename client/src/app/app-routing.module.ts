@@ -8,8 +8,10 @@ import { AdvertiseComponent } from './organism/advertise/advertise.component';
 import { HouseAdvertiseComponent } from './organism/advertise/house-advertise/house-advertise.component';
 import { StoreadvertiseComponent } from './organism/advertise/storeadvertise/storeadvertise.component';
 import { GroundAdvertiseComponent } from './organism/advertise/ground-advertise/ground-advertise.component';
-import { RentPageComponent } from './organism/rent-page/rent-page.component';
+// import { RentPageComponent } from './organism/rent-page/rent-page.component';
 import { SellPageComponent } from './organism/sell-page/sell-page.component';
+import { HouseAdvertisePageComponent } from './organism/house-page/house-advertise-page.component';
+import { CanActivateHousePageGuard } from './guards/can-activate-house-page.guard';
 
 const routes: Routes = [
   {
@@ -27,8 +29,9 @@ const routes: Routes = [
     component: SignupFromComponent,
   },
   {
-    path: 'rent',
-    component: RentPageComponent,
+    path: 'houseAdvertise',
+    component: HouseAdvertisePageComponent,
+    canActivate: [CanActivateHousePageGuard],
   },
   {
     path: 'sell',
@@ -47,6 +50,7 @@ const routes: Routes = [
       {
         path: 'store',
         component: StoreadvertiseComponent,
+        canDeactivate: [canDeactivateGuardFn],
       },
       {
         path: 'ground',

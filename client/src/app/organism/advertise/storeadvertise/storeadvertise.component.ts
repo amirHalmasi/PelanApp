@@ -1,5 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { flipInOut, slideRightInOut } from 'src/app/services/animation';
 import { numberValidator } from 'src/assets/validation/password.validator';
 import { persianLetterValidator } from 'src/assets/validation/persian-letters.validator';
@@ -16,6 +21,9 @@ import {
   FileUploadservice,
 } from '../uploadfile/fileUpload.service';
 import { Subscription } from 'rxjs';
+import { CanDeactivateType } from '../../signup-from/can-deactivate-gaurde';
+import { SweetAlertService } from 'src/app/services/sweetalert.service';
+import { AdvertisesService } from '../advertises.service';
 
 @Component({
   selector: 'app-storeadvertise',
@@ -26,7 +34,7 @@ import { Subscription } from 'rxjs';
 export class StoreadvertiseComponent implements OnInit, OnDestroy {
   // @ViewChild('houseTypeSelect') houseTypeSelect!: MatSelect;
   // storeState: string = 'Villaie';
-
+  isSubmitAdvertise: boolean = false;
   advertiseType!: string;
   storeType!: string;
   imageUploadMessage!: string;
@@ -60,8 +68,10 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
     private http: HttpClient,
     private fb: FormBuilder,
     private router: Router,
+    private sweetAlertService: SweetAlertService,
     // private numberToWordsService: NumberToWordsService
-    private fileUploadServ: FileUploadservice
+    private fileUploadServ: FileUploadservice,
+    private advertiseServ: AdvertisesService
   ) {
     // console.log(
     //   'route states house',
@@ -83,6 +93,7 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
           console.log('upload image Data house', data);
           if (data.imageData.length > 0) {
             this.imageData = data.imageData;
+            this.imageUploadMessage = '';
           } else {
             this.imageData = [];
           }
@@ -104,15 +115,18 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
       }),
       commonFields: this.fb.group({
         storeMeter: [null, [Validators.required, numberValidator()]],
-        storeWidth: [null, [Validators.required, numberValidator()]],
+
         storeType: [null, Validators.required],
-        hasBalconye: [this.hasBalconye],
+        hasBalconey: [this.hasBalconye],
         hasElevator: [this.hasElevator],
         hasRestroom: [false],
+        hasParking: [false],
         hasCeramic: [false],
         balconyeMeter: [null],
-        // orientations: [null],
+        parkingType: [null],
         floor: [null],
+        pasajhName: [null],
+        majmoehName: [null],
       }),
 
       // sell fields will add next time
@@ -125,6 +139,7 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
         price: [null],
         storeDocument: [null],
         owneringType: [null],
+        storeWidth: [null],
       }),
       //////////////////////////////
       //for rent advertise fields //
@@ -142,20 +157,83 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
       province: [null, Validators.required],
       // }),
 
-      desc: [null, persianLetterValidator()],
+      desc: [null],
     });
   }
+  onKeyPress_onlyPersianLettersAndSpace(event: KeyboardEvent): void {
+    const charCode = event.which ? event.which : event.keyCode;
+    const charStr = String.fromCharCode(charCode);
 
-  submit() {
+    const persianRegex = /^[\u0600-\u06FF\s]+$/;
+
+    if (!persianRegex.test(charStr)) {
+      event.preventDefault();
+    }
+  }
+
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+
+  markAllControlsAsTouchedAndDirty(control: AbstractControl) {
+    if (control instanceof FormGroup) {
+      Object.values(control.controls).forEach((ctrl) => {
+        // console.log('ctrl', ctrl);
+        this.markAllControlsAsTouchedAndDirty(ctrl);
+      });
+    } else {
+      control.markAsTouched();
+      control.markAsDirty();
+    }
+  }
+  submitStoreAdvertise() {
+    this.markAllControlsAsTouchedAndDirty(this.advertiseStoreForm);
+    // const transformedValue = this.transformFormValue(
+    //   this.advertiseStoreForm.value
+    // );
+    // console.log(transformedValue.advertiseType);
+    console.log(this.advertiseStoreForm.value);
+
     if (!this.imageData.length) {
       this.imageUploadMessage = 'عکس آگهی را آپلود کنید.';
       return;
+    } else {
+      this.imageUploadMessage = '';
+    }
+    if (!this.advertiseStoreForm.valid) {
+      this.sweetAlertService.floatAlert(
+        'قبل از درج آگهی، اطلاعات را کامل کنید.',
+        'error'
+      );
+      return;
     }
 
-    this.imageUploadMessage = '';
-    console.log(this.advertiseCode, this.imageData, this.username);
-    console.log(this.advertiseStoreForm.value);
+    let baseAddStoreAdvertiseUrl = 'https://localhost:5001/api/storeadvertise/';
+    this.advertiseServ.addAdvertise(
+      baseAddStoreAdvertiseUrl,
+      this.advertiseStoreForm.value,
+      this.username,
+      this.advertiseCode,
+      'store'
+    );
+    this.advertiseServ.isSubmitAdvertise.subscribe({
+      next: (isSubmited) => {
+        this.isSubmitAdvertise = isSubmited;
+      },
+    });
   }
+
+  //
+  //
+  //
+  //
+  //
+  //
+  //
 
   public uploadFinish = (event: UploadFinishedEvent) => {
     // this.imageData = event.imageData;
@@ -242,5 +320,67 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
   private getAdvertiseCode(): string {
     // Implement logic to get the advertise code
     return this.fileUploadData.advertiseCode;
+  }
+
+  canDeactivateFn(): CanDeactivateType {
+    // if (!this.allowEdit) {
+    //   return true;
+    // }
+
+    if (!this.isSubmitAdvertise) {
+      // return confirm('Do you really want to leave?');
+      //convert defalt confirm to sweetalert2 one👇
+      if (this.imageData.length === 0) {
+        return true;
+      }
+
+      return new Promise<boolean>((resolve) => {
+        this.sweetAlertService
+          .confirm(
+            'ایا خارج می شوید؟',
+            'بدون کامل کردن اطلاعات آگهی برای درج آگهی مغازه خارج میشوید.'
+          )
+          .then((result) => {
+            console.log('sweetalert result');
+            console.log(result);
+            if (result.isConfirmed && this.imageData.length === 0) {
+              resolve(true);
+            } else if (result.isConfirmed && this.imageData.length !== 0) {
+              this.deleteAllImages().subscribe({
+                next: (res) => {
+                  console.log('delete Image response', res);
+                  // Remove the deleted image from imageData array
+                  this.fileUploadData.imageData = [];
+                  console.log(
+                    'this.imageData delete function next',
+                    this.fileUploadData.imageData
+                  );
+                },
+                error: (error) => {
+                  console.error('Error deleting image:', error);
+                  // Handle error
+                },
+                complete: () => {
+                  console.log(
+                    'this.imageData delete function complete',
+                    this.fileUploadData.imageData
+                  );
+                  this.fileUploadServ.uploadedImageData.next({
+                    ...this.fileUploadData,
+                    imageData: this.fileUploadData.imageData,
+                  });
+                  resolve(true);
+                },
+              });
+            }
+            // Resolve with the user's choice
+          })
+          .catch(() => {
+            resolve(false); // In case of an error, consider it as not confirmed
+          });
+      });
+    } else {
+      return true;
+    }
   }
 }

@@ -25,11 +25,10 @@ namespace Api.Entities
         public string ProvinceId { get; set; }    
         public string CityId { get; set; }    
         public string Description { get; set; }    
-        public string Neighborhood { get; set; }    
-        public string FlatStatusType { get; set; }    
+        public string Neighborhood { get; set; }   
         public int AdvertiseViews { get; set; }    
-        public string AdvertiseSubmitDate { get; set; }    
-        public string HouseEmptyDate { get; set; }    
+        public DateTime AdvertiseSubmitDate { get; set; }    
+        public DateTime HouseEmptyDate { get; set; }    
 
         //sell specific column
         // state موقعیت ملک تجاری با مسکونی 

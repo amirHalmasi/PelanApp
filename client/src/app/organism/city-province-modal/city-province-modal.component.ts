@@ -13,6 +13,8 @@ import {
 } from 'src/app/services/animation';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+import { HouseAdvetisePageService } from '../house-page/house-advertise-page.service';
 // to add font awesome run this command bellow:
 // ng add @fortawesome/angular-fontawesome
 //https://piped.video/watch?v=AFVgwCtYgVo
@@ -30,6 +32,7 @@ export class CityProvinceModalComponent implements OnInit, OnDestroy {
   provincesConstant!: province[];
   provinceCenter!: string;
   provinceId!: number;
+
   // isLoading!: boolean;
   // provinces!: any;
   provinceSubscription!: Subscription;
@@ -87,6 +90,10 @@ export class CityProvinceModalComponent implements OnInit, OnDestroy {
   }
 
   closeModal() {
+    // If you need to get only the route segments (excluding query parameters)
+    // this.currentUrl = this.activatedRoute.snapshot.url.join('/');
+
+    // console.log('Current URL:', this.currentUrl);
     this.modalServ.closeModal();
     this.provinces = this.provincesConstant;
     this.searchForm.reset();

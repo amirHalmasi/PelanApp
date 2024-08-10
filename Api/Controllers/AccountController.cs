@@ -95,6 +95,7 @@ namespace Api.Controllers
                 Username = user.UserName,
                 IsJobOwner = user.IsJobOwner.ToString(),
                 Token = _tokenService.CreateToken(user),
+                LoginDate = DateTime.Now
             };
 
         } 

@@ -34,7 +34,9 @@ export class SellStoreComponent implements OnInit, OnChanges {
   @Input() storeType!: string;
   @Input() advertiseType!: string;
   form!: FormGroup;
-  hintDescription!: string;
+
+  hintStoreWidth!: string;
+  hintGroundMeter!: string;
   constructor(
     private rootFormGroup: FormGroupDirective,
     private numberToLetter: NumberToWordsService
@@ -51,15 +53,22 @@ export class SellStoreComponent implements OnInit, OnChanges {
       this.advertiseType = changes['advertiseType'].currentValue;
       const storeDocumentControl = this.form.get('sellFields.storeDocument');
       const owneringTypeControl = this.form.get('sellFields.owneringType');
+      const storeWidthControl = this.form.get('sellFields.storeWidth');
       if (changes['advertiseType'].currentValue === 'sell') {
         storeDocumentControl?.setValidators([Validators.required]);
         owneringTypeControl?.setValidators([Validators.required]);
+        storeWidthControl?.setValidators([
+          Validators.required,
+          numberValidator(),
+        ]);
       } else {
         storeDocumentControl?.setValidators(null);
         owneringTypeControl?.setValidators(null);
+        storeWidthControl?.setValidators(null);
       }
       storeDocumentControl?.updateValueAndValidity();
       owneringTypeControl?.updateValueAndValidity();
+      storeWidthControl?.updateValueAndValidity();
     }
     if (changes['storeType'] && !changes['storeType'].firstChange) {
       this.determineStoreTypeValidators(
@@ -73,10 +82,16 @@ export class SellStoreComponent implements OnInit, OnChanges {
     // console.log('buildingType', this.buildingType);
     this.form = this.rootFormGroup.control;
   }
-  hint(input: HTMLInputElement) {
+  hint(input: HTMLInputElement, type: string) {
     const value = input.value;
-    // console.log('hint', value);
-    this.hintDescription = value + ' متر مربع';
+
+    if (type === 'storeWidth' && value.length > 0 && value !== '0') {
+      this.hintStoreWidth = value + ' متر';
+    } else if (type === 'groundMeter' && value.length > 0 && value !== '0') {
+      this.hintGroundMeter = value + ' متر مربع';
+    } else {
+      this.hintStoreWidth = '';
+    }
   }
 
   onKeyPress_onlyNumber(event: KeyboardEvent): void {
@@ -103,6 +118,7 @@ export class SellStoreComponent implements OnInit, OnChanges {
       this.priceHint = null;
     }
   }
+
   determineStoreTypeValidators(
     storeTypeSelectValue: string,
     advertiseType: string
