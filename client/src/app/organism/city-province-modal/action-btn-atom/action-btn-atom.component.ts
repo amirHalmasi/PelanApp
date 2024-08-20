@@ -16,6 +16,7 @@ export class ActionBtnAtomComponent implements OnInit {
     btnType: string;
     btnText?: string;
   };
+  @Input() isLoading!: boolean;
   @Input('ActionBtnClass') btnClass!: string;
   icon!: any;
   @Input() btnState: boolean = false;

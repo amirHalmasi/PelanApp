@@ -1,7 +1,10 @@
 * {
   font-family: "nazanin", "Courier New", Courier, monospace !important;
   /* color: #080710 !important; */
+  /* padding: 0;
+  margin: 0; */
 }
+
 .card-shadow {
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px !important;
   transition: all 0.5s ease-in-out;
@@ -10,8 +13,23 @@
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px !important;
 }
 .card-body {
-  cursor: default;
+  cursor: pointer;
+  /* cursor: default; */
   padding: 0;
+  height: 200px;
+  background-color: #f1f3f5 !important;
+}
+.card-head {
+  height: 250px;
+}
+.parent-box {
+  position: relative;
+}
+.child-box {
+  position: absolute;
+  bottom: 41%;
+  right: 0;
+  left: 0;
 }
 .title {
   /* position: relative; */
@@ -23,7 +41,7 @@
 }
 .card-title {
   /* font-family: "sogand", "Courier New", Courier, monospace !important; */
-  font-size: 1.2rem !important;
+  font-size: 1rem !important;
   text-shadow: 2px 4px 3px rgba(0, 0, 0, 0.3);
 }
 .card-data-container {
@@ -50,7 +68,7 @@
   align-content: center;
   margin: 0.5rem 1rem;
   padding: 0.15rem 0.5rem;
-  height: 5rem;
+  /* height: 5rem; */
 }
 /* .red-shadow {
   
@@ -62,7 +80,7 @@
     rgba(76, 207, 53, 0.15) 0px 1px 3px 1px;
 } */
 .price {
-  font-size: 1.1rem !important;
+  font-size: 1rem !important;
   font-weight: bold !important;
 }
 .advertise-date,
@@ -93,7 +111,7 @@
 .high-light {
   color: rgb(197, 20, 20);
   border: 1px solid rgb(197, 20, 20);
-  z-index: 5 !important;
+  z-index: 1 !important;
   box-shadow: rgb(197, 20, 20) -0.06rem -0.06rem 0,
     rgb(197, 20, 20) 0.12rem 0.12rem 0, rgb(197, 20, 20) -0.2rem -0.2rem 0;
   transition: all 0.5s ease-in-out;
@@ -107,7 +125,7 @@
 .rated-advertise-high-light {
   color: rgb(16, 58, 173);
   border: 1px solid rgb(16, 58, 173);
-  z-index: 5 !important;
+  z-index: 1 !important;
   box-shadow: rgb(16, 58, 173) -0.06rem -0.06rem 0,
     rgb(16, 58, 173) 0.12rem 0.12rem 0, rgb(16, 58, 173) -0.2rem -0.2rem 0;
   transition: all 0.5s ease-in-out;
@@ -137,3 +155,55 @@
 .green {
   color: rgb(0, 114, 6);
 }
+.viewport {
+  height: 75vh;
+  width: 100%;
+  overflow: auto;
+  /* border: 1px solid red; */
+  scroll-behavior: smooth;
+}
+.card {
+  height: 450px;
+}
+/* app.component.css */
+/* app.component.css */
+/* .viewport {
+  height: 100vh; /* Adjust as needed 
+  width: 100%;
+  overflow: auto;
+  display: grid;
+  gap: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+/* Large devices (desktops, 992px and up) 
+@media (min-width: 992px) {
+  .viewport {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Medium devices (tablets, 768px to 991px) 
+@media (min-width: 768px) and (max-width: 991px) {
+  .viewport {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Small devices (phones, less than 768px) 
+@media (max-width: 767px) {
+  .viewport {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+.item {
+  background-color: #f1f1f1;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  height: 60px; /* Adjust item height 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */

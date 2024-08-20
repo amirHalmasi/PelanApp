@@ -1,11 +1,14 @@
 <div *ngIf="images && images.length > 0" class="carousel-container">
   <img
     *ngFor="let image of images; let i = index"
-    [src]="'https://localhost:5001/' + image"
+    [lazyLoad]="'https://localhost:5001/' + image"
+    [defaultImage]="'../../../assets/lazyPlaceholder.svg'"
+    [errorImage]="'../../../assets/lazyPlaceholder.svg'"
     [alt]="i"
     [ngClass]="{ 'image-active': selectedIndex === i }"
     loading="lazy"
   />
+  <div class="overlay"></div>
   <div
     *ngIf="indicators && isMoreThanOneImageExist && images.length < 11"
     class="carousel-dot-container"
@@ -17,7 +20,7 @@
       (click)="selectedImage(i)"
     ></span>
   </div>
-  <button
+  <div
     *ngIf="controls && isMoreThanOneImageExist"
     class="btn-carousel btn-prev"
   >
@@ -26,8 +29,8 @@
       [icon]="icon.right"
       (click)="onPreviousClick()"
     ></fa-icon>
-  </button>
-  <button
+  </div>
+  <div
     *ngIf="controls && isMoreThanOneImageExist"
     class="btn-carousel btn-next"
   >
@@ -36,7 +39,7 @@
       [icon]="icon.left"
       (click)="onNextClick()"
     ></fa-icon>
-  </button>
+  </div>
   <!-- <div *ngIf="indicators && images.length > 10" class="carousel-dot-container">
     <span *ngFor="let dot of images; let i = index" style="color: white">{{
       "عکس" + i + "از" + images.length

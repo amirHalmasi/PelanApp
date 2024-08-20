@@ -52,6 +52,10 @@ import { BedroomSvgComponent } from './organism/house-page/bedroom-svg/bedroom-s
 import { ParkingSvgComponent } from './organism/house-page/parking-svg/parking-svg.component';
 import { ElevatorSvgComponent } from './organism/house-page/elevator-svg/elevator-svg.component';
 import { HouseAdvertisePageComponent } from './organism/house-page/house-advertise-page.component';
+import { NumberSepratorPipe } from './organism/house-page/number-seprator.pipe';
+import { SendRequestLoadingAtmComponent } from './organism/send-request-loading-atm/send-request-loading-atm.component';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+
 // import { ElevatorSvgComponent } from './organism/rent-page/elevator-svg/elevator-svg.component';
 // import { ParkingSvgComponent } from './organism/rent-page/parking-svg/parking-svg.component';
 // import { BedroomSvgComponent } from './organism/rent-page/bedroom-svg/bedroom-svg.component';
@@ -96,6 +100,8 @@ import { HouseAdvertisePageComponent } from './organism/house-page/house-adverti
     CheckedSvgComponent,
     UncheckedSvgComponent,
     ThereisOrNotComponent,
+    NumberSepratorPipe,
+    SendRequestLoadingAtmComponent,
   ],
   imports: [
     NgxMatSelectSearchModule,
@@ -103,10 +109,13 @@ import { HouseAdvertisePageComponent } from './organism/house-page/house-adverti
     AppRoutingModule,
     BrowserAnimationsModule,
     NgbModule,
-    ReactiveFormsModule,
+    ScrollingModule,
+    // ReactiveFormsModule,
+
     MaterialModule,
     FontAwesomeModule,
     HttpClientModule,
+
     FormsModule,
     ReactiveFormsModule,
     // CarouselModule.forRoot(),

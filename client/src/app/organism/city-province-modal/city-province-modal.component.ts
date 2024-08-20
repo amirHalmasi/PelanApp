@@ -88,7 +88,16 @@ export class CityProvinceModalComponent implements OnInit, OnDestroy {
       },
     });
   }
+  onKeyPress_onlyPersianLettersAndSpace(event: KeyboardEvent): void {
+    const charCode = event.which ? event.which : event.keyCode;
+    const charStr = String.fromCharCode(charCode);
 
+    const persianRegex = /^[\u0600-\u06FF\s]+$/;
+
+    if (!persianRegex.test(charStr)) {
+      event.preventDefault();
+    }
+  }
   closeModal() {
     // If you need to get only the route segments (excluding query parameters)
     // this.currentUrl = this.activatedRoute.snapshot.url.join('/');

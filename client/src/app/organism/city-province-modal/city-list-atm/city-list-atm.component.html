@@ -1,10 +1,20 @@
 <div style="width: 100%" *ngIf="!isloading; else loading">
   <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
-    <div
-      class="my-list-element space-element-on-side"
-      style="padding: 5px 10px"
-    >
-      <div class="input-group">
+    <div class="my-list-element space-element-on-side">
+      <div class="form__group field">
+        <input
+          type="input"
+          class="form__field"
+          placeholder="Name"
+          name="name"
+          id="name"
+          formControlName="searchInput"
+          (keypress)="onKeyPress_onlyPersianLettersAndSpace($event)"
+          (keyup)="onSubmit()"
+        />
+        <label for="name" class="form__label">جستجو</label>
+      </div>
+      <!-- <div class="input-group">
         <input
           type="text"
           class="form-control m-1"
@@ -14,7 +24,7 @@
         <div class="input-group-append">
           <button class="btn btn-primary m-1" type="submit">جستجو</button>
         </div>
-      </div>
+      </div> -->
     </div>
   </form>
   <div

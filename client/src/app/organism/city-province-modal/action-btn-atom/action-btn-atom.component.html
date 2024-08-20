@@ -3,12 +3,17 @@
   type="{{ btnOption.btnType }}"
   class="btn m-1 {{ btnClass }}"
   (click)="btnClick(btnOption.btnType)"
-  [disabled]="btnState"
+  [disabled]="btnState || isLoading"
 >
-  {{ btnOption.btnText }}
-  <fa-icon
-    *ngIf="icon"
-    class="icon-class justify-content-center align-item-center"
-    [icon]="icon"
-  ></fa-icon>
+  <span *ngIf="!isLoading; else loading"
+    >{{ btnOption.btnText }}
+    <fa-icon
+      *ngIf="icon"
+      class="icon-class justify-content-center align-item-center"
+      [icon]="icon"
+    ></fa-icon
+  ></span>
+  <ng-template #loading>
+    <app-send-request-loading-atm></app-send-request-loading-atm>
+  </ng-template>
 </button>

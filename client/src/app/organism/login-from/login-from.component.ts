@@ -38,6 +38,7 @@ export class LoginFromComponent implements OnInit {
     private http: HttpClient,
     private sweetAlertService: SweetAlertService
   ) {}
+  sendReq: boolean = false;
   loginBtnOption: {
     iconName: string;
 
@@ -87,6 +88,7 @@ export class LoginFromComponent implements OnInit {
   //   return this.loginForm.get('password')?.errors;
   // }
   login() {
+    this.sendReq = true;
     // console.log(this.loginForm.value);
     let loginUrl = 'https://localhost:5001/api/account/login';
     // // return this.http.get<provinceDto[]>(provinceUrl);
@@ -98,6 +100,7 @@ export class LoginFromComponent implements OnInit {
         }
       },
       error: (err) => {
+        this.sendReq = false;
         console.error(err);
         // let errorMessage = '';
 
@@ -109,6 +112,7 @@ export class LoginFromComponent implements OnInit {
         // });
       },
       complete: () => {
+        this.sendReq = false;
         this.router.navigate(['/']);
         this.navbarServ.isTokenExist.next(true);
       },

@@ -71,6 +71,7 @@ export class SignupFromComponent implements OnInit, AfterViewInit, OnDestroy {
   signupform!: FormGroup;
   provinces!: province[];
   cities!: city[];
+  sendReq: boolean = false;
 
   /** control for the selected bank */
   // hideRequiredControl = ;
@@ -148,6 +149,7 @@ export class SignupFromComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log(transformedValue);
 
     let registerUrl = 'https://localhost:5001/api/account/register';
+    this.sendReq = true;
 
     this.http.post(registerUrl, transformedValue).subscribe({
       next: (res) => {
@@ -155,11 +157,15 @@ export class SignupFromComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       error: (err) => {
         // console.error(err);
+        this.sendReq = false;
+
         return new Promise<boolean>(() => {
           this.sweetAlertService.floatAlert('مشخصات فردی تکراری است ', 'error');
         });
       },
       complete: () => {
+        this.sendReq = false;
+
         this.isSignin = true;
         if (this.isSignin) {
           // return confirm('Do you really want to leave?');

@@ -154,7 +154,7 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
         flatStatusType: [null],
       }),
       // location: this.fb.group({
-      neighbourhood: [null, [persianLetterValidator(), Validators.required]],
+      neighborhood: [null, [persianLetterValidator(), Validators.required]],
       city: [null, Validators.required],
       province: [null, Validators.required],
       // }),
@@ -372,7 +372,7 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
     const transformedValue = this.transformFormValue(
       this.advertiseHouseForm.value
     );
-    console.log(transformedValue.advertiseType);
+    console.log(transformedValue);
 
     if (!this.imageData.length) {
       this.imageUploadMessage = 'عکس آگهی را آپلود کنید.';

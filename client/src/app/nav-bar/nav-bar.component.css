@@ -43,3 +43,12 @@ a {
   /* min-width: 6rem; */
   box-sizing: content-box;
 }
+.exit-class {
+  cursor: pointer;
+  display: flex;
+  margin: 5px;
+  /* margin-bottom: ; */
+  /* justify-content: center; */
+  align-items: center;
+}
+/* ////////////////////////////// */

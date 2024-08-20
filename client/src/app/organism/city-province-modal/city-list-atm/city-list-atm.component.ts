@@ -55,6 +55,16 @@ export class CityListAtmComponent implements OnInit {
     );
     this.cities = res;
   }
+  onKeyPress_onlyPersianLettersAndSpace(event: KeyboardEvent): void {
+    const charCode = event.which ? event.which : event.keyCode;
+    const charStr = String.fromCharCode(charCode);
+
+    const persianRegex = /^[\u0600-\u06FF\s]+$/;
+
+    if (!persianRegex.test(charStr)) {
+      event.preventDefault();
+    }
+  }
   getData(cityIndex: number) {
     console.log('selected ct data', this.cities[cityIndex]);
     localStorage.setItem('cityData', JSON.stringify(this.cities[cityIndex]));

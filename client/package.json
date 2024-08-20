@@ -27,7 +27,6 @@
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@ng-bootstrap/ng-bootstrap": "^14.2.0",
     "@popperjs/core": "^2.11.6",
-    "alertifyjs": "^1.14.0",
     "angular-font-awesome": "^3.1.2",
     "angular-material-persian-datepicker": "^1.2.0",
     "bootstrap": "^5.3.3",

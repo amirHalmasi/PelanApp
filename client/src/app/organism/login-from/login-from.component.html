@@ -88,8 +88,9 @@
             <div class="text-center" style="margin-top: 2rem">
               <app-action-btn-atom
                 [btnOptions]="loginBtnOption"
-                [ActionBtnClass]="'btn-primary my-button px-3'"
+                [ActionBtnClass]="'btn-primary my-button px-3 subReq'"
                 [btnState]="!loginForm.valid"
+                [isLoading]="sendReq"
               ></app-action-btn-atom>
               <!-- <div> -->
               <app-action-btn-atom

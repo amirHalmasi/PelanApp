@@ -21,3 +21,8 @@
 .small-font {
   font-size: smaller;
 }
+.subReq {
+  /* box-sizing: border-box; */
+  min-width: 3rem;
+  min-height: 2.4rem;
+}

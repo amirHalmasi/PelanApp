@@ -42,6 +42,7 @@ export class NavBarComponent implements OnInit {
     private router: Router,
     private navbarServ: NavBarService
   ) {}
+  isSelectExpanded: boolean = false;
   ngOnInit(): void {
     const authUser = this.getAuthUserFromLocalStorage();
     this.handleTokenExistence(authUser.token);
