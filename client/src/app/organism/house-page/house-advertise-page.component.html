@@ -4,36 +4,45 @@
   </div>
   <ng-template #advertises>
     <div class="row">
+      <div class="row"><router-outlet></router-outlet></div>
+
       <h2 *ngIf="items?.length === 0 && cityData; else houseAdvertise">
         آگهی ثبت شده ای در شهر
         <span style="color: red">{{ cityData.city_name }}</span>
         وجود ندارد. شهر دیگری را انتخاب کنید.
       </h2>
+      <button (click)="scroll('start')">Scroll start</button>
+      <button (click)="scroll('mid')">Scroll mid</button>
+      <button (click)="scroll('end')">Scroll end</button>
       <ng-template #houseAdvertise>
-        <cdk-virtual-scroll-viewport itemSize="270" class="viewport">
+        <cdk-virtual-scroll-viewport
+          minBufferPx="500"
+          maxBufferPx="700"
+          itemSize="450"
+          class="viewport"
+        >
           <div *cdkVirtualFor="let itemPairs of items; let i = index">
             <!-- Start a new row every 3 items -->
             <div class="row">
               <div
-                class="col-xs-12 col-sm-6 col-md-4 col-lg-3 mb-4"
+                class="col-xs-12 col-sm-6 col-md-4 col-xl-3 mb-4"
                 *ngFor="let item of itemPairs; let j = index"
                 [id]="i.toString() + j.toString()"
               >
-                <div
-                  @fadeInOut
-                  class="card card-shadow"
-                  style="overflow: hidden"
-                >
+                <div class="card m-2 card-shadow" style="overflow: hidden">
                   <div class="card-head parent-box">
                     <app-carousel [images]="item.files"></app-carousel>
+                    <!-- <div class="overlay"></div> -->
                   </div>
-                  <div class="card-body">
-                    <div class="title mt-3">
+                  <div class="card-body" (click)="navigateTo(i, j, item)">
+                    <div
+                      class="title border-gradient-purple border-gradient mt-3"
+                    >
                       <h5
                         class="card-title"
                         [ngClass]="{
                           red: item.advertise.advertiseType === 'rent',
-                          green: item.advertise.advertiseType === 'sell'
+                          blue: item.advertise.advertiseType === 'sell'
                         }"
                       >
                         {{
@@ -46,55 +55,73 @@
                       <div
                         class="d-flex justify-content-between align-items-baseline"
                       >
-                        <span
+                        <!-- <span
                           *ngIf="item.advertise.isHighlighted"
                           class="high-light-main high-light"
                         >
                           هایلایت
-                        </span>
-                        <span
+                        </span> -->
+                        <app-bookmark-svg
+                          style="z-index: 4"
                           *ngIf="item.advertise.isRated || true"
-                          class="high-light-main rated-advertise-high-light mx-2"
+                          class="rated-advertise-high-light"
                         >
-                          برگزیده
-                        </span>
+                        </app-bookmark-svg>
                       </div>
                     </div>
-                    <div class="card-data-container child-box">
-                      <div class="card-details">
-                        <span> <app-elevator-svg></app-elevator-svg></span>
-                        <app-thereis-or-not
-                          [determineCheckedOrUnchecked]="
-                            item.advertise.hasElevator
-                          "
-                        ></app-thereis-or-not>
-                      </div>
-                      <div class="card-details">
-                        <app-bedroom-svg></app-bedroom-svg>
-                        <span style="font-size: 1.1rem">{{
-                          "       :  " + item.advertise.rooms
-                        }}</span>
-                      </div>
-                      <div class="card-details">
-                        <app-parking-svg></app-parking-svg>
-                        <app-thereis-or-not
-                          [determineCheckedOrUnchecked]="
-                            item.advertise.parkingType &&
-                            item.advertise.parkingType !== 'none'
-                          "
-                        ></app-thereis-or-not>
-                      </div>
+                    <!-- <div class="card-data-container child-box"> -->
+                    <div
+                      class="card-details"
+                      style="position: absolute; left: 0%; bottom: 40%"
+                      [ngClass]="{
+                        'icon-box-shadow': item.advertise.hasElevator
+                      }"
+                    >
+                      <span>
+                        <app-elevator-svg
+                          [isShow]="item.advertise.hasElevator"
+                        ></app-elevator-svg
+                      ></span>
+                      <!-- <app-thereis-or-not
+                        [determineCheckedOrUnchecked]="
+                          item.advertise.hasElevator
+                        "
+                      ></app-thereis-or-not> -->
                     </div>
+                    <div class="card-details room-container">
+                      <app-bedroom-svg></app-bedroom-svg>
+                      <span class="room-counts">{{
+                        "       :  " + item.advertise.rooms
+                      }}</span>
+                    </div>
+                    <div
+                      class="card-details"
+                      style="position: absolute; left: 0%; bottom: 50%"
+                      [ngClass]="{
+                        'icon-box-shadow': item.advertise.parkingType
+                      }"
+                    >
+                      <app-parking-svg
+                        [isShow]="item.advertise.parkingType"
+                      ></app-parking-svg>
+                      <!-- <app-thereis-or-not
+                        [determineCheckedOrUnchecked]="
+                          item.advertise.parkingType &&
+                          item.advertise.parkingType !== 'none'
+                        "
+                      ></app-thereis-or-not> -->
+                    </div>
+                    <!-- </div> -->
                     <div
                       [ngClass]="{
                         'red-shadow': item.advertise.advertiseType === 'rent',
                         'green-shadow': item.advertise.advertiseType === 'sell'
                       }"
-                      class="card-price-container mb-2"
-                      style="height: 5rem"
+                      class="card-price-container justify-content-start mb-2"
                     >
                       <container-element
                         [ngSwitch]="item.advertise.advertiseType"
+                        class="w-100"
                       >
                         <h5 *ngSwitchCase="'rent'" class="card-details price">
                           {{

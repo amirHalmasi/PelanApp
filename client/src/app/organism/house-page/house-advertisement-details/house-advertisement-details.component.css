@@ -1,0 +1,100 @@
+* {
+  font-family: "nazanin", "Courier New", Courier, monospace !important;
+  margin: 0;
+  padding: 0;
+}
+.viewport {
+  direction: ltr;
+  height: 78vh;
+  width: 100%;
+  overflow: auto;
+  padding: 0 0.8rem !important;
+  /* border: 1px solid red; */
+  scroll-behavior: smooth;
+}
+.advertiseData {
+  padding: 0.8rem;
+  background-color: transparent;
+  border: 0;
+}
+.card-body {
+  cursor: pointer;
+  /* cursor: default; */
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 1rem;
+  background-color: rgba(229, 249, 255, 0.308);
+  border: 1px solid #e2e5f5;
+  backdrop-filter: blur(10px);
+
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  /* background-color: #f1f3f5 !important; */
+}
+.title {
+  /* position: relative; */
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 1.5rem 0.8rem 0 0 !important;
+  /* padding: 0 0.8rem 0.2rem 0; */
+}
+.margin-x-0 {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.seprator {
+  border: 1px solid;
+  border-image-slice: 1;
+
+  border-image-source: linear-gradient(
+    to left,
+    rgba(255, 255, 255, 0),
+    rgb(61, 61, 61),
+    rgba(255, 255, 255, 0)
+  );
+  margin: 0.5rem 0.8rem;
+
+  border-width: 1px;
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
+}
+.border-gradient {
+  border: 3px solid;
+  border-image-slice: 1;
+  border-width: 3px;
+}
+.border-gradient-purple {
+  border-image-source: linear-gradient(
+    to left,
+    rgb(201, 48, 63) 2%,
+    rgb(12, 102, 234) 33%,
+    rgba(255, 255, 255, 0) 99%
+  );
+  border-top: 0;
+  border-right: 0;
+  border-left: 0;
+}
+.mark {
+  background-color: transparent;
+}
+.mark::after {
+  content: "*";
+  color: red;
+  margin: 0.3rem;
+}
+
+.details {
+  text-align: right;
+  padding: 0.3rem 0.8rem 0.3rem 0;
+  font-size: 1rem;
+}
+.card-title {
+  /* font-family: "sogand", "Courier New", Courier, monospace !important; */
+  font-size: 1.1rem !important;
+  font-weight: bold;
+  text-shadow: 2px 4px 3px rgba(46, 46, 46, 0.138);
+  text-align: right;
+}

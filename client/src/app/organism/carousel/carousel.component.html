@@ -1,14 +1,24 @@
-<div *ngIf="images && images.length > 0" class="carousel-container">
+<div
+  [ngClass]="{ borderRadiusStyle: isInAdvertiseDetail }"
+  *ngIf="images && images.length > 0"
+  class="carousel-container"
+>
   <img
     *ngFor="let image of images; let i = index"
     [lazyLoad]="'https://localhost:5001/' + image"
     [defaultImage]="'../../../assets/lazyPlaceholder.svg'"
     [errorImage]="'../../../assets/lazyPlaceholder.svg'"
     [alt]="i"
-    [ngClass]="{ 'image-active': selectedIndex === i }"
+    [ngClass]="{
+      'image-active': selectedIndex === i,
+      advertiseDetaileImage: isInAdvertiseDetail
+    }"
     loading="lazy"
   />
-  <div class="overlay"></div>
+  <!-- <div class="overlay0"></div> -->
+  <div [ngClass]="{ overlay1: !isInAdvertiseDetail }"></div>
+  <div [ngClass]="{ overlay2: !isInAdvertiseDetail }"></div>
+  <div [ngClass]="{ overlay3: !isInAdvertiseDetail }"></div>
   <div
     *ngIf="indicators && isMoreThanOneImageExist && images.length < 11"
     class="carousel-dot-container"

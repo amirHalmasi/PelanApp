@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { slideRightInOut } from 'src/app/services/animation';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { Router } from '@angular/router';
 interface carouselImage {
   imageSrc: string;
   imageAlt: string;
@@ -17,11 +18,22 @@ export class CarouselComponent implements OnInit {
   @Input() indicators: boolean = true;
   @Input() controls: boolean = true;
   @Input() icon = { right: faChevronRight, left: faChevronLeft };
+  currentUrl!: string;
+  constructor(private router: Router) {}
   selectedIndex = 0;
   isMoreThanOneImageExist!: boolean;
+  isInAdvertiseDetail!: boolean;
   ngOnInit(): void {
     console.log(this.images);
     this.isMoreThanOneImageExist = this.images.length > 1;
+    this.currentUrl = this.router.url;
+    console.log(this.currentUrl);
+
+    if (this.currentUrl.includes('advertiseDetails')) {
+      this.isInAdvertiseDetail = true;
+    } else {
+      this.isInAdvertiseDetail = false;
+    }
   }
   //sets index of image on dot/ indicator click
   selectedImage(imageIndex: number) {

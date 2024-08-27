@@ -61,3 +61,14 @@
   padding: 0;
   border: 1px solid #dc3545 !important;
 }
+.form-container-class {
+  height: 80vh;
+  width: 80%;
+  overflow-y: auto;
+}
+.parent-container {
+  height: 80vh;
+  overflow: hidden;
+}
+.row-container {
+}

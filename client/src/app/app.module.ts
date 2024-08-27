@@ -41,7 +41,7 @@ import { SellStoreComponent } from './organism/advertise/storeadvertise/sell-sto
 import { RentStoreComponent } from './organism/advertise/storeadvertise/rent-store/rent-store.component';
 import { GroundAdvertiseComponent } from './organism/advertise/ground-advertise/ground-advertise.component';
 // import { RentPageComponent } from './organism/rent-page/rent-page.component';
-import { SellPageComponent } from './organism/sell-page/sell-page.component';
+import { StoreAdvertisePageComponent } from './organism/store-page/store-advertise-page.component';
 // import { ImageSliderComponent } from './organism/image-slider/image-slider.component';
 // import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { CustomeCarouselModule } from './organism/carousel/carousel.module';
@@ -55,6 +55,8 @@ import { HouseAdvertisePageComponent } from './organism/house-page/house-adverti
 import { NumberSepratorPipe } from './organism/house-page/number-seprator.pipe';
 import { SendRequestLoadingAtmComponent } from './organism/send-request-loading-atm/send-request-loading-atm.component';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+import { BookmarkSvgComponent } from './organism/house-page/bookmark-svg/bookmark-svg.component';
+import { HouseAdvertisementDetailsComponent } from './organism/house-page/house-advertisement-details/house-advertisement-details.component';
 
 // import { ElevatorSvgComponent } from './organism/rent-page/elevator-svg/elevator-svg.component';
 // import { ParkingSvgComponent } from './organism/rent-page/parking-svg/parking-svg.component';
@@ -92,16 +94,18 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     RentStoreComponent,
     GroundAdvertiseComponent,
     HouseAdvertisePageComponent,
-    SellPageComponent,
+    StoreAdvertisePageComponent,
     // ImageSliderComponent,
     ElevatorSvgComponent,
     ParkingSvgComponent,
     BedroomSvgComponent,
     CheckedSvgComponent,
+    BookmarkSvgComponent,
     UncheckedSvgComponent,
     ThereisOrNotComponent,
     NumberSepratorPipe,
     SendRequestLoadingAtmComponent,
+    HouseAdvertisementDetailsComponent,
   ],
   imports: [
     NgxMatSelectSearchModule,

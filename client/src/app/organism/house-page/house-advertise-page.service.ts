@@ -1,13 +1,18 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { EventEmitter, Injectable } from '@angular/core';
+import { AsyncSubject, BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HouseAdvetisePageService {
   constructor(private http: HttpClient) {}
+  // houseAdvertises = new AsyncSubject<any>();
   houseAdvertises = new Subject<any>();
+  hasItems = new Subject<boolean>();
+  selectedAdvertiseRow = new BehaviorSubject<number>(0);
+  // advertiseItem = new Subject<any>();
+  advertiseItem!: any;
   // cityData = new Subject<any>();
   getHouseAdvertises(city_id: string) {
     let advertisesUrl = 'https://localhost:5001/api/HouseAdvertise/' + city_id;

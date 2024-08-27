@@ -3,11 +3,11 @@ import { Subscription } from 'rxjs';
 import { StoreAdvetisePageService } from './store-advertise-page.service';
 
 @Component({
-  selector: 'app-sell-page',
-  templateUrl: './sell-page.component.html',
-  styleUrls: ['./sell-page.component.css'],
+  selector: 'app-advertise-sell-page',
+  templateUrl: './store-advertise-page.component.html',
+  styleUrls: ['./store-advertise-page.component.css'],
 })
-export class SellPageComponent implements OnInit, OnDestroy {
+export class StoreAdvertisePageComponent implements OnInit, OnDestroy {
   cityData: any;
   storeAdvSubscribtion!: Subscription;
   items: any;
