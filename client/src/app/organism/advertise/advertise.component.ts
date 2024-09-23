@@ -55,10 +55,10 @@ export class AdvertiseComponent implements OnInit {
   // url!: string;
   ngOnInit() {
     this.icon = faTrash;
-    this.route.url.subscribe((event) => {
-      console.log(event[0].path);
-      // this.updateBackground(event[0].path);
-    }); // UrlSegment[]
+    // this.route.url.subscribe((event) => {
+    //   console.log(event[0].path);
+    //   // this.updateBackground(event[0].path);
+    // }); // UrlSegment[]
 
     // localStorage.clear();
     // authUser ??

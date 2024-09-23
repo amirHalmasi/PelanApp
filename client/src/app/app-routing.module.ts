@@ -1,5 +1,10 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {
+  PreloadAllModules,
+  PreloadingStrategy,
+  RouterModule,
+  Routes,
+} from '@angular/router';
 import { LoginFromComponent } from './organism/login-from/login-from.component';
 import { HomeComponent } from './organism/home/home.component';
 import { SignupFromComponent } from './organism/signup-from/signup-from.component';
@@ -12,13 +17,17 @@ import { GroundAdvertiseComponent } from './organism/advertise/ground-advertise/
 import { StoreAdvertisePageComponent } from './organism/store-page/store-advertise-page.component';
 import { HouseAdvertisePageComponent } from './organism/house-page/house-advertise-page.component';
 import { CanActivateHousePageGuard } from './guards/can-activate-house-page.guard';
-import { HouseAdvertisementDetailsComponent } from './organism/house-page/house-advertisement-details/house-advertisement-details.component';
+import { AdvertisementDetailsComponent } from './organism/advertisement-details/advertisement-details.component';
+import { MyAdvertisesComponent } from './organism/my-advertises/my-advertises.component';
+import { HouseAdvertisesProfileComponent } from './organism/my-advertises/house-advertises-profile/house-advertises-profile.component';
 
 const routes: Routes = [
   {
     path: 'login',
-
-    component: LoginFromComponent,
+    loadChildren: () =>
+      import('./organism/login-from/login.module').then(
+        (m) => m.LoginFormModule
+      ),
   },
   {
     path: 'home',
@@ -26,49 +35,76 @@ const routes: Routes = [
   },
   {
     path: 'signup',
-    canDeactivate: [canDeactivateGuardFn],
-    component: SignupFromComponent,
+    loadChildren: () =>
+      import('./organism/signup-from/signUp.module').then(
+        (m) => m.SignupFromModule
+      ),
   },
   {
     path: 'advertiseDetails/:title',
     // canDeactivate: [canDeactivateGuardFn],
-    component: HouseAdvertisementDetailsComponent,
+    component: AdvertisementDetailsComponent,
   },
   {
     path: 'houseAdvertise',
-    component: HouseAdvertisePageComponent,
-    canActivate: [CanActivateHousePageGuard],
+    loadChildren: () =>
+      import('./organism/house-page/house-advertise-page.module').then(
+        (m) => m.HouseAdvertisePageModule
+      ),
   },
   {
     path: 'storeAdvertise',
     component: StoreAdvertisePageComponent,
   },
   {
-    path: 'advertise',
-    // canDeactivate: [canDeactivateGuardFn],
-    component: AdvertiseComponent,
+    path: 'myAdvertises',
+    component: MyAdvertisesComponent,
     children: [
       {
-        path: 'house',
-        canDeactivate: [canDeactivateGuardFn],
-        component: HouseAdvertiseComponent,
+        path: 'userHouseAdvertises',
+        component: HouseAdvertisesProfileComponent,
       },
-      {
-        path: 'store',
-        component: StoreadvertiseComponent,
-        canDeactivate: [canDeactivateGuardFn],
-      },
-      {
-        path: 'ground',
-        component: GroundAdvertiseComponent,
-      },
+
       {
         path: '',
-        redirectTo: 'house',
+        redirectTo: 'userHouseAdvertises',
         pathMatch: 'full',
       },
     ],
   },
+  {
+    path: 'advertise',
+    loadChildren: () =>
+      import('./organism/advertise/advertise.module').then(
+        (m) => m.AdvertiseModule
+      ),
+  },
+  // {
+  //   path: 'advertise',
+  //   // canDeactivate: [canDeactivateGuardFn],
+  //   component: AdvertiseComponent,
+  //   children: [
+  //     {
+  //       path: 'house',
+  //       canDeactivate: [canDeactivateGuardFn],
+  //       component: HouseAdvertiseComponent,
+  //     },
+  //     {
+  //       path: 'store',
+  //       component: StoreadvertiseComponent,
+  //       canDeactivate: [canDeactivateGuardFn],
+  //     },
+  //     {
+  //       path: 'ground',
+  //       component: GroundAdvertiseComponent,
+  //     },
+  //     {
+  //       path: '',
+  //       redirectTo: 'house',
+  //       pathMatch: 'full',
+  //     },
+  //   ],
+  // },
   {
     path: '',
     redirectTo: 'home',
@@ -81,7 +117,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules }),
+  ],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}

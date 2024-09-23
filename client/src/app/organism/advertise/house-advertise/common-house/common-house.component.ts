@@ -21,11 +21,13 @@ import { slideRightInOut } from 'src/app/services/animation';
 })
 export class CommonHouseComponent implements OnInit, OnChanges {
   @Output() buildingTypeEvent = new EventEmitter<string>();
+  @Input() buildingTypeInput!: string;
   @Input() advertiseTypeInput!: string;
   @Input() formGroupName!: string;
   advertiseType!: string;
-  buildingType!: string;
+  buildingType: string = '';
   hasHouseWare: boolean = false;
+  hasParking: boolean = false;
   houseMeterHintDesc: string = '';
   wareHouseMeterHintDesc: string = '';
   hintDescription!: string;
@@ -46,7 +48,7 @@ export class CommonHouseComponent implements OnInit, OnChanges {
     { value: 'ShakhsiSaz', desc: 'واحد شخصی ساز' },
   ];
   parkingTypes: any = [
-    { value: 'none', desc: 'ندارد' },
+    // { value: 'none', desc: 'ندارد' },
     { value: 'mohavate', desc: 'محوطه(حیاط)' },
     { value: 'mossaghaf', desc: 'مسقف' },
   ];
@@ -54,10 +56,17 @@ export class CommonHouseComponent implements OnInit, OnChanges {
   constructor(private rootFormGroup: FormGroupDirective) {} // this.rootFormGroup is the instant of parent form group component
   ngOnInit(): void {
     this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;
+    console.log('common form', this.form);
   }
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(changes: any): void {
     console.log('changes sell component', changes);
-
+    if (
+      changes['buildingTypeInput']
+      //  &&
+      // changes['buildingTypeInput'].firstChange
+    ) {
+      this.buildingType = changes['buildingTypeInput'].currentValue;
+    }
     if (
       changes['advertiseTypeInput'] &&
       !changes['advertiseTypeInput'].firstChange
@@ -67,6 +76,11 @@ export class CommonHouseComponent implements OnInit, OnChanges {
       //   changes['advertiseTypeInput'].currentValue
       // );
       this.advertiseType = changes['advertiseTypeInput'].currentValue;
+      this.determineParkingValidator(
+        this.hasParking,
+        changes['advertiseTypeInput'].currentValue,
+        this.buildingType
+      );
     }
   }
   determineHouseType(houseTypeSelectValue: any) {
@@ -153,19 +167,57 @@ export class CommonHouseComponent implements OnInit, OnChanges {
       // this.buildingTypeEvent.emit('Villaie');
 
       this.setMyValidators('Villaie');
+      this.determineParkingValidator(
+        this.hasParking,
+        this.advertiseType,
+        'Villaie'
+      );
     } else if (houseTypeSelectValue === 'Mojtama') {
       // this.buildingType = 'Mojtama';
       // this.buildingTypeEvent.emit('Mojtama');
+      this.determineParkingValidator(
+        this.hasParking,
+        this.advertiseType,
+        'Mojtama'
+      );
+
       this.setMyValidators('Mojtama');
     } else {
       // this.buildingType = 'ShakhsiSaz';
       // this.buildingTypeEvent.emit('ShakhsiSaz');
+      this.determineParkingValidator(
+        this.hasParking,
+        this.advertiseType,
+        'ShakhsiSaz'
+      );
+
       this.setMyValidators('ShakhsiSaz');
     }
   }
-  determineWareHouseValidator(hasWareHouse: boolean) {
+  determineParkingValidator(
+    hasParking: boolean,
+    advertiseType: string,
+    buildingType: string
+  ) {
+    /*
+    
+    */
+
+    const parkingControl = this.form.get('parkingType');
+    if (
+      hasParking &&
+      advertiseType === 'sell' &&
+      (buildingType === 'ShakhsiSaz' || buildingType === 'Mojtama')
+    ) {
+      parkingControl?.setValidators([Validators.required]);
+    } else {
+      parkingControl?.setValidators(null);
+    }
+    parkingControl?.updateValueAndValidity();
+  }
+  determineWareHouseValidator(hasWareHouse: boolean, advertiseType: string) {
     const wareHouseControl = this.form.get('wareHouseMeter');
-    if (hasWareHouse) {
+    if (hasWareHouse && advertiseType === 'sell') {
       wareHouseControl?.setValidators([Validators.required, numberValidator()]);
     } else {
       wareHouseControl?.setValidators(null);
@@ -175,15 +227,15 @@ export class CommonHouseComponent implements OnInit, OnChanges {
   private setMyValidators(buildingType: string): void {
     // const groundMeterControl = this.form.get('sellFields.groundMeter');
     const buildingNameControl = this.form.get('buildingName');
-    const parkingTypeControl = this.form.get('parkingType');
+    // const parkingTypeControl = this.form.get('parkingType');
     const floorControl = this.form.get('floor');
     const orientationsControl = this.form.get('orientations');
     switch (buildingType) {
       case 'Villaie':
         buildingNameControl?.setValidators(null);
-        this.advertiseType === 'sell'
-          ? parkingTypeControl?.setValidators(null)
-          : parkingTypeControl?.setValidators([Validators.required]);
+
+        // parkingTypeControl?.setValidators(null);
+
         floorControl?.setValidators(null);
         // statesControl?.setValidators(Validators.required);
         orientationsControl?.setValidators(Validators.required);
@@ -198,7 +250,9 @@ export class CommonHouseComponent implements OnInit, OnChanges {
           Validators.required,
           persianLetterValidator(),
         ]);
-        parkingTypeControl?.setValidators(Validators.required);
+        // this.advertiseType === 'sell' && this.hasParking
+        //   ? parkingTypeControl?.setValidators([Validators.required])
+        //   : parkingTypeControl?.setValidators(null);
         floorControl?.setValidators([Validators.required, numberValidator()]);
         // floorsControl?.setValidators(null);
         // statesControl?.setValidators(null);
@@ -213,7 +267,9 @@ export class CommonHouseComponent implements OnInit, OnChanges {
         buildingNameControl?.setValidators(null);
         buildingNameControl?.updateValueAndValidity();
         buildingNameControl?.setValidators(persianLetterValidator());
-        parkingTypeControl?.setValidators(Validators.required);
+        // this.advertiseType === 'sell' && this.hasParking
+        //   ? parkingTypeControl?.setValidators([Validators.required])
+        //   : parkingTypeControl?.setValidators(null);
         floorControl?.setValidators([Validators.required, numberValidator()]);
         // floorsControl?.setValidators([Validators.required, numberValidator()]);
         // statesControl?.setValidators(null);
@@ -222,14 +278,14 @@ export class CommonHouseComponent implements OnInit, OnChanges {
         break;
       default:
         buildingNameControl?.setValidators(null);
-        parkingTypeControl?.setValidators(null);
+        // parkingTypeControl?.setValidators(null);
         floorControl?.setValidators(null);
         orientationsControl?.setValidators(null);
         break;
     }
 
     buildingNameControl?.updateValueAndValidity();
-    parkingTypeControl?.updateValueAndValidity();
+    // parkingTypeControl?.updateValueAndValidity();
     floorControl?.updateValueAndValidity();
     orientationsControl?.updateValueAndValidity();
   }

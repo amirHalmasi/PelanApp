@@ -1,12 +1,12 @@
 <div
-  [ngClass]="{ borderRadiusStyle: isInAdvertiseDetail }"
-  *ngIf="images && images.length > 0"
+  [ngClass]="{ AdvertiseDetailePageStyle: isInAdvertiseDetail }"
+  *ngIf="imagesFiles && imagesFiles.length > 0"
   class="carousel-container"
 >
   <img
-    *ngFor="let image of images; let i = index"
-    [lazyLoad]="'https://localhost:5001/' + image"
-    [defaultImage]="'../../../assets/lazyPlaceholder.svg'"
+    *ngFor="let image of imagesFiles; let i = index"
+    [lazyLoad]="'https://localhost:5001/' + image.highQuality"
+    [defaultImage]="'https://localhost:5001/' + image.lowQuality"
     [errorImage]="'../../../assets/lazyPlaceholder.svg'"
     [alt]="i"
     [ngClass]="{
@@ -18,13 +18,13 @@
   <!-- <div class="overlay0"></div> -->
   <div [ngClass]="{ overlay1: !isInAdvertiseDetail }"></div>
   <div [ngClass]="{ overlay2: !isInAdvertiseDetail }"></div>
-  <div [ngClass]="{ overlay3: !isInAdvertiseDetail }"></div>
+  <!-- <div [ngClass]="{ overlay3: !isInAdvertiseDetail }"></div> -->
   <div
-    *ngIf="indicators && isMoreThanOneImageExist && images.length < 11"
+    *ngIf="indicators && isMoreThanOneImageExist && imagesFiles.length < 11"
     class="carousel-dot-container"
   >
     <span
-      *ngFor="let dot of images; let i = index"
+      *ngFor="let dot of imagesFiles; let i = index"
       class="dot"
       [ngClass]="{ active: selectedIndex === i }"
       (click)="selectedImage(i)"
@@ -50,9 +50,9 @@
       (click)="onNextClick()"
     ></fa-icon>
   </div>
-  <!-- <div *ngIf="indicators && images.length > 10" class="carousel-dot-container">
-    <span *ngFor="let dot of images; let i = index" style="color: white">{{
-      "عکس" + i + "از" + images.length
+  <!-- <div *ngIf="indicators && imagesFiles.length > 10" class="carousel-dot-container">
+    <span *ngFor="let dot of imagesFiles; let i = index" style="color: white">{{
+      "عکس" + i + "از" + imagesFiles.length
     }}</span>
   </div> -->
 </div>

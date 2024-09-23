@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ImageDto } from './uploadfile.component';
 export interface fileUploadData {
-  imageData: ImageDto[];
+  imageData: {
+    highQualityFiles: ImageDto[];
+    lowQualityFiles: ImageDto[];
+  };
   username: string;
   advertiseCode: string;
 }

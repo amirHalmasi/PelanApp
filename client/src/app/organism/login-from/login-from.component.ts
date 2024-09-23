@@ -113,7 +113,7 @@ export class LoginFromComponent implements OnInit {
       },
       complete: () => {
         this.sendReq = false;
-        this.router.navigate(['/']);
+        this.router.navigate(['/home']);
         this.navbarServ.isTokenExist.next(true);
       },
     });

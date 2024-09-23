@@ -16,7 +16,7 @@
   height: 100vh;
 }
 .uc-modal-content * {
-  font-family: "Nazanin", "Courier New", Courier, monospace;
+  font-family: "IranSans", "nazanin", "Courier New", Courier, monospace;
 }
 .uc-modal-content {
   background-color: white;
@@ -31,7 +31,7 @@
   padding: 5px 15px;
   height: 3.5rem;
   width: 100%;
-  font-family: "nazanin", "Courier New", Courier, monospace;
+  font-family: "IranSans", "nazanin", "Courier New", Courier, monospace;
   background-color: rgba(225, 246, 252, 0.479);
   border-bottom: 1px solid #ced5f5;
   backdrop-filter: blur(10px);

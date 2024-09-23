@@ -22,7 +22,7 @@ import {
 import { fadeInOut, slideRightInOut } from 'src/app/services/animation';
 
 @Component({
-  selector: 'app-select-wit-search',
+  selector: 'app-select-wit-searchascx',
   templateUrl: './select-wit-search.component.html',
   styleUrls: ['./select-wit-search.component.css'],
   animations: [slideRightInOut],

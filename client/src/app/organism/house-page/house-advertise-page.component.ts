@@ -14,6 +14,8 @@ import { fromEvent, map, Subscription } from 'rxjs';
 import { ModalServiceService } from 'src/app/services/modal-service.service';
 import { Router } from '@angular/router';
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import * as moment from 'jalali-moment';
+import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
 // import { Component } from '@angular/core';
 type Position = 'start' | 'mid' | 'end';
 @Component({
@@ -40,14 +42,16 @@ export class HouseAdvertisePageComponent
   houseAdvSubscribtion!: Subscription;
   showAdvertiseDetails: boolean = false;
   constructor(
-    private http: HttpClient,
     private houseAdvertiseServ: HouseAdvetisePageService,
     private cityModalServ: ModalServiceService,
     // private cdr: ChangeDetectorRef,
+    private advertiseData: AdvetiseDataService,
     private route: Router
   ) {
     // console.log('this.deviceWidth', this.deviceWidth);
   }
+  advertiseSubmitDate!: Date;
+  todayDate!: Date;
 
   @ViewChild(CdkVirtualScrollViewport) viewPort!: CdkVirtualScrollViewport;
   scroll(position: Position) {
@@ -69,6 +73,7 @@ export class HouseAdvertisePageComponent
     console.log(item);
     // this.houseAdvertiseServ.advertiseItem.next(item);
     this.houseAdvertiseServ.advertiseItem = item;
+    this.advertiseData.previousRouteURL.next('house');
     this.route.navigate(['/advertiseDetails', i.toString() + j.toString()]);
     this.showAdvertiseDetails = true;
     this.houseAdvertiseServ.selectedAdvertiseRow.next(i);
@@ -159,11 +164,12 @@ export class HouseAdvertisePageComponent
       pairArrayCount = 1;
     } else if (deviceWidth >= 576 && deviceWidth < 768) {
       pairArrayCount = 2;
-    } else if (deviceWidth >= 768 && deviceWidth < 1200) {
+    } else if (deviceWidth >= 768) {
       pairArrayCount = 3;
-    } else if (deviceWidth >= 1200) {
-      pairArrayCount = 4;
     }
+    //  else if (deviceWidth >= 1200) {
+    //   pairArrayCount = 6;
+    // }
     return pairArrayCount;
   }
   itemsSlices(itemIndex: number) {
@@ -186,7 +192,31 @@ export class HouseAdvertisePageComponent
     this.isLoadingAdvertises = true;
     this.houseAdvertiseServ
       .getHouseAdvertises(city_id)
-      // .pipe(map((data) => this.groupIntoChunks(data, 3)))
+      .pipe(
+        // Calculate the difference in days between todayDate and advertiseSubmitDate
+        map((data: any[]) => {
+          return data.map((advertiseObj) => {
+            console.log('all advertise s house ct', advertiseObj);
+            const advertiseSubmitDate = moment(
+              advertiseObj.advertise.advertiseSubmitDate
+            );
+            const todayDate = moment(advertiseObj.todayDate);
+
+            // Calculate the difference in days
+            const diffInDay = todayDate.diff(advertiseSubmitDate, 'days');
+            const diffInHour = todayDate.diff(advertiseSubmitDate, 'hours');
+            const diffInMonth = todayDate.diff(advertiseSubmitDate, 'months');
+
+            // Add the difference to the object
+            return {
+              ...advertiseObj,
+              diffInDay,
+              diffInHour,
+              diffInMonth,
+            };
+          });
+        })
+      )
       .subscribe({
         next: (data) => {
           console.log('advertises request', data);

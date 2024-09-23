@@ -26,10 +26,12 @@ import {
   fileUploadData,
   FileUploadservice,
 } from '../uploadfile/fileUpload.service';
-import { Subscription } from 'rxjs';
+import { map, Subscription } from 'rxjs';
 import { CanDeactivateType } from '../../signup-from/can-deactivate-gaurde';
 import { SweetAlertService } from 'src/app/services/sweetalert.service';
 import { advertiseSuccesDto } from '../advertises.service';
+import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
+import { HouseAdvetiseProfileService } from '../../my-advertises/house-advertise-profile.service';
 
 @Component({
   selector: 'app-house-advertise',
@@ -41,7 +43,7 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
   // @ViewChild('houseTypeSelect') houseTypeSelect!: MatSelect;
   // buildingType: string = 'Villaie';
   buildingType!: string;
-  advertiseType!: string;
+  advertiseTypeValue!: string;
   imageUploadMessage!: string;
   @Input() uploadedImageData!: string;
   isSubmitAdvertise: boolean = false;
@@ -62,7 +64,10 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
     btnText: 'درج آگهی',
   };
   fileUploadSubscription!: Subscription;
-  imageData: ImageDto[] = [];
+  imageData!: {
+    highQualityFiles: ImageDto[];
+    lowQualityFiles: ImageDto[];
+  };
   hasHouseWare: boolean = false;
   hasElevator: boolean = false;
   username!: string;
@@ -70,13 +75,18 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
   icon!: any;
   advertiseHouseForm!: FormGroup;
   hintDescription!: string;
+  files!: any;
   fileUploadData!: fileUploadData;
+  editData!: any;
+  preUrl!: string;
   constructor(
     private http: HttpClient,
     private fb: FormBuilder,
     private router: Router,
     private sweetAlertService: SweetAlertService,
-    private fileUploadServ: FileUploadservice
+    private fileUploadServ: FileUploadservice,
+    private advertiseData: AdvetiseDataService,
+    private houseAdvertiseServ: HouseAdvetiseProfileService
   ) {
     // console.log(
     //   'route states house',
@@ -91,16 +101,19 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
     this.icon = faTrash;
     const user = JSON.parse(localStorage.getItem('authUser') || '{}');
     this.username = user.username;
-    this.advertiseCode = Math.floor(Math.random() * 1000000000).toString();
+
     this.fileUploadSubscription =
       this.fileUploadServ.uploadedImageData.subscribe(
         (data: fileUploadData) => {
           console.log('upload image Data house', data);
-          if (data.imageData.length > 0) {
+          if (data.imageData.highQualityFiles.length > 0) {
             this.imageData = data.imageData;
             this.imageUploadMessage = '';
           } else {
-            this.imageData = [];
+            this.imageData = {
+              highQualityFiles: [],
+              lowQualityFiles: [],
+            };
           }
           this.advertiseCode = data.advertiseCode;
           this.username = data.username;
@@ -128,6 +141,7 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
         buildingName: [null],
         floor: [null],
         orientations: [null],
+        hasParking: [null],
       }),
 
       /////////////////////////////
@@ -155,14 +169,55 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
       }),
       // location: this.fb.group({
       neighborhood: [null, [persianLetterValidator(), Validators.required]],
-      city: [null, Validators.required],
-      province: [null, Validators.required],
+      cityAndProvince: this.fb.group({
+        city: [null, Validators.required],
+        province: [null, Validators.required],
+      }),
       // }),
 
       desc: [
         null,
         // persianLetterValidator()
       ],
+    });
+    this.advertiseData.previousRouteURL.subscribe((preRoute) => {
+      console.log('preRoute', preRoute);
+      if (preRoute === 'edit/house') {
+        this.preUrl = preRoute;
+        console.log(
+          'this.houseAdvertiseServ.advertiseItem',
+          this.houseAdvertiseServ.advertiseItem
+        );
+        // this.formValuePatch(this.houseAdvertiseServ.advertiseItem.advertise);
+        this.formValuePatch(this.houseAdvertiseServ.advertiseItem.advertise);
+        const transformedFiles = {
+          highQualityFiles: this.houseAdvertiseServ.advertiseItem.files.map(
+            (file: any) => ({
+              path: file.highQuality,
+              fileName: file.highQuality.split('\\').pop(),
+            })
+          ),
+          lowQualityFiles: this.houseAdvertiseServ.advertiseItem.files.map(
+            (file: any) => ({
+              path: file.lowQuality,
+              fileName: file.lowQuality.split('\\').pop(),
+            })
+          ),
+        };
+        this.files = transformedFiles;
+        console.log('transformedFiles', transformedFiles);
+        this.editData = {
+          ...this.houseAdvertiseServ.advertiseItem,
+          files: transformedFiles,
+        };
+
+        // Replace original files array with transformed object
+        // data.files = transformedFiles;
+        this.advertiseCode =
+          this.houseAdvertiseServ.advertiseItem.advertise.advertiseCode;
+      } else {
+        this.advertiseCode = Math.floor(Math.random() * 1000000000).toString();
+      }
     });
   }
   // submit() {
@@ -228,6 +283,50 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
   //   // });
   // }
 
+  formValuePatch(advertiseData: any) {
+    this.advertiseHouseForm.patchValue({
+      // Set advertiseType
+      type: {
+        advertiseType: advertiseData.advertiseType,
+      },
+
+      // Set common fields
+      commonFields: {
+        houseType: advertiseData.houseType,
+        houseMeter: advertiseData.houseMeter,
+        rooms: advertiseData.rooms,
+        hasElevator: advertiseData.hasElevator === 'true',
+        hasHouseWare: advertiseData.hasWareHouse === 'true',
+        wareHouseMeter: advertiseData.wareHouseMeter,
+        parkingType: advertiseData.parkingType,
+        buildingName: advertiseData.buildingName,
+        floor: advertiseData.floor,
+        orientations: advertiseData.orientation,
+        hasParking: advertiseData.hasParking === 'true',
+      },
+
+      // Set rent-specific fields
+      rentFields: {
+        entryType: advertiseData.entryType,
+        depositPrice: advertiseData.depositPrice,
+        rentPrice: advertiseData.rentPrice,
+        rentFlatType: advertiseData.rentFlatType,
+        flatStatusType: advertiseData.flatStatusType,
+        controlType: advertiseData.branchStatus,
+      },
+
+      // Set location fields
+      neighborhood: advertiseData.neighborhood,
+      cityAndProvince: {
+        city: +advertiseData.cityId,
+        province: +advertiseData.provinceId,
+      },
+      // Set description
+      desc: advertiseData.description,
+    });
+    this.advertiseTypeValue = advertiseData.advertiseType;
+    this.buildingType = advertiseData.houseType;
+  }
   public uploadFinish = (event: UploadFinishedEvent) => {
     this.imageUploadMessage;
     this.fileUploadData = {
@@ -235,12 +334,16 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
       username: event.username,
       advertiseCode: event.advertiseCode,
     };
+    this.files = event.imageData;
     console.log('uploadFinish', event);
     console.log('FileUploadFinish', this.fileUploadData);
     console.log('event uploaded finish', event);
   };
 
-  createImagePath(serverPath: string) {
+  createImagePath(serverPath: string | undefined) {
+    if (!serverPath) {
+      return;
+    }
     serverPath = serverPath.replace(/\\/g, '/');
     return `https://localhost:5001/${serverPath}`;
   }
@@ -275,14 +378,26 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res) => {
           console.log('deleteImage response', res);
+          this.files.highQualityFiles = this.files.highQualityFiles.filter(
+            (imgData: ImageDto) => imgData.path !== image.path
+          );
+          this.files.lowQualityFiles = this.files.lowQualityFiles.filter(
+            (imgData: ImageDto) => imgData.path !== image.path
+          );
 
           // Remove the deleted image from imageData array
-          this.fileUploadData.imageData = this.fileUploadData.imageData.filter(
-            (img) => img.dbPath !== image.dbPath
-          );
+          // this.fileUploadData.imageData.highQualityFiles =
+          //   this.fileUploadData.imageData.highQualityFiles.filter(
+          //     (img) => img.path !== image.path
+          //   );
+          // this.fileUploadData.imageData.lowQualityFiles =
+          //   this.fileUploadData.imageData.lowQualityFiles.filter(
+          //     (img) => img.path !== image.path
+          //   );
           console.log(
             'this.imageData delete function next',
-            this.fileUploadData.imageData
+            // this.fileUploadData.imageData
+            this.files
           );
         },
         error: (error) => {
@@ -292,12 +407,14 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
         complete: () => {
           console.log(
             'this.imageData delete function complete',
-            this.fileUploadData.imageData
+            // this.fileUploadData.imageData
+            this.files
           );
 
           this.fileUploadServ.uploadedImageData.next({
             ...this.fileUploadData,
-            imageData: this.fileUploadData.imageData,
+            // imageData: this.fileUploadData.imageData,
+            imageData: this.files,
           });
         },
       });
@@ -305,14 +422,19 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
 
   private getUsername(): string {
     // Implement logic to get the username
-    return this.fileUploadData.username;
+    return this.preUrl === 'edit/house'
+      ? this.houseAdvertiseServ.advertiseItem.advertise.username
+      : this.fileUploadData.username;
     // return this.username;
   }
 
   private getAdvertiseCode(): string {
     // Implement logic to get the advertise code
-    return this.fileUploadData.advertiseCode;
+
     // return this.advertiseCode;
+    return this.preUrl === 'edit/house'
+      ? this.houseAdvertiseServ.advertiseItem.advertise.advertiseCode
+      : this.fileUploadData.advertiseCode;
   }
 
   //
@@ -331,11 +453,12 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
       ...formValue.sellFields,
       ...formValue.type,
       ...formValue,
-      city: formValue?.city?.city_id.toString(),
-      province: formValue?.province?.province_id.toString(),
+      city: formValue?.cityAndProvince?.city?.city_id.toString(),
+      province: formValue?.cityAndProvince?.province?.province_id.toString(),
       username: this.username,
       advertiseCode: this.advertiseCode,
       hasElevator: formValue.commonFields.hasElevator.toString(),
+      hasParking: formValue.commonFields.hasParking.toString(),
       hasHouseWare: formValue.commonFields.hasHouseWare.toString(),
     };
     delete transformedValue.commonFields;
@@ -369,12 +492,19 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
   }
   submitHouseAdvertise() {
     this.markAllControlsAsTouchedAndDirty(this.advertiseHouseForm);
+    console.log(
+      '  this.advertiseHouseForm.value',
+      this.advertiseHouseForm.value
+    );
     const transformedValue = this.transformFormValue(
       this.advertiseHouseForm.value
     );
     console.log(transformedValue);
 
-    if (!this.imageData.length) {
+    if (
+      !this.imageData?.highQualityFiles?.length ||
+      !this.imageData.highQualityFiles
+    ) {
       this.imageUploadMessage = 'عکس آگهی را آپلود کنید.';
       return;
     } else {
@@ -389,7 +519,7 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let loginUrl =
+    let advertiseUrl =
       'https://localhost:5001/api/houseadvertise/' +
       transformedValue.advertiseType;
     const authUser = JSON.parse(
@@ -401,7 +531,7 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
     };
 
     this.http
-      .post<advertiseSuccesDto>(loginUrl, transformedValue, {
+      .post<advertiseSuccesDto>(advertiseUrl, transformedValue, {
         headers: headers,
       })
       .subscribe({
@@ -421,7 +551,7 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
         },
         complete: () => {
           this.isSubmitAdvertise = true;
-          this.router.navigate(['/']);
+          this.router.navigate(['/home']);
           // this.navbarServ.isTokenExist.next(true);
         },
       });
@@ -452,7 +582,10 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
     if (!this.isSubmitAdvertise) {
       // return confirm('Do you really want to leave?');
       //convert defalt confirm to sweetalert2 one👇
-      if (this.imageData.length === 0) {
+      if (
+        !this.imageData?.highQualityFiles?.length ||
+        !this.imageData.highQualityFiles
+      ) {
         return true;
       }
 
@@ -466,14 +599,22 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
             console.log('sweetalert result');
             console.log(result);
 
-            if (result.isConfirmed && this.imageData.length === 0) {
+            if (
+              result.isConfirmed &&
+              (!this.imageData?.highQualityFiles?.length ||
+                !this.imageData.highQualityFiles)
+            ) {
               resolve(true);
-            } else if (result.isConfirmed && this.imageData.length !== 0) {
+            } else if (
+              result.isConfirmed &&
+              this.imageData?.highQualityFiles?.length !== 0
+            ) {
               this.deleteAllImages().subscribe({
                 next: (res) => {
                   console.log('delete Image response', res);
                   // Remove the deleted image from imageData array
-                  this.fileUploadData.imageData = [];
+                  this.fileUploadData.imageData.highQualityFiles = [];
+                  this.fileUploadData.imageData.lowQualityFiles = [];
                   console.log(
                     'this.imageData delete function next',
                     this.fileUploadData.imageData

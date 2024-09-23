@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -8,19 +8,13 @@ import { Subject } from 'rxjs';
 export class StoreAdvetisePageService {
   constructor(private http: HttpClient) {}
   storeAdvertises = new Subject<any>();
-  getHouseAdvertises(city_id: string) {
+  hasItems = new Subject<boolean>();
+  selectedAdvertiseRow = new BehaviorSubject<number>(0);
+
+  advertiseItem!: any;
+  getStoreAdvertises(city_id: string) {
     let advertisesUrl = 'https://localhost:5001/api/StoreAdvertise/' + city_id;
-    // const authUser = JSON.parse(
-    //   localStorage.getItem('authUser') || '{isJobOwner:"",token:"",username:""}'
-    // );
 
-    // const headers = {
-    //   Authorization: `Bearer ${authUser.token}`,
-    // };
-
-    return this.http.get<any>(
-      advertisesUrl
-      // , { headers }
-    );
+    return this.http.get<any>(advertisesUrl);
   }
 }

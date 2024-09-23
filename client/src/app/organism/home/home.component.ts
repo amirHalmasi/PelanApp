@@ -7,7 +7,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { flipInOut } from 'src/app/services/animation';
-import { ProvinceAndCityService } from '../province-and-city/province-and-city.service';
+import { ProvinceAndCityService } from '../province-and-city-select-list/province-and-city.service';
 // import Typed from 'typed.js';
 import { Title } from '@angular/platform-browser';
 

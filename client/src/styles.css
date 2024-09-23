@@ -1,15 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
+/* "src/assets/Fonts/fonts.css" */
 * {
   padding: 0;
   margin: 0;
-  font-family: "nazanin", "Courier New", Courier, monospace;
+  font-family: "IranSans", "nazanin", "Courier New", Courier, monospace;
 }
 body {
   /* background-color: #fff; */
-  background: linear-gradient(#ffffff, #c5c5c5, #a7a7a7);
-  overflow: hidden;
+  background: linear-gradient(#ffe0e0, #ffffff, #e1e1ff);
+  /* background: linear-gradient(#ffffff, #c5c5c5, #a7a7a7); */
+  overflow: auto;
   width: 100vw;
-  height: 100vh !important;
+  min-height: 98vh !important;
 }
 ::-webkit-scrollbar {
   /* width: 10px; */

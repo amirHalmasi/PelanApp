@@ -1,14 +1,19 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { FileUploadservice } from './fileUpload.service';
+import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
+import { HouseAdvetiseProfileService } from '../../my-advertises/house-advertise-profile.service';
 
 export interface ImageDto {
-  dbPath: string;
-  fileName: string;
+  path?: string;
+  fileName?: string;
 }
 
 export interface UploadFinishedEvent {
-  imageData: ImageDto[];
+  imageData: {
+    highQualityFiles: ImageDto[];
+    lowQualityFiles: ImageDto[];
+  };
   username: string;
   advertiseCode: string;
 }
@@ -21,7 +26,10 @@ export interface UploadFinishedEvent {
 export class UploadfileComponent {
   public message: string = '';
   public progress: number = 0;
-  public uploadedFiles: ImageDto[] = [];
+  public uploadedFiles!: {
+    highQualityFiles: ImageDto[];
+    lowQualityFiles: ImageDto[];
+  };
   @Input() username!: string;
   @Input() advertiseCode!: string;
   public alertType!: string;
@@ -29,7 +37,9 @@ export class UploadfileComponent {
 
   constructor(
     private http: HttpClient,
-    private fileUploadServ: FileUploadservice
+    private fileUploadServ: FileUploadservice,
+    private advertiseData: AdvetiseDataService,
+    private houseAdvertiseServ: HouseAdvetiseProfileService
   ) {}
 
   ngOnInit(): void {
@@ -60,7 +70,10 @@ export class UploadfileComponent {
       Authorization: `Bearer ${authUser.token}`,
     };
     this.http
-      .post<ImageDto[]>('https://localhost:5001/api/upload', formData, {
+      .post<{
+        highQualityFiles: ImageDto[];
+        lowQualityFiles: ImageDto[];
+      }>('https://localhost:5001/api/upload', formData, {
         reportProgress: true,
         observe: 'events',
         headers: headers,
@@ -73,8 +86,14 @@ export class UploadfileComponent {
               : 0;
           } else if (event.type === HttpEventType.Response) {
             this.message = 'Upload success.';
+            console.log(' event.body', event.body);
 
-            this.uploadedFiles = event.body ?? [];
+            this.uploadedFiles = event.body ?? {
+              // highQualityFiles: [{ path: '', fileName: '' }],
+              // lowQualityFiles: [{ path: '', fileName: '' }],
+              highQualityFiles: [],
+              lowQualityFiles: [],
+            };
             this.alertType = 'success';
             // Emit the event object with additional data
           }
@@ -85,12 +104,18 @@ export class UploadfileComponent {
         },
         complete: () => {
           this.fileUploadServ.uploadedImageData.next({
-            imageData: this.uploadedFiles,
+            imageData: {
+              highQualityFiles: this.uploadedFiles.highQualityFiles,
+              lowQualityFiles: this.uploadedFiles.lowQualityFiles,
+            },
             username: this.username,
             advertiseCode: this.advertiseCode.toString(),
           });
           this.onUploadFinished.emit({
-            imageData: this.uploadedFiles,
+            imageData: {
+              highQualityFiles: this.uploadedFiles.highQualityFiles,
+              lowQualityFiles: this.uploadedFiles.lowQualityFiles,
+            },
             username: this.username,
             advertiseCode: this.advertiseCode.toString(),
           });

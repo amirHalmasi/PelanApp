@@ -112,7 +112,9 @@
         class="align-item-center mx-2"
         #housewareCheckbox
         (change)="hasHouseWare = housewareCheckbox.checked"
-        (change)="determineWareHouseValidator(housewareCheckbox.checked)"
+        (change)="
+          determineWareHouseValidator(housewareCheckbox.checked, advertiseType)
+        "
         formControlName="hasHouseWare"
         >انباری دارد؟</mat-checkbox
       >
@@ -121,7 +123,7 @@
     <!-- Ware House Meter -->
     <div
       class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
-      *ngIf="hasHouseWare"
+      *ngIf="hasHouseWare && advertiseType === 'sell'"
       [@slideRightInOut]
     >
       <mat-form-field [@slideRightInOut] class="w-100" appearance="outline">
@@ -155,13 +157,28 @@
         wareHouseMeterHintDesc
       }}</mat-hint>
     </div>
-
+    <div class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3">
+      <mat-checkbox
+        class="align-item-center mx-2"
+        #parkingCheckbox
+        (change)="hasParking = parkingCheckbox.checked"
+        (change)="
+          determineParkingValidator(
+            parkingCheckbox.checked,
+            advertiseType,
+            buildingType
+          )
+        "
+        formControlName="hasParking"
+        >پارکینگ دارد؟</mat-checkbox
+      >
+    </div>
     <!-- Parking Type -->
     <div
       *ngIf="
-        advertiseType === 'rent' ||
-        (advertiseType === 'sell' &&
-          (buildingType === 'Mojtama' || buildingType === 'ShakhsiSaz'))
+        advertiseType === 'sell' &&
+        hasParking &&
+        (buildingType === 'Mojtama' || buildingType === 'ShakhsiSaz')
       "
       class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
       [@slideRightInOut]

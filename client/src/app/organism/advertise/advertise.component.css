@@ -1,21 +1,22 @@
 * {
-  font-family: "nazanin", "Courier New", Courier, monospace !important;
+  font-family: "IranSans", "nazanin", "Courier New", Courier, monospace !important;
   /* color: #080710 !important; */
 }
 
 .card {
-  background-color: rgba(229, 249, 255, 0.527);
-  border: 1px solid #ced5f5;
-  border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  backdrop-filter: blur(10px);
+  background-color: transparent;
+  border: 0px solid #ced5f5;
+  /* border-radius: 10px; */
+  /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
+  /* -webkit-backdrop-filter: blur(10px); */
+  /* backdrop-filter: blur(10px); */
 }
 .font-title {
-  font-family: "Rezvan", "Courier New", Courier, monospace !important;
+  font-family: "IranSans", "Rezvan", "Courier New", Courier, monospace !important;
   font-size: 2rem;
 }
 .brand-font {
-  font-family: "sogand", "Courier New", Courier, monospace !important;
+  font-family: "IranSans", "sogand", "Courier New", Courier, monospace !important;
   font-size: 2rem;
   padding: 0 10px;
 }
@@ -62,13 +63,13 @@
   border: 1px solid #dc3545 !important;
 }
 .form-container-class {
-  height: 80vh;
+  /* height: 80vh; */
   width: 80%;
-  overflow-y: auto;
+  /* overflow-y: auto; */
 }
-.parent-container {
-  height: 80vh;
-  overflow: hidden;
-}
-.row-container {
-}
+/* .parent-container {
+  height: 80vh; 
+  overflow: hidden; 
+} */
+/* .row-container {
+} */

@@ -7,56 +7,38 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TextInputComponent } from './form-field/text-input/text-input.component';
-import { MaterialModule } from './material.module';
-
-import { CityProvinceModalComponent } from './organism/city-province-modal/city-province-modal.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ActionBtnAtomComponent } from './organism/city-province-modal/action-btn-atom/action-btn-atom.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-
-import { ProvinceListAtmComponent } from './organism/city-province-modal/province-list-atm/province-list-atm.component';
-import { CityListAtmComponent } from './organism/city-province-modal/city-list-atm/city-list-atm.component';
-
-import { LoadingAtmComponent } from './organism/loading-atm/loading-atm.component';
-import { LoginFromComponent } from './organism/login-from/login-from.component';
 import { HomeComponent } from './organism/home/home.component';
-import { SignupFromComponent } from './organism/signup-from/signup-from.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { SelectWitSearchComponent } from './organism/signup-from/select-wit-search/select-wit-search.component';
-import { AdvertiseComponent } from './organism/advertise/advertise.component';
-import { UploadfileComponent } from './organism/advertise/uploadfile/uploadfile.component';
-import { AlertComponent } from './organism/advertise/uploadfile/alert/alert.component';
-// import { AuthInterceptor } from './services/auth.interceptor';
-import { ProvinceAndCityComponent } from './organism/province-and-city/province-and-city.component';
-import { SellComponent } from './organism/advertise/house-advertise/sell/sell.component';
-import { RentComponent } from './organism/advertise/house-advertise/rent/rent.component';
-// import { CommonComponent } from './organism/advertise/house-advertise/common-house/common.component';
-import { HouseAdvertiseComponent } from './organism/advertise/house-advertise/house-advertise.component';
-import { StoreadvertiseComponent } from './organism/advertise/storeadvertise/storeadvertise.component';
-import { CommonHouseComponent } from './organism/advertise/house-advertise/common-house/common-house.component';
-import { CommonComponent } from './organism/advertise/storeadvertise/common/common.component';
-import { SellStoreComponent } from './organism/advertise/storeadvertise/sell-store/sell-store.component';
-import { RentStoreComponent } from './organism/advertise/storeadvertise/rent-store/rent-store.component';
-import { GroundAdvertiseComponent } from './organism/advertise/ground-advertise/ground-advertise.component';
-// import { RentPageComponent } from './organism/rent-page/rent-page.component';
 import { StoreAdvertisePageComponent } from './organism/store-page/store-advertise-page.component';
-// import { ImageSliderComponent } from './organism/image-slider/image-slider.component';
-// import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { CustomeCarouselModule } from './organism/carousel/carousel.module';
 import { ThereisOrNotComponent } from './organism/house-page/thereis-or-not/thereis-or-not.component';
 import { UncheckedSvgComponent } from './organism/house-page/thereis-or-not/unchecked-svg/unchecked-svg.component';
 import { CheckedSvgComponent } from './organism/house-page/thereis-or-not/checked-svg/checked-svg.component';
-import { BedroomSvgComponent } from './organism/house-page/bedroom-svg/bedroom-svg.component';
-import { ParkingSvgComponent } from './organism/house-page/parking-svg/parking-svg.component';
-import { ElevatorSvgComponent } from './organism/house-page/elevator-svg/elevator-svg.component';
-import { HouseAdvertisePageComponent } from './organism/house-page/house-advertise-page.component';
-import { NumberSepratorPipe } from './organism/house-page/number-seprator.pipe';
-import { SendRequestLoadingAtmComponent } from './organism/send-request-loading-atm/send-request-loading-atm.component';
-import { ScrollingModule } from '@angular/cdk/scrolling';
-import { BookmarkSvgComponent } from './organism/house-page/bookmark-svg/bookmark-svg.component';
-import { HouseAdvertisementDetailsComponent } from './organism/house-page/house-advertisement-details/house-advertisement-details.component';
+// import { BedroomSvgComponent } from './organism/house-page/bedroom-svg/bedroom-svg.component';
+// import { ParkingSvgComponent } from './organism/house-page/parking-svg/parking-svg.component';
+// import { ElevatorSvgComponent } from './organism/house-page/elevator-svg/elevator-svg.component';
+// import { HouseAdvertisePageComponent } from './organism/house-page/house-advertise-page.component';
+// import { NumberSepratorPipe } from './organism/house-page/number-seprator.pipe';
+// import { SendRequestLoadingAtmComponent } from './organism/city-province-modal/action-btn-atom/send-request-loading-atm/send-request-loading-atm.component';
+// import { ScrollingModule } from '@angular/cdk/scrolling';
+// import { BookmarkSvgComponent } from './organism/house-page/bookmark-svg/bookmark-svg.component';
+import { AdvertisementDetailsComponent } from './organism/advertisement-details/advertisement-details.component';
+import { AdvertiseModule } from './organism/advertise/advertise.module';
+import { SharedModule } from './modules/shared/shared.module';
+import { ActionBtnAtomModule } from './organism/city-province-modal/action-btn-atom/action-btn-atom.module';
+import { CityAndProvinceModalModule } from './organism/city-province-modal/city-and-province-modal.module';
+import { SignupFromModule } from './organism/signup-from/signUp.module';
+// import { LoginFromComponent } from './organism/login-from/login-from.component';
+import { LoginFormModule } from './organism/login-from/login.module';
+import { HouseAdvertisePageModule } from './organism/house-page/house-advertise-page.module';
+import { HouseDetailsComponent } from './organism/advertisement-details/house-details/house-details.component';
+import { StoreDetailsComponent } from './organism/advertisement-details/store-details/store-details.component';
+import { MyAdvertisesComponent } from './organism/my-advertises/my-advertises.component';
+import { HouseAdvertisesProfileComponent } from './organism/my-advertises/house-advertises-profile/house-advertises-profile.component';
+// import { LoginFormModule } from './organism/login-from/login.module';
 
 // import { ElevatorSvgComponent } from './organism/rent-page/elevator-svg/elevator-svg.component';
 // import { ParkingSvgComponent } from './organism/rent-page/parking-svg/parking-svg.component';
@@ -70,58 +52,70 @@ import { HouseAdvertisementDetailsComponent } from './organism/house-page/house-
     AppComponent,
     NavBarComponent,
     TextInputComponent,
-    CityProvinceModalComponent,
-    ActionBtnAtomComponent,
-    ProvinceListAtmComponent,
-    CityListAtmComponent,
+    // CityProvinceModalComponent,
+    // ActionBtnAtomComponent,
+    // ProvinceListAtmComponent,
+    // CityListAtmComponent,
     // SearchFormComponent,
-    LoadingAtmComponent,
-    LoginFromComponent,
+    // LoadingAtmComponent,
+    // LoginFromComponent,
     HomeComponent,
-    SignupFromComponent,
+    // SignupFromComponent,
     SelectWitSearchComponent,
-    AdvertiseComponent,
-    UploadfileComponent,
-    AlertComponent,
-    ProvinceAndCityComponent,
-    SellComponent,
-    RentComponent,
-    CommonHouseComponent,
-    CommonComponent,
-    HouseAdvertiseComponent,
-    StoreadvertiseComponent,
-    SellStoreComponent,
-    RentStoreComponent,
-    GroundAdvertiseComponent,
-    HouseAdvertisePageComponent,
+    // AdvertiseComponent,
+    // AlertComponent,
+    // ProvinceAndCityComponent,
+    // UploadfileComponent,
+    // StoreadvertiseComponent,
+    // CommonComponent,
+    // SellStoreComponent,
+    // RentStoreComponent,
+    // ////////////
+    // HouseAdvertiseComponent,
+    // CommonHouseComponent,
+    // SellComponent,
+    // RentComponent,
+    // GroundAdvertiseComponent,
+    // HouseAdvertisePageComponent,
     StoreAdvertisePageComponent,
     // ImageSliderComponent,
-    ElevatorSvgComponent,
-    ParkingSvgComponent,
-    BedroomSvgComponent,
+    // ElevatorSvgComponent,
+    // ParkingSvgComponent,
+    // BedroomSvgComponent,
     CheckedSvgComponent,
-    BookmarkSvgComponent,
+    // BookmarkSvgComponent,
     UncheckedSvgComponent,
     ThereisOrNotComponent,
-    NumberSepratorPipe,
-    SendRequestLoadingAtmComponent,
-    HouseAdvertisementDetailsComponent,
+    // NumberSepratorPipe,
+    // SendRequestLoadingAtmComponent,
+    AdvertisementDetailsComponent,
+    HouseDetailsComponent,
+    StoreDetailsComponent,
+    MyAdvertisesComponent,
+    HouseAdvertisesProfileComponent,
   ],
   imports: [
+    HouseAdvertisePageModule,
+    CityAndProvinceModalModule,
+    AdvertiseModule,
+    ActionBtnAtomModule,
     NgxMatSelectSearchModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     NgbModule,
-    ScrollingModule,
+    // ScrollingModule,
+    SignupFromModule,
+    LoginFormModule,
     // ReactiveFormsModule,
+    // MaterialModule,
+    // FontAwesomeModule,
+    // FormsModule,
+    // ReactiveFormsModule,
+    SharedModule,
 
-    MaterialModule,
-    FontAwesomeModule,
-    HttpClientModule,
+    // HttpClientModule,
 
-    FormsModule,
-    ReactiveFormsModule,
     // CarouselModule.forRoot(),
     CustomeCarouselModule,
   ],

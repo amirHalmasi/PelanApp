@@ -6,6 +6,7 @@ nav {
   margin: 0;
   font-family: "nazanin", "Courier New", Courier, monospace;
   font-weight: bold;
+  padding: 0.2rem 0;
 }
 a {
   cursor: pointer;
@@ -25,7 +26,7 @@ a {
 }
 
 .custome-header {
-  background-color: rgba(229, 249, 255, 0.308);
+  background-color: rgb(234 241 243 / 75%);
   border: 1px solid #e2e5f5;
   backdrop-filter: blur(10px);
   width: 90%;

@@ -56,7 +56,10 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
     btnText: 'درج آگهی',
   };
   fileUploadSubscription!: Subscription;
-  imageData: ImageDto[] = [];
+  imageData!: {
+    highQualityFiles: ImageDto[];
+    lowQualityFiles: ImageDto[];
+  };
   hasBalconye: boolean = false;
   hasElevator: boolean = false;
   username!: string;
@@ -91,11 +94,14 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
       this.fileUploadServ.uploadedImageData.subscribe(
         (data: fileUploadData) => {
           console.log('upload image Data house', data);
-          if (data.imageData.length > 0) {
+          if (data.imageData.highQualityFiles.length > 0) {
             this.imageData = data.imageData;
             this.imageUploadMessage = '';
           } else {
-            this.imageData = [];
+            this.imageData = {
+              highQualityFiles: [],
+              lowQualityFiles: [],
+            };
           }
           this.advertiseCode = data.advertiseCode;
           this.username = data.username;
@@ -198,7 +204,10 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
     // console.log(transformedValue.advertiseType);
     console.log(this.advertiseStoreForm.value);
 
-    if (!this.imageData.length) {
+    if (
+      !this.imageData?.highQualityFiles?.length ||
+      !this.imageData.highQualityFiles
+    ) {
       this.imageUploadMessage = 'عکس آگهی را آپلود کنید.';
       return;
     } else {
@@ -249,7 +258,10 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
     console.log('event uploaded finish', event);
   };
 
-  createImagePath(serverPath: string) {
+  createImagePath(serverPath: string | undefined) {
+    if (!serverPath) {
+      return;
+    }
     serverPath = serverPath.replace(/\\/g, '/');
     return `https://localhost:5001/${serverPath}`;
   }
@@ -286,9 +298,14 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
           console.log('deleteImage response', res);
 
           // Remove the deleted image from imageData array
-          this.fileUploadData.imageData = this.fileUploadData.imageData.filter(
-            (img) => img.dbPath !== image.dbPath
-          );
+          this.fileUploadData.imageData.highQualityFiles =
+            this.fileUploadData.imageData.highQualityFiles.filter(
+              (img) => img.path !== image.path
+            );
+          this.fileUploadData.imageData.lowQualityFiles =
+            this.fileUploadData.imageData.lowQualityFiles.filter(
+              (img) => img.path !== image.path
+            );
           console.log(
             'this.imageData delete function next',
             this.fileUploadData.imageData
@@ -330,7 +347,10 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
     if (!this.isSubmitAdvertise) {
       // return confirm('Do you really want to leave?');
       //convert defalt confirm to sweetalert2 one👇
-      if (this.imageData.length === 0) {
+      if (
+        !this.imageData?.highQualityFiles?.length ||
+        !this.imageData.highQualityFiles
+      ) {
         return true;
       }
 
@@ -343,14 +363,22 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
           .then((result) => {
             console.log('sweetalert result');
             console.log(result);
-            if (result.isConfirmed && this.imageData.length === 0) {
+            if (
+              result.isConfirmed &&
+              (!this.imageData?.highQualityFiles?.length ||
+                !this.imageData.highQualityFiles)
+            ) {
               resolve(true);
-            } else if (result.isConfirmed && this.imageData.length !== 0) {
+            } else if (
+              result.isConfirmed &&
+              this.imageData?.highQualityFiles?.length !== 0
+            ) {
               this.deleteAllImages().subscribe({
                 next: (res) => {
                   console.log('delete Image response', res);
                   // Remove the deleted image from imageData array
-                  this.fileUploadData.imageData = [];
+                  this.fileUploadData.imageData.highQualityFiles = [];
+                  this.fileUploadData.imageData.lowQualityFiles = [];
                   console.log(
                     'this.imageData delete function next',
                     this.fileUploadData.imageData

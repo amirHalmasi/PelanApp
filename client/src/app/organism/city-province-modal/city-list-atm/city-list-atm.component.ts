@@ -7,6 +7,7 @@ import {
 } from 'src/app/services/modal-service.service';
 import { HouseAdvetisePageService } from '../../house-page/house-advertise-page.service';
 import { Router } from '@angular/router';
+import { StoreAdvetisePageService } from '../../store-page/store-advertise-page.service';
 
 @Component({
   selector: 'app-city-list-atm',
@@ -28,7 +29,8 @@ export class CityListAtmComponent implements OnInit {
     private modalServ: ModalServiceService,
     private fb: FormBuilder,
     private router: Router,
-    private houseAdvertiseServ: HouseAdvetisePageService
+    private houseAdvertiseServ: HouseAdvetisePageService,
+    private storeAdvertiseServ: StoreAdvetisePageService
   ) {}
 
   ngOnInit() {
@@ -85,14 +87,28 @@ export class CityListAtmComponent implements OnInit {
 
     // Get the full URL path including query parameters
     this.currentUrl = this.router.url;
+    console.log('this.currentUrl', this.currentUrl);
 
     if (this.currentUrl === '/houseAdvertise' && cityData) {
-      this.getAllAdvertises(cityData.city_id);
+      this.getHouseAllAdvertises(cityData.city_id);
+    } else if (this.currentUrl === '/storeAdvertise' && cityData) {
+      this.getStoreAllAdvertises(cityData.city_id);
     }
   }
 
-  getAllAdvertises(city_id: string) {
+  getHouseAllAdvertises(city_id: string) {
     this.houseAdvertiseServ.getHouseAdvertises(city_id).subscribe({
+      next: (data) => {
+        console.log('advertises select city', data);
+        this.houseAdvertiseServ.houseAdvertises.next(data);
+      },
+      error: (err) => {
+        console.error('Error fetching advertises', err);
+      },
+    });
+  }
+  getStoreAllAdvertises(city_id: string) {
+    this.storeAdvertiseServ.getStoreAdvertises(city_id).subscribe({
       next: (data) => {
         console.log('advertises select city', data);
         this.houseAdvertiseServ.houseAdvertises.next(data);

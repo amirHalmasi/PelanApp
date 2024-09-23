@@ -4,8 +4,8 @@ import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 interface carouselImage {
-  imageSrc: string;
-  imageAlt: string;
+  highQuality?: string;
+  lowQuality?: string;
 }
 @Component({
   selector: 'app-carousel',
@@ -14,7 +14,7 @@ interface carouselImage {
   animations: [slideRightInOut],
 })
 export class CarouselComponent implements OnInit {
-  @Input() images: carouselImage[] = [];
+  @Input() imagesFiles: carouselImage[] = [];
   @Input() indicators: boolean = true;
   @Input() controls: boolean = true;
   @Input() icon = { right: faChevronRight, left: faChevronLeft };
@@ -24,8 +24,10 @@ export class CarouselComponent implements OnInit {
   isMoreThanOneImageExist!: boolean;
   isInAdvertiseDetail!: boolean;
   ngOnInit(): void {
-    console.log(this.images);
-    this.isMoreThanOneImageExist = this.images.length > 1;
+    console.log(this.imagesFiles);
+
+    console.log(typeof this.imagesFiles);
+    this.isMoreThanOneImageExist = this.imagesFiles.length > 1;
     this.currentUrl = this.router.url;
     console.log(this.currentUrl);
 
@@ -42,13 +44,13 @@ export class CarouselComponent implements OnInit {
 
   onPreviousClick() {
     if (this.selectedIndex === 0) {
-      this.selectedIndex = this.images.length - 1;
+      this.selectedIndex = this.imagesFiles.length - 1;
     } else {
       this.selectedIndex--;
     }
   }
   onNextClick() {
-    if (this.selectedIndex === this.images.length - 1) {
+    if (this.selectedIndex === this.imagesFiles.length - 1) {
       this.selectedIndex = 0;
     } else {
       this.selectedIndex++;

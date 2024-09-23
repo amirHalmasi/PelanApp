@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { SweetAlertService } from 'src/app/services/sweetalert.service';
 export interface advertiseSuccesDto {
   AdvertiseType: string;
@@ -14,6 +14,9 @@ export interface advertiseSuccesDto {
 })
 export class AdvertisesService {
   isSubmitAdvertise = new Subject<boolean>();
+  editUrl = new BehaviorSubject<string>('');
+  // preUrl!: string;
+  actionType = new BehaviorSubject<string>('');
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -97,7 +100,7 @@ export class AdvertisesService {
         },
         complete: () => {
           this.isSubmitAdvertise.next(true);
-          this.router.navigate(['/']);
+          this.router.navigate(['/home']);
           // this.navbarServ.isTokenExist.next(true);
         },
       });

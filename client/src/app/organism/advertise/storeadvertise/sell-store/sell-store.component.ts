@@ -172,20 +172,14 @@ export class SellStoreComponent implements OnInit, OnChanges {
       case 'bazar-che':
         groundMeterControl?.setValidators(null);
 
-        owneringTypeControl?.setValidators([
-          Validators.required,
-          numberValidator(),
-        ]);
+        owneringTypeControl?.setValidators([Validators.required]);
         storeDocumentControl?.setValidators(null);
 
         break;
       case 'bazar':
         groundMeterControl?.setValidators(null);
 
-        owneringTypeControl?.setValidators([
-          Validators.required,
-          numberValidator(),
-        ]);
+        owneringTypeControl?.setValidators([Validators.required]);
         storeDocumentControl?.setValidators(null);
 
         break;

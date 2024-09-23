@@ -43,7 +43,7 @@ export class CommonComponent implements OnChanges, OnInit {
     { value: 'bazar', desc: 'بازار' },
     { value: 'bazar-che', desc: 'بازارچه' },
     { value: 'pasajh', desc: 'پاساژ' },
-    { value: 'city-center', desc: 'مرکزشهر' },
+    { value: 'city-center', desc: 'شخصی، مرکزشهر' },
     { value: 'other', desc: 'سایر' },
     { value: 'majmoeh', desc: 'مجموعه تجاری' },
   ];

@@ -32,13 +32,13 @@
   (onUploadFinished)="uploadFinish($event)"
 ></app-uploadfile>
 
-<div *ngIf="fileUploadData?.imageData && fileUploadData.imageData.length > 0">
+<div *ngIf="files && files.highQualityFiles.length > 0">
   <div class="row">
     <div
-      *ngFor="let data of fileUploadData?.imageData"
+      *ngFor="let data of files?.highQualityFiles"
       class="col-xs-4 col-sm-4 col-md-3 col-lg-3 col-xl-2 mb-3"
     >
-      <div class="square-image-container my-2">
+      <div *ngIf="data.path" class="square-image-container my-2">
         <button
           type="button"
           class="btn m-1 btn-danger"
@@ -50,7 +50,7 @@
           ></fa-icon>
         </button>
         <img
-          [src]="createImagePath(data.dbPath)"
+          [src]="createImagePath(data.path)"
           class="img-thumbnail square-image rounded"
           alt="Uploaded Image"
         />
@@ -58,6 +58,32 @@
     </div>
   </div>
 </div>
+<!-- <div
+  *ngIf="
+    !fileUploadData?.imageData && editData?.files && editData.files.length > 0
+  "
+>
+  <div class="row">
+    <div
+      *ngFor="let data of editData?.files"
+      class="col-xs-4 col-sm-4 col-md-3 col-lg-3 col-xl-2 mb-3"
+    >
+      <div *ngIf="data?.highQuality" class="square-image-container my-2">
+        <button type="button" class="btn m-1 btn-danger">
+          <fa-icon
+            class="icon-class justify-content-center align-item-center"
+            [icon]="icon"
+          ></fa-icon>
+        </button>
+        <img
+          [src]="createImagePath(data?.highQuality)"
+          class="img-thumbnail square-image rounded"
+          alt="Uploaded Image"
+        />
+      </div>
+    </div>
+  </div>
+</div> -->
 <div class="mt-5">
   <form [formGroup]="advertiseHouseForm" (ngSubmit)="submitHouseAdvertise()">
     <div class="row">
@@ -68,7 +94,7 @@
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>نوع آگهی</mat-label>
           <mat-select
-            (selectionChange)="advertiseType = $event.value"
+            (selectionChange)="advertiseTypeValue = $event.value"
             formControlName="advertiseType"
             placeholder="نوع آگهی را انتخاب کنید"
           >
@@ -102,21 +128,22 @@
     <app-common-house
       formGroupName="commonFields"
       (buildingTypeEvent)="buildingType = $event"
-      [advertiseTypeInput]="advertiseType"
+      [advertiseTypeInput]="advertiseTypeValue"
+      [buildingTypeInput]="buildingType"
     ></app-common-house>
     <!-- /////////////////////// -->
     <!-- /// for sell fields /// -->
     <!-- /////////////////////// -->
     <app-sell
       [buildingType]="buildingType"
-      [advertiseType]="advertiseType"
+      [advertiseType]="advertiseTypeValue"
     ></app-sell>
     <!-- /////////////////////// -->
     <!-- ///// rent fields ///// -->
     <!-- /////////////////////// -->
     <app-rent
       [buildingType]="buildingType"
-      [advertiseType]="advertiseType"
+      [advertiseType]="advertiseTypeValue"
     ></app-rent>
     <!-- /////////////////////////////// -->
     <div class="row mb-3">

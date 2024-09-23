@@ -7,13 +7,11 @@ import { AsyncSubject, BehaviorSubject, Subject } from 'rxjs';
 })
 export class HouseAdvetisePageService {
   constructor(private http: HttpClient) {}
-  // houseAdvertises = new AsyncSubject<any>();
   houseAdvertises = new Subject<any>();
   hasItems = new Subject<boolean>();
   selectedAdvertiseRow = new BehaviorSubject<number>(0);
-  // advertiseItem = new Subject<any>();
   advertiseItem!: any;
-  // cityData = new Subject<any>();
+
   getHouseAdvertises(city_id: string) {
     let advertisesUrl = 'https://localhost:5001/api/HouseAdvertise/' + city_id;
     // const authUser = JSON.parse(

@@ -5,8 +5,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../material.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { HttpClientModule } from '@angular/common/http';
+import { LoadingAtmComponent } from 'src/app/organism/loading-atm/loading-atm.component';
 
 @NgModule({
+  declarations: [LoadingAtmComponent],
   imports: [
     CommonModule,
     FormsModule,
@@ -22,6 +24,7 @@ import { HttpClientModule } from '@angular/common/http';
     MaterialModule,
     FontAwesomeModule,
     HttpClientModule,
+    LoadingAtmComponent,
   ],
 })
 export class SharedModule {}
