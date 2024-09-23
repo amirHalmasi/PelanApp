@@ -196,12 +196,14 @@ namespace Api.Controllers
                 {
                     RentData = rent.RentData,
                     CommonData = rent.CommonData,
+                    TodayDate = DateTime.Now,
                     Files = GetAdvertiseFiles(rent.CommonData.Username, rent.CommonData.AdvertiseCode)
                 }).ToList();
                 var SellResultWithFiles = sellAdvertises.Select(sell => new
                 {
                     SellData = sell.SellData,
                     CommonData = sell.CommonData,
+                    TodayDate = DateTime.Now,
                     Files = GetAdvertiseFiles(sell.CommonData.Username, sell.CommonData.AdvertiseCode)
                 }).ToList();
 
@@ -222,45 +224,93 @@ namespace Api.Controllers
             }
         }
 
-        private List<string> GetAdvertiseFiles(string username, string advertiseCode)
+        private List<string> GetFilesFromDirectory(string baseFolderName, string subFolderName)
         {
-            var folderName = Path.Combine("Resources", "Images", username, advertiseCode);
-            var pathToRead = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-            List<string> files = new List<string>();
-
-            if (Directory.Exists(pathToRead))
+            var folderPath = Path.Combine(Directory.GetCurrentDirectory(), baseFolderName, subFolderName);
+            if (Directory.Exists(folderPath))
             {
-                files = Directory.GetFiles(pathToRead)
-                    .Select(file => Path.Combine(folderName, Path.GetFileName(file)))
-                    .ToList();
+                return Directory.GetFiles(folderPath)
+                                .Select(file => Path.Combine(baseFolderName, subFolderName, Path.GetFileName(file)))
+                                .ToList();
+            }
+            return new List<string>();
+        }
+        private List<object> GetAdvertiseFiles(string username, string advertiseCode)
+        {
 
-                if (!files.Any())
-                {
-                    files = GetPlaceholderFiles();
-                }
+            var lowQualityFiles = GetFilesFromDirectory("Resources/Images", Path.Combine(username, advertiseCode, "lowQuality"));
+            var highQualityFiles = GetFilesFromDirectory("Resources/Images", Path.Combine(username, advertiseCode, "highQuality"));
+
+            var filesList = new List<object>();
+
+            if (highQualityFiles.Any() && lowQualityFiles.Any())
+            {
+                filesList = highQualityFiles.Select((highQuality, index) =>
+                new {
+                        highQuality = highQuality,
+                        lowQuality = lowQualityFiles.ElementAtOrDefault(index),
+                    }
+                ).ToList<object>();
             }
             else
             {
-                files = GetPlaceholderFiles();
-            }
+                var lowQualityPlaceHolderFiles = GetFilesFromDirectory("Resources/Images", "placeholder/lowQuality");
+                var placeholderFiles = GetFilesFromDirectory("Resources/Images", "placeholder/highQuality");
 
-            return files;
+                if (placeholderFiles.Any() && lowQualityPlaceHolderFiles.Any())
+                {
+                    filesList = placeholderFiles.Select((highQuality, index) => new 
+                    {
+                        lowQuality = lowQualityPlaceHolderFiles.ElementAtOrDefault(index),
+                        highQuality = highQuality
+                    }).ToList<object>();
+                }
+            }
+            return filesList;
+           
         }
 
-        private List<string> GetPlaceholderFiles()
-        {
-            var placeholderFolderName = Path.Combine("Resources", "Images", "placeholder");
-            var placeholderPathToRead = Path.Combine(Directory.GetCurrentDirectory(), placeholderFolderName);
+        // private List<string> GetAdvertiseFiles(string username, string advertiseCode)
+        // {
+        //     var folderName = Path.Combine("Resources", "Images", username, advertiseCode);
+        //     var pathToRead = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+        //     List<string> files = new List<string>();
 
-            if (Directory.Exists(placeholderPathToRead))
-            {
-                return Directory.GetFiles(placeholderPathToRead)
-                    .Select(file => Path.Combine(placeholderFolderName, Path.GetFileName(file)))
-                    .ToList();
-            }
+        //     if (Directory.Exists(pathToRead))
+        //     {
+        //         files = Directory.GetFiles(pathToRead)
+        //             .Select(file => Path.Combine(folderName, Path.GetFileName(file)))
+        //             .ToList();
 
-            return new List<string>();
-        }
+        //         if (!files.Any())
+        //         {
+        //             files = GetPlaceholderFiles();
+        //         }
+        //     }
+        //     else
+        //     {
+        //         files = GetPlaceholderFiles();
+        //     }
+
+        //     return files;
+        // }
+
+        // private List<string> GetPlaceholderFiles()
+        // {
+        //     var placeholderFolderName = Path.Combine("Resources", "Images", "placeholder");
+        //     var placeholderPathToRead = Path.Combine(Directory.GetCurrentDirectory(), placeholderFolderName);
+
+        //     if (Directory.Exists(placeholderPathToRead))
+        //     {
+        //         return Directory.GetFiles(placeholderPathToRead)
+        //             .Select(file => Path.Combine(placeholderFolderName, Path.GetFileName(file)))
+        //             .ToList();
+        //     }
+
+        //     return new List<string>();
+        // }
+
+        
 
 
 

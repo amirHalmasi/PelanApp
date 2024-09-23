@@ -20,7 +20,8 @@ namespace Api.Entities
         public string HouseMeter { get; set; }       
         public string HouseType { get; set; }       
         public string Orientation { get; set; }       
-        public string ParkingType { get; set; }       
+        public string ParkingType { get; set; } 
+        public string HasParking { get; set; }      
         public string Rooms { get; set; }    
         public string ProvinceId { get; set; }    
         public string CityId { get; set; }    

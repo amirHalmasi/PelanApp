@@ -75,3 +75,4 @@ G:\build-an-app-with-aspnet-core-and-angular-from-scratch\build-an-app-with-aspn
 G:\build-an-app-with-aspnet-core-and-angular-from-scratch\build-an-app-with-aspnet-core-and-angular-from-scratch\_pelan_project\PelanApp\Api\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 G:\build-an-app-with-aspnet-core-and-angular-from-scratch\build-an-app-with-aspnet-core-and-angular-from-scratch\_pelan_project\PelanApp\Api\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.dll
 G:\build-an-app-with-aspnet-core-and-angular-from-scratch\build-an-app-with-aspnet-core-and-angular-from-scratch\_pelan_project\PelanApp\Api\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+G:\build-an-app-with-aspnet-core-and-angular-from-scratch\build-an-app-with-aspnet-core-and-angular-from-scratch\_pelan_project\PelanApp\Api\bin\Debug\net7.0\SixLabors.ImageSharp.dll

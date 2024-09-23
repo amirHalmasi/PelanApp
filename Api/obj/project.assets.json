@@ -505,6 +505,22 @@
           "lib/netstandard2.0/Mono.TextTemplating.dll": {}
         }
       },
+      "SixLabors.ImageSharp/3.1.5": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/SixLabors.ImageSharp.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/SixLabors.ImageSharp.dll": {
+            "related": ".xml"
+          }
+        },
+        "build": {
+          "build/SixLabors.ImageSharp.props": {}
+        }
+      },
       "SQLitePCLRaw.bundle_e_sqlite3/2.1.4": {
         "type": "package",
         "dependencies": {
@@ -1673,6 +1689,22 @@
         "mono.texttemplating.nuspec"
       ]
     },
+    "SixLabors.ImageSharp/3.1.5": {
+      "sha512": "lNtlq7dSI/QEbYey+A0xn48z5w4XHSffF8222cC4F4YwTXfEImuiBavQcWjr49LThT/pRmtWJRcqA/PlL+eJ6g==",
+      "type": "package",
+      "path": "sixlabors.imagesharp/3.1.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "build/SixLabors.ImageSharp.props",
+        "lib/net6.0/SixLabors.ImageSharp.dll",
+        "lib/net6.0/SixLabors.ImageSharp.xml",
+        "sixlabors.imagesharp.128.png",
+        "sixlabors.imagesharp.3.1.5.nupkg.sha512",
+        "sixlabors.imagesharp.nuspec"
+      ]
+    },
     "SQLitePCLRaw.bundle_e_sqlite3/2.1.4": {
       "sha512": "EWI1olKDjFEBMJu0+3wuxwziIAdWDVMYLhuZ3Qs84rrz+DHwD00RzWPZCa+bLnHCf3oJwuFZIRsHT5p236QXww==",
       "type": "package",
@@ -2027,6 +2059,7 @@
       "Microsoft.AspNetCore.OpenApi >= 7.0.10",
       "Microsoft.EntityFrameworkCore.Design >= 7.0.12",
       "Microsoft.EntityFrameworkCore.Sqlite >= 7.0.12",
+      "SixLabors.ImageSharp >= 3.1.5",
       "Swashbuckle.AspNetCore >= 6.5.0",
       "System.IdentityModel.Tokens.Jwt >= 7.5.2"
     ]
@@ -2037,11 +2070,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "g:\\build-an-app-with-aspnet-core-and-angular-from-scratch\\build-an-app-with-aspnet-core-and-angular-from-scratch\\_pelan_project\\PelanApp\\Api\\Api.csproj",
+      "projectUniqueName": "G:\\build-an-app-with-aspnet-core-and-angular-from-scratch\\build-an-app-with-aspnet-core-and-angular-from-scratch\\_pelan_project\\PelanApp\\Api\\Api.csproj",
       "projectName": "Api",
-      "projectPath": "g:\\build-an-app-with-aspnet-core-and-angular-from-scratch\\build-an-app-with-aspnet-core-and-angular-from-scratch\\_pelan_project\\PelanApp\\Api\\Api.csproj",
+      "projectPath": "G:\\build-an-app-with-aspnet-core-and-angular-from-scratch\\build-an-app-with-aspnet-core-and-angular-from-scratch\\_pelan_project\\PelanApp\\Api\\Api.csproj",
       "packagesPath": "C:\\Users\\Amir\\.nuget\\packages\\",
-      "outputPath": "g:\\build-an-app-with-aspnet-core-and-angular-from-scratch\\build-an-app-with-aspnet-core-and-angular-from-scratch\\_pelan_project\\PelanApp\\Api\\obj\\",
+      "outputPath": "G:\\build-an-app-with-aspnet-core-and-angular-from-scratch\\build-an-app-with-aspnet-core-and-angular-from-scratch\\_pelan_project\\PelanApp\\Api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Amir\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -2087,6 +2120,10 @@
           "Microsoft.EntityFrameworkCore.Sqlite": {
             "target": "Package",
             "version": "[7.0.12, )"
+          },
+          "SixLabors.ImageSharp": {
+            "target": "Package",
+            "version": "[3.1.5, )"
           },
           "Swashbuckle.AspNetCore": {
             "target": "Package",

@@ -18,7 +18,8 @@ namespace Api.DTOs
         public string houseMeter { get; set; }       
         public string houseType { get; set; }       
         public string orientations { get; set; }       
-        public string parkingType { get; set; }       
+        public string parkingType { get; set; }  
+        public string hasParking { get; set; }     
         public string rooms { get; set; }    
         public string province { get; set; }    
         public string city { get; set; }    

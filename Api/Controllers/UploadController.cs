@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using System.IO;
 
 namespace Api.Controllers
 {
@@ -24,7 +28,7 @@ namespace Api.Controllers
                 return BadRequest("Username and advertise code are required.");
             }
 
-            var folderName = Path.Combine("Resources", "Images", username, advertiseCode);
+            var folderName = Path.Combine("Resources", "Images", username, advertiseCode,"lowQuality");
             var pathToRead = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
             if (!Directory.Exists(pathToRead))
@@ -42,16 +46,17 @@ namespace Api.Controllers
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
+    
     [Authorize]
     [HttpPost, DisableRequestSizeLimit]
     public async Task<IActionResult> Upload()
     {
-         var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+        var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
-            if (string.IsNullOrEmpty(token))
-            {
-                return BadRequest(new { message = "Token is missing" });
-            }
+        if (string.IsNullOrEmpty(token))
+        {
+            return BadRequest(new { message = "Token is missing" });
+        }
         try
         {
             var files = Request.Form.Files;
@@ -63,12 +68,22 @@ namespace Api.Controllers
                 return BadRequest("Username and advertise code are required.");
             }
 
+            // Paths for saving images
             var folderName = Path.Combine("Resources", "Images", username, advertiseCode);
-            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            var highQualityFolderName = Path.Combine(folderName, "highQuality");
+            var lowQualityFolderName = Path.Combine(folderName, "lowQuality");
+            var pathToSaveHighQuality = Path.Combine(Directory.GetCurrentDirectory(), highQualityFolderName);
+            var pathToSaveLowQuality = Path.Combine(Directory.GetCurrentDirectory(), lowQualityFolderName);
 
-            if (!Directory.Exists(pathToSave))
+            // Ensure directories exist
+            if (!Directory.Exists(pathToSaveHighQuality))
             {
-                Directory.CreateDirectory(pathToSave);
+                Directory.CreateDirectory(pathToSaveHighQuality);
+            }
+
+            if (!Directory.Exists(pathToSaveLowQuality))
+            {
+                Directory.CreateDirectory(pathToSaveLowQuality);
             }
 
             if (files.Any(f => f.Length == 0))
@@ -76,27 +91,71 @@ namespace Api.Controllers
                 return BadRequest("Empty file(s) provided.");
             }
 
-            // Upload new files
+            // Process and save images
             foreach (var file in files)
             {
                 var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                var fullPath = Path.Combine(pathToSave, fileName);
+                var highQualityFullPath = Path.Combine(pathToSaveHighQuality, fileName);
+                var lowQualityFullPath = Path.Combine(pathToSaveLowQuality, fileName);
 
-                using (var stream = new FileStream(fullPath, FileMode.Create))
+                using (var image = await Image.LoadAsync(file.OpenReadStream()))
                 {
-                    await file.CopyToAsync(stream);
+                    // Save low-quality version
+                    var lowQualityOptions = new ResizeOptions
+                    {
+                        Mode = ResizeMode.Max,
+                        Size = new Size(50, 0) // Resize to smaller size
+                    };
+                    image.Mutate(x => x.Resize(lowQualityOptions));
+                    var lowQualityEncoder = new JpegEncoder { Quality = 55 }; // Very low quality
+                    await image.SaveAsync(lowQualityFullPath, lowQualityEncoder);
+
+                    // Reset image to original before saving better quality version
+                     // Reset any resize
+
+                    // Save better quality version (75% quality)
+                   
                 }
+                using (var image = await Image.LoadAsync(file.OpenReadStream()))
+                {
+                     var highQualityOptions = new ResizeOptions
+                    {
+                        Mode = ResizeMode.Max,
+                        Size = new Size(800, 0) // Resize to a reasonable size
+                    };
+                    image.Mutate(x => x.Resize(highQualityOptions));
+
+                    var highQualityEncoder = new JpegEncoder { Quality = 80 };
+                    await image.SaveAsync(highQualityFullPath, highQualityEncoder);
+                    
+                }
+                
             }
 
-            // Retrieve all files in the directory
-            var allFiles = Directory.GetFiles(pathToSave);
-            var dbPaths = allFiles.Select(file => new
+            // Retrieve all files in the highQuality and lowQuality directories
+            var lowQualityFiles = Directory.GetFiles(pathToSaveLowQuality);
+            var highQualityFiles = Directory.GetFiles(pathToSaveHighQuality);
+
+            // Return paths for both low and high-quality images
+            // Return paths for both low and high-quality images
+            var lowQualityPaths = lowQualityFiles.Select(file => new
             {
-                dbPath = Path.Combine(folderName, Path.GetFileName(file)),
+                Path = Path.Combine(lowQualityFolderName, Path.GetFileName(file)),
                 fileName = Path.GetFileName(file)
             }).ToList();
 
-            return Ok(dbPaths);
+            var highQualityPaths = highQualityFiles.Select(file => new
+            {
+                Path = Path.Combine(highQualityFolderName, Path.GetFileName(file)), // Corrected to highQualityFolderName
+                fileName = Path.GetFileName(file)
+            }).ToList();
+
+            return Ok(new
+            {
+                highQualityFiles = highQualityPaths,
+                lowQualityFiles = lowQualityPaths,
+            });
+
         }
         catch (Exception ex)
         {
@@ -104,6 +163,7 @@ namespace Api.Controllers
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
+
     [Authorize]
     [HttpDelete("delete")]
     public IActionResult DeleteFile(string username, string advertiseCode, string fileName)
@@ -121,18 +181,22 @@ namespace Api.Controllers
                 return BadRequest("Username, advertise code, and file name are required.");
             }
 
-            var folderName = Path.Combine("Resources", "Images", username, advertiseCode);
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), folderName, fileName);
+            var highQualityfolderName = Path.Combine("Resources", "Images", username, advertiseCode,"highQuality");
+            var lowQualityfolderName = Path.Combine("Resources", "Images", username, advertiseCode,"lowQuality");
+            var highQualityFilePath = Path.Combine(Directory.GetCurrentDirectory(), highQualityfolderName, fileName);
+            var lowQualityFilePath = Path.Combine(Directory.GetCurrentDirectory(), lowQualityfolderName, fileName);
 
-            if (!System.IO.File.Exists(filePath))
+            if (!System.IO.File.Exists(highQualityFilePath)|| !System.IO.File.Exists(lowQualityFilePath) )
             {
                 return NotFound("File not found.");
             }
 
-            System.IO.File.Delete(filePath);
+            System.IO.File.Delete(highQualityFilePath);
+            System.IO.File.Delete(lowQualityFilePath);
             var deleteObject = new
                 {
-                    _folderName = folderName,
+                    _highQualityfolderName = highQualityfolderName,
+                    _lowQualityfolderName = lowQualityfolderName,
                     _deletedFile = fileName,
                     _message="File deleted successfully."
                 };
@@ -145,6 +209,7 @@ namespace Api.Controllers
             return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
+    
     [Authorize]
     [HttpDelete("deleteAllImages")]
     public IActionResult deleteAllImages(string username, string advertiseCode)

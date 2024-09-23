@@ -55,7 +55,8 @@ namespace Api.Controllers
                     HouseMeter = RentHouseDto.houseMeter,       
                     HouseType = RentHouseDto.houseType,       
                     Orientation = RentHouseDto.orientations,       
-                    ParkingType = RentHouseDto.parkingType,       
+                    ParkingType = RentHouseDto.parkingType,
+                    HasParking = RentHouseDto.hasParking,
                     Rooms = RentHouseDto.rooms,    
                     ProvinceId = RentHouseDto.province,    
                     CityId = RentHouseDto.city,    
@@ -119,7 +120,10 @@ namespace Api.Controllers
                     HouseMeter = sellHouseDto.houseMeter,       
                     HouseType = sellHouseDto.houseType,       
                     Orientation = sellHouseDto.orientations,       
-                    ParkingType = sellHouseDto.parkingType,       
+                    ParkingType = sellHouseDto.parkingType,    
+
+                    HasParking = sellHouseDto.hasParking,
+
                     Rooms = sellHouseDto.rooms,    
                     ProvinceId = sellHouseDto.province,    
                     CityId = sellHouseDto.city,    
@@ -159,6 +163,19 @@ namespace Api.Controllers
             }
 
         }
+        
+
+        private List<string> GetFilesFromDirectory(string baseFolderName, string subFolderName)
+        {
+            var folderPath = Path.Combine(Directory.GetCurrentDirectory(), baseFolderName, subFolderName);
+            if (Directory.Exists(folderPath))
+            {
+                return Directory.GetFiles(folderPath)
+                                .Select(file => Path.Combine(baseFolderName, subFolderName, Path.GetFileName(file)))
+                                .ToList();
+            }
+            return new List<string>();
+        }
 
         [HttpGet("{city_id}")]
         public async Task<ActionResult<IEnumerable<object>>> GetAllAdvertises(string city_id)
@@ -184,55 +201,45 @@ namespace Api.Controllers
                     string username = advertise is HouseRentAdvertise rentAdvertise ? rentAdvertise.Username : (advertise as HouseSellAdvertise).Username;
                     string advertiseCode = advertise is HouseRentAdvertise rentAd ? rentAd.AdvertiseCode : (advertise as HouseSellAdvertise).AdvertiseCode;
 
-                    var folderName = Path.Combine("Resources", "Images", username, advertiseCode);
-                    var pathToRead = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-                    List<string> files = new List<string>();
+                    var lowQualityFiles = GetFilesFromDirectory("Resources/Images", Path.Combine(username, advertiseCode, "lowQuality"));
+                    var highQualityFiles = GetFilesFromDirectory("Resources/Images", Path.Combine(username, advertiseCode, "highQuality"));
 
-                    if (Directory.Exists(pathToRead))
+                    if (highQualityFiles.Any() && lowQualityFiles.Any())
                     {
-
-                        // 
-                       
-
-                        files = Directory.GetFiles(pathToRead)
-                            .Select(file => Path.Combine(folderName, Path.GetFileName(file))).ToList();
-
-                        if (!files.Any())
+                        var filePairs = highQualityFiles.Select((highQuality, index) => new
                         {
+                            HighQuality = highQuality,
+                            LowQuality = lowQualityFiles.ElementAtOrDefault(index)
+                        }).ToList();
 
-                            var placeholderFolderName = Path.Combine("Resources", "Images", "placeholder");
-                            var placeholderPathToRead = Path.Combine(Directory.GetCurrentDirectory(), placeholderFolderName);
+                        advertiseWithFiles.Add(new
+                        {
+                            Advertise = advertise,
+                            Files = filePairs,
+                            TodayDate = DateTime.Now
+                        });
+                    }
+                    else
+                    {
+                        var lowQualityPlaceHolderFiles = GetFilesFromDirectory("Resources/Images", "placeholder/lowQuality");
+                        var placeholderFiles = GetFilesFromDirectory("Resources/Images", "placeholder/highQuality");
 
-                            if (Directory.Exists(placeholderPathToRead))
+                        if (placeholderFiles.Any() && lowQualityPlaceHolderFiles.Any())
+                        {
+                            var filePairs = placeholderFiles.Select((highQuality, index) => new
                             {
-                                files = Directory.GetFiles(placeholderPathToRead)
-                                    .Select(file => Path.Combine(placeholderFolderName, Path.GetFileName(file)))
-                                    .ToList();
-                            }
-                        }
+                                HighQuality = highQuality,
+                                LowQuality = lowQualityPlaceHolderFiles.ElementAtOrDefault(index)
+                            }).ToList();
 
-
-                        // 
-                        
-                    }else
-                    {
-                        var placeholderFolderName = Path.Combine("Resources", "Images", "placeholder");
-                        var placeholderPathToRead = Path.Combine(Directory.GetCurrentDirectory(), placeholderFolderName);
-
-                        if (Directory.Exists(placeholderPathToRead))
-                        {
-                            files = Directory.GetFiles(placeholderPathToRead)
-                                .Select(file => Path.Combine(placeholderFolderName, Path.GetFileName(file)))
-                                .ToList();
+                            advertiseWithFiles.Add(new
+                            {
+                                Advertise = advertise,
+                                Files = filePairs,
+                                TodayDate = DateTime.Now
+                            });
                         }
                     }
-
-                    advertiseWithFiles.Add(new
-                    {
-                        Advertise = advertise,
-                        Files = files,
-                        TodayDate = DateTime.Now
-                    });
                 }
 
                 return Ok(advertiseWithFiles);
@@ -242,6 +249,7 @@ namespace Api.Controllers
                 return StatusCode(500, new { error = "An error occurred while retrieving the advertisements." });
             }
         }
+
         // [AllowAnonymous]
         // [HttpGet]
         // // public ActionResult<List<AppUser>> 

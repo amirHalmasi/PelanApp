@@ -3,6 +3,7 @@ using System;
 using Api.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Api.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240828085326_hasParkingCol")]
+    partial class hasParkingCol
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.12");
@@ -170,9 +173,6 @@ namespace Api.Data.Migrations
                     b.Property<string>("HasElevator")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("HasParking")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("HasWareHouse")
                         .HasColumnType("TEXT");
 
@@ -210,6 +210,9 @@ namespace Api.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("WareHouseMeter")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("hasParking")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -259,9 +262,6 @@ namespace Api.Data.Migrations
                     b.Property<string>("HasElevator")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("HasParking")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("HasWareHouse")
                         .HasColumnType("TEXT");
 
@@ -305,6 +305,9 @@ namespace Api.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("WareHouseMeter")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("hasParking")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
