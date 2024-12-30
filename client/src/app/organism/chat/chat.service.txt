@@ -1,0 +1,118 @@
+
+
+// import { Injectable } from '@angular/core';
+// import * as signalR from '@microsoft/signalr';
+// import { BehaviorSubject } from 'rxjs';
+
+// export interface MessageDto {
+//   id: number;
+//   senderId: number;
+//   senderUsername: string;
+//   recipientId: number;
+//   recipientUsername: string;
+//   content: string;
+//   dateRead?: Date; // تاریخ خواندن پیام (ممکن است مقدار نداشته باشد)
+//   messageSentDate: Date; // تاریخ ارسال پیام
+//   advertiseCode: string;
+//   advertiseTitle: string;
+// }
+
+// @Injectable({
+//   providedIn: 'root',
+// })
+// export class ChatService {
+//   private hubConnection!: signalR.HubConnection;
+//   private messagesSource = new BehaviorSubject<MessageDto[]>([]);
+//   messages$ = this.messagesSource.asObservable();
+
+//   constructor() {}
+
+//   createHubConnection(userToken: string) {
+//     this.hubConnection = new signalR.HubConnectionBuilder()
+//       .withUrl('https://localhost:5001/chatHub', {
+//         accessTokenFactory: () => userToken,
+//       })
+//       .withAutomaticReconnect()
+//       .build();
+
+//     this.hubConnection
+//       .start()
+//       .then(() => {
+//         console.log('Connection started');
+//         console.log(userToken);
+//       })
+//       .catch((err) => console.error('Error while starting connection: ' + err));
+
+//     this.hubConnection.on('ReceiveMessage', (message: MessageDto) => {
+//       this.messagesSource.next([...this.messagesSource.value, message]);
+//     });
+//   }
+
+//   stopHubConnection() {
+//     this.hubConnection
+//       .stop()
+//       .then(() => console.log('Connection stopped'))
+//       .catch((err) => console.error('Error while stopping connection: ' + err));
+//   }
+
+//   // sendMessage(message: any) {
+//   //   return this.hubConnection
+//   //     .invoke('SendMessage', message) // نام متد SendMessage را تغییر دهید تا با بک‌اند هماهنگ شود
+//   //     .catch((err) => console.error('Error sending message: ' + err));
+//   // }
+//   async sendMessage(message: any) {
+//     try {
+//       await this.hubConnection.invoke('SendMessage', message); // نام متد SendMessage را تغییر دهید تا با بک‌اند هماهنگ شود
+//     } catch (err) {
+//       console.error('Error sending message: ', err);
+//     }
+//   }
+// }
+
+// // import { Injectable } from '@angular/core';
+// // import * as signalR from '@microsoft/signalr';
+// // import { BehaviorSubject } from 'rxjs';
+
+// // @Injectable({
+// //   providedIn: 'root',
+// // })
+// // export class ChatService {
+// //   private hubConnection!: signalR.HubConnection;
+// //   // public messages: BehaviorSubject<string[]> = new BehaviorSubject([]);
+// //   public messages: BehaviorSubject<string[]> = new BehaviorSubject<string[]>(
+// //     []
+// //   );
+
+// //   constructor() {}
+
+// //   public startConnection() {
+// //     const authUser = JSON.parse(
+// //       localStorage.getItem('authUser') || '{isJobOwner:"",token:"",username:""}'
+// //     );
+// //     this.hubConnection = new signalR.HubConnectionBuilder()
+// //       .withUrl('https://localhost:5001/chatHub', {
+// //         accessTokenFactory: () => authUser.token, // استفاده از توکن JWT
+// //       })
+// //       .build();
+
+// //     this.hubConnection
+// //       .start()
+// //       .then(() => {
+// //         console.log('Connection started');
+// //         this.hubConnection.on(
+// //           'ReceiveMessage',
+// //           (user: string, message: string) => {
+// //             const newMessages = [...this.messages.value, `${user}: ${message}`];
+// //             this.messages.next(newMessages);
+// //           }
+// //         );
+// //       })
+// //       .catch((err) => console.log('Error while starting connection: ' + err));
+// //   }
+
+// //   public sendMessage(user: string, message: string) {
+// //     this.hubConnection
+// //       .invoke('SendMessage', user, message)
+// //       .catch((err) => console.error(err));
+// //   }
+// // }

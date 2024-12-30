@@ -1,0 +1,77 @@
+* {
+  font-family: "IranSans", "nazanin", "Courier New", Courier, monospace !important;
+  /* color: #080710 !important; */
+}
+
+.card {
+  background-color: transparent;
+  border: 0px solid #ced5f5;
+  /* border-radius: 10px; */
+  /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
+  /* -webkit-backdrop-filter: blur(10px); */
+  /* backdrop-filter: blur(10px); */
+}
+.font-title {
+  font-family: "IranSans", "Rezvan", "Courier New", Courier, monospace !important;
+  font-size: 1.2rem;
+}
+.brand-font {
+  font-family: "IranSans", "sogand", "Courier New", Courier, monospace !important;
+  font-size: 1.5rem;
+  font-weight: bolder;
+  padding: 0 10px;
+  width: 100%;
+}
+.rtl {
+  direction: rtl;
+}
+.btn-group {
+  display: flex;
+  justify-content: center; /* Center the button group */
+  flex-direction: row-reverse;
+  flex-wrap: wrap; /* Make it responsive */
+}
+.bold-shadow {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+  color: black;
+}
+/* .btn {
+  background-color: #dc3545;
+  color: aliceblue;
+} */
+.active-link {
+  background-color: #dc3545 !important; /* Example: Change background color */
+  color: white !important; /* Example: Change text color */
+  box-shadow: #dc3546 1px 0px 15px !important;
+}
+
+.disactive {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  transition: box-shadow 0.5s ease-in-out;
+}
+
+.disactive:hover {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px !important;
+}
+.border-x-not {
+  border: 0 !important;
+  /* border-right: 0 !important;
+  border-left: 0 !important; */
+}
+.red-border {
+  box-sizing: border-box !important;
+  padding: 0;
+  border: 1px solid #dc3545 !important;
+}
+.form-container-class {
+  /* height: 80vh; */
+  width: 100%;
+  /* overflow-y: auto; */
+}
+/* .parent-container {
+  height: 80vh; 
+  overflow: hidden; 
+} */
+/* .row-container {
+} */

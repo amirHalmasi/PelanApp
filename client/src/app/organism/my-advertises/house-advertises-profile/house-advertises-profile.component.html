@@ -1,0 +1,323 @@
+<div class="container-fluid" style="text-align: center">
+  <div *ngIf="isLoadingAdvertises; else advertises">
+    <app-loading-atm></app-loading-atm>
+  </div>
+  <ng-template #advertises>
+    <div class="row">
+      <!-- <div class="row"><router-outlet></router-outlet></div> -->
+
+      <h2 *ngIf="items?.length === 0 && userData; else houseAdvertise">
+        آگهی ثبت شده ای برای کاربر
+        <span style="color: red">{{ userData.username }}</span>
+        وجود ندارد. .
+      </h2>
+      <!-- <button (click)="scroll('start')">Scroll start</button>
+      <button (click)="scroll('mid')">Scroll mid</button>
+      <button (click)="scroll('end')">Scroll end</button> -->
+      <ng-template #houseAdvertise>
+        <cdk-virtual-scroll-viewport
+          minBufferPx="450"
+          maxBufferPx="550"
+          itemSize="400"
+          class="viewport"
+        >
+          <div
+            *cdkVirtualFor="
+              let itemPairs of items;
+              let i = index;
+              let last = last
+            "
+          >
+            <!-- Start a new row every 3 items -->
+            <div
+              class="row"
+              style="scroll-snap-align: start"
+              [ngClass]="{
+                'advertise-row': !last,
+                
+              }"
+            >
+              <div
+                class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-3"
+                *ngFor="let item of itemPairs; let j = index; let first = first"
+                [id]="i.toString() + j.toString()"
+                [ngClass]="{
+                    'devider-border': !first,
+                    
+                  }"
+              >
+                <div
+                  class="card my-3 mx-2 card-shadow"
+                  style="overflow: hidden"
+                >
+                  <div class="card-head parent-box">
+                    <app-carousel [imagesFiles]="item.files"></app-carousel>
+                    <!-- <div class="overlay"></div> -->
+                  </div>
+                  <div class="card-body" (click)="navigateTo(item)">
+                    <div
+                      class="title border-gradient-purple border-gradient mt-2"
+                    >
+                      <h5
+                        class="card-title"
+                        [ngClass]="{
+                          red: item.advertise.advertiseType === 'rent',
+                          blue: item.advertise.advertiseType === 'sell'
+                        }"
+                      >
+                        {{
+                          (item.advertise.advertiseType === "sell" &&
+                            "فروش در " + item.advertise.neighborhood) ||
+                            (item.advertise.advertiseType === "rent" &&
+                              "اجاره در " + item.advertise.neighborhood)
+                        }}
+                      </h5>
+                      <div
+                        class="d-flex justify-content-between align-items-baseline"
+                      >
+                        <h5
+                          class="w-80"
+                          *ngIf="item.diffInMonth"
+                          style="
+                            /* border: 1px solid red; */
+                            padding: 0.2rem 0.2rem;
+                            border-radius: 0.3rem;
+                            /* color: red; */
+                            font-size: 0.7rem;
+                            /* font-weight: bold; */
+                            text-align: left;
+                            position: absolute;
+                            left: 2%;
+                            top: 2%;
+                            z-index: 2;
+                            /* color: #000000; */
+                            color: white;
+                            /* background-color: #ffc107 !important; */
+                            /* background-color: #dc3545 !important; */
+                            background-color: #198754 !important;
+                          "
+                        >
+                          {{ item.diffInMonth }} ماه پیش
+                        </h5>
+                        <h5
+                          class="w-80"
+                          *ngIf="item.diffInMonth <= 0 && item.diffInDay"
+                          style="
+                            /* border: 1px solid red; */
+                            padding: 0.2rem 0.2rem;
+                            border-radius: 0.3rem;
+                            /* color: red; */
+                            font-size: 0.7rem;
+                            /* font-weight: bold; */
+                            text-align: left;
+                            position: absolute;
+                            left: 2%;
+                            top: 2%;
+                            z-index: 2;
+                            color: #000000;
+                            /* color: white; */
+                            background-color: #ffc107 !important;
+                            /* background-color: #dc3545 !important; */
+                            /* background-color: #dc3545 !important; */
+                          "
+                        >
+                          {{ item.diffInDay }} روز پیش
+                        </h5>
+                        <h5
+                          class="w-80"
+                          *ngIf="item.diffInHour && item.diffInDay <= 0"
+                          style="
+                            /* border: 1px solid red; */
+                            padding: 0.2rem 0.2rem;
+                            border-radius: 0.3rem;
+                            /* color: red; */
+                            font-size: 0.7rem;
+                            /* font-weight: bold; */
+                            text-align: left;
+                            position: absolute;
+                            left: 2%;
+                            top: 2%;
+                            z-index: 2;
+                            color: white;
+                            /* color: #000000; */
+                            /* background-color: #ffc107 !important; */
+                            /* background-color: #dc3545 !important; */
+                            background-color: #ff7a0d !important;
+                          "
+                        >
+                          {{ item.diffInHour }} ساعت پیش
+                        </h5>
+                        <h5
+                          class="w-80"
+                          *ngIf="
+                            item.diffInHour <= 0 &&
+                            item.diffInDay <= 0 &&
+                            item.diffInMonth <= 0
+                          "
+                          style="
+                            /* border: 1px solid red; */
+                            padding: 0.2rem 0.2rem;
+                            border-radius: 0.3rem;
+                            /* color: red; */
+                            font-size: 0.7rem;
+                            /* font-weight: bold; */
+                            text-align: left;
+                            position: absolute;
+                            left: 2%;
+                            top: 2%;
+                            z-index: 2;
+                            color: white;
+                            /* color: #000000; */
+                            /* background-color: #ffc107 !important; */
+                            background-color: #dc3545 !important;
+                          "
+                        >
+                          دقایقی پیش
+                        </h5>
+                      </div>
+                    </div>
+                    <!-- <div class="card-data-container child-box"> -->
+                    <div
+                      class="card-details"
+                      style="
+                        position: absolute;
+                        left: 7%;
+                        bottom: 48%;
+                        z-index: 2;
+                      "
+                    >
+                      <span>
+                        <app-elevator-svg
+                          [isShow]="item.advertise.hasElevator === 'true'"
+                        ></app-elevator-svg
+                      ></span>
+                      <!-- <app-thereis-or-not
+                        [determineCheckedOrUnchecked]="
+                          item.advertise.hasElevator
+                        "
+                      ></app-thereis-or-not> -->
+                    </div>
+                    <div
+                      class="card-details"
+                      style="
+                        position: absolute;
+                        left: 17%;
+                        bottom: 48%;
+                        z-index: 2;
+                      "
+                    >
+                      <app-parking-svg
+                        [isShow]="item.advertise.hasParking === 'true'"
+                      ></app-parking-svg>
+                      <!-- <app-thereis-or-not
+                        [determineCheckedOrUnchecked]="
+                          item.advertise.parkingType &&
+                          item.advertise.parkingType !== 'none'
+                        "
+                      ></app-thereis-or-not> -->
+                    </div>
+                    <div class="card-details room-container">
+                      <app-bedroom-svg></app-bedroom-svg>
+                      <span class="room-counts">{{
+                        "       :  " + item.advertise.rooms
+                      }}</span>
+                    </div>
+                    <!-- </div> -->
+                    <div
+                      [ngClass]="{
+                        'red-shadow': item.advertise.advertiseType === 'rent',
+                        'green-shadow': item.advertise.advertiseType === 'sell'
+                      }"
+                      class="card-price-container justify-content-start mb-2"
+                    >
+                      <container-element
+                        [ngSwitch]="item.advertise.advertiseType"
+                        class="w-100"
+                      >
+                        <h5
+                          *ngSwitchCase="'rent'"
+                          style="font-weight: bold"
+                          class="detail-seprator"
+                        >
+                          اجاره
+                        </h5>
+                        <h5
+                          *ngSwitchCase="'rent'"
+                          class="card-details detail-text"
+                        >
+                          <span class="price"
+                            >{{
+                              item.advertise.rentPrice | numberSeprator
+                            }}
+                            ریال</span
+                          >
+                        </h5>
+
+                        <!-- اجاره -->
+                        <h5
+                          *ngSwitchCase="'rent'"
+                          style="font-weight: bold"
+                          class="detail-seprator"
+                        >
+                          رهن
+                        </h5>
+                        <h5
+                          *ngSwitchCase="'rent'"
+                          class="card-details detail-text"
+                        >
+                          <span class="price"
+                            >{{
+                              item.advertise.depositPrice | numberSeprator
+                            }}
+                            ریال</span
+                          >
+                        </h5>
+                        <!-- قیمت -->
+                        <h5 *ngSwitchCase="'sell'" class="detail-seprator">
+                          قیمت
+                        </h5>
+                        <h5
+                          *ngSwitchCase="'sell'"
+                          class="card-details detail-text"
+                        >
+                          <span class="price"
+                            >{{
+                              item.advertise.price | numberSeprator
+                            }}
+                            ریال</span
+                          >
+                        </h5>
+                        <h5 *ngSwitchCase="'sell'" class="detail-seprator">
+                          نوع واحد
+                        </h5>
+                        <h5
+                          *ngSwitchCase="'sell'"
+                          class="card-details detail-text"
+                        >
+                          <div
+                            *ngIf="item?.advertise.houseType"
+                            class="col col-xs-12 col-sm-6"
+                          >
+                            <h5 class="w-100 details detail-text">
+                              <container-element
+                                [ngSwitch]="item?.advertise.houseType"
+                              >
+                                <span *ngSwitchCase="'Mojtama'">مجتمع</span>
+                                <span *ngSwitchCase="'Villaie'">ویلایی</span>
+                                <span *ngSwitchCase="'ShakhsiSaz'">ویلایی</span>
+                              </container-element>
+                            </h5>
+                          </div>
+                        </h5>
+                      </container-element>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </cdk-virtual-scroll-viewport>
+      </ng-template>
+    </div>
+  </ng-template>
+</div>

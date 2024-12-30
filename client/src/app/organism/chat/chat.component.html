@@ -1,0 +1,125 @@
+<!-- <div>
+  <div *ngFor="let msg of messages">
+    {{ msg }}
+  </div>
+
+  <input [(ngModel)]="user" placeholder="Your name" />
+  <input [(ngModel)]="message" placeholder="Message" />
+  <button (click)="sendMessage()">Send</button>
+</div> -->
+
+<!-- 2 -->
+<div class="container">
+  <!-- <div class="row" style="height: 100%"> -->
+  <div style="height: 100%" class="row chat-container">
+    <!-- سمت چپ: لیست چت‌روم‌ها -->
+    <div
+      class="col col-md-3 chat-rooms"
+      style="padding: 0"
+      (click)="selectedChatRoomId = 0"
+    >
+      <div class="" (click)="$event.stopPropagation()">
+        <ul>
+          <li
+            *ngFor="let room of chatRooms; index as i"
+            style="
+              background: #80808045;
+              padding: 7px;
+              border-radius: 8px;
+              margin: 13px 0;
+            "
+            (click)="selectChatRoom(room.id)"
+            [ngClass]="{
+              'seleted-chatroom': selectedChatRoomId === room.id
+            }"
+            class="
+            "
+          >
+            <!-- <h4>{{ room.advertisementId }}</h4> -->
+            <h4>عنوان آگهی: {{ room.chatRoomTitle }}</h4>
+            <p>آخرین پیام: {{ room.lastMessageContent }}</p>
+            <p style>تاریخ پیام: {{ room.lastMessageDate | date : "short" }}</p>
+            <span *ngIf="room.unreadMessagesCount > 0" class="unread-count">
+              پیام‌های خوانده نشده: {{ room.unreadMessagesCount }}
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- سمت راست: صفحه چت -->
+    <div class="col col-md-9" style="padding: 0">
+      <div
+        class="chat-room"
+        style="height: 100%; width: 100%"
+        *ngIf="selectedChatRoomId"
+      >
+        <div class="messages" style="height: 90%">
+          <div
+            class="message"
+            *ngFor="let msg of messages"
+            [ngClass]="{
+              sent: msg.senderId === currentUserData.userId,
+              received: msg.senderId !== currentUserData.userId
+            }"
+          >
+            <span>{{ msg.senderUsername }}:</span>
+            <p>{{ msg.content }}</p>
+            <small>{{ msg.messageSentDate | date : "shortTime" }}</small>
+          </div>
+        </div>
+        <div
+          class="row my-1"
+          style="height: 7%; margin: calc((100% - 97%) / 2) 10px"
+        >
+          <div class="input-container">
+            <input
+              class="mx-2"
+              [(ngModel)]="newMessage"
+              placeholder="پیام خود را وارد کنید."
+            />
+            <button (click)="sendMessage()">ارسال</button>
+          </div>
+        </div>
+
+        <!-- <div class="input-area">
+          <input
+            [(ngModel)]="newMessage"
+            placeholder="پیام خود را وارد کنید..."
+          />
+          <button (click)="sendMessage()">ارسال</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+  <!-- </div> -->
+</div>
+
+<!-- 1 -->
+<!-- <div class="container">
+  <div class="row" style="height: 88%">
+    <div class="chat-container">
+      <div
+        *ngFor="let msg of messages"
+        class="message"
+        [ngClass]="{
+          sent: msg.senderId === currentUserData.userId,
+          received: msg.senderId !== currentUserData.userId
+        }"
+      >
+        <span class="message-username">{{ msg.senderUsername }}</span>
+        <p class="message-content">{{ msg.content }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="input-container">
+      <input
+        class="mx-2"
+        [(ngModel)]="newMessage"
+        placeholder="پیام خود را وارد کنید."
+      />
+      <button (click)="sendMessage()">ارسال</button>
+    </div>
+  </div>
+</div> -->
