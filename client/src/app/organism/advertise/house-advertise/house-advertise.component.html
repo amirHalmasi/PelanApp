@@ -36,9 +36,12 @@
   <div class="row">
     <div
       *ngFor="let data of files?.highQualityFiles"
-      class="col-xs-4 col-sm-4 col-md-3 col-lg-3 col-xl-2 mb-3"
+      class="col-6 col-sm-4 col-md-3 col-lg-3 col-xl-2 mb-3"
     >
-      <div *ngIf="data.path" class="square-image-container my-2">
+      <div
+        *ngIf="data.path && data.fileName !== 'placeholder-image.png'"
+        class="square-image-container my-2"
+      >
         <button
           type="button"
           class="btn m-1 btn-danger"
@@ -85,11 +88,15 @@
   </div>
 </div> -->
 <div class="mt-5">
-  <form [formGroup]="advertiseHouseForm" (ngSubmit)="submitHouseAdvertise()">
+  <form
+    [formGroup]="advertiseHouseForm"
+    (ngSubmit)="isEditPage_On ? updateHouseAdvertise() : submitHouseAdvertise()"
+  >
     <div class="row">
       <div
         formGroupName="type"
         class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
+        *ngIf="!isEditPage_On"
       >
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>نوع آگهی</mat-label>
@@ -208,7 +215,7 @@
         {{ imageUploadMessage }}
       </p>
       <app-action-btn-atom
-        [btnOptions]="signupBtnOption"
+        [btnOptions]="isEditPage_On ? updateBtnOption : signupBtnOption"
         [ActionBtnClass]="'btn-primary  my-button px-4'"
       ></app-action-btn-atom>
       <!-- <button type="submit" class="btn btn-primary px-3">ورود</button> -->

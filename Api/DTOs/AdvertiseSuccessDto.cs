@@ -10,6 +10,7 @@ namespace Api.DTOs
         public string AdvertiseType { get; set; }  
         public DateTime  AdvertiseSubmitDate { get; set; }        
         public string Username { get; set; }   
+        public int?  AdvertiserUserId { get; set; }   
         public string AdvertiseCode { get; set; }   
     }
 }

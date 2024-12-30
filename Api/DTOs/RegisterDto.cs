@@ -12,7 +12,8 @@ namespace Api.DTOs
         
         [Required]
         public string UserId { get; set; }       
-        [Required]     
+        [Required] 
+        [StringLength(11,MinimumLength = 10)]
         public string Mobile { get; set; }
         public string FirstName { get; set; }       
         public string LastName { get; set; }                     

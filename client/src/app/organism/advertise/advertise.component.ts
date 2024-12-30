@@ -1,5 +1,11 @@
 // import { HttpClient } from '@angular/common/http';
-import { Component, OnInit, Renderer2 } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  Renderer2,
+} from '@angular/core';
 // import { faTrash } from '@fortawesome/free-solid-svg-icons';
 // import {
 //   ImageDto,
@@ -24,8 +30,10 @@ import {
   UploadFinishedEvent,
 } from './uploadfile/uploadfile.component';
 import { HttpClient } from '@angular/common/http';
-import { filter } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 import { FileUploadservice } from './uploadfile/fileUpload.service';
+import { HouseAdvetisePageService } from '../house-page/house-advertise-page.service';
+import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
 // interface deleteResponse {
 //   folderName: string;
 //   deletedFile: string;
@@ -42,18 +50,43 @@ interface fileUploadData {
   styleUrls: ['./advertise.component.css'],
   animations: [slider],
 })
-export class AdvertiseComponent implements OnInit {
+export class AdvertiseComponent implements OnInit, OnDestroy {
   isHouseActive = false;
   icon!: any;
   // imageData: ImageDto[] = [];
   // username!: string;
   // advertiseCode!: string;
+  isEditPage_On: boolean = false;
+  preRouteUrl!: string;
+  routeSubscription$!: Subscription;
 
   fileUploadData!: fileUploadData;
   currentRoute: string = '';
-  constructor(private renderer: Renderer2, private route: ActivatedRoute) {}
+  constructor(
+    private renderer: Renderer2,
+    private route: ActivatedRoute,
+    private router: Router,
+    private houseAdvertiseServ: HouseAdvetisePageService,
+    private advertiseDataServ: AdvetiseDataService,
+    private cdr: ChangeDetectorRef
+  ) {}
+  ngOnDestroy(): void {
+    this.routeSubscription$.unsubscribe();
+  }
   // url!: string;
   ngOnInit() {
+    this.routeSubscription$ = this.advertiseDataServ.previousRouteURL.subscribe(
+      {
+        next: (preUrl) => {
+          preUrl === 'edit/house' || preUrl === 'edit/store'
+            ? (this.isEditPage_On = true)
+            : (this.isEditPage_On = false);
+
+          this.preRouteUrl = preUrl;
+          this.cdr.detectChanges();
+        },
+      }
+    );
     this.icon = faTrash;
     // this.route.url.subscribe((event) => {
     //   console.log(event[0].path);
@@ -113,5 +146,16 @@ export class AdvertiseComponent implements OnInit {
       outlet.activatedRouteData &&
       outlet.activatedRouteData['animation']
     );
+  }
+  goBackToAllAdvertises() {
+    this.houseAdvertiseServ.advertiseItem = '';
+    // this.advertiseDataServ.previousRouteURL.next('');
+    if (this.preRouteUrl === 'edit/house') {
+      this.router.navigate(['/myAdvertises', 'userHouseAdvertises']);
+      this.advertiseDataServ.previousRouteURL.next('');
+    } else if (this.preRouteUrl === 'edit/store') {
+      this.router.navigate(['/myAdvertises', 'userStoreAdvertises']);
+      this.advertiseDataServ.previousRouteURL.next('');
+    }
   }
 }

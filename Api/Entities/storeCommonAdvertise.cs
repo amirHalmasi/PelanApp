@@ -30,6 +30,12 @@ namespace Api.Entities
         public int AdvertiseViews { get; set; }    
         public DateTime AdvertiseSubmitDate { get; set; }    
         public DateTime StoreEmptyDate { get; set; }    
+        public string BalconyeMeter { get; set; }   
+
+        // public ICollection<Message> MessagesSend { get; set; }
+        // public ICollection<Message> MessagesReceived { get; set; }  
+
+
         
     }
 }

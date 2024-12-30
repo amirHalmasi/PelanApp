@@ -50,7 +50,9 @@
   object-fit: cover; /* Cover the entire container */
   object-position: center; /* Center the image within the container */
 }
-
+.img-thumbnail {
+  padding: 0 !important;
+}
 /* .btn-sm-custome {
     padding: 2px 5px !important;
     font-size: 1.5rem !important;

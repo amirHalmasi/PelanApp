@@ -11,6 +11,7 @@ namespace Api.Entities
         public int Id { get; set; }
         public string AdvertiseType { get; set; }    
         public string Username { get; set; }   
+        public int? AdvertiserUserId { get; set; } 
         public string AdvertiseCode { get; set; }   
         public string BuildingName { get; set; }       
         public string Floor { get; set; }       
@@ -40,6 +41,9 @@ namespace Api.Entities
         public string GroundMeter { get; set; }    
         public string Floors { get; set; }    
         public string AllUnits { get; set; }    
+
+        // public ICollection<Message> MessagesSend { get; set; }
+        // public ICollection<Message> MessagesReceived { get; set; }
 
         
 

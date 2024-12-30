@@ -143,12 +143,11 @@ export class StoreAdvertisePageComponent implements OnInit, OnDestroy {
       pairArrayCount = 1;
     } else if (deviceWidth >= 576 && deviceWidth < 768) {
       pairArrayCount = 2;
-    } else if (deviceWidth >= 768) {
+    } else if (deviceWidth >= 768 && deviceWidth < 1200) {
       pairArrayCount = 3;
+    } else if (deviceWidth >= 1200) {
+      pairArrayCount = 4;
     }
-    //  else if (deviceWidth >= 1200) {
-    //   pairArrayCount = 6;
-    // }
     return pairArrayCount;
   }
   itemsSlices(itemIndex: number) {
@@ -158,12 +157,11 @@ export class StoreAdvertisePageComponent implements OnInit, OnDestroy {
       return this.items.slice(itemIndex, itemIndex + 1);
     } else if (window.innerWidth >= 576 && window.innerWidth < 768) {
       return this.items.slice(itemIndex, itemIndex + 2);
-    } else if (window.innerWidth >= 768) {
+    } else if (window.innerWidth >= 768 && window.innerWidth < 1200) {
       return this.items.slice(itemIndex, itemIndex + 3);
+    } else if (window.innerWidth <= 1200) {
+      return this.items.slice(itemIndex, itemIndex + 4);
     }
-    // else if (window.innerWidth >= 992 && window.innerWidth < 1200) {
-    //   return this.items.slice(itemIndex, itemIndex + 4);
-    // }
     return this.items.slice(itemIndex, itemIndex + 1);
   }
 

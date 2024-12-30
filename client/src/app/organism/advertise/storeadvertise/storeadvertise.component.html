@@ -4,18 +4,16 @@
   (onUploadFinished)="uploadFinish($event)"
 ></app-uploadfile>
 
-<div
-  *ngIf="
-    fileUploadData?.imageData &&
-    fileUploadData.imageData.highQualityFiles.length > 0
-  "
->
+<div *ngIf="files && files.highQualityFiles.length > 0">
   <div class="row">
     <div
-      *ngFor="let data of fileUploadData?.imageData?.highQualityFiles"
-      class="col-xs-4 col-sm-4 col-md-3 col-lg-3 col-xl-2 mb-3"
+      *ngFor="let data of files?.highQualityFiles"
+      class="col-6 col-sm-4 col-md-3 col-lg-3 col-xl-2 mb-3"
     >
-      <div class="square-image-container my-2">
+      <div
+        *ngIf="data.path && data.fileName !== 'placeholder-image.png'"
+        class="square-image-container my-2"
+      >
         <button
           type="button"
           class="btn m-1 btn-danger"
@@ -37,16 +35,20 @@
 </div>
 
 <div class="mt-5">
-  <form [formGroup]="advertiseStoreForm" (ngSubmit)="submitStoreAdvertise()">
+  <form
+    [formGroup]="advertiseStoreForm"
+    (ngSubmit)="isEditPage_On ? updateStoreAdvertise() : submitStoreAdvertise()"
+  >
     <div class="row">
       <div
         formGroupName="type"
+        *ngIf="!isEditPage_On"
         class="col col-xs-12 col-sm-6 col-md-6 col-lg-4 p-3"
       >
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>نوع آگهی</mat-label>
           <mat-select
-            (selectionChange)="advertiseType = $event.value"
+            (selectionChange)="advertiseTypeValue = $event.value"
             formControlName="advertiseType"
             placeholder="نوع آگهی را انتخاب کنید"
           >
@@ -79,22 +81,23 @@
     <!-- *************************** -->
 
     <app-common
-      [advertiseTypeInput]="advertiseType"
+      [advertiseTypeInput]="advertiseTypeValue"
       (storeStateEvent)="storeType = $event"
+      [storeTypeInput]="storeType"
     ></app-common>
     <!-- /////////////////////// -->
     <!-- /// for sell fields /// -->
     <!-- /////////////////////// -->
     <app-sell-store
       [storeType]="storeType"
-      [advertiseType]="advertiseType"
+      [advertiseType]="advertiseTypeValue"
     ></app-sell-store>
     <!-- /////////////////////// -->
     <!-- ///// rent fields ///// -->
     <!-- /////////////////////// -->
     <app-rent-store
       [storeType]="storeType"
-      [advertiseType]="advertiseType"
+      [advertiseType]="advertiseTypeValue"
     ></app-rent-store>
     <!-- /////////////////////////////// -->
     <div class="row mb-3">
@@ -159,7 +162,7 @@
         {{ imageUploadMessage }}
       </p>
       <app-action-btn-atom
-        [btnOptions]="signupBtnOption"
+        [btnOptions]="isEditPage_On ? updateBtnOption : signupBtnOption"
         [ActionBtnClass]="'btn-primary  my-button px-4'"
       ></app-action-btn-atom>
       <!-- <button type="submit" class="btn btn-primary px-3">ورود</button> -->

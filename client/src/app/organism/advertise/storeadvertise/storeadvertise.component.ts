@@ -24,6 +24,10 @@ import { Subscription } from 'rxjs';
 import { CanDeactivateType } from '../../signup-from/can-deactivate-gaurde';
 import { SweetAlertService } from 'src/app/services/sweetalert.service';
 import { AdvertisesService } from '../advertises.service';
+import { ProvinceAndCityService } from '../../province-and-city-select-list/province-and-city.service';
+import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
+import { HouseAdvetiseProfileService } from '../../my-advertises/house-advertise-profile.service';
+import { city, province } from 'src/app/services/modal-service.service';
 
 @Component({
   selector: 'app-storeadvertise',
@@ -35,7 +39,7 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
   // @ViewChild('houseTypeSelect') houseTypeSelect!: MatSelect;
   // storeState: string = 'Villaie';
   isSubmitAdvertise: boolean = false;
-  advertiseType!: string;
+  advertiseTypeValue!: string;
   storeType!: string;
   imageUploadMessage!: string;
   @Input() uploadedImageData!: string;
@@ -55,6 +59,16 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
     btnType: 'submit',
     btnText: 'درج آگهی',
   };
+  updateBtnOption: {
+    iconName: string;
+
+    btnType: string;
+    btnText?: string;
+  } = {
+    iconName: '',
+    btnType: 'submit',
+    btnText: 'اعمال تغییرات',
+  };
   fileUploadSubscription!: Subscription;
   imageData!: {
     highQualityFiles: ImageDto[];
@@ -66,6 +80,12 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
   advertiseCode!: string;
   icon!: any;
   advertiseStoreForm!: FormGroup;
+  // files: { highQualityFiles: any; lowQualityFiles: any; };
+  files!: any;
+  // fileUploadData!: fileUploadData;
+  editData!: any;
+  preUrl!: string;
+  isEditPage_On: boolean = false;
 
   constructor(
     private http: HttpClient,
@@ -74,7 +94,12 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
     private sweetAlertService: SweetAlertService,
     // private numberToWordsService: NumberToWordsService
     private fileUploadServ: FileUploadservice,
-    private advertiseServ: AdvertisesService
+    private advertiseServ: AdvertisesService,
+    // /////////////////////
+    private provinceListServ: ProvinceAndCityService,
+
+    private advertiseData: AdvetiseDataService,
+    private houseAdvertiseServ: HouseAdvetiseProfileService
   ) {
     // console.log(
     //   'route states house',
@@ -89,7 +114,8 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
     this.icon = faTrash;
     const user = JSON.parse(localStorage.getItem('authUser') || '{}');
     this.username = user.username;
-    this.advertiseCode = Math.floor(Math.random() * 1000000000).toString();
+    // this.advertiseCode = Math.floor(Math.random() * 1000000000).toString();
+
     this.fileUploadSubscription =
       this.fileUploadServ.uploadedImageData.subscribe(
         (data: fileUploadData) => {
@@ -97,14 +123,14 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
           if (data.imageData.highQualityFiles.length > 0) {
             this.imageData = data.imageData;
             this.imageUploadMessage = '';
+            this.advertiseCode = data.advertiseCode;
+            this.username = data.username;
           } else {
             this.imageData = {
               highQualityFiles: [],
               lowQualityFiles: [],
             };
           }
-          this.advertiseCode = data.advertiseCode;
-          this.username = data.username;
         }
       );
 
@@ -159,11 +185,59 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
       }),
       // location: this.fb.group({
       neighbourhood: [null, [persianLetterValidator(), Validators.required]],
-      city: [null, Validators.required],
-      province: [null, Validators.required],
+      cityAndProvince: this.fb.group({
+        city: [null, Validators.required],
+        province: [null, Validators.required],
+      }),
       // }),
 
       desc: [null],
+    });
+    this.advertiseData.previousRouteURL.subscribe((preRoute) => {
+      console.log('preRoute', preRoute);
+      if (preRoute === 'edit/store') {
+        this.preUrl = preRoute;
+        this.isEditPage_On = true;
+        console.log(
+          'this.storeAdvertiseServ.advertiseItem',
+          this.houseAdvertiseServ.advertiseItem
+        );
+        this.formValuePatch(this.houseAdvertiseServ.advertiseItem.advertise);
+        // this.formValuePatch(this.houseAdvertiseServ.advertiseItem.advertise);
+        const transformedFiles = {
+          highQualityFiles: this.houseAdvertiseServ.advertiseItem.files.map(
+            (file: any) => ({
+              path: file.highQuality,
+              fileName: file.highQuality.split('\\').pop(),
+            })
+          ),
+          lowQualityFiles: this.houseAdvertiseServ.advertiseItem.files.map(
+            (file: any) => ({
+              path: file.lowQuality,
+              fileName: file.lowQuality.split('\\').pop(),
+            })
+          ),
+        };
+        this.files = transformedFiles;
+        console.log('transformedFiles store', transformedFiles);
+        // // this.fileUploadServ.uploadedImageData.next({
+        // //   advertiseCode:
+        // //     this.houseAdvertiseServ.advertiseItem.advertise.advertiseCode,
+        // //   imageData: transformedFiles,
+        // //   username: this.houseAdvertiseServ.advertiseItem.advertise.username,
+        // // });
+        this.editData = {
+          ...this.houseAdvertiseServ.advertiseItem,
+          files: transformedFiles,
+        };
+
+        // // Replace original files array with transformed object
+        // data.files = transformedFiles;
+        this.advertiseCode =
+          this.houseAdvertiseServ.advertiseItem.advertise.advertiseCode;
+      } else {
+        this.advertiseCode = Math.floor(Math.random() * 1000000000).toString();
+      }
     });
   }
   onKeyPress_onlyPersianLettersAndSpace(event: KeyboardEvent): void {
@@ -202,7 +276,7 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
     //   this.advertiseStoreForm.value
     // );
     // console.log(transformedValue.advertiseType);
-    console.log(this.advertiseStoreForm.value);
+    // console.log(this.advertiseStoreForm.value);
 
     if (
       !this.imageData?.highQualityFiles?.length ||
@@ -240,19 +314,118 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
   //
   //
   //
-  //
-  //
-  //
+  updateStoreAdvertise() {
+    this.markAllControlsAsTouchedAndDirty(this.advertiseStoreForm);
+    console.log(
+      '  this.advertiseStoreForm.value',
+      this.advertiseStoreForm.value
+    );
 
+    if (
+      (!this.imageData?.highQualityFiles?.length &&
+        this.preUrl !== 'edit/store') ||
+      (!this.files?.highQualityFiles?.length && this.preUrl === 'edit/store')
+    ) {
+      this.imageUploadMessage = 'عکس آگهی را آپلود کنید.';
+      return;
+    } else {
+      this.imageUploadMessage = '';
+    }
+
+    if (!this.advertiseStoreForm.valid) {
+      this.sweetAlertService.floatAlert(
+        'قبل از درج آگهی، اطلاعات را کامل کنید.',
+        'error'
+      );
+      return;
+    }
+    let baseAddStoreAdvertiseUrl = 'https://localhost:5001/api/storeadvertise/';
+    this.advertiseServ.updateAdvertise(
+      baseAddStoreAdvertiseUrl,
+      this.advertiseStoreForm.value,
+      this.username,
+      this.advertiseCode,
+      'store'
+    );
+  }
+
+  //
+  //
+  //
+  formValuePatch(advertiseData: any) {
+    const provinceValue = this.provinceListServ.provincesList.filter(
+      (province: province) => province.province_id == advertiseData.provinceId
+    );
+    let cityValue;
+    console.log('store form patch', cityValue, provinceValue);
+    this.provinceListServ.citiesList.subscribe({
+      next: (cities) =>
+        (cityValue = cities.filter(
+          (city: city) => city.city_id == advertiseData.cityId
+        )[0]),
+    });
+    console.log('cityValue', cityValue);
+    this.advertiseStoreForm.patchValue({
+      // Set advertiseType
+      type: {
+        advertiseType: advertiseData.advertiseType,
+      },
+
+      // Set common fields
+      commonFields: {
+        storeMeter: advertiseData.storeMeter,
+        storeType: advertiseData.storeType,
+        hasBalconey: advertiseData.hasBalconey === 'true' ? true : false,
+        hasElevator: advertiseData.hasElevator === 'true' ? true : false,
+        hasRestroom: advertiseData.hasRestroom === 'true' ? true : false,
+        hasParking: advertiseData.hasParking === 'true' ? true : false,
+        hasCeramic: advertiseData.hasCeramic === 'true' ? true : false,
+        balconyeMeter: advertiseData.balconyeMeter,
+        parkingType: advertiseData.parkingType,
+        floor: advertiseData.floor,
+        pasajhName: advertiseData.pasajhName,
+        majmoehName: advertiseData.majmoehName,
+      },
+
+      // Set rent-specific fields
+      rentFields: {
+        depositPrice: advertiseData.depositPrice,
+        rentPrice: advertiseData.rentPrice,
+        rentStoreType: advertiseData.storeRentType,
+        controlType: advertiseData.branchesControlStatus,
+        flatStatusType: advertiseData.flatStatusType,
+      },
+      sellFields: {
+        groundMeter: advertiseData.groundMeter,
+        price: advertiseData.price,
+        storeDocument: advertiseData.storeDocument,
+        owneringType: advertiseData.owneringType,
+        storeWidth: advertiseData.storeWidth,
+      },
+
+      // Set location fields
+      neighbourhood: advertiseData.neighborhood,
+      cityAndProvince: {
+        city: cityValue,
+        province: provinceValue[0],
+      },
+      // Set description
+      desc: advertiseData.description,
+    });
+    this.advertiseTypeValue = advertiseData.advertiseType;
+    this.storeType = advertiseData.storeType;
+  }
   public uploadFinish = (event: UploadFinishedEvent) => {
     // this.imageData = event.imageData;
     // this.username = event.username;
     // this.advertiseCode = event.advertiseCode;
+    this.imageUploadMessage;
     this.fileUploadData = {
       imageData: event.imageData,
       username: event.username,
       advertiseCode: event.advertiseCode,
     };
+    this.files = event.imageData;
     console.log('uploadFinish', event);
     console.log('FileUploadFinish', this.fileUploadData);
     console.log('event uploaded finish', event);
@@ -297,46 +470,56 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
         next: (res) => {
           console.log('deleteImage response', res);
 
-          // Remove the deleted image from imageData array
-          this.fileUploadData.imageData.highQualityFiles =
-            this.fileUploadData.imageData.highQualityFiles.filter(
-              (img) => img.path !== image.path
-            );
-          this.fileUploadData.imageData.lowQualityFiles =
-            this.fileUploadData.imageData.lowQualityFiles.filter(
-              (img) => img.path !== image.path
-            );
-          console.log(
-            'this.imageData delete function next',
-            this.fileUploadData.imageData
+          this.files.highQualityFiles = this.files.highQualityFiles.filter(
+            (imgData: ImageDto) => imgData.fileName !== image.fileName
           );
+          this.files.lowQualityFiles = this.files.lowQualityFiles.filter(
+            (imgData: ImageDto) => imgData.fileName !== image.fileName
+          );
+          // Remove the deleted image from imageData array
+          // this.fileUploadData.imageData.highQualityFiles =
+          //   this.fileUploadData.imageData.highQualityFiles.filter(
+          //     (img) => img.path !== image.path
+          //   );
+          // this.fileUploadData.imageData.lowQualityFiles =
+          //   this.fileUploadData.imageData.lowQualityFiles.filter(
+          //     (img) => img.path !== image.path
+          //   );
         },
         error: (error) => {
           console.error('Error deleting image:', error);
           // Handle error
         },
         complete: () => {
-          console.log(
-            'this.imageData delete function complete',
-            this.fileUploadData.imageData
-          );
-
           this.fileUploadServ.uploadedImageData.next({
-            ...this.fileUploadData,
-            imageData: this.fileUploadData.imageData,
+            username: this.username,
+            advertiseCode: this.advertiseCode,
+            // imageData: this.fileUploadData.imageData,
+            imageData: this.files,
           });
+
+          // this.fileUploadServ.uploadedImageData.next({
+          //   ...this.fileUploadData,
+          //   imageData: this.fileUploadData.imageData,
+          // });
         },
       });
   }
 
   private getUsername(): string {
     // Implement logic to get the username
-    return this.fileUploadData.username;
+    return this.preUrl === 'edit/store'
+      ? this.houseAdvertiseServ.advertiseItem.advertise.username
+      : this.fileUploadData.username;
   }
 
   private getAdvertiseCode(): string {
     // Implement logic to get the advertise code
-    return this.fileUploadData.advertiseCode;
+    this.advertiseCode =
+      this.preUrl === 'edit/store'
+        ? this.houseAdvertiseServ.advertiseItem.advertise.advertiseCode
+        : this.fileUploadData.advertiseCode;
+    return this.advertiseCode;
   }
 
   canDeactivateFn(): CanDeactivateType {
@@ -349,7 +532,8 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
       //convert defalt confirm to sweetalert2 one👇
       if (
         !this.imageData?.highQualityFiles?.length ||
-        !this.imageData.highQualityFiles
+        !this.imageData.highQualityFiles ||
+        this.preUrl === 'edit/store'
       ) {
         return true;
       }

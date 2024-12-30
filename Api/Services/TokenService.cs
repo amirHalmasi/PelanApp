@@ -23,7 +23,8 @@ namespace Api.Services
         {
            var claims = new List<Claim>
            {
-            new Claim(JwtRegisteredClaimNames.NameId,user.UserName),
+            new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()), // اضافه کردن userId
+            new Claim(JwtRegisteredClaimNames.NameId, user.UserName),
             
            };
 

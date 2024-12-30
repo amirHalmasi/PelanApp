@@ -49,7 +49,7 @@ namespace Api.Controllers
                 UserName = registerDto.UserId,
                 PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Mobile)),
                 PasswordSalt = hmac.Key,
-                UserId = registerDto.UserId,
+                UserNationalId = registerDto.UserId,
                 Mobile = registerDto.Mobile,
                 Phone = registerDto.Phone,
                 FirstName = registerDto.FirstName,
@@ -93,6 +93,7 @@ namespace Api.Controllers
             return new UserDto
             {
                 Username = user.UserName,
+                UserId = user.Id,
                 IsJobOwner = user.IsJobOwner.ToString(),
                 Token = _tokenService.CreateToken(user),
                 LoginDate = DateTime.Now
@@ -102,13 +103,13 @@ namespace Api.Controllers
 
         private async Task<bool> UserExists(string UserId){
             return await _context.Users.AnyAsync(x=>
-            x.UserId == UserId);
+            x.UserNationalId == UserId);
         }
 
         
         
         
-        [Authorize]
+        
         [HttpPost("logout")]
         public async Task<ActionResult> Logout()
         {
@@ -174,7 +175,7 @@ namespace Api.Controllers
         }
 
         // get all advertise of loggedin user
-        [HttpGet("{username}")]
+        [HttpGet("allAdvertises/{username}")]
         public async Task<ActionResult<IEnumerable<object>>> GetAllAdvertises(string username)
         {
             try
@@ -293,6 +294,135 @@ namespace Api.Controllers
                 return Ok(new
                 {
                     HouseAdvertisements = advertiseHouseWithFiles,
+                    StoreAdvertisements = allStoreAdvertises
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An error occurred while retrieving the advertisements." });
+            }
+        }
+       
+
+       [HttpGet("storeAdvertises/{username}")]
+        public async Task<ActionResult<IEnumerable<object>>> GetStoreAdvertises(string username)
+        {
+            try
+            {
+                // var rentAdvertises = await _context.HouseRentAdvertise
+                //     .Where(h => h.Username == username)
+                //     .OrderByDescending(h => h.AdvertiseSubmitDate)
+                //     .ToListAsync();
+
+                // var sellAdvertises = await _context.HouseSellAdvertise
+                //     .Where(h => h.Username == username)
+                //     .OrderByDescending(h => h.AdvertiseSubmitDate)
+                //     .ToListAsync();
+
+                // var allHouseAdvertises = rentAdvertises.Cast<object>()
+                //     .Concat(sellAdvertises.Cast<object>())
+                //     .ToList();
+
+                // var advertiseHouseWithFiles = new List<object>();
+
+
+                // Join StoreRentAdvertises with StoreCommonAdvertises
+                var rentStoreAdvertises = await (from rent in _context.StoreRentAdvertises
+                                            join common in _context.StoreCommonAdvertises
+                                            on new { rent.Username, rent.AdvertiseCode } equals new { common.Username, common.AdvertiseCode }
+                                            where common.Username == username
+                                            orderby common.AdvertiseSubmitDate descending
+                                            select new
+                                            {
+                                                RentData = rent,   
+                                                CommonData = common
+                                            }).ToListAsync();
+
+                // Join HouseSellAdvertise with StoreCommonAdvertise
+                var sellStoreAdvertises = await (from sell in _context.StoreSellAdvertises
+                                            join common in _context.StoreCommonAdvertises
+                                            on new { sell.Username, sell.AdvertiseCode } equals new { common.Username, common.AdvertiseCode }
+                                            where common.Username == username
+                                            orderby common.AdvertiseSubmitDate descending
+                                            select new
+                                            {
+                                                SellData = sell,   
+                                                CommonData = common
+                                            }).ToListAsync();
+
+                // After retrieving the data, iterate over the results and get the files
+                var rentStoreResultWithFiles = rentStoreAdvertises.Select(rent => new
+                {
+                    RentData = rent.RentData,
+                    CommonData = rent.CommonData,
+                    TodayDate = DateTime.Now,
+                    Files = GetAdvertiseFiles(rent.CommonData.Username, rent.CommonData.AdvertiseCode)
+                }).ToList();
+                var SellStoreResultWithFiles = sellStoreAdvertises.Select(sell => new
+                {
+                    SellData = sell.SellData,
+                    CommonData = sell.CommonData,
+                    TodayDate = DateTime.Now,
+                    Files = GetAdvertiseFiles(sell.CommonData.Username, sell.CommonData.AdvertiseCode)
+                }).ToList();
+
+                 var allStoreAdvertises = rentStoreResultWithFiles.Cast<object>()
+                    .Concat(SellStoreResultWithFiles.Cast<object>())
+                    .ToList();
+
+
+                // ////////////////////////////////////////////
+                // ////////////////////////////////////////////
+
+                // foreach (var advertise in allHouseAdvertises)
+                // {
+                //     string user_name = advertise is HouseRentAdvertise rentAdvertise ? rentAdvertise.Username : (advertise as HouseSellAdvertise).Username;
+                //     string advertise_code = advertise is HouseRentAdvertise rentAd ? rentAd.AdvertiseCode : (advertise as HouseSellAdvertise).AdvertiseCode;
+
+                //     var lowQualityFiles = GetFilesFromDirectory("Resources/Images", Path.Combine(user_name, advertise_code, "lowQuality"));
+                //     var highQualityFiles = GetFilesFromDirectory("Resources/Images", Path.Combine(user_name, advertise_code, "highQuality"));
+
+                //     if (highQualityFiles.Any() && lowQualityFiles.Any())
+                //     {
+                //         var filePairs = highQualityFiles.Select((highQuality, index) => new
+                //         {
+                //             HighQuality = highQuality,
+                //             LowQuality = lowQualityFiles.ElementAtOrDefault(index)
+                //         }).ToList();
+
+                //         advertiseHouseWithFiles.Add(new
+                //         {
+                //             Advertise = advertise,
+                //             Files = filePairs,
+                //             TodayDate = DateTime.Now
+                //         });
+                //     }
+                //     else
+                //     {
+                //         var lowQualityPlaceHolderFiles = GetFilesFromDirectory("Resources/Images", "placeholder/lowQuality");
+                //         var placeholderFiles = GetFilesFromDirectory("Resources/Images", "placeholder/highQuality");
+
+                //         if (placeholderFiles.Any() && lowQualityPlaceHolderFiles.Any())
+                //         {
+                //             var filePairs = placeholderFiles.Select((highQuality, index) => new
+                //             {
+                //                 HighQuality = highQuality,
+                //                 LowQuality = lowQualityPlaceHolderFiles.ElementAtOrDefault(index)
+                //             }).ToList();
+
+                //             advertiseHouseWithFiles.Add(new
+                //             {
+                //                 Advertise = advertise,
+                //                 Files = filePairs,
+                //                 TodayDate = DateTime.Now
+                //             });
+                //         }
+                //     }
+                // }
+
+                return Ok(new
+                {
+                    // HouseAdvertisements = advertiseHouseWithFiles,
                     StoreAdvertisements = allStoreAdvertises
                 });
             }

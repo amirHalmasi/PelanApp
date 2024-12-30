@@ -81,6 +81,9 @@ namespace Api.Data.Migrations
                     b.Property<string>("CityId")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Email")
                         .HasColumnType("TEXT");
 
@@ -114,15 +117,53 @@ namespace Api.Data.Migrations
                     b.Property<string>("Shop")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("UserName")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("UserNationalId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("Api.Entities.ChatRoom", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AdvertisementId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("AppUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("ChatRoomCode")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ChatRoomTitle")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("OwnerUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("OwnerUserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ChatRooms");
                 });
 
             modelBuilder.Entity("Api.Entities.HouseRentAdvertise", b =>
@@ -141,6 +182,9 @@ namespace Api.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int>("AdvertiseViews")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("AdvertiserUserId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("BranchStatus")
@@ -235,6 +279,9 @@ namespace Api.Data.Migrations
                     b.Property<int>("AdvertiseViews")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("AdvertiserUserId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("AllUnits")
                         .HasColumnType("TEXT");
 
@@ -310,6 +357,62 @@ namespace Api.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("HouseSellAdvertise");
+                });
+
+            modelBuilder.Entity("Api.Entities.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AdvertiseCode")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("AdvertiserUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("ChatRoomCode")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ChatRoomId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DateRead")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsAdvertiseDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("RecipientDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("RecipientId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime?>("RoomDeleteDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("SenderDeleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("SentAt")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChatRoomId");
+
+                    b.HasIndex("RecipientId");
+
+                    b.HasIndex("SenderId", "RecipientId");
+
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("Api.Entities.StoreRentAdvertise", b =>
@@ -391,6 +494,9 @@ namespace Api.Data.Migrations
                     b.Property<int>("AdvertiseViews")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("BalconyeMeter")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("CityId")
                         .HasColumnType("TEXT");
 
@@ -445,6 +551,70 @@ namespace Api.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("StoreCommonAdvertises");
+                });
+
+            modelBuilder.Entity("Api.Entities.ChatRoom", b =>
+                {
+                    b.HasOne("Api.Entities.AppUser", null)
+                        .WithMany("ChatRooms")
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("Api.Entities.AppUser", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Api.Entities.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Api.Entities.Message", b =>
+                {
+                    b.HasOne("Api.Entities.ChatRoom", "ChatRoom")
+                        .WithMany("Messages")
+                        .HasForeignKey("ChatRoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Api.Entities.AppUser", "Recipient")
+                        .WithMany("MessagesReceived")
+                        .HasForeignKey("RecipientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Api.Entities.AppUser", "Sender")
+                        .WithMany("MessagesSent")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ChatRoom");
+
+                    b.Navigation("Recipient");
+
+                    b.Navigation("Sender");
+                });
+
+            modelBuilder.Entity("Api.Entities.AppUser", b =>
+                {
+                    b.Navigation("ChatRooms");
+
+                    b.Navigation("MessagesReceived");
+
+                    b.Navigation("MessagesSent");
+                });
+
+            modelBuilder.Entity("Api.Entities.ChatRoom", b =>
+                {
+                    b.Navigation("Messages");
                 });
 #pragma warning restore 612, 618
         }

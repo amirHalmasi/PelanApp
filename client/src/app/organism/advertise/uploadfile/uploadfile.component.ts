@@ -43,10 +43,23 @@ export class UploadfileComponent {
   ) {}
 
   ngOnInit(): void {
+    // this.advertiseData.previousRouteURL.subscribe((preRoute) => {
+    //   console.log('preRoute', preRoute);
+    //   if (preRoute === 'edit/house') {
+    //     this.advertiseCode =
+    //       this.houseAdvertiseServ.advertiseItem.advertise.advertiseCode;
+    //   }
+    // });
     // const user = JSON.parse(localStorage.getItem('authUser') || '{}');
     // this.username = user.username;
     // this.advertiseCode = Math.floor(Math.random() * 1000000000); // Generate random advertise code
     console.log('advertise Code', this.advertiseCode);
+
+    // this.fileUploadServ.advertiseCode.subscribe({
+    //   next: (data) => {
+    //     console.log('advertise Code async', data);
+    //   },
+    // });
   }
 
   public uploadFiles(files: FileList): void {
@@ -80,6 +93,7 @@ export class UploadfileComponent {
       })
       .subscribe({
         next: (event) => {
+          console.log('add image advertise code', this.advertiseCode);
           if (event.type === HttpEventType.UploadProgress) {
             this.progress = event.total
               ? Math.round((100 * event.loaded) / event.total)
@@ -101,6 +115,7 @@ export class UploadfileComponent {
         error: (err) => {
           this.message = `Upload failed: ${err.message}`;
           this.alertType = 'error';
+          console.log('add image advertise code', this.advertiseCode);
         },
         complete: () => {
           this.fileUploadServ.uploadedImageData.next({
@@ -109,7 +124,7 @@ export class UploadfileComponent {
               lowQualityFiles: this.uploadedFiles.lowQualityFiles,
             },
             username: this.username,
-            advertiseCode: this.advertiseCode.toString(),
+            advertiseCode: this.advertiseCode?.toString(),
           });
           this.onUploadFinished.emit({
             imageData: {
@@ -117,13 +132,14 @@ export class UploadfileComponent {
               lowQualityFiles: this.uploadedFiles.lowQualityFiles,
             },
             username: this.username,
-            advertiseCode: this.advertiseCode.toString(),
+            advertiseCode: this.advertiseCode?.toString(),
           });
         },
       });
   }
 
   public onFileChange(event: Event): void {
+    console.log('add image advertise code file changes', this.advertiseCode);
     const input = event.target as HTMLInputElement;
 
     if (input.files) {

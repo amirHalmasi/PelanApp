@@ -8,6 +8,8 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { HouseAdvetiseProfileService } from 'src/app/organism/my-advertises/house-advertise-profile.service';
+import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
 import { slideRightInOut } from 'src/app/services/animation';
 import { numberValidator } from 'src/assets/validation/password.validator';
 import { persianLetterValidator } from 'src/assets/validation/persian-letters.validator';
@@ -18,8 +20,9 @@ import { persianLetterValidator } from 'src/assets/validation/persian-letters.va
   styleUrls: ['./common.component.css'],
   animations: [slideRightInOut],
 })
-export class CommonComponent implements OnChanges, OnInit {
+export class CommonComponent implements OnChanges, OnInit, OnChanges {
   @Input() advertiseTypeInput!: string;
+  @Input() storeTypeInput!: string;
   @Output() storeStateEvent = new EventEmitter<string>();
   advertiseType!: string;
   storeType!: string;
@@ -48,21 +51,126 @@ export class CommonComponent implements OnChanges, OnInit {
     { value: 'majmoeh', desc: 'مجموعه تجاری' },
   ];
 
-  constructor(private rootFormGroup: FormGroupDirective) {} // this.rootFormGroup is the instant of parent form group component
+  constructor(
+    private rootFormGroup: FormGroupDirective,
+    private advertiseData: AdvetiseDataService,
+    private houseAdvertiseServ: HouseAdvetiseProfileService
+  ) {} // this.rootFormGroup is the instant of parent form group component
   ngOnInit(): void {
     this.form = this.rootFormGroup.control;
+    this.advertiseData.previousRouteURL.subscribe((preRoute) => {
+      if (preRoute === 'edit/store') {
+        this.hasParking =
+          this.houseAdvertiseServ.advertiseItem.advertise.hasParking === 'true'
+            ? true
+            : false;
+
+        this.hasBalconye =
+          this.houseAdvertiseServ.advertiseItem.advertise.hasBalconey === 'true'
+            ? true
+            : false;
+        console.log(
+          'this.hasBalconye',
+          this.hasBalconye,
+          'this.hasParking',
+          this.hasParking
+        );
+      }
+    });
   }
+  ngOnChanges(changes: any): void {
+    console.log('changes store common', changes);
+    this.advertiseData.previousRouteURL.subscribe((preRoute) => {
+      console.log('preRoute', preRoute);
 
-  ngOnChanges(changes: SimpleChanges): void {
+      if (
+        preRoute === 'edit/store' &&
+        changes['storeTypeInput'] &&
+        changes['advertiseTypeInput']
+      ) {
+        // this.storeType = changes['storeTypeInput'].currentValue;
+        // this.advertiseType = changes['advertiseTypeInput'].currentValue;
+        if (
+          changes['storeTypeInput']
+          //  &&
+          // changes['storeTypeInput'].firstChange
+        ) {
+          this.storeType = changes['storeTypeInput'].currentValue;
+        }
+        if (
+          changes['advertiseTypeInput'] &&
+          !changes['advertiseTypeInput'].firstChange
+        ) {
+          // this.determineAdvertiseType(changes['advertiseTypeInput'].currentValue);
+          // this.determineHouseTypeValidators(
+          //   changes['advertiseTypeInput'].currentValue
+          // );
+          this.advertiseType = changes['advertiseTypeInput'].currentValue;
+          this.determineParkingValidator(
+            this.hasParking,
+            changes['advertiseTypeInput'].currentValue,
+            this.storeType
+          );
+        }
+      }
+    });
+
     console.log('changes sell component', changes);
-
+    if (
+      changes['storeTypeInput']
+      //  &&
+      // changes['storeTypeInput'].firstChange
+    ) {
+      this.storeType = changes['storeTypeInput'].currentValue;
+    }
     if (
       changes['advertiseTypeInput'] &&
       !changes['advertiseTypeInput'].firstChange
     ) {
+      // this.determineAdvertiseType(changes['advertiseTypeInput'].currentValue);
+      // this.determineHouseTypeValidators(
+      //   changes['advertiseTypeInput'].currentValue
+      // );
       this.advertiseType = changes['advertiseTypeInput'].currentValue;
+      this.determineParkingValidator(
+        this.hasParking,
+        changes['advertiseTypeInput'].currentValue,
+        this.storeType
+      );
     }
   }
+  determineParkingValidator(
+    hasParking: boolean,
+    advertiseType: string,
+    storeType: string
+  ) {
+    /*
+    
+    */
+
+    const parkingControl = this.form.get('parkingType');
+    if (
+      hasParking &&
+      advertiseType === 'sell' &&
+      (storeType === 'majmoeh' || storeType === 'pasajh')
+    ) {
+      parkingControl?.setValidators([Validators.required]);
+    } else {
+      parkingControl?.setValidators(null);
+    }
+    parkingControl?.updateValueAndValidity();
+  }
+
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   console.log('changes sell component', changes);
+
+  //   if (
+  //     changes['advertiseTypeInput'] &&
+  //     !changes['advertiseTypeInput'].firstChange
+  //   ) {
+  //     this.advertiseType = changes['advertiseTypeInput'].currentValue;
+  //   }
+  // }
 
   determineStoreType(storeStateTypeSelectValue: any) {
     if (storeStateTypeSelectValue.value === 'bazar') {
@@ -96,12 +204,12 @@ export class CommonComponent implements OnChanges, OnInit {
 
     this.setMyValidators(storeTypeSelectValue);
   }
-  private setMyValidators(buildingType: string): void {
+  private setMyValidators(storeType: string): void {
     const floorControl = this.form.get('commonFields.floor');
     const pasajhNameControl = this.form.get('commonFields.pasajhName');
     const majmoehNameControl = this.form.get('commonFields.majmoehName');
     // const orientationsControl = this.form.get('commonFields.orientations');
-    switch (buildingType) {
+    switch (storeType) {
       case 'pasajh':
         floorControl?.setValidators([Validators.required, numberValidator()]);
         pasajhNameControl?.setValidators([

@@ -245,7 +245,7 @@
         class="align-item-center mx-2"
         #balconyeCheckbox
         (change)="hasBalconye = balconyeCheckbox.checked"
-        (change)="determineBalconyeMeterValidator(balconyeCheckbox.checked)"
+        (change)="determineBalconyeMeterValidator(hasBalconye)"
         formControlName="hasBalconey"
         >بالکن دارد؟</mat-checkbox
       >

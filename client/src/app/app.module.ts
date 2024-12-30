@@ -38,15 +38,12 @@ import { HouseDetailsComponent } from './organism/advertisement-details/house-de
 import { StoreDetailsComponent } from './organism/advertisement-details/store-details/store-details.component';
 import { MyAdvertisesComponent } from './organism/my-advertises/my-advertises.component';
 import { HouseAdvertisesProfileComponent } from './organism/my-advertises/house-advertises-profile/house-advertises-profile.component';
-// import { LoginFormModule } from './organism/login-from/login.module';
-
-// import { ElevatorSvgComponent } from './organism/rent-page/elevator-svg/elevator-svg.component';
-// import { ParkingSvgComponent } from './organism/rent-page/parking-svg/parking-svg.component';
-// import { BedroomSvgComponent } from './organism/rent-page/bedroom-svg/bedroom-svg.component';
-// import { CheckedSvgComponent } from './organism/rent-page/thereis-or-not/checked-svg/checked-svg.component';
-// import { UncheckedSvgComponent } from './organism/rent-page/thereis-or-not/unchecked-svg/unchecked-svg.component';
-// import { ThereisOrNotComponent } from './organism/rent-page/thereis-or-not/thereis-or-not.component';
-
+import { StoreAdvertisesProfileComponent } from './organism/my-advertises/store-advertises-profile/store-advertises-profile.component';
+// import { ChatComponent } from './organism/chat/chat-layout/chat/chat.component';
+// import { ChatLayoutComponent } from './organism/chat/chat-layout/chat-layout.component';
+import { ChatComponent } from './organism/chat/chat.component';
+// import { ChatRoomsComponent } from './organism/chat/chat-layout/chat-rooms/chat-rooms.component';
+// import { ChatRoomsComponent } from './organism/chat/chat-layout/chat-rooms/chat-rooms.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -93,6 +90,11 @@ import { HouseAdvertisesProfileComponent } from './organism/my-advertises/house-
     StoreDetailsComponent,
     MyAdvertisesComponent,
     HouseAdvertisesProfileComponent,
+    StoreAdvertisesProfileComponent,
+    ChatComponent,
+    // ChatLayoutComponent,
+    // ChatRoomsComponent,
+    // ChatRoomsComponent,
   ],
   imports: [
     HouseAdvertisePageModule,

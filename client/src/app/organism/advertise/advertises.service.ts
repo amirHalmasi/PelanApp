@@ -2,7 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
 import { SweetAlertService } from 'src/app/services/sweetalert.service';
+import { HouseAdvetiseProfileService } from '../my-advertises/house-advertise-profile.service';
 export interface advertiseSuccesDto {
   AdvertiseType: string;
   AdvertiseSubmitDate: string;
@@ -20,7 +22,9 @@ export class AdvertisesService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private sweetAlertService: SweetAlertService
+    private sweetAlertService: SweetAlertService,
+    private advertiseDataServ: AdvetiseDataService,
+    private houseAdvertiseServ: HouseAdvetiseProfileService
   ) {}
   private transformStoreFormValue(
     formValue: any,
@@ -35,8 +39,10 @@ export class AdvertisesService {
       ...formValue.sellFields,
       ...formValue.type,
       ...formValue,
-      city: formValue?.city?.city_id.toString(),
-      province: formValue?.province?.province_id.toString(),
+      city: formValue?.cityAndProvince?.city?.city_id.toString(),
+      province: formValue?.cityAndProvince?.province?.province_id.toString(),
+      // city: formValue?.city?.city_id.toString(),
+      // province: formValue?.province?.province_id.toString(),
       username: username,
       advertiseCode: advertiseCode,
     };
@@ -57,6 +63,57 @@ export class AdvertisesService {
     }
 
     return transformedValue;
+  }
+  updateAdvertise(
+    requestUrl: string,
+    value: string,
+    username: string,
+    advertiseCode: string,
+    advertiseStructure: string
+  ) {
+    const authUser = JSON.parse(
+      localStorage.getItem('authUser') || '{isJobOwner:"",token:"",username:""}'
+    );
+    const headers = {
+      Authorization: `Bearer ${authUser.token}`,
+    };
+    const transformedValue = this.transformStoreFormValue(
+      value,
+      username,
+      advertiseCode,
+      advertiseStructure
+    );
+
+    this.http
+      .patch(
+        requestUrl + transformedValue.advertiseType + '/' + advertiseCode,
+        transformedValue,
+        {
+          headers: headers,
+        }
+      )
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+          if (res) {
+            console.log(res);
+          }
+        },
+        error: (err) => {
+          console.error(err.error);
+          // let errorMessage = '';
+
+          // return new Promise<boolean>(() => {
+          this.sweetAlertService.floatAlert('خطا در ثبت آگهی', 'error');
+          // });
+        },
+
+        complete: () => {
+          this.houseAdvertiseServ.advertiseItem = '';
+          this.router.navigate(['/myAdvertises', 'userStoreAdvertises']);
+          this.advertiseDataServ.previousRouteURL.next('');
+        },
+      });
   }
   addAdvertise(
     requestUrl: string,

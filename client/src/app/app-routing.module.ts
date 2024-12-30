@@ -20,6 +20,8 @@ import { CanActivateHousePageGuard } from './guards/can-activate-house-page.guar
 import { AdvertisementDetailsComponent } from './organism/advertisement-details/advertisement-details.component';
 import { MyAdvertisesComponent } from './organism/my-advertises/my-advertises.component';
 import { HouseAdvertisesProfileComponent } from './organism/my-advertises/house-advertises-profile/house-advertises-profile.component';
+import { StoreAdvertisesProfileComponent } from './organism/my-advertises/store-advertises-profile/store-advertises-profile.component';
+import { ChatComponent } from './organism/chat/chat.component';
 
 const routes: Routes = [
   {
@@ -57,12 +59,20 @@ const routes: Routes = [
     component: StoreAdvertisePageComponent,
   },
   {
+    path: 'chat',
+    component: ChatComponent,
+  },
+  {
     path: 'myAdvertises',
     component: MyAdvertisesComponent,
     children: [
       {
         path: 'userHouseAdvertises',
         component: HouseAdvertisesProfileComponent,
+      },
+      {
+        path: 'userStoreAdvertises',
+        component: StoreAdvertisesProfileComponent,
       },
 
       {

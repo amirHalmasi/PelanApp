@@ -1,0 +1,122 @@
+
+
+// using System;
+// using System.Collections.Generic;
+// using System.Linq;
+// using System.Threading.Tasks;
+// using Microsoft.AspNetCore.Authorization;
+// using Microsoft.AspNetCore.Mvc;
+// using Api.Interfaces;
+// using Api.DTOs;
+// using Api.Data;
+// using Api.Entities;
+// using Microsoft.EntityFrameworkCore;
+// using Microsoft.AspNetCore.SignalR;
+
+// // using Microsoft.AspNetCore.SignalR;
+
+// namespace Api.chatHub
+// {
+//     // public class ChatHub : Hub
+//     // {
+//     //     public async Task SendMessage(string user, string message)
+//     //     {
+//     //         await Clients.All.SendAsync("ReceiveMessage", user, message);
+//     //     }
+//     // }
+
+//     ////////////////////////////////////
+//     //    در نهایت به این رسیدم     //
+//     ///////////////////////////////////
+
+//     public class ChatHub : Hub
+//     {
+//         private readonly DataContext _context;
+
+//         public ChatHub(DataContext context)
+//         {
+//             _context = context;
+//         }
+
+//         private static Dictionary<string, string> _onlineUsers = new Dictionary<string, string>(); // نگه داشتن کاربران آنلاین
+
+//         // اتصال کاربر به چت و ثبت آن در لیست آنلاین‌ها
+//         public override async Task OnConnectedAsync()
+//         {
+//             var userId = Context.User.Identity.Name; // فرض بر اینکه userId در identity است
+//             if (!_onlineUsers.ContainsKey(userId))
+//             {
+//                 _onlineUsers.Add(userId, Context.ConnectionId);
+//             }
+//             await base.OnConnectedAsync();
+//         }
+
+//         // قطع اتصال و حذف کاربر از لیست آنلاین‌ها
+//         public override async Task OnDisconnectedAsync(Exception exception)
+//         {
+//             var userId = Context.User.Identity.Name;
+//             if (_onlineUsers.ContainsKey(userId))
+//             {
+//                 _onlineUsers.Remove(userId);
+//             }
+//             await base.OnDisconnectedAsync(exception);
+//         }
+
+//         // ارسال پیام خصوصی به کاربر خاص
+//         public async Task SendMessageToUser(CreateMessageDto createMessageDto)
+//         {
+//             var senderId = Context.User.Identity.Name;
+
+//             var sender = await _context.Users.FindAsync(int.Parse(senderId));
+//             var recipient = await _context.Users.FindAsync(createMessageDto.RecipientId);
+
+//             if (recipient == null)
+//             {
+//                 await Clients.Caller.SendAsync("ErrorMessage", "Recipient not found");
+//                 return;
+//             }
+
+//             var message = new Message
+//             {
+//                 SenderId = sender.Id,
+//                 RecipientId = recipient.Id,
+//                 Content = createMessageDto.Content,
+//                 MessageSentDate = DateTime.UtcNow,
+//                 AdvertiseCode = createMessageDto.AdvertiseCode,
+//                 AdvertiseTitle = createMessageDto.AdvertiseTitle
+//             };
+
+//             // ذخیره پیام در دیتابیس
+//             _context.Messages.Add(message);
+//             await _context.SaveChangesAsync();
+
+//             var messageDto = new MessageDto
+//             {
+//                 Id = message.Id,
+//                 SenderId = sender.Id,
+//                 SenderUsername = sender.UserName,
+//                 RecipientId = recipient.Id,
+//                 RecipientUsername = recipient.UserName,
+//                 Content = message.Content,
+//                 MessageSentDate = message.MessageSentDate,
+//                 AdvertiseCode = message.AdvertiseCode,
+//                 AdvertiseTitle = message.AdvertiseTitle
+//             };
+
+//             // بررسی آنلاین بودن کاربر دریافت‌کننده
+//             if (_onlineUsers.TryGetValue(recipient.Id.ToString(), out string connectionId))
+//             {
+//                 // اگر کاربر آنلاین بود، پیام را بلافاصله ارسال می‌کنیم
+//                 await Clients.Client(connectionId).SendAsync("ReceiveMessage", messageDto);
+//             }
+//             else
+//             {
+//                 // اگر کاربر آفلاین بود، پیام در دیتابیس ذخیره می‌شود و زمانی که کاربر آنلاین شد پیام‌ها را می‌بیند
+//                 // (این مرحله به صورت خودکار در دیتابیس ذخیره می‌شود و نیاز به اقدام بیشتری ندارد)
+//             }
+
+//             // ارسال پیام به فرستنده برای تأیید ارسال موفقیت‌آمیز
+//             await Clients.Caller.SendAsync("MessageSent", messageDto);
+//         }
+//     }
+// }

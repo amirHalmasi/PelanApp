@@ -10,16 +10,19 @@
 // using Microsoft.Extensions.DependencyInjection;
 // using Microsoft.Extensions.Hosting;
 // using Microsoft.Extensions.Logging;
-using System.Text;
-using Api.Data;
+// using System.Text;
+// using Api.Data;
+using Api.Extensions;
 using Api.Interfaces;
 using Api.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Api.Middleware;
+// using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
-using Microsoft.EntityFrameworkCore;
+// using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+// using Microsoft.IdentityModel.Tokens;
+// using Microsoft.OpenApi.Models;
+using Api.chatHub;
 
 namespace API
 {
@@ -40,27 +43,35 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<ITokenBlacklistService, InMemoryTokenBlacklistService>();
-            services.AddScoped<ITokenService,TokenService>();
-            services.AddDbContext<DataContext>(options=>{
+            ///////////////////////////////////////////////////////////////////////////////// 
+            // services.AddScoped<ITokenService,TokenService>();
+            // services.AddDbContext<DataContext>(options=>{
                 
-                options.UseSqlite(_config.GetConnectionString("DefaultConnection"));
-                //Shorthand for _config.GetSection("ConnectionStrings")["DefaultConnection"]
-            });
+            //     options.UseSqlite(_config.GetConnectionString("DefaultConnection"));
+            //     //Shorthand for _config.GetSection("ConnectionStrings")["DefaultConnection"]
+            // });
+            services.AddApplicationServices(_config);
+            // services.AddApplicationServices(_config);
+            ///////////////////////////////////////////////////////////////////////////////// 
+            
             services.AddControllers();
             services.AddCors();
+            ///////////////////////////////////////////////////////////////////////////////// 
+            // services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options=>{
+            //     options.TokenValidationParameters = new TokenValidationParameters
+            //     {
+            //         ValidateIssuerSigningKey = true,
+            //         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenKey"])),
+            //         ValidateIssuer = false,
+            //         ValidateAudience = false,
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options=>{
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenKey"])),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
+            //     };
+            // });
+            //  services.AddScoped<ITokenBlacklistService, InMemoryTokenBlacklistService>();
+            services.AddIdentityServices(_config);
+            ///////////////////////////////////////////////////////////////////////////////// 
 
-                };
-            });
-             services.AddScoped<ITokenBlacklistService, InMemoryTokenBlacklistService>();
-
+            services.AddSignalR();
             services.Configure<FormOptions>( o=>
             {
                 o.ValueLengthLimit = int.MaxValue;            
@@ -81,9 +92,9 @@ namespace API
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-               
+                app.UseDeveloperExceptionPage();               
             }
+            // app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseHttpsRedirection();
 
@@ -108,6 +119,7 @@ namespace API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<ChatHub>("/chatHub");
             });
         }
     }

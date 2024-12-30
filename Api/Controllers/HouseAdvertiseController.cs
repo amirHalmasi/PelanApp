@@ -28,6 +28,139 @@ namespace Api.Controllers
             _tokenBlacklistService = tokenBlacklistService;
         }
 
+        [HttpPatch("sell/{advertiseCode}")]
+        public async Task<ActionResult<AdvertiseSuccessDto>> UpdateSellHouseAdvertise(string advertiseCode, houseSellAddAdvertiseDto sellHouseDto)
+        {
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest(new { message = "Token is missing" });
+            }
+
+            try
+            {
+                // Find the existing advertise by AdvertiseCode
+                var existingAd = await _context.HouseSellAdvertise
+                    .FirstOrDefaultAsync(a => a.AdvertiseCode == advertiseCode);
+
+                if (existingAd == null)
+                {
+                    return NotFound(new { message = "Advertise not found" });
+                }
+
+                // Update the properties
+                existingAd.AdvertiseType = sellHouseDto.advertiseType;   
+                // existingAd.Username = sellHouseDto.username;
+                existingAd.BuildingName = sellHouseDto.buildingName;       
+                existingAd.Floor = sellHouseDto.floor;       
+                existingAd.HasElevator = sellHouseDto.hasElevator.ToString();       
+                existingAd.HasWareHouse = sellHouseDto.hasHouseWare.ToString();       
+                existingAd.WareHouseMeter = sellHouseDto.wareHouseMeter;       
+                existingAd.HouseMeter = sellHouseDto.houseMeter;       
+                existingAd.HouseType = sellHouseDto.houseType;       
+                existingAd.Orientation = sellHouseDto.orientations;       
+                existingAd.ParkingType = sellHouseDto.parkingType;    
+                existingAd.HasParking = sellHouseDto.hasParking;
+                existingAd.Rooms = sellHouseDto.rooms;    
+                existingAd.ProvinceId = sellHouseDto.province;    
+                existingAd.CityId = sellHouseDto.city;    
+                existingAd.Description = sellHouseDto.desc;    
+                existingAd.Neighborhood = sellHouseDto.neighborhood;
+                existingAd.State = sellHouseDto.state;
+                existingAd.TejariMeter = sellHouseDto.tejariMeter;
+                existingAd.Price = sellHouseDto.price;
+                existingAd.HouseDocument = sellHouseDto.houseDocument;
+                existingAd.GroundMeter = sellHouseDto.groundMeter;
+                existingAd.Floors = sellHouseDto.floors;
+                existingAd.AllUnits = sellHouseDto.allUnits; 
+                // existingAd.AdvertiseSubmitDate = DateTime.Now;  // Update the submit date
+
+                // Save the updated advertise back to the database
+                await _context.SaveChangesAsync();
+
+                return new AdvertiseSuccessDto
+                {
+                    AdvertiseType = existingAd.AdvertiseType, 
+                    AdvertiseSubmitDate = existingAd.AdvertiseSubmitDate,       
+                    Username = existingAd.Username,  
+                    AdvertiseCode = existingAd.AdvertiseCode,
+                };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An error occurred while updating the advertisement." });
+            }
+        }
+
+
+        [HttpPatch("rent/{advertiseCode}")]
+        public async Task<ActionResult<AdvertiseSuccessDto>> UpdateSellHouseAdvertise(string advertiseCode, houseRentAddAdvertiseDto RentHouseDto)
+        {
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest(new { message = "Token is missing" });
+            }
+
+            try
+            {
+                // Find the existing advertise by AdvertiseCode
+                var existingAd = await _context.HouseRentAdvertise
+                    .FirstOrDefaultAsync(a => a.AdvertiseCode == advertiseCode);
+
+                if (existingAd == null)
+                {
+                    return NotFound(new { message = "Advertise not found" });
+                }
+
+                // Update the properties
+                
+            
+                    existingAd.AdvertiseType = RentHouseDto.advertiseType;  
+                    // existingAd.Username = RentHouseDto.username;                      
+                    existingAd.BuildingName = RentHouseDto.buildingName;      
+                    existingAd.Floor = RentHouseDto.floor;      
+                    existingAd.HasElevator = RentHouseDto.hasElevator.ToString();      
+                    existingAd.HasWareHouse = RentHouseDto.hasHouseWare.ToString();      
+                    existingAd.WareHouseMeter = RentHouseDto.wareHouseMeter;      
+                    existingAd.HouseMeter = RentHouseDto.houseMeter;      
+                    existingAd.HouseType = RentHouseDto.houseType;      
+                    existingAd.Orientation = RentHouseDto.orientations;      
+                    existingAd.ParkingType = RentHouseDto.parkingType;
+                    existingAd.HasParking = RentHouseDto.hasParking;
+                    existingAd.Rooms = RentHouseDto.rooms;   
+                    existingAd.ProvinceId = RentHouseDto.province;   
+                    existingAd.CityId = RentHouseDto.city;   
+                    existingAd.Description = RentHouseDto.desc;   
+                    existingAd.Neighborhood = RentHouseDto.neighborhood;   
+                    existingAd.FlatStatusType = RentHouseDto.flatStatusType;   
+                    existingAd.HouseEmptyDate = DateTime.Now;   
+                    existingAd.EntryType = RentHouseDto.entryType;   
+                    existingAd.DepositPrice = RentHouseDto.depositPrice;   
+                    existingAd.RentPrice = RentHouseDto.rentPrice;   
+                    existingAd.BranchStatus = RentHouseDto.controlType;   
+                    existingAd.RentFlatType = RentHouseDto.rentFlatType;
+                // existingAd.AdvertiseSubmitDate = DateTime.Now;  // Update the submit date
+
+                // Save the updated advertise back to the database
+                await _context.SaveChangesAsync();
+
+                return new AdvertiseSuccessDto
+                {
+                    AdvertiseType = existingAd.AdvertiseType, 
+                    AdvertiseSubmitDate = existingAd.AdvertiseSubmitDate,       
+                    Username = existingAd.Username,  
+                    AdvertiseCode = existingAd.AdvertiseCode,
+                };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An error occurred while updating the advertisement." });
+            }
+        }
+
         [Authorize]
         [HttpPost("rent")]
         public async Task<ActionResult<AdvertiseSuccessDto>> AddRentHouseAdvertise(houseRentAddAdvertiseDto RentHouseDto)
@@ -46,6 +179,7 @@ namespace Api.Controllers
             
                     AdvertiseType = RentHouseDto.advertiseType,   
                     Username = RentHouseDto.username,
+                    AdvertiserUserId = RentHouseDto.advertiserUserId,
                     AdvertiseCode = RentHouseDto.advertiseCode,   
                     BuildingName = RentHouseDto.buildingName,       
                     Floor = RentHouseDto.floor,       
@@ -83,6 +217,7 @@ namespace Api.Controllers
                     AdvertiseType = rentHouseData.AdvertiseType, 
                     AdvertiseSubmitDate = rentHouseData.AdvertiseSubmitDate,       
                     Username = rentHouseData.Username,  
+                    AdvertiserUserId = rentHouseData.AdvertiserUserId,
                     AdvertiseCode = rentHouseData.AdvertiseCode,
                 
                 };
@@ -111,6 +246,7 @@ namespace Api.Controllers
             
                     AdvertiseType = sellHouseDto.advertiseType,   
                     Username = sellHouseDto.username,
+                    AdvertiserUserId = sellHouseDto.advertiserUserId,
                     AdvertiseCode = sellHouseDto.advertiseCode,   
                     BuildingName = sellHouseDto.buildingName,       
                     Floor = sellHouseDto.floor,       
@@ -153,6 +289,7 @@ namespace Api.Controllers
                     AdvertiseType = sellHouseData.AdvertiseType, 
                     AdvertiseSubmitDate = sellHouseData.AdvertiseSubmitDate,       
                     Username = sellHouseData.Username,  
+                    AdvertiserUserId = sellHouseData.AdvertiserUserId,
                     AdvertiseCode = sellHouseData.AdvertiseCode,
                 
                 };

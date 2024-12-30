@@ -93,4 +93,9 @@ export class ModalServiceService {
       )
     );
   }
+  getAllCities() {
+    let citiesUrl = 'https://localhost:5001/api/cities/allcities';
+    // return this.http.get<provinceDto[]>(provinceUrl);
+    return this.http.get<any>(citiesUrl);
+  }
 }

@@ -60,7 +60,7 @@
 .room-container {
   position: absolute;
   right: 5%;
-  bottom: 49%;
+  bottom: 47%;
   z-index: 4;
 }
 /* .overlay {
@@ -268,7 +268,7 @@
   color: rgb(12, 102, 234);
 }
 .viewport {
-  height: 80vh;
+  height: 85vh;
   width: 100%;
   overflow: auto;
   /* border: 1px solid red; */

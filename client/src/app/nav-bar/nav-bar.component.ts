@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 
 import { ModalServiceService } from '../services/modal-service.service';
 import {
@@ -11,7 +11,9 @@ import {
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { NavBarService } from './nav-bar.service';
-import { slideRightInOut } from '../services/animation';
+import { fadeInOut, slideRightInOut } from '../services/animation';
+import { AdvetiseDataService } from '../services/advertiseData.service';
+import { HouseAdvetisePageService } from '../organism/house-page/house-advertise-page.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -25,6 +27,7 @@ import { slideRightInOut } from '../services/animation';
       transition('initial <=> final', animate('200ms ease-in')),
     ]),
     slideRightInOut,
+    fadeInOut,
   ],
 })
 export class NavBarComponent implements OnInit {
@@ -40,10 +43,22 @@ export class NavBarComponent implements OnInit {
     private modalServ: ModalServiceService,
     private http: HttpClient,
     private router: Router,
-    private navbarServ: NavBarService
+    private navbarServ: NavBarService,
+    private houseAdvertiseServ: HouseAdvetisePageService,
+    private advertiseDataServ: AdvetiseDataService,
+    private cdr: ChangeDetectorRef
   ) {}
   isSelectExpanded: boolean = false;
+  isEditPage_On: boolean = false;
   ngOnInit(): void {
+    this.advertiseDataServ.previousRouteURL.subscribe({
+      next: (preUrl) => {
+        preUrl === 'edit/house' || preUrl === 'edit/store'
+          ? (this.isEditPage_On = true)
+          : (this.isEditPage_On = false);
+        this.cdr.detectChanges();
+      },
+    });
     const authUser = this.getAuthUserFromLocalStorage();
     this.handleTokenExistence(authUser.token);
 
@@ -109,5 +124,9 @@ export class NavBarComponent implements OnInit {
           this.navbarServ.isTokenExist.next(false);
         },
       });
+  }
+  resetAddAdvertise() {
+    this.houseAdvertiseServ.advertiseItem = '';
+    this.advertiseDataServ.previousRouteURL.next('');
   }
 }

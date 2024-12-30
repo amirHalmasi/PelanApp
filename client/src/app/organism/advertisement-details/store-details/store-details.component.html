@@ -1,0 +1,395 @@
+<div class="container-fluid" style="text-align: center">
+  <div class="row viewport">
+    <div
+      class="col-12 order-2 col-md-5 col-xl-6 card advertiseData"
+      style="height: inherit; scroll-snap-align: start"
+    >
+      <div class="card-body" style="direction: rtl">
+        <div class="title border-gradient-purple border-gradient mt-3">
+          <h5 class="card-title w-100">
+            {{
+              (advertiseData?.commonData?.advertiseType === "rent" &&
+                advertiseData?.commonData?.neighborhood &&
+                "اجاره " + advertiseData?.commonData?.neighborhood) ||
+                (advertiseData?.commonData?.advertiseType === "sell" &&
+                  advertiseData?.commonData?.neighborhood &&
+                  "فروش " + advertiseData?.commonData?.neighborhood)
+            }}
+          </h5>
+        </div>
+        <div class="row seprator margin-x-0">
+          <div class="col col-xs-4">
+            <h5 class="w-100 details" style="text-align: center">
+              <span>پارکینگ </span>
+
+              <span
+                ><app-thereis-or-not
+                  [determineCheckedOrUnchecked]="
+                    advertiseData?.commonData?.hasParking === 'true'
+                  "
+                ></app-thereis-or-not
+              ></span>
+            </h5>
+          </div>
+          <div class="col col-xs-4">
+            <h5 class="w-100 details" style="text-align: center">
+              <span>سرویس بهداشتی </span>
+
+              <span
+                ><app-thereis-or-not
+                  [determineCheckedOrUnchecked]="
+                    advertiseData?.commonData?.hasRestroom === 'true'
+                  "
+                ></app-thereis-or-not
+              ></span>
+            </h5>
+          </div>
+          <!-- <div class="col col-xs-4">
+            <h5 class="w-100 details" style="text-align: center">
+              <span>آسانسور </span>
+
+              <span
+                ><app-thereis-or-not
+                  [determineCheckedOrUnchecked]="
+                    advertiseData?.advertise.hasElevator
+                  "
+                ></app-thereis-or-not
+              ></span>
+            </h5>
+          </div> -->
+        </div>
+        <div
+          *ngIf="
+            advertiseData?.commonData?.advertiseType === 'rent' &&
+            advertiseData?.rentData?.branchesControlStatus
+          "
+          class="row seprator"
+        >
+          <container-element
+            [ngSwitch]="advertiseData?.rentData?.branchesControlStatus"
+            class="col col-xs-12 col-sm-6"
+          >
+            <h5 *ngSwitchCase="'ABG_joda'" class="w-100 details">
+              <span>انشعابات: </span>آب، برق، گاز مستقل
+            </h5>
+            <h5 *ngSwitchCase="'AB_joda'" class="w-100 details">
+              <span>انشعابات: </span>آب و برق مستقل گاز مشترک
+            </h5>
+            <h5 *ngSwitchCase="'AG_joda'" class="w-100 details">
+              <span>انشعابات: </span>آب و گاز مستقل برق مشترک
+            </h5>
+            <h5 *ngSwitchCase="'BG_joda'" class="w-100 details">
+              <span>انشعابات: </span>برق و گاز مستقل آب مشترک
+            </h5>
+            <h5 *ngSwitchCase="'A_joda'" class="w-100 details">
+              <span>انشعابات: </span>آب مستقل
+            </h5>
+            <h5 *ngSwitchCase="'B_joda'" class="w-100 details">
+              <span>انشعابات: </span>برق مستقل
+            </h5>
+            <h5 *ngSwitchCase="'G_joda'" class="w-100 details">
+              <span>انشعابات: </span>گاز مستقل
+            </h5>
+            <h5 *ngSwitchCase="'moshtarak'" class="w-100 details">
+              <span>انشعابات: </span>آب، برق، گاز مشترک
+            </h5>
+          </container-element>
+          <!-- <container-element
+            [ngSwitch]="advertiseData?.advertise.entryType"
+            class="col col-xs-12 col-sm-6"
+          >
+            <h5 *ngSwitchCase="'independent_entry'" class="w-100 details">
+              <span>ورودی: </span>
+              <span class="mark">مستقل</span>
+            </h5>
+            <h5 *ngSwitchCase="'common_entry'" class="w-100 details">
+              <span>ورودی: </span> <span>مشترک</span>
+            </h5>
+          </container-element> -->
+        </div>
+        <div class="row seprator">
+          <!-- <div
+            class="col col-xs-12 col-sm-6"
+            *ngIf="
+              advertiseData?.advertise.flatStatusType &&
+              advertiseData?.advertise?.advertiseType === 'rent'
+            "
+          >
+            <container-element
+              [ngSwitch]="advertiseData?.advertise.flatStatusType"
+            >
+              <h5 *ngSwitchCase="'new'" class="w-100 details">
+                <span>وضعیت واحد: </span>
+                <span class="mark">نوساز</span>
+              </h5>
+              <h5 *ngSwitchCase="'repair'" class="w-100 details">
+                <span>وضعیت واحد: </span> <span>بازسازی شده</span>
+              </h5>
+              <h5 *ngSwitchCase="'regular'" class="w-100 details">
+                <span>وضعیت واحد: </span> <span>تمیز</span>
+              </h5>
+            </container-element>
+          </div> -->
+          <!-- <div
+            class="col col-xs-12 col-sm-6"
+            *ngIf="
+              advertiseData?.advertise.houseType !== 'Mojtama' &&
+              advertiseData?.advertise?.advertiseType === 'sell'
+            "
+          >
+            <h5 class="w-100 details">
+              <span>جهت : </span>
+
+              <container-element
+                [ngSwitch]="advertiseData?.advertise.orientation"
+              >
+                <span *ngSwitchCase="'shomali'">شمالی</span>
+                <span *ngSwitchCase="'Jonobi'">ویلایی</span>
+
+                <span *ngSwitchCase="'Nabsh_Shomali'">نبش شمالی</span>
+                <span *ngSwitchCase="'Nabsh_Junobi'">نبش جنوبی</span>
+                <span *ngSwitchCase="'Do_Bahr'">دو بر</span>
+                <span *ngSwitchCase="'Do_Bahr_Do_Nabsh'">دو بر دو نبش</span>
+              </container-element>
+            </h5>
+          </div> -->
+
+          <!-- 
+          
+          storeTypes: any = [
+    { value: 'bazar', desc: 'بازار' },
+    { value: 'bazar-che', desc: 'بازارچه' },
+    { value: 'pasajh', desc: 'پاساژ' },
+    { value: 'city-center', desc: 'مرکزشهر' },
+    { value: 'other', desc: 'سایر' },
+    { value: 'majmoeh', desc: 'مجموعه تجاری' },
+  ];
+
+          
+          
+          -->
+
+          <div
+            *ngIf="advertiseData?.commonData?.storeType"
+            class="col col-xs-12 col-sm-6"
+          >
+            <h5 class="w-100 details">
+              <span>نوع مغازه: </span>
+              <container-element
+                [ngSwitch]="advertiseData?.commonData?.storeType"
+              >
+                <span *ngSwitchCase="'bazar'">بازار</span>
+                <span *ngSwitchCase="'bazar-che'">بازارچه</span>
+                <span *ngSwitchCase="'pasajh'">پاساژ</span>
+                <span *ngSwitchCase="'majmoeh'">مجموعه تجاری</span>
+                <span *ngSwitchCase="'city-center'">شخصی، مرکز شهر</span>
+                <span *ngSwitchCase="'other'">سایر</span>
+              </container-element>
+            </h5>
+          </div>
+          <div
+            class="col col-xs-12 col-sm-6"
+            *ngIf="
+              advertiseData?.commonData?.storeType &&
+              (advertiseData?.commonData?.storeType === 'pasajh' ||
+                advertiseData?.commonData?.storeType === 'majmoeh')
+            "
+          >
+            <h5 class="w-100 details">
+              <span>نام پاساژ: </span>
+              <span>{{ advertiseData?.commonData?.pasajhName }}</span>
+            </h5>
+          </div>
+
+          <!-- م.قعیت -->
+          <div
+            class="col col-xs-12 col-sm-6"
+            *ngIf="
+              advertiseData?.commonData?.storeType &&
+              advertiseData?.commonData?.storeType === 'majmoeh'
+            "
+          >
+            <h5 class="w-100 details">
+              <span>نام مجموعه: </span>
+
+              <span>{{ advertiseData?.commonData?.majmoehName }}</span>
+            </h5>
+          </div>
+          <!-- متراژ تجاری -->
+          <!-- <div
+            class="col col-xs-12 col-sm-6"
+            *ngIf="
+              advertiseData?.advertise?.advertiseType === 'sell' &&
+              advertiseData?.advertise.state === 'Tejari_Maskuni' &&
+              advertiseData?.advertise.houseType === 'Villaie'
+            "
+          >
+            <h5 class="w-100 details">
+              <span>متراژ تجاری: </span>
+
+              <span>{{ advertiseData?.advertise.tejariMeter }}</span>
+            </h5>
+          </div> -->
+
+          <div
+            class="col col-xs-12 col-sm-6"
+            *ngIf="
+              advertiseData?.commonData?.advertiseType === 'sell' &&
+              advertiseData?.sellData?.storeDocument
+            "
+          >
+            <h5 class="w-100 details">
+              <span>وضعیت سند: </span>
+              <container-element
+                [ngSwitch]="advertiseData?.sellData?.storeDocument"
+              >
+                <span *ngSwitchCase="'has-document'" class="mark">دارد</span>
+                <span *ngSwitchCase="'has-document-diposite'">سند در رهن </span>
+                <span *ngSwitchCase="'contract'">قولنامه </span>
+                <span *ngSwitchCase="'other'">سایر </span>
+              </container-element>
+            </h5>
+          </div>
+          <div
+            class="col col-xs-12 col-sm-6"
+            *ngIf="
+              (advertiseData?.commonData?.storeType === 'pasajh' ||
+                advertiseData?.commonData?.storeType === 'bazar' ||
+                advertiseData?.commonData?.storeType === 'majmoeh') &&
+              advertiseData?.commonData?.hasParking
+            "
+          >
+            <h5 class="w-100 details">
+              <span>پارکینگ: </span>
+              <container-element
+                [ngSwitch]="advertiseData?.commonData?.parkingType"
+              >
+                <span *ngSwitchCase="'mohavate'">محوطه (حیاط)</span>
+                <span *ngSwitchCase="'mossaghaf'" class="mark">مسقف</span>
+              </container-element>
+            </h5>
+          </div>
+        </div>
+
+        <div class="row seprator">
+          <div
+            class="col col-xs-12"
+            [ngClass]="{
+              'col-sm-4': advertiseData?.commonData?.floor,
+              'col-sm-6': !advertiseData?.commonData?.floor
+            }"
+          >
+            <h5 class="w-100 details">
+              <span>متراژ: </span>
+              <span>{{ advertiseData?.commonData?.storeMeter + " متر" }}</span>
+            </h5>
+          </div>
+
+          <!-- <div
+            class="col col-xs-12"
+            [ngClass]="{
+              'col-sm-4': advertiseData?.advertise.floor,
+              'col-sm-6': !advertiseData?.advertise.floor
+            }"
+          >
+            <h5 class="w-100 details">
+              <span>اتاق: </span>
+              <span>{{ advertiseData?.advertise.rooms }}</span>
+            </h5>
+          </div> -->
+          <div
+            *ngIf="advertiseData?.commonData?.floor"
+            class="col col-xs-12 col-sm-4"
+          >
+            <h5 class="w-100 details">
+              <span>طبقه: </span>
+              <span>{{ advertiseData?.commonData?.floor }}</span>
+            </h5>
+          </div>
+        </div>
+        <div
+          class="row seprator"
+          *ngIf="
+            advertiseData?.commonData?.advertiseType === 'rent' &&
+            advertiseData?.rentData?.storeRentType
+          "
+        >
+          <h5 class="w-100 details">
+            <span>نوع اجاره: </span
+            ><container-element
+              [ngSwitch]="advertiseData?.rentData?.storeRentType"
+              classcol-xs-12="col-12 "
+            >
+              <span class="mark" *ngSwitchCase="'rahn_kamel'">رهن کامل</span>
+
+              <span *ngSwitchCase="'rahn_ejare'"
+                >رهن و اجاره
+              </span></container-element
+            >
+          </h5>
+        </div>
+        <div class="title border-gradient-purple border-gradient mt-3">
+          <h5 class="card-title w-100">
+            {{
+              (advertiseData?.commonData?.advertiseType === "rent" &&
+                " مبلغ رهن و اجاره") ||
+                (advertiseData?.commonData?.advertiseType === "sell" && "قیمت ")
+            }}
+          </h5>
+        </div>
+        <div class="row seprator">
+          <div
+            class="col-12"
+            *ngIf="advertiseData?.commonData?.advertiseType === 'sell'"
+          >
+            <h5 class="w-100 details">
+              <span>قیمت: </span>
+              <span
+                >{{
+                  advertiseData?.advertise?.price | numberSeprator
+                }}
+                ریال</span
+              >
+            </h5>
+          </div>
+
+          <div
+            class="col-12"
+            *ngIf="advertiseData?.commonData?.advertiseType === 'rent'"
+          >
+            <h5 class="w-100 details">
+              <span>اجاره: </span>
+              <span
+                >{{
+                  advertiseData?.rentData?.rentPrice | numberSeprator
+                }}
+                ریال</span
+              >
+            </h5>
+          </div>
+          <div
+            class="col-12"
+            *ngIf="advertiseData?.commonData?.advertiseType === 'rent'"
+          >
+            <h5 class="w-100 details">
+              <span>رهن: </span>
+              <span
+                >{{
+                  advertiseData?.rentData?.depositPrice | numberSeprator
+                }}
+                ریال</span
+              >
+            </h5>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="col-12 order-1 col-md-7 col-xl-6"
+      style="height: inherit; scroll-snap-align: start"
+    >
+      <app-carousel [imagesFiles]="advertiseData?.files"></app-carousel>
+    </div>
+  </div>
+</div>
+<!-- </div> -->

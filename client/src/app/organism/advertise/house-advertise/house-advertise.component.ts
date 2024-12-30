@@ -32,6 +32,8 @@ import { SweetAlertService } from 'src/app/services/sweetalert.service';
 import { advertiseSuccesDto } from '../advertises.service';
 import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
 import { HouseAdvetiseProfileService } from '../../my-advertises/house-advertise-profile.service';
+import { city, province } from 'src/app/services/modal-service.service';
+import { ProvinceAndCityService } from '../../province-and-city-select-list/province-and-city.service';
 
 @Component({
   selector: 'app-house-advertise',
@@ -63,6 +65,16 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
     btnType: 'submit',
     btnText: 'درج آگهی',
   };
+  updateBtnOption: {
+    iconName: string;
+
+    btnType: string;
+    btnText?: string;
+  } = {
+    iconName: '',
+    btnType: 'submit',
+    btnText: 'اعمال تغییرات',
+  };
   fileUploadSubscription!: Subscription;
   imageData!: {
     highQualityFiles: ImageDto[];
@@ -71,6 +83,7 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
   hasHouseWare: boolean = false;
   hasElevator: boolean = false;
   username!: string;
+  userId!: number;
   advertiseCode!: string;
   icon!: any;
   advertiseHouseForm!: FormGroup;
@@ -79,13 +92,15 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
   fileUploadData!: fileUploadData;
   editData!: any;
   preUrl!: string;
+  isEditPage_On: boolean = false;
   constructor(
+    private provinceListServ: ProvinceAndCityService,
     private http: HttpClient,
     private fb: FormBuilder,
     private router: Router,
     private sweetAlertService: SweetAlertService,
     private fileUploadServ: FileUploadservice,
-    private advertiseData: AdvetiseDataService,
+    private advertiseDataServ: AdvetiseDataService,
     private houseAdvertiseServ: HouseAdvetiseProfileService
   ) {
     // console.log(
@@ -94,13 +109,18 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
     // );
   }
   ngOnDestroy(): void {
-    // this.fileUploadSubscription.unsubscribe();
+    this.fileUploadSubscription.unsubscribe();
   }
 
   ngOnInit(): void {
     this.icon = faTrash;
-    const user = JSON.parse(localStorage.getItem('authUser') || '{}');
+    const user = JSON.parse(
+      localStorage.getItem('authUser') ||
+        '{isJobOwner:"",token:"",userId:0,username:""}'
+    );
+
     this.username = user.username;
+    this.userId = user.userId;
 
     this.fileUploadSubscription =
       this.fileUploadServ.uploadedImageData.subscribe(
@@ -109,14 +129,14 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
           if (data.imageData.highQualityFiles.length > 0) {
             this.imageData = data.imageData;
             this.imageUploadMessage = '';
+            this.advertiseCode = data.advertiseCode;
+            this.username = data.username;
           } else {
             this.imageData = {
               highQualityFiles: [],
               lowQualityFiles: [],
             };
           }
-          this.advertiseCode = data.advertiseCode;
-          this.username = data.username;
         }
       );
     //
@@ -180,15 +200,16 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
         // persianLetterValidator()
       ],
     });
-    this.advertiseData.previousRouteURL.subscribe((preRoute) => {
+    this.advertiseDataServ.previousRouteURL.subscribe((preRoute) => {
       console.log('preRoute', preRoute);
       if (preRoute === 'edit/house') {
         this.preUrl = preRoute;
+        this.isEditPage_On = true;
         console.log(
           'this.houseAdvertiseServ.advertiseItem',
           this.houseAdvertiseServ.advertiseItem
         );
-        // this.formValuePatch(this.houseAdvertiseServ.advertiseItem.advertise);
+
         this.formValuePatch(this.houseAdvertiseServ.advertiseItem.advertise);
         const transformedFiles = {
           highQualityFiles: this.houseAdvertiseServ.advertiseItem.files.map(
@@ -206,6 +227,12 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
         };
         this.files = transformedFiles;
         console.log('transformedFiles', transformedFiles);
+        // this.fileUploadServ.uploadedImageData.next({
+        //   advertiseCode:
+        //     this.houseAdvertiseServ.advertiseItem.advertise.advertiseCode,
+        //   imageData: transformedFiles,
+        //   username: this.houseAdvertiseServ.advertiseItem.advertise.username,
+        // });
         this.editData = {
           ...this.houseAdvertiseServ.advertiseItem,
           files: transformedFiles,
@@ -215,6 +242,7 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
         // data.files = transformedFiles;
         this.advertiseCode =
           this.houseAdvertiseServ.advertiseItem.advertise.advertiseCode;
+        // console.log(this.advertiseCode);
       } else {
         this.advertiseCode = Math.floor(Math.random() * 1000000000).toString();
       }
@@ -284,6 +312,17 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
   // }
 
   formValuePatch(advertiseData: any) {
+    const provinceValue = this.provinceListServ.provincesList.filter(
+      (province: province) => province.province_id == advertiseData.provinceId
+    );
+    let cityValue;
+    this.provinceListServ.citiesList.subscribe({
+      next: (cities) =>
+        (cityValue = cities.filter(
+          (city: city) => city.city_id == advertiseData.cityId
+        )[0]),
+    });
+    console.log('cityValue', cityValue);
     this.advertiseHouseForm.patchValue({
       // Set advertiseType
       type: {
@@ -295,14 +334,14 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
         houseType: advertiseData.houseType,
         houseMeter: advertiseData.houseMeter,
         rooms: advertiseData.rooms,
-        hasElevator: advertiseData.hasElevator === 'true',
-        hasHouseWare: advertiseData.hasWareHouse === 'true',
+        hasElevator: advertiseData.hasElevator === 'true' ? true : false,
+        hasHouseWare: advertiseData.hasWareHouse === 'true' ? true : false,
         wareHouseMeter: advertiseData.wareHouseMeter,
         parkingType: advertiseData.parkingType,
         buildingName: advertiseData.buildingName,
         floor: advertiseData.floor,
         orientations: advertiseData.orientation,
-        hasParking: advertiseData.hasParking === 'true',
+        hasParking: advertiseData.hasParking === 'true' ? true : false,
       },
 
       // Set rent-specific fields
@@ -314,12 +353,21 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
         flatStatusType: advertiseData.flatStatusType,
         controlType: advertiseData.branchStatus,
       },
+      sellFields: {
+        allUnits: advertiseData.allUnits,
+        groundMeter: advertiseData.groundMeter,
+        state: advertiseData.state,
+        price: advertiseData.price,
+        floors: advertiseData.floors,
+        tejariMeter: advertiseData.tejariMeter,
+        houseDocument: advertiseData.houseDocument,
+      },
 
       // Set location fields
       neighborhood: advertiseData.neighborhood,
       cityAndProvince: {
-        city: +advertiseData.cityId,
-        province: +advertiseData.provinceId,
+        city: cityValue,
+        province: provinceValue[0],
       },
       // Set description
       desc: advertiseData.description,
@@ -379,10 +427,10 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
         next: (res) => {
           console.log('deleteImage response', res);
           this.files.highQualityFiles = this.files.highQualityFiles.filter(
-            (imgData: ImageDto) => imgData.path !== image.path
+            (imgData: ImageDto) => imgData.fileName !== image.fileName
           );
           this.files.lowQualityFiles = this.files.lowQualityFiles.filter(
-            (imgData: ImageDto) => imgData.path !== image.path
+            (imgData: ImageDto) => imgData.fileName !== image.fileName
           );
 
           // Remove the deleted image from imageData array
@@ -408,14 +456,26 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
           console.log(
             'this.imageData delete function complete',
             // this.fileUploadData.imageData
-            this.files
+            this.fileUploadData
           );
 
           this.fileUploadServ.uploadedImageData.next({
-            ...this.fileUploadData,
+            username: this.username,
+            advertiseCode: this.advertiseCode,
             // imageData: this.fileUploadData.imageData,
             imageData: this.files,
           });
+          // if (this.files.length === 0) {
+          //   this.fileUploadServ.uploadedImageData.next({
+          //     ...this.fileUploadData,
+          //     // imageData: this.fileUploadData.imageData,
+          //     imageData: {
+          //       highQualityFiles: [{ path: '', fileName: '' }],
+          //       lowQualityFiles: [{ path: '', fileName: '' }],
+          //     },
+          //   });
+          // }
+          // this.preUrl===''
         },
       });
   }
@@ -432,9 +492,11 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
     // Implement logic to get the advertise code
 
     // return this.advertiseCode;
-    return this.preUrl === 'edit/house'
-      ? this.houseAdvertiseServ.advertiseItem.advertise.advertiseCode
-      : this.fileUploadData.advertiseCode;
+    this.advertiseCode =
+      this.preUrl === 'edit/house'
+        ? this.houseAdvertiseServ.advertiseItem.advertise.advertiseCode
+        : this.fileUploadData.advertiseCode;
+    return this.advertiseCode;
   }
 
   //
@@ -456,6 +518,7 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
       city: formValue?.cityAndProvince?.city?.city_id.toString(),
       province: formValue?.cityAndProvince?.province?.province_id.toString(),
       username: this.username,
+      advertiserUserId: this.userId,
       advertiseCode: this.advertiseCode,
       hasElevator: formValue.commonFields.hasElevator.toString(),
       hasParking: formValue.commonFields.hasParking.toString(),
@@ -489,6 +552,64 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
       control.markAsTouched();
       control.markAsDirty();
     }
+  }
+  updateHouseAdvertise() {
+    this.markAllControlsAsTouchedAndDirty(this.advertiseHouseForm);
+    console.log(
+      '  this.advertiseHouseForm.value',
+      this.advertiseHouseForm.value
+    );
+    const transformedValue = this.transformFormValue(
+      this.advertiseHouseForm.value
+    );
+    if (
+      (!this.imageData?.highQualityFiles?.length &&
+        this.preUrl !== 'edit/house') ||
+      (!this.files?.highQualityFiles?.length && this.preUrl === 'edit/house')
+    ) {
+      this.imageUploadMessage = 'عکس آگهی را آپلود کنید.';
+      return;
+    } else {
+      this.imageUploadMessage = '';
+    }
+
+    if (!this.advertiseHouseForm.valid) {
+      this.sweetAlertService.floatAlert(
+        'قبل از درج آگهی، اطلاعات را کامل کنید.',
+        'error'
+      );
+      return;
+    }
+    // const advertiseCode = this.advertiseHouseForm.value.advertiseCode;
+    const advertiseCode = this.advertiseCode;
+    const authUser = JSON.parse(
+      localStorage.getItem('authUser') || '{isJobOwner:"",token:"",username:""}'
+    );
+
+    const headers = {
+      Authorization: `Bearer ${authUser.token}`,
+    };
+    this.http
+      .patch(
+        `https://localhost:5001/api/houseadvertise/${transformedValue.advertiseType}/${advertiseCode}`,
+        transformedValue,
+        {
+          headers: headers,
+        }
+      )
+      .subscribe({
+        next: (response) => {
+          console.log('Advertise updated successfully', response);
+        },
+        error: (error) => {
+          console.error('Error updating the advertise', error);
+        },
+        complete: () => {
+          this.houseAdvertiseServ.advertiseItem = '';
+          this.router.navigate(['/myAdvertises', 'userHouseAdvertises']);
+          this.advertiseDataServ.previousRouteURL.next('');
+        },
+      });
   }
   submitHouseAdvertise() {
     this.markAllControlsAsTouchedAndDirty(this.advertiseHouseForm);
@@ -584,7 +705,8 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
       //convert defalt confirm to sweetalert2 one👇
       if (
         !this.imageData?.highQualityFiles?.length ||
-        !this.imageData.highQualityFiles
+        !this.imageData.highQualityFiles ||
+        this.preUrl === 'edit/house'
       ) {
         return true;
       }

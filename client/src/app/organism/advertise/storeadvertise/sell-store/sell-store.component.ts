@@ -72,10 +72,10 @@ export class SellStoreComponent implements OnInit, OnChanges {
     }
     if (changes['storeType'] && !changes['storeType'].firstChange) {
       this.determineStoreTypeValidators(
-        changes['storeType'].currentValue,
+        changes['storeType']?.currentValue,
         this.advertiseType
       );
-      // this.buildingType = changes['buildingType'].currentValue;
+      this.storeType = changes['store']?.currentValue;
     }
   }
   ngOnInit(): void {

@@ -1,9 +1,10 @@
 <div
   [ngClass]="{ AdvertiseDetailePageStyle: isInAdvertiseDetail }"
   *ngIf="imagesFiles && imagesFiles.length > 0"
-  class="carousel-container"
+  class="carousel-container square-image-container"
 >
   <img
+    class="square-image"
     *ngFor="let image of imagesFiles; let i = index"
     [lazyLoad]="'https://localhost:5001/' + image.highQuality"
     [defaultImage]="'https://localhost:5001/' + image.lowQuality"
@@ -17,7 +18,7 @@
   />
   <!-- <div class="overlay0"></div> -->
   <div [ngClass]="{ overlay1: !isInAdvertiseDetail }"></div>
-  <div [ngClass]="{ overlay2: !isInAdvertiseDetail }"></div>
+  <!-- <div [ngClass]="{ overlay2: !isInAdvertiseDetail }"></div> -->
   <!-- <div [ngClass]="{ overlay3: !isInAdvertiseDetail }"></div> -->
   <div
     *ngIf="indicators && isMoreThanOneImageExist && imagesFiles.length < 11"

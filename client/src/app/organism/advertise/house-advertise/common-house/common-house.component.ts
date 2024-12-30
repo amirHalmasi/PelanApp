@@ -12,6 +12,8 @@ import { FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { numberValidator } from 'src/assets/validation/password.validator';
 import { persianLetterValidator } from 'src/assets/validation/persian-letters.validator';
 import { slideRightInOut } from 'src/app/services/animation';
+import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
+import { HouseAdvetiseProfileService } from 'src/app/organism/my-advertises/house-advertise-profile.service';
 
 @Component({
   selector: 'app-common-house',
@@ -53,12 +55,42 @@ export class CommonHouseComponent implements OnInit, OnChanges {
     { value: 'mossaghaf', desc: 'مسقف' },
   ];
   priceHint!: string | null;
-  constructor(private rootFormGroup: FormGroupDirective) {} // this.rootFormGroup is the instant of parent form group component
+  constructor(
+    private rootFormGroup: FormGroupDirective,
+    private advertiseData: AdvetiseDataService,
+    private houseAdvertiseServ: HouseAdvetiseProfileService
+  ) {} // this.rootFormGroup is the instant of parent form group component
   ngOnInit(): void {
     this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;
     console.log('common form', this.form);
+    this.advertiseData.previousRouteURL.subscribe((preRoute) => {
+      if (preRoute === 'edit/house') {
+        this.hasParking =
+          this.houseAdvertiseServ.advertiseItem.advertise.hasParking === 'true'
+            ? true
+            : false;
+        this.hasHouseWare =
+          this.houseAdvertiseServ.advertiseItem.advertise.hasWareHouse ===
+          'true'
+            ? true
+            : false;
+      }
+    });
   }
   ngOnChanges(changes: any): void {
+    this.advertiseData.previousRouteURL.subscribe((preRoute) => {
+      console.log('preRoute', preRoute);
+
+      if (
+        preRoute === 'edit/house' &&
+        changes['buildingTypeInput'] &&
+        changes['advertiseTypeInput']
+      ) {
+        this.buildingType = changes['buildingTypeInput'].currentValue;
+        this.advertiseType = changes['advertiseTypeInput'].currentValue;
+      }
+    });
+
     console.log('changes sell component', changes);
     if (
       changes['buildingTypeInput']
@@ -71,11 +103,15 @@ export class CommonHouseComponent implements OnInit, OnChanges {
       changes['advertiseTypeInput'] &&
       !changes['advertiseTypeInput'].firstChange
     ) {
-      this.determineAdvertiseType(changes['advertiseTypeInput'].currentValue);
+      // this.determineAdvertiseType(changes['advertiseTypeInput'].currentValue);
       // this.determineHouseTypeValidators(
       //   changes['advertiseTypeInput'].currentValue
       // );
       this.advertiseType = changes['advertiseTypeInput'].currentValue;
+      this.determineWareHouseValidator(
+        this.hasHouseWare,
+        changes['advertiseTypeInput'].currentValue
+      );
       this.determineParkingValidator(
         this.hasParking,
         changes['advertiseTypeInput'].currentValue,
@@ -87,7 +123,7 @@ export class CommonHouseComponent implements OnInit, OnChanges {
     // console.log(houseTypeSelectValue);
     // console.log(this.form.get('commonFields.floor'));
     // console.log(this.form.value);
-    if (houseTypeSelectValue.value === 'Villaie') {
+    if (houseTypeSelectValue === 'Villaie') {
       this.buildingType = 'Villaie';
       this.buildingTypeEvent.emit('Villaie');
       // const buildingNameControl = this.form.get('commonFields.buildingName');
@@ -96,7 +132,7 @@ export class CommonHouseComponent implements OnInit, OnChanges {
       this.determineHouseTypeValidators('Villaie');
 
       // this.setValidators('Villaie');
-    } else if (houseTypeSelectValue.value === 'Mojtama') {
+    } else if (houseTypeSelectValue === 'Mojtama') {
       this.buildingType = 'Mojtama';
       this.buildingTypeEvent.emit('Mojtama');
 

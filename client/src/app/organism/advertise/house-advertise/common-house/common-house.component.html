@@ -7,7 +7,7 @@
       <mat-form-field class="w-100" appearance="outline">
         <mat-label>نوع واحد مسکونی</mat-label>
         <mat-select
-          (selectionChange)="determineHouseType($event)"
+          (selectionChange)="determineHouseType($event.value)"
           formControlName="houseType"
           placeholder="نوع واحد مسکونی"
         >

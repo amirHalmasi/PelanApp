@@ -11,6 +11,7 @@ namespace Api.Entities
         public int Id { get; set; }
         public string AdvertiseType { get; set; }    
         public string Username { get; set; }   
+        public int? AdvertiserUserId { get; set; }   
         public string AdvertiseCode { get; set; }   
         public string BuildingName { get; set; }       
         public string Floor { get; set; }       
@@ -36,7 +37,11 @@ namespace Api.Entities
         public string RentPrice { get; set; }    
         public string BranchStatus { get; set; }    
         public string RentFlatType { get; set; }  
-        public string FlatStatusType { get; set; }    
+        public string FlatStatusType { get; set; }   
+
+        // I collection 
+        // public ICollection<Message> MessagesSend { get; set; }
+        // public ICollection<Message> MessagesReceived { get; set; }
 
     }
 }

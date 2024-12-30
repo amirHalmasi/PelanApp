@@ -1,44 +1,37 @@
 <nav class="navbar navbar-expand-lg bg-light rtl-dir">
   <div class="container-fluid custome-header">
     <!-- <div class="col justify-content-evenly"> -->
-    <a class="navbar-brand" (click)="isCollapsed = true" [routerLink]="'home'"
-      >پلان</a
-    >
-    <button
-      class="navbar-toggler"
-      type="button"
-      (click)="isCollapsed = !isCollapsed"
-      [attr.aria-expanded]="!isCollapsed"
-      aria-controls="collapseExample"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <div class="row w-100 justify-content-between">
+      <a
+        class="navbar-brand col-3"
+        (click)="isCollapsed = true"
+        [routerLink]="'home'"
+        >پلان</a
+      >
+
+      <button
+        class="navbar-toggler hamburger-toggeler col-3"
+        type="button"
+        (click)="isCollapsed = !isCollapsed"
+        [attr.aria-expanded]="!isCollapsed"
+        aria-controls="collapseExample"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+
     <div
-      class="collapse navbar-collapse container custome-width-8"
+      class="collapse navbar-collapse container-fluid"
       id="navbarCollapse"
       #collapse="ngbCollapse"
       [(ngbCollapse)]="isCollapsed"
+      style="margin-left: 0px"
     >
       <ul class="navbar-nav ml-auto custome-ul">
         <!-- <li class="nav-item">
           <a class="nav-link" href="#">Link</a>
         </li> -->
-        <li
-          class="nav-item"
-          style="margin: 0 5px"
-          routerLinkActive="active-link"
-          [routerLinkActiveOptions]="{ exact: true }"
-          *ngIf="!isTokenExist"
-          [@slideRightInOut]
-        >
-          <a
-            class="nav-link"
-            [routerLink]="'login'"
-            aria-current="page"
-            (click)="isCollapsed = !isCollapsed"
-            >ورود / ثبت نام</a
-          >
-        </li>
+
         <li
           class="nav-item"
           style="margin: 0 5px"
@@ -81,7 +74,23 @@
             [routerLink]="['/myAdvertises']"
             aria-current="page"
             (click)="isCollapsed = !isCollapsed"
+            (click)="resetAddAdvertise()"
             >آگهی های من</a
+          >
+        </li>
+        <li
+          class="nav-item"
+          style="margin: 0 5px"
+          routerLinkActive="active-link"
+          *ngIf="isTokenExist"
+          [@slideRightInOut]
+        >
+          <a
+            class="nav-link"
+            [routerLink]="['/chat']"
+            aria-current="page"
+            (click)="isCollapsed = !isCollapsed"
+            >چت</a
           >
         </li>
         <li
@@ -96,7 +105,23 @@
             [routerLink]="['/advertise']"
             aria-current="page"
             (click)="isCollapsed = !isCollapsed"
-            >درج آگهی</a
+            >{{ isEditPage_On ? "ویرایش آکهی" : "درج آگهی" }}</a
+          >
+        </li>
+        <li
+          class="nav-item"
+          style="margin: 0 5px"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+          *ngIf="!isTokenExist"
+          [@slideRightInOut]
+        >
+          <a
+            class="nav-link"
+            [routerLink]="'login'"
+            aria-current="page"
+            (click)="isCollapsed = !isCollapsed"
+            >ورود / ثبت نام</a
           >
         </li>
 
@@ -146,6 +171,7 @@
         </li>
       </ul>
     </div>
+
     <!-- </div> -->
   </div>
 </nav>

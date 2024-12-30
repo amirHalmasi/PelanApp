@@ -11,7 +11,8 @@ namespace Api.DTOs
     {
        
         public string advertiseType { get; set; }  
-        public string username { get; set; }   
+        public string username { get; set; }  
+        public int advertiserUserId { get; set; }  
         public string advertiseCode { get; set; }   
         public string buildingName { get; set; }       
         public string floor { get; set; }       

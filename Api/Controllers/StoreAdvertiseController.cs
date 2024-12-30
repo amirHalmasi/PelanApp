@@ -27,6 +27,162 @@ namespace Api.Controllers
             _tokenService = tokenService;
             _tokenBlacklistService = tokenBlacklistService;
         }
+
+        [Authorize]
+        [HttpPatch("sell/{advertiseCode}")]
+        public async Task<ActionResult<AdvertiseSuccessDto>> UpdateStoreSellAdvertise(string advertiseCode, StoreSellAddAdvertiseDto SellStoreDto)
+        {
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest(new { message = "Token is missing" });
+            }
+
+            try
+            {
+                // Find the existing advertisement in the StoreCommonAdvertise table
+                var existingCommonAd = await _context.StoreCommonAdvertises
+                    .FirstOrDefaultAsync(ad => ad.AdvertiseCode == advertiseCode);
+
+                if (existingCommonAd == null)
+                {
+                    return NotFound(new { message = "Store advertisement not found." });
+                }
+
+                // Find the existing advertisement in the StoreSellAdvertise table
+                var existingSellAd = await _context.StoreSellAdvertises
+                    .FirstOrDefaultAsync(ad => ad.AdvertiseCode == advertiseCode);
+
+                if (existingSellAd == null)
+                {
+                    return NotFound(new { message = "Store sell advertisement not found." });
+                }
+
+                // Update StoreCommonAdvertise properties
+                existingCommonAd.AdvertiseType = SellStoreDto.advertiseType;
+                existingCommonAd.Username = SellStoreDto.username;
+                existingCommonAd.PasajhName = SellStoreDto.pasajhName;
+                existingCommonAd.Floor = SellStoreDto.floor;
+                existingCommonAd.HasElevator = SellStoreDto.hasElevator;
+                existingCommonAd.HasBalconey = SellStoreDto.hasBalconey;
+                existingCommonAd.HasCeramic = SellStoreDto.hasCeramic;
+                existingCommonAd.HasRestroom = SellStoreDto.hasRestroom;
+                existingCommonAd.HasParking = SellStoreDto.hasParking;
+                existingCommonAd.ParkingType = SellStoreDto.parkingType;
+                existingCommonAd.StoreMeter = SellStoreDto.storeMeter;
+                existingCommonAd.MajmoehName = SellStoreDto.majmoehName;
+                existingCommonAd.StoreType = SellStoreDto.storeType;
+                existingCommonAd.ProvinceId = SellStoreDto.province;
+                existingCommonAd.CityId = SellStoreDto.city;
+                existingCommonAd.Description = SellStoreDto.desc;
+                existingCommonAd.Neighborhood = SellStoreDto.neighbourhood;
+                existingCommonAd.AdvertiseSubmitDate = DateTime.Now; // Update submission date
+                // existingCommonAd.StoreEmptyDate = SellStoreDto.storeEmptyDate;
+                existingCommonAd.BalconyeMeter = SellStoreDto.balconyeMeter;
+
+                // Update StoreSellAdvertise properties
+                existingSellAd.GroundMeter = SellStoreDto.groundMeter;
+                existingSellAd.OwneringType = SellStoreDto.owneringType;
+                existingSellAd.Price = SellStoreDto.price;
+                existingSellAd.StoreDocument = SellStoreDto.storeDocument;
+                existingSellAd.StoreWidth = SellStoreDto.storeWidth;
+
+                // Save the updated entities back to the database
+                await _context.SaveChangesAsync();
+
+                return new AdvertiseSuccessDto
+                {
+                    AdvertiseType = existingCommonAd.AdvertiseType,
+                    AdvertiseSubmitDate = existingCommonAd.AdvertiseSubmitDate,
+                    Username = existingCommonAd.Username,
+                    AdvertiseCode = existingCommonAd.AdvertiseCode,
+                };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An error occurred while updating the advertisement." });
+            }
+        }
+
+        [Authorize]
+        [HttpPatch("rent/{advertiseCode}")]
+        public async Task<ActionResult<AdvertiseSuccessDto>> UpdateRentStoreAdvertise(string advertiseCode, StoreRentAddAdvertiseDto RentStoreDto)
+        {
+            var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return BadRequest(new { message = "Token is missing" });
+            }
+
+            try
+            {
+                // Find the existing advertisement in the StoreCommonAdvertise table
+                var existingCommonAd = await _context.StoreCommonAdvertises
+                    .FirstOrDefaultAsync(ad => ad.AdvertiseCode == advertiseCode);
+
+                if (existingCommonAd == null)
+                {
+                    return NotFound(new { message = "Store advertisement not found." });
+                }
+
+                // Find the existing advertisement in the StoreRentAdvertise table
+                var existingRentAd = await _context.StoreRentAdvertises
+                    .FirstOrDefaultAsync(ad => ad.AdvertiseCode == advertiseCode);
+
+                if (existingRentAd == null)
+                {
+                    return NotFound(new { message = "Store rent advertisement not found." });
+                }
+
+                // Update StoreCommonAdvertise properties
+                existingCommonAd.AdvertiseType = RentStoreDto.advertiseType;
+                existingCommonAd.Username = RentStoreDto.username;
+                existingCommonAd.PasajhName = RentStoreDto.pasajhName;
+                existingCommonAd.Floor = RentStoreDto.floor;
+                existingCommonAd.HasElevator = RentStoreDto.hasElevator;
+                existingCommonAd.HasBalconey = RentStoreDto.hasBalconey;
+                existingCommonAd.HasCeramic = RentStoreDto.hasCeramic;
+                existingCommonAd.HasRestroom = RentStoreDto.hasRestroom;
+                existingCommonAd.HasParking = RentStoreDto.hasParking;
+                existingCommonAd.ParkingType = RentStoreDto.parkingType;
+                existingCommonAd.StoreMeter = RentStoreDto.storeMeter;
+                existingCommonAd.MajmoehName = RentStoreDto.majmoehName;
+                existingCommonAd.StoreType = RentStoreDto.storeType;
+                existingCommonAd.ProvinceId = RentStoreDto.province;
+                existingCommonAd.CityId = RentStoreDto.city;
+                existingCommonAd.Description = RentStoreDto.desc;
+                existingCommonAd.Neighborhood = RentStoreDto.neighbourhood;
+                existingCommonAd.AdvertiseSubmitDate = DateTime.Now;  // Update submission date
+                // existingCommonAd.StoreEmptyDate = RentStoreDto.storeEmptyDate;
+                existingCommonAd.BalconyeMeter = RentStoreDto.balconyeMeter;
+
+                // Update StoreRentAdvertise properties
+                existingRentAd.DepositPrice = RentStoreDto.depositPrice;
+                existingRentAd.RentPrice = RentStoreDto.rentPrice;
+                existingRentAd.BranchesControlStatus = RentStoreDto.controlType;
+                existingRentAd.StoreRentType = RentStoreDto.rentStoreType;
+
+                // Save the updated entities back to the database
+                await _context.SaveChangesAsync();
+
+                return new AdvertiseSuccessDto
+                {
+                    AdvertiseType = existingCommonAd.AdvertiseType,
+                    AdvertiseSubmitDate = existingCommonAd.AdvertiseSubmitDate,
+                    Username = existingCommonAd.Username,
+                    AdvertiseCode = existingCommonAd.AdvertiseCode,
+                };
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An error occurred while updating the advertisement." });
+            }
+        }
+
+
+
         [Authorize]
         [HttpPost("rent")]
         public async Task<ActionResult<AdvertiseSuccessDto>> AddRentStoreAdvertise(StoreRentAddAdvertiseDto RentStoreDto)
@@ -63,6 +219,7 @@ namespace Api.Controllers
                     AdvertiseViews = 0,
                     AdvertiseSubmitDate = DateTime.Now  ,
                     StoreEmptyDate = DateTime.Now  ,
+                    BalconyeMeter = RentStoreDto.balconyeMeter,
                 };
 
                 var SroreRentData = new StoreRentAdvertise
@@ -130,6 +287,7 @@ namespace Api.Controllers
                     AdvertiseViews = 0,
                     AdvertiseSubmitDate = DateTime.Now  ,
                     StoreEmptyDate = DateTime.Now  ,
+                    BalconyeMeter = SellStoreDto.balconyeMeter,
                 };
 
                 var SroreSellData = new StoreSellAdvertise

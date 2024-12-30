@@ -28,7 +28,9 @@ namespace Api.DTOs
         public string province { get; set; }    
         public string city { get; set; }    
         public string desc { get; set; }    
-        public string neighbourhood { get; set; }    
+        public string neighbourhood { get; set; }   
+        public string balconyeMeter { get; set; }  
+
         // public int AdvertiseViews { get; set; }    
         // public string AdvertiseSubmitDate { get; set; }    
         // public DateTime houseEmptyDate { get; set; }    

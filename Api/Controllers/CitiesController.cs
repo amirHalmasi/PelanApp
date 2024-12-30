@@ -29,6 +29,13 @@ namespace Api.Controllers
             return await _context.Cities.Where(cities => cities.Province_id == id).ToListAsync();
              
         }
+        [HttpGet("allcities")]
+        // public ActionResult<List<AppUser>> 
+        public async Task<ActionResult<IEnumerable<AppCities>>> GetCities(){
+            return await _context.Cities.ToListAsync();
+            
+             
+        }
         
     }
 }

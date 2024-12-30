@@ -6,8 +6,8 @@
   font-family: "IranSans", "nazanin", "Courier New", Courier, monospace;
 }
 body {
-  /* background-color: #fff; */
-  background: linear-gradient(#ffe0e0, #ffffff, #e1e1ff);
+  background-color: #fff;
+  /* background: linear-gradient(#ffe0e0, #ffffff, #e1e1ff); */
   /* background: linear-gradient(#ffffff, #c5c5c5, #a7a7a7); */
   overflow: auto;
   width: 100vw;

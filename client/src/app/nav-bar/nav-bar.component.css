@@ -8,6 +8,11 @@ nav {
   font-weight: bold;
   padding: 0.2rem 0;
 }
+.hamburger-toggeler {
+  max-width: 3rem !important;
+  padding: 2px 0px !important;
+  min-width: 2.5rem !important;
+}
 a {
   cursor: pointer;
 }
@@ -26,14 +31,15 @@ a {
 }
 
 .custome-header {
-  background-color: rgb(234 241 243 / 75%);
-  border: 1px solid #e2e5f5;
+  background-color: rgb(236, 236, 236);
+  /* border: 1px solid rgba(207, 207, 207, 0.75); */
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-  width: 90%;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  box-shadow: 6px 6px 12px #cdcdcd, -6px -6px 12px #e1e1e1;
   border-radius: 10px;
+  width: 97%;
+  /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
   padding: 8px;
-  /* z-index: 1 !important; */
 }
 
 .custome-ul {

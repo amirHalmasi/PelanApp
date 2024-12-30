@@ -14,4 +14,5 @@ export interface fileUploadData {
 })
 export class FileUploadservice {
   uploadedImageData = new Subject<fileUploadData>();
+  advertiseCode = new Subject<string>();
 }

@@ -28,6 +28,7 @@ namespace Api.DTOs
         public string city { get; set; }    
         public string desc { get; set; }    
         public string neighbourhood { get; set; }    
+        public string balconyeMeter { get; set; } 
 
         // sell fields
         public string groundMeter { get; set; }
