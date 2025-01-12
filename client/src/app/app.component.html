@@ -1,9 +1,11 @@
-<div class="navbar-style">
-  <app-nav-bar></app-nav-bar>
-</div>
+<div class="root-parent-container" [ngStyle]="getBackgroundStyle()">
+  <div class="navbar-style">
+    <app-nav-bar></app-nav-bar>
+  </div>
 
-<div class="row justify-content-center router-outlet-container">
-  <router-outlet></router-outlet>
-</div>
+  <div class="row justify-content-center router-outlet-container">
+    <router-outlet></router-outlet>
+  </div>
 
-<app-city-province-modal></app-city-province-modal>
+  <app-city-province-modal></app-city-province-modal>
+</div>

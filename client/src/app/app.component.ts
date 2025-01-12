@@ -6,6 +6,7 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
+import { Router } from '@angular/router';
 ///////////////////////////////////////////////
 
 @Component({
@@ -20,6 +21,22 @@ export class AppComponent implements OnInit {
   }
   title = 'Client';
   isMOdalOpen!: boolean;
+  constructor(private router: Router) {}
+
+  getBackgroundStyle() {
+    // چک کردن مسیر فعلی
+    if (this.router.url === '/home' || this.router.url === '/chat') {
+      return {
+        'background-image': 'url("../assets/body6.jpg")',
+        'background-repeat': 'no-repeat',
+        'background-size': 'cover',
+      };
+    } else {
+      return {
+        'background-color': '#fff',
+      };
+    }
+  }
 
   //////////////////////////////
   // @ViewChild('scrollableElement') scrollableElement!: ElementRef;
