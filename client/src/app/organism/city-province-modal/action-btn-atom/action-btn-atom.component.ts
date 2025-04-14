@@ -3,11 +3,19 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 // import { fadeInOut } from 'src/app/services/animation';
 import { ModalServiceService } from 'src/app/services/modal-service.service';
+import { SendRequestLoadingAtmComponent } from './send-request-loading-atm/send-request-loading-atm.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgIf } from '@angular/common';
 @Component({
-  selector: 'app-action-btn-atom',
-  templateUrl: './action-btn-atom.component.html',
-  styleUrls: ['./action-btn-atom.component.css'],
-  // animations: [fadeInOut],
+    selector: 'app-action-btn-atom',
+    templateUrl: './action-btn-atom.component.html',
+    styleUrls: ['./action-btn-atom.component.css'],
+    standalone: true,
+    imports: [
+        NgIf,
+        FontAwesomeModule,
+        SendRequestLoadingAtmComponent,
+    ],
 })
 export class ActionBtnAtomComponent implements OnInit {
   @Input('btnOptions') btnOption!: {

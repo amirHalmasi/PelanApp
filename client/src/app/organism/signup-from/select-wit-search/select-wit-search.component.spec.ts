@@ -8,8 +8,8 @@ describe('SelectWitSearchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SelectWitSearchComponent ]
-    })
+    imports: [SelectWitSearchComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(SelectWitSearchComponent);

@@ -10,17 +10,20 @@ import { RentComponent } from './house-advertise/rent/rent.component';
 import { GroundAdvertiseComponent } from './ground-advertise/ground-advertise.component';
 
 import { RouterModule } from '@angular/router';
-import { SharedModule } from 'src/app/modules/shared/shared.module';
+
 import { ProvinceAndCityComponent } from '../province-and-city-select-list/province-and-city.component';
 
-import { ActionBtnAtomModule } from '../city-province-modal/action-btn-atom/action-btn-atom.module';
-import { UploadfileModule } from './uploadfile/upload-file.module';
+
+
 import { AdvertiseComponent } from './advertise.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { AdvertiseRoutingModule } from './advertise-routing.module';
 
 @NgModule({
-  declarations: [
+    imports: [
+    RouterModule,
+    AdvertiseRoutingModule,
+    NgxMatSelectSearchModule,
     StoreadvertiseComponent,
     CommonComponent,
     SellStoreComponent,
@@ -32,18 +35,9 @@ import { AdvertiseRoutingModule } from './advertise-routing.module';
     RentComponent,
     GroundAdvertiseComponent,
     AdvertiseComponent,
-
     ProvinceAndCityComponent,
-  ],
-  imports: [
-    RouterModule,
-    AdvertiseRoutingModule,
-    SharedModule,
-    ActionBtnAtomModule,
-    UploadfileModule,
-    NgxMatSelectSearchModule,
-  ],
-  exports: [
+],
+    exports: [
     // StoreadvertiseComponent,
     // CommonComponent,
     // SellStoreComponent,
@@ -56,6 +50,6 @@ import { AdvertiseRoutingModule } from './advertise-routing.module';
     // ////////////
     // GroundAdvertiseComponent,
     // AdvertiseComponent,
-  ],
+    ],
 })
 export class AdvertiseModule {}

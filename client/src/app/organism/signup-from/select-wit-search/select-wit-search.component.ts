@@ -7,25 +7,41 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ReplaySubject, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 
 // import { Bank, BANKS } from '../demodata';
-import { MatSelect } from '@angular/material/select';
+import { MatSelect, MatSelectModule } from '@angular/material/select';
 import {
   ModalServiceService,
   city,
   province,
 } from 'src/app/services/modal-service.service';
 import { fadeInOut, slideRightInOut } from 'src/app/services/animation';
+import { NgFor, NgIf, AsyncPipe } from '@angular/common';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatOptionModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-  selector: 'app-select-wit-searchascx',
-  templateUrl: './select-wit-search.component.html',
-  styleUrls: ['./select-wit-search.component.css'],
-  animations: [slideRightInOut],
+    selector: 'app-select-wit-searchascx',
+    templateUrl: './select-wit-search.component.html',
+    styleUrls: ['./select-wit-search.component.css'],
+    animations: [slideRightInOut],
+    standalone: true,
+    imports: [
+        MatFormFieldModule,
+        MatSelectModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatOptionModule,
+        NgxMatSelectSearchModule,
+        NgFor,
+        NgIf,
+        AsyncPipe,
+    ],
 })
 export class SelectWitSearchComponent
   implements OnInit, AfterViewInit, OnDestroy

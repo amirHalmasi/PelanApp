@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "BaaIMp50mmw=",
+  "dgSpecHash": "ZJAt40y+byo=",
   "success": true,
-  "projectFilePath": "E:\\PelanApp\\Api\\Api.csproj",
+  "projectFilePath": "D:\\PelanApp\\Api\\Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\user\\.nuget\\packages\\automapper\\11.0.0\\automapper.11.0.0.nupkg.sha512",
     "C:\\Users\\user\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\11.0.0\\automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",

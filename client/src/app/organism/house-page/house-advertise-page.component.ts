@@ -13,16 +13,42 @@ import { HouseAdvetisePageService } from './house-advertise-page.service';
 import { fromEvent, map, Subscription } from 'rxjs';
 import { ModalServiceService } from 'src/app/services/modal-service.service';
 import { Router } from '@angular/router';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf } from '@angular/cdk/scrolling';
 import * as moment from 'jalali-moment';
 import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
+import { NumberSepratorPipe } from './number-seprator.pipe';
+import { ParkingSvgComponent } from './parking-svg/parking-svg.component';
+import { BedroomSvgComponent } from './bedroom-svg/bedroom-svg.component';
+import { ElevatorSvgComponent } from './elevator-svg/elevator-svg.component';
+import { BookmarkSvgComponent } from './bookmark-svg/bookmark-svg.component';
+import { CarouselComponent } from '../carousel/carousel.component';
+import { LoadingAtmComponent } from '../loading-atm/loading-atm.component';
+import { NgIf, NgFor, NgClass, NgSwitch, NgSwitchCase } from '@angular/common';
 // import { Component } from '@angular/core';
 type Position = 'start' | 'mid' | 'end';
 @Component({
-  selector: 'app-house-advertise-page',
-  templateUrl: './house-advertise-page.component.html',
-  styleUrls: ['./house-advertise-page.component.css'],
-  animations: [fadeInOut],
+    selector: 'app-house-advertise-page',
+    templateUrl: './house-advertise-page.component.html',
+    styleUrls: ['./house-advertise-page.component.css'],
+    animations: [fadeInOut],
+    standalone: true,
+    imports: [
+        NgIf,
+        LoadingAtmComponent,
+        CdkVirtualScrollViewport,
+        CdkFixedSizeVirtualScroll,
+        CdkVirtualForOf,
+        NgFor,
+        CarouselComponent,
+        NgClass,
+        BookmarkSvgComponent,
+        ElevatorSvgComponent,
+        BedroomSvgComponent,
+        ParkingSvgComponent,
+        NgSwitch,
+        NgSwitchCase,
+        NumberSepratorPipe,
+    ],
 })
 export class HouseAdvertisePageComponent
   implements OnInit, OnDestroy, AfterViewInit
@@ -165,9 +191,9 @@ export class HouseAdvertisePageComponent
     } else if (deviceWidth >= 576 && deviceWidth < 768) {
       pairArrayCount = 2;
     } else if (deviceWidth >= 768 && deviceWidth < 1200) {
-      pairArrayCount = 3;
+      pairArrayCount = 2;
     } else if (deviceWidth >= 1200) {
-      pairArrayCount = 4;
+      pairArrayCount = 3;
     }
     // return pairArrayCount;
     return pairArrayCount;

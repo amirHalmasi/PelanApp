@@ -8,8 +8,8 @@ describe('ActionBtnAtomComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ActionBtnAtomComponent ]
-    })
+    imports: [ActionBtnAtomComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(ActionBtnAtomComponent);

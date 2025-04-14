@@ -9,26 +9,35 @@ import {
   trigger,
 } from '@angular/animations';
 import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { NavBarService } from './nav-bar.service';
 import { fadeInOut, slideRightInOut } from '../services/animation';
 import { AdvetiseDataService } from '../services/advertiseData.service';
 import { HouseAdvetisePageService } from '../organism/house-page/house-advertise-page.service';
+import { NgIf, NgClass } from '@angular/common';
+import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-nav-bar',
-  templateUrl: './nav-bar.component.html',
-  styleUrls: ['./nav-bar.component.css'],
-
-  animations: [
-    trigger('changeButtonClass', [
-      state('initial', style({ transform: 'rotateX(0deg)', opacity: 1 })),
-      state('final', style({ transform: 'rotateX(360deg)', opacity: 1 })),
-      transition('initial <=> final', animate('200ms ease-in')),
-    ]),
-    slideRightInOut,
-    fadeInOut,
-  ],
+    selector: 'app-nav-bar',
+    templateUrl: './nav-bar.component.html',
+    styleUrls: ['./nav-bar.component.css'],
+    animations: [
+        trigger('changeButtonClass', [
+            state('initial', style({ transform: 'rotateX(0deg)', opacity: 1 })),
+            state('final', style({ transform: 'rotateX(360deg)', opacity: 1 })),
+            transition('initial <=> final', animate('200ms ease-in')),
+        ]),
+        slideRightInOut,
+        fadeInOut,
+    ],
+    standalone: true,
+    imports: [
+        RouterLink,
+        NgbCollapse,
+        NgIf,
+        RouterLinkActive,
+        NgClass,
+    ],
 })
 export class NavBarComponent implements OnInit {
   isCollapsed: boolean = true;

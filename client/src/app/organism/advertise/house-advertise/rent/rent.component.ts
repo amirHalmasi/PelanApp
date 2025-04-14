@@ -5,16 +5,32 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { FormGroup, FormGroupDirective, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NumberToWordsService } from '../../numberToword.service';
 import { slideRightInOut } from 'src/app/services/animation';
 import { numberValidator } from 'src/assets/validation/password.validator';
+import { MatInputModule } from '@angular/material/input';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-rent',
-  templateUrl: './rent.component.html',
-  styleUrls: ['./rent.component.css'],
-  animations: [slideRightInOut],
+    selector: 'app-rent',
+    templateUrl: './rent.component.html',
+    styleUrls: ['./rent.component.css'],
+    animations: [slideRightInOut],
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        NgIf,
+        MatFormFieldModule,
+        MatSelectModule,
+        NgFor,
+        MatOptionModule,
+        MatInputModule,
+    ],
 })
 export class RentComponent implements OnInit, OnChanges {
   controlTypes: any = [

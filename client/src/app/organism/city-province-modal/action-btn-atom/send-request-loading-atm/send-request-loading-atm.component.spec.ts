@@ -8,8 +8,8 @@ describe('SendRequestLoadingAtmComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SendRequestLoadingAtmComponent ]
-    })
+    imports: [SendRequestLoadingAtmComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(SendRequestLoadingAtmComponent);

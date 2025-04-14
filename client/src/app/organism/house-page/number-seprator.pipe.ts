@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'numberSeprator',
+    name: 'numberSeprator',
+    standalone: true,
 })
 export class NumberSepratorPipe implements PipeTransform {
   transform(value: string | number): string {

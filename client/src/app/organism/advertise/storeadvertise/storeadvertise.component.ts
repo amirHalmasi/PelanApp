@@ -1,17 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { flipInOut, slideRightInOut } from 'src/app/services/animation';
 import { numberValidator } from 'src/assets/validation/password.validator';
 import { persianLetterValidator } from 'src/assets/validation/persian-letters.validator';
-import {
-  ImageDto,
-  UploadFinishedEvent,
-} from '../uploadfile/uploadfile.component';
+import { ImageDto, UploadFinishedEvent, UploadfileComponent } from '../uploadfile/uploadfile.component';
 import { HttpClient } from '@angular/common/http';
 import { NumberToWordsService } from '../numberToword.service';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -28,12 +20,42 @@ import { ProvinceAndCityService } from '../../province-and-city-select-list/prov
 import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
 import { HouseAdvetiseProfileService } from '../../my-advertises/house-advertise-profile.service';
 import { city, province } from 'src/app/services/modal-service.service';
+import { ActionBtnAtomComponent } from '../../city-province-modal/action-btn-atom/action-btn-atom.component';
+import { ProvinceAndCityComponent } from '../../province-and-city-select-list/province-and-city.component';
+import { MatInputModule } from '@angular/material/input';
+import { RentStoreComponent } from './rent-store/rent-store.component';
+import { SellStoreComponent } from './sell-store/sell-store.component';
+import { CommonComponent } from './common/common.component';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgIf, NgFor, NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-storeadvertise',
-  templateUrl: './storeadvertise.component.html',
-  styleUrls: ['./storeadvertise.component.css'],
-  animations: [slideRightInOut],
+    selector: 'app-storeadvertise',
+    templateUrl: './storeadvertise.component.html',
+    styleUrls: ['./storeadvertise.component.css'],
+    animations: [slideRightInOut],
+    standalone: true,
+    imports: [
+        UploadfileComponent,
+        NgIf,
+        NgFor,
+        FontAwesomeModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatOptionModule,
+        CommonComponent,
+        SellStoreComponent,
+        RentStoreComponent,
+        MatInputModule,
+        ProvinceAndCityComponent,
+        NgClass,
+        ActionBtnAtomComponent,
+    ],
 })
 export class StoreadvertiseComponent implements OnInit, OnDestroy {
   // @ViewChild('houseTypeSelect') houseTypeSelect!: MatSelect;

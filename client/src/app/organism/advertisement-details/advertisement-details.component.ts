@@ -3,11 +3,20 @@ import { ActivatedRoute } from '@angular/router';
 import { HouseAdvetisePageService } from '../house-page/house-advertise-page.service';
 import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
 import { StoreAdvetisePageService } from '../store-page/store-advertise-page.service';
+import { StoreDetailsComponent } from './store-details/store-details.component';
+import { HouseDetailsComponent } from './house-details/house-details.component';
+import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-advertisement-details',
-  templateUrl: './advertisement-details.component.html',
-  styleUrls: ['./advertisement-details.component.css'],
+    selector: 'app-advertisement-details',
+    templateUrl: './advertisement-details.component.html',
+    styleUrls: ['./advertisement-details.component.css'],
+    standalone: true,
+    imports: [
+        NgIf,
+        HouseDetailsComponent,
+        StoreDetailsComponent,
+    ],
 })
 export class AdvertisementDetailsComponent implements OnInit {
   advertiseData!: any;

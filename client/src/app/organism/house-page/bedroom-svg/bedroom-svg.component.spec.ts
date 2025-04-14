@@ -8,8 +8,8 @@ describe('BedroomSvgComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BedroomSvgComponent ]
-    })
+    imports: [BedroomSvgComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(BedroomSvgComponent);

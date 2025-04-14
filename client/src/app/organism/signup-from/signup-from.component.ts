@@ -8,18 +8,13 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ReplaySubject, Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 
 // import { Bank, BANKS } from '../demodata';
-import { MatSelect } from '@angular/material/select';
+import { MatSelect, MatSelectModule } from '@angular/material/select';
 import {
   ModalServiceService,
   city,
@@ -34,6 +29,14 @@ import { persianLetterValidator } from 'src/assets/validation/persian-letters.va
 import { mobileNumberValidator } from 'src/assets/validation/mobile.validator';
 import { melliCodeValidator } from 'src/assets/validation/melicode.validator';
 import { phoneNumberValidator } from 'src/assets/validation/telephone.validator';
+import { ActionBtnAtomComponent } from '../city-province-modal/action-btn-atom/action-btn-atom.component';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatInputModule } from '@angular/material/input';
+import { NgFor, NgIf, AsyncPipe } from '@angular/common';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatOptionModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 export class Country {
   constructor(public name: string, public code: string) {}
@@ -43,10 +46,26 @@ type Gender = {
   value: string;
 };
 @Component({
-  selector: 'app-signup-from',
-  templateUrl: './signup-from.component.html',
-  styleUrls: ['./signup-from.component.css'],
-  animations: [slideRightInOut, flipInOut],
+    selector: 'app-signup-from',
+    templateUrl: './signup-from.component.html',
+    styleUrls: ['./signup-from.component.css'],
+    animations: [slideRightInOut, flipInOut],
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatOptionModule,
+        NgxMatSelectSearchModule,
+        NgFor,
+        NgIf,
+        MatInputModule,
+        MatRadioModule,
+        ActionBtnAtomComponent,
+        AsyncPipe,
+    ],
 })
 // https://stackblitz.com/edit/select-search?file=src%2Fapp%2Fapp.component.html
 export class SignupFromComponent implements OnInit, AfterViewInit, OnDestroy {

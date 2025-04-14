@@ -4,10 +4,18 @@ import {
   ModalServiceService,
   province,
 } from 'src/app/services/modal-service.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgFor, NgClass } from '@angular/common';
 @Component({
-  selector: 'app-province-list-atm',
-  templateUrl: './province-list-atm.component.html',
-  styleUrls: ['./province-list-atm.component.css'],
+    selector: 'app-province-list-atm',
+    templateUrl: './province-list-atm.component.html',
+    styleUrls: ['./province-list-atm.component.css'],
+    standalone: true,
+    imports: [
+        NgFor,
+        NgClass,
+        FontAwesomeModule,
+    ],
 })
 export class ProvinceListAtmComponent implements OnInit {
   // isSelectProvinces!: boolean;

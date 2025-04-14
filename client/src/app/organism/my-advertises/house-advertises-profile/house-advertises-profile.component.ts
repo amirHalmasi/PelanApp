@@ -4,14 +4,38 @@ import { HouseAdvetisePageService } from '../../house-page/house-advertise-page.
 import { ModalServiceService } from 'src/app/services/modal-service.service';
 import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
 import { Router } from '@angular/router';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf } from '@angular/cdk/scrolling';
 import * as moment from 'jalali-moment';
 import { HouseAdvetiseProfileService } from '../house-advertise-profile.service';
+import { NumberSepratorPipe } from '../../house-page/number-seprator.pipe';
+import { BedroomSvgComponent } from '../../house-page/bedroom-svg/bedroom-svg.component';
+import { ParkingSvgComponent } from '../../house-page/parking-svg/parking-svg.component';
+import { ElevatorSvgComponent } from '../../house-page/elevator-svg/elevator-svg.component';
+import { CarouselComponent } from '../../carousel/carousel.component';
+import { LoadingAtmComponent } from '../../loading-atm/loading-atm.component';
+import { NgIf, NgClass, NgFor, NgSwitch, NgSwitchCase } from '@angular/common';
 type Position = 'start' | 'mid' | 'end';
 @Component({
-  selector: 'app-house-advertises-profile',
-  templateUrl: './house-advertises-profile.component.html',
-  styleUrls: ['./house-advertises-profile.component.css'],
+    selector: 'app-house-advertises-profile',
+    templateUrl: './house-advertises-profile.component.html',
+    styleUrls: ['./house-advertises-profile.component.css'],
+    standalone: true,
+    imports: [
+        NgIf,
+        LoadingAtmComponent,
+        CdkVirtualScrollViewport,
+        CdkFixedSizeVirtualScroll,
+        CdkVirtualForOf,
+        NgClass,
+        NgFor,
+        CarouselComponent,
+        ElevatorSvgComponent,
+        ParkingSvgComponent,
+        BedroomSvgComponent,
+        NgSwitch,
+        NgSwitchCase,
+        NumberSepratorPipe,
+    ],
 })
 export class HouseAdvertisesProfileComponent {
   items!: any;

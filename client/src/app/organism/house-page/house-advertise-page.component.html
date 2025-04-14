@@ -16,20 +16,23 @@
       <button (click)="scroll('end')">Scroll end</button> -->
       <ng-template #houseAdvertise>
         <cdk-virtual-scroll-viewport
-          minBufferPx="550"
-          maxBufferPx="750"
-          itemSize="460"
+          minBufferPx="180"
+          maxBufferPx="360"
+          itemSize="220"
           class="viewport"
         >
           <div *cdkVirtualFor="let itemPairs of items; let i = index">
             <!-- Start a new row every 3 items -->
             <div class="row" style="scroll-snap-align: start">
               <div
-                class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-4"
+                class="col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-4 mb-4"
                 *ngFor="let item of itemPairs; let j = index"
                 [id]="i.toString() + j.toString()"
               >
-                <div class="card m-2 card-shadow" style="overflow: hidden">
+                <div
+                  class="card card-shadow horizontal-card"
+                  style="overflow: hidden"
+                >
                   <div class="card-head parent-box">
                     <app-carousel [imagesFiles]="item.files"></app-carousel>
                     <!-- <div class="overlay"></div> -->
@@ -97,8 +100,8 @@
                       class="card-details"
                       style="
                         position: absolute;
-                        left: 0%;
-                        bottom: 53%;
+                        left: 70%;
+                        bottom: 1%;
                         z-index: 2;
                       "
                       [ngClass]="{
@@ -126,8 +129,8 @@
                       class="card-details"
                       style="
                         position: absolute;
-                        left: 0%;
-                        bottom: 63%;
+                        left: 64%;
+                        bottom: 1%;
                         z-index: 2;
                       "
                     >

@@ -8,8 +8,8 @@ describe('ThereisOrNotComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ThereisOrNotComponent ]
-    })
+    imports: [ThereisOrNotComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(ThereisOrNotComponent);

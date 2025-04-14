@@ -21,32 +21,38 @@ li {
   overflow-y: auto;
 }
 
-.container {
+.container-fluid {
   padding: 0;
-  background-color: #e9e9e9;
+  /* background-color: #e9e9e9; */
+  backdrop-filter: blur(5px);
+  box-shadow: 4px 4px 8px #6c6c6cc9, -4px -4px 8px #e2e2e28a;
   /* padding: 10px 0; */
   border-radius: 10px;
   height: 85vh;
+  width: 95%;
   overflow: hidden;
 }
 .chat-room {
-  background-image: url("../../../assets/عکس-پس-زمینه-چت.jpg");
+  /* background-image: url("../../../assets/عکس-پس-زمینه-چت.jpg");
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: cover; */
   /* opacity: 50%; */
 }
 .chat-rooms {
   padding-bottom: 0;
   background: linear-gradient(
     to bottom,
-    rgb(201 48 63 / 25%),
-    rgb(12 102 234 / 25%)
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(255, 255, 255, 0.25) 100%
   );
   /* overflow-y: auto; */
   padding: 0 13px !important;
 }
 .seleted-chatroom {
-  background-color: #60c965bc !important;
+  background-color: #60c965 !important;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  transition: box-shadow 0.25s ease-in;
 }
 .chat-container {
   width: 100%;

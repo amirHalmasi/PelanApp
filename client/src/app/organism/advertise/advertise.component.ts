@@ -17,12 +17,7 @@ import {
 // import { flipInOut, slideRightInOut } from 'src/app/services/animation';
 // import { MatSelect } from '@angular/material/select';
 // import { NumberToWordsService } from './numberToword.service';
-import {
-  ActivatedRoute,
-  NavigationEnd,
-  Router,
-  RouterOutlet,
-} from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterOutlet, RouterLinkActive, RouterLink } from '@angular/router';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { slider } from 'src/app/services/child-route.animation';
 import {
@@ -34,6 +29,7 @@ import { filter, Subscription } from 'rxjs';
 import { FileUploadservice } from './uploadfile/fileUpload.service';
 import { HouseAdvetisePageService } from '../house-page/house-advertise-page.service';
 import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
+import { NgIf } from '@angular/common';
 // interface deleteResponse {
 //   folderName: string;
 //   deletedFile: string;
@@ -45,10 +41,17 @@ interface fileUploadData {
   advertiseCode: string;
 }
 @Component({
-  selector: 'app-advertise',
-  templateUrl: './advertise.component.html',
-  styleUrls: ['./advertise.component.css'],
-  animations: [slider],
+    selector: 'app-advertise',
+    templateUrl: './advertise.component.html',
+    styleUrls: ['./advertise.component.css'],
+    animations: [slider],
+    standalone: true,
+    imports: [
+        RouterLinkActive,
+        NgIf,
+        RouterLink,
+        RouterOutlet,
+    ],
 })
 export class AdvertiseComponent implements OnInit, OnDestroy {
   isHouseActive = false;

@@ -5,16 +5,32 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { FormGroup, FormGroupDirective, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { numberValidator } from 'src/assets/validation/password.validator';
 import { NumberToWordsService } from '../../numberToword.service';
 import { slideRightInOut } from 'src/app/services/animation';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-sell-store',
-  templateUrl: './sell-store.component.html',
-  styleUrls: ['./sell-store.component.css'],
-  animations: [slideRightInOut],
+    selector: 'app-sell-store',
+    templateUrl: './sell-store.component.html',
+    styleUrls: ['./sell-store.component.css'],
+    animations: [slideRightInOut],
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        NgIf,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        NgFor,
+        MatOptionModule,
+    ],
 })
 export class SellStoreComponent implements OnInit, OnChanges {
   priceHint!: string | null;

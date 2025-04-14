@@ -3,12 +3,34 @@ import { Router } from '@angular/router';
 import { HouseAdvetiseProfileService } from '../house-advertise-profile.service';
 import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
 import { fromEvent, map, Subscription } from 'rxjs';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf } from '@angular/cdk/scrolling';
+import { NumberSepratorPipe } from '../../house-page/number-seprator.pipe';
+import { ParkingSvgComponent } from '../../house-page/parking-svg/parking-svg.component';
+import { ElevatorSvgComponent } from '../../house-page/elevator-svg/elevator-svg.component';
+import { CarouselComponent } from '../../carousel/carousel.component';
+import { LoadingAtmComponent } from '../../loading-atm/loading-atm.component';
+import { NgIf, NgClass, NgFor, NgSwitch, NgSwitchCase } from '@angular/common';
 type Position = 'start' | 'mid' | 'end';
 @Component({
-  selector: 'app-store-advertises-profile',
-  templateUrl: './store-advertises-profile.component.html',
-  styleUrls: ['./store-advertises-profile.component.css'],
+    selector: 'app-store-advertises-profile',
+    templateUrl: './store-advertises-profile.component.html',
+    styleUrls: ['./store-advertises-profile.component.css'],
+    standalone: true,
+    imports: [
+        NgIf,
+        LoadingAtmComponent,
+        CdkVirtualScrollViewport,
+        CdkFixedSizeVirtualScroll,
+        CdkVirtualForOf,
+        NgClass,
+        NgFor,
+        CarouselComponent,
+        ElevatorSvgComponent,
+        ParkingSvgComponent,
+        NgSwitch,
+        NgSwitchCase,
+        NumberSepratorPipe,
+    ],
 })
 export class StoreAdvertisesProfileComponent implements OnInit {
   items!: any;

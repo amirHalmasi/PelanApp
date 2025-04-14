@@ -11,18 +11,31 @@ import {
   flipInOut,
   slideRightInOut,
 } from 'src/app/services/animation';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { HouseAdvetisePageService } from '../house-page/house-advertise-page.service';
+import { CityListAtmComponent } from './city-list-atm/city-list-atm.component';
+import { ProvinceListAtmComponent } from './province-list-atm/province-list-atm.component';
+import { ActionBtnAtomComponent } from './action-btn-atom/action-btn-atom.component';
+import { NgIf } from '@angular/common';
 // to add font awesome run this command bellow:
 // ng add @fortawesome/angular-fontawesome
 //https://piped.video/watch?v=AFVgwCtYgVo
 @Component({
-  selector: 'app-city-province-modal',
-  templateUrl: './city-province-modal.component.html',
-  styleUrls: ['./city-province-modal.component.css'],
-  animations: [fadeInOut, flipInOut, slideRightInOut],
+    selector: 'app-city-province-modal',
+    templateUrl: './city-province-modal.component.html',
+    styleUrls: ['./city-province-modal.component.css'],
+    animations: [fadeInOut, flipInOut, slideRightInOut],
+    standalone: true,
+    imports: [
+        NgIf,
+        ActionBtnAtomComponent,
+        FormsModule,
+        ReactiveFormsModule,
+        ProvinceListAtmComponent,
+        CityListAtmComponent,
+    ],
 })
 export class CityProvinceModalComponent implements OnInit, OnDestroy {
   isModalOpen!: boolean;

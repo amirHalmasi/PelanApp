@@ -4,14 +4,36 @@ import { StoreAdvetisePageService } from './store-advertise-page.service';
 import { HttpClient } from '@angular/common/http';
 import { ModalServiceService } from 'src/app/services/modal-service.service';
 import { Router } from '@angular/router';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
+import { CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf } from '@angular/cdk/scrolling';
 import * as moment from 'jalali-moment';
 import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
+import { NumberSepratorPipe } from '../house-page/number-seprator.pipe';
+import { ParkingSvgComponent } from '../house-page/parking-svg/parking-svg.component';
+import { ElevatorSvgComponent } from '../house-page/elevator-svg/elevator-svg.component';
+import { CarouselComponent } from '../carousel/carousel.component';
+import { LoadingAtmComponent } from '../loading-atm/loading-atm.component';
+import { NgIf, NgFor, NgClass, NgSwitch, NgSwitchCase } from '@angular/common';
 type Position = 'start' | 'mid' | 'end';
 @Component({
-  selector: 'app-advertise-sell-page',
-  templateUrl: './store-advertise-page.component.html',
-  styleUrls: ['./store-advertise-page.component.css'],
+    selector: 'app-advertise-sell-page',
+    templateUrl: './store-advertise-page.component.html',
+    styleUrls: ['./store-advertise-page.component.css'],
+    standalone: true,
+    imports: [
+        NgIf,
+        LoadingAtmComponent,
+        CdkVirtualScrollViewport,
+        CdkFixedSizeVirtualScroll,
+        CdkVirtualForOf,
+        NgFor,
+        CarouselComponent,
+        NgClass,
+        ElevatorSvgComponent,
+        ParkingSvgComponent,
+        NgSwitch,
+        NgSwitchCase,
+        NumberSepratorPipe,
+    ],
 })
 export class StoreAdvertisePageComponent implements OnInit, OnDestroy {
   items!: any;

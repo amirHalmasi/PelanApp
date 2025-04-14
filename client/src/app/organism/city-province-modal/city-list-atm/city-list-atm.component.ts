@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import {
   ModalServiceService,
@@ -8,12 +8,24 @@ import {
 import { HouseAdvetisePageService } from '../../house-page/house-advertise-page.service';
 import { Router } from '@angular/router';
 import { StoreAdvetisePageService } from '../../store-page/store-advertise-page.service';
+import { LoadingAtmComponent } from '../../loading-atm/loading-atm.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgIf, NgFor, NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-city-list-atm',
-  templateUrl: './city-list-atm.component.html',
-  styleUrls: ['./city-list-atm.component.css'],
-  // animations: [slideRightInOut],
+    selector: 'app-city-list-atm',
+    templateUrl: './city-list-atm.component.html',
+    styleUrls: ['./city-list-atm.component.css'],
+    standalone: true,
+    imports: [
+        NgIf,
+        FormsModule,
+        ReactiveFormsModule,
+        NgFor,
+        NgClass,
+        FontAwesomeModule,
+        LoadingAtmComponent,
+    ],
 })
 export class CityListAtmComponent implements OnInit {
   @Input() province_id!: number;

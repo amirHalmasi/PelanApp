@@ -1,11 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormControlName,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormControlName, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -16,16 +11,35 @@ import {
 import { numberValidator } from 'src/assets/validation/password.validator';
 import { SweetAlertService } from 'src/app/services/sweetalert.service';
 import { NavBarService } from 'src/app/nav-bar/nav-bar.service';
+import { ActionBtnAtomComponent } from '../city-province-modal/action-btn-atom/action-btn-atom.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { NgIf } from '@angular/common';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 interface loginDto {
   token: string;
   username: string;
   isJobOwner: string;
 }
 @Component({
-  selector: 'app-login-from',
-  templateUrl: './login-from.component.html',
-  styleUrls: ['./login-from.component.css'],
-  animations: [flipInOut],
+    selector: 'app-login-from',
+    templateUrl: './login-from.component.html',
+    styleUrls: ['./login-from.component.css'],
+    animations: [flipInOut],
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        NgIf,
+        MatButtonModule,
+        MatIconModule,
+        FontAwesomeModule,
+        ActionBtnAtomComponent,
+    ],
 })
 export class LoginFromComponent implements OnInit {
   hidden: boolean = true;

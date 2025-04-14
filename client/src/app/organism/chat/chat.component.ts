@@ -7,11 +7,21 @@ import {
 } from './chat.service';
 import { HouseAdvetisePageService } from '../house-page/house-advertise-page.service';
 import { StoreAdvetisePageService } from '../store-page/store-advertise-page.service';
+import { FormsModule } from '@angular/forms';
+import { NgFor, NgClass, NgIf, DatePipe } from '@angular/common';
 
 @Component({
-  selector: 'app-chat',
-  templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.css'],
+    selector: 'app-chat',
+    templateUrl: './chat.component.html',
+    styleUrls: ['./chat.component.css'],
+    standalone: true,
+    imports: [
+        NgFor,
+        NgClass,
+        NgIf,
+        FormsModule,
+        DatePipe,
+    ],
 })
 export class ChatComponent implements OnInit, OnDestroy {
   chatRooms: ChatRoomDto[] = [];

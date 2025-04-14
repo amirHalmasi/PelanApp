@@ -5,17 +5,33 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { FormGroup, FormGroupDirective, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NumberToWordsService } from '../../numberToword.service';
 import { slideRightInOut } from 'src/app/services/animation';
 import { persianLetterValidator } from 'src/assets/validation/persian-letters.validator';
 import { numberValidator } from 'src/assets/validation/password.validator';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-sell',
-  templateUrl: './sell.component.html',
-  styleUrls: ['./sell.component.css'],
-  animations: [slideRightInOut],
+    selector: 'app-sell',
+    templateUrl: './sell.component.html',
+    styleUrls: ['./sell.component.css'],
+    animations: [slideRightInOut],
+    standalone: true,
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        NgIf,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        NgFor,
+        MatOptionModule,
+    ],
 })
 export class SellComponent implements OnInit, OnChanges {
   states: any = [

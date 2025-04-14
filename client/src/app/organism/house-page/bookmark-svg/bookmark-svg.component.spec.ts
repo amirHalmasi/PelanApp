@@ -8,8 +8,8 @@ describe('BookmarkSvgComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [BookmarkSvgComponent],
-    }).compileComponents();
+    imports: [BookmarkSvgComponent],
+}).compileComponents();
 
     fixture = TestBed.createComponent(BookmarkSvgComponent);
     component = fixture.componentInstance;

@@ -13,7 +13,7 @@ import { HomeComponent } from './organism/home/home.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { SelectWitSearchComponent } from './organism/signup-from/select-wit-search/select-wit-search.component';
 import { StoreAdvertisePageComponent } from './organism/store-page/store-advertise-page.component';
-import { CustomeCarouselModule } from './organism/carousel/carousel.module';
+
 import { ThereisOrNotComponent } from './organism/house-page/thereis-or-not/thereis-or-not.component';
 import { UncheckedSvgComponent } from './organism/house-page/thereis-or-not/unchecked-svg/unchecked-svg.component';
 import { CheckedSvgComponent } from './organism/house-page/thereis-or-not/checked-svg/checked-svg.component';
@@ -27,9 +27,7 @@ import { CheckedSvgComponent } from './organism/house-page/thereis-or-not/checke
 // import { BookmarkSvgComponent } from './organism/house-page/bookmark-svg/bookmark-svg.component';
 import { AdvertisementDetailsComponent } from './organism/advertisement-details/advertisement-details.component';
 import { AdvertiseModule } from './organism/advertise/advertise.module';
-import { SharedModule } from './modules/shared/shared.module';
-import { ActionBtnAtomModule } from './organism/city-province-modal/action-btn-atom/action-btn-atom.module';
-import { CityAndProvinceModalModule } from './organism/city-province-modal/city-and-province-modal.module';
+
 import { SignupFromModule } from './organism/signup-from/signUp.module';
 // import { LoginFromComponent } from './organism/login-from/login-from.component';
 import { LoginFormModule } from './organism/login-from/login.module';
@@ -42,13 +40,25 @@ import { StoreAdvertisesProfileComponent } from './organism/my-advertises/store-
 // import { ChatComponent } from './organism/chat/chat-layout/chat/chat.component';
 // import { ChatLayoutComponent } from './organism/chat/chat-layout/chat-layout.component';
 import { ChatComponent } from './organism/chat/chat.component';
+import { CityProvinceModalComponent } from './organism/city-province-modal/city-province-modal.component';
 // import { ChatRoomsComponent } from './organism/chat/chat-layout/chat-rooms/chat-rooms.component';
 // import { ChatRoomsComponent } from './organism/chat/chat-layout/chat-rooms/chat-rooms.component';
 @NgModule({
-  declarations: [
-    AppComponent,
+  declarations: [AppComponent],
+  imports: [
+    HouseAdvertisePageModule,
+    AdvertiseModule,
+    NgxMatSelectSearchModule,
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    NgbModule,
+    // ScrollingModule,
+    SignupFromModule,
+    LoginFormModule,
     NavBarComponent,
     TextInputComponent,
+    CityProvinceModalComponent,
     // CityProvinceModalComponent,
     // ActionBtnAtomComponent,
     // ProvinceListAtmComponent,
@@ -92,34 +102,7 @@ import { ChatComponent } from './organism/chat/chat.component';
     HouseAdvertisesProfileComponent,
     StoreAdvertisesProfileComponent,
     ChatComponent,
-    // ChatLayoutComponent,
-    // ChatRoomsComponent,
-    // ChatRoomsComponent,
-  ],
-  imports: [
-    HouseAdvertisePageModule,
-    CityAndProvinceModalModule,
-    AdvertiseModule,
-    ActionBtnAtomModule,
-    NgxMatSelectSearchModule,
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    NgbModule,
-    // ScrollingModule,
-    SignupFromModule,
-    LoginFormModule,
-    // ReactiveFormsModule,
-    // MaterialModule,
-    // FontAwesomeModule,
-    // FormsModule,
-    // ReactiveFormsModule,
-    SharedModule,
-
-    // HttpClientModule,
-
-    // CarouselModule.forRoot(),
-    CustomeCarouselModule,
+    HttpClientModule,
   ],
   providers: [
     // { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

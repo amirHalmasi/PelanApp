@@ -1,10 +1,11 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { slideRightInOut } from 'src/app/services/animation';
+import { NgIf, NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-alert',
-  template: `
+    selector: 'app-alert',
+    template: `
     <div
       class="alert m-2"
       [ngClass]="{
@@ -17,8 +18,10 @@ import { slideRightInOut } from 'src/app/services/animation';
       {{ message }}
     </div>
   `,
-  styleUrls: ['./alert.component.css'],
-  animations: [slideRightInOut],
+    styleUrls: ['./alert.component.css'],
+    animations: [slideRightInOut],
+    standalone: true,
+    imports: [NgIf, NgClass],
 })
 export class AlertComponent implements OnChanges {
   @Input() message: string = '';

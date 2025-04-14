@@ -5,18 +5,10 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { numberValidator } from 'src/assets/validation/password.validator';
 import { persianLetterValidator } from 'src/assets/validation/persian-letters.validator';
-import {
-  ImageDto,
-  UploadFinishedEvent,
-} from '../uploadfile/uploadfile.component';
+import { ImageDto, UploadFinishedEvent, UploadfileComponent } from '../uploadfile/uploadfile.component';
 import { HttpClient } from '@angular/common/http';
 import { NumberToWordsService } from '../numberToword.service';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -34,12 +26,41 @@ import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
 import { HouseAdvetiseProfileService } from '../../my-advertises/house-advertise-profile.service';
 import { city, province } from 'src/app/services/modal-service.service';
 import { ProvinceAndCityService } from '../../province-and-city-select-list/province-and-city.service';
+import { ActionBtnAtomComponent } from '../../city-province-modal/action-btn-atom/action-btn-atom.component';
+import { ProvinceAndCityComponent } from '../../province-and-city-select-list/province-and-city.component';
+import { MatInputModule } from '@angular/material/input';
+import { RentComponent } from './rent/rent.component';
+import { SellComponent } from './sell/sell.component';
+import { CommonHouseComponent } from './common-house/common-house.component';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgIf, NgFor, NgClass } from '@angular/common';
 
 @Component({
-  selector: 'app-house-advertise',
-  templateUrl: './house-advertise.component.html',
-  styleUrls: ['./house-advertise.component.css'],
-  // animations: [flipInOut],
+    selector: 'app-house-advertise',
+    templateUrl: './house-advertise.component.html',
+    styleUrls: ['./house-advertise.component.css'],
+    standalone: true,
+    imports: [
+        UploadfileComponent,
+        NgIf,
+        NgFor,
+        FontAwesomeModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatSelectModule,
+        MatOptionModule,
+        CommonHouseComponent,
+        SellComponent,
+        RentComponent,
+        MatInputModule,
+        ProvinceAndCityComponent,
+        NgClass,
+        ActionBtnAtomComponent,
+    ],
 })
 export class HouseAdvertiseComponent implements OnInit, OnDestroy {
   // @ViewChild('houseTypeSelect') houseTypeSelect!: MatSelect;

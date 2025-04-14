@@ -31,14 +31,13 @@ a {
 }
 
 .custome-header {
-  background-color: rgb(236, 236, 236);
-  /* border: 1px solid rgba(207, 207, 207, 0.75); */
+  box-shadow: 4px 4px 8px #d2d2d2, -4px -4px 8px #e0e0e0;
+  background-color: rgb(236 236 236 / 44%);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
-  box-shadow: 6px 6px 12px #cdcdcd, -6px -6px 12px #e1e1e1;
+  /* box-shadow: 6px 6px 12px #cdcdcd, -6px -6px 12px #e1e1e1; */
   border-radius: 10px;
   width: 97%;
-  /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
   padding: 8px;
 }
 

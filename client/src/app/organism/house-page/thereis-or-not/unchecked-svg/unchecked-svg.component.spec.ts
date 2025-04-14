@@ -8,8 +8,8 @@ describe('UncheckedSvgComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UncheckedSvgComponent ]
-    })
+    imports: [UncheckedSvgComponent]
+})
     .compileComponents();
 
     fixture = TestBed.createComponent(UncheckedSvgComponent);

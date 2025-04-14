@@ -3,6 +3,8 @@ import { HttpClient, HttpEventType } from '@angular/common/http';
 import { FileUploadservice } from './fileUpload.service';
 import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
 import { HouseAdvetiseProfileService } from '../../my-advertises/house-advertise-profile.service';
+import { AlertComponent } from './alert/alert.component';
+import { NgIf } from '@angular/common';
 
 export interface ImageDto {
   path?: string;
@@ -19,9 +21,11 @@ export interface UploadFinishedEvent {
 }
 
 @Component({
-  selector: 'app-uploadfile',
-  templateUrl: './uploadfile.component.html',
-  styleUrls: ['./uploadfile.component.css'],
+    selector: 'app-uploadfile',
+    templateUrl: './uploadfile.component.html',
+    styleUrls: ['./uploadfile.component.css'],
+    standalone: true,
+    imports: [NgIf, AlertComponent],
 })
 export class UploadfileComponent {
   public message: string = '';

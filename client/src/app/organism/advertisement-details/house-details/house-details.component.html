@@ -1,8 +1,7 @@
 <div class="container-fluid" style="text-align: center">
-  <div class="row viewport">
+  <div class="row viewport-detail">
     <div
-      class="col-12 order-2 col-md-5 col-xl-6 card advertiseData"
-      style="height: inherit; scroll-snap-align: start"
+      class="col-xs-12 col-sm-7 order-2 col-md-7 col-xl-8 card advertiseData"
     >
       <div class="card-body" style="direction: rtl">
         <div class="title border-gradient-purple border-gradient mt-3">
@@ -383,11 +382,10 @@
         </div>
       </div>
     </div>
-    <div
-      class="col-12 order-1 col-md-7 col-xl-6"
-      style="height: inherit; scroll-snap-align: start"
-    >
-      <app-carousel [imagesFiles]="advertiseData?.files"></app-carousel>
+    <div class="col-xs-12 col-sm-5 order-1 col-md-5 col-xl-4">
+      <div style="border: 1px solid red; aspect-ratio: 1/1; width: 100%">
+        <app-carousel [imagesFiles]="advertiseData?.files"></app-carousel>
+      </div>
     </div>
   </div>
 </div>

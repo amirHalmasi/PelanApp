@@ -3,15 +3,26 @@ import { slideRightInOut } from 'src/app/services/animation';
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { NgIf, NgClass, NgFor } from '@angular/common';
 interface carouselImage {
   highQuality?: string;
   lowQuality?: string;
 }
 @Component({
-  selector: 'app-carousel',
-  templateUrl: './carousel.component.html',
-  styleUrls: ['./carousel.component.css'],
-  animations: [slideRightInOut],
+    selector: 'app-carousel',
+    templateUrl: './carousel.component.html',
+    styleUrls: ['./carousel.component.css'],
+    animations: [slideRightInOut],
+    standalone: true,
+    imports: [
+        NgIf,
+        NgClass,
+        NgFor,
+        LazyLoadImageModule,
+        FontAwesomeModule,
+    ],
 })
 export class CarouselComponent implements OnInit {
   @Input() imagesFiles: carouselImage[] = [];
