@@ -1,5 +1,5 @@
 * {
-  font-family: "IranSans", "nazanin", "Courier New", Courier, monospace !important;
+  font-family: "IranianSans", "nazanin", "Courier New", Courier, monospace !important;
   /* color: #080710 !important; */
 }
 
@@ -12,13 +12,13 @@
   /* backdrop-filter: blur(10px); */
 }
 .font-title {
-  font-family: "IranSans", "Rezvan", "Courier New", Courier, monospace !important;
-  font-size: 1.5rem;
+  font-family: "IranianSans", "Rezvan", "Courier New", Courier, monospace !important;
+  font-size: 1rem;
 }
 .brand-font {
-  font-family: "IranSans", "sogand", "Courier New", Courier, monospace !important;
-  font-size: 1.5rem !important;
-  padding: 0 10px;
+  font-family: "IranianSans", "sogand", "Courier New", Courier, monospace !important;
+  font-size: 1rem !important;
+  /* padding: 0 10px; */
 }
 .rtl {
   direction: rtl;
@@ -28,7 +28,8 @@
   justify-content: center; /* Center the button group */
   flex-direction: row-reverse;
   flex-wrap: wrap; /* Make it responsive */
-  font-size: 1rem;
+  font-size: 0.8rem;
+  /* font-weight: bold; */
 }
 .bold-shadow {
   box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px,

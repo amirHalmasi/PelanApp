@@ -43,7 +43,7 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'advertiseDetails/:title',
+    path: 'advertiseDetails/:advertiseType/:advertiseCode',
     // canDeactivate: [canDeactivateGuardFn],
     component: AdvertisementDetailsComponent,
   },

@@ -27,4 +27,12 @@ export class HouseAdvetisePageService {
       // , { headers }
     );
   }
+  getSpecificHouseAdverise(advertiseCode: number) {
+    // const advertiseCode = 964617300;
+    return this.http.get<any>(
+      'https://localhost:5001/api/HouseAdvertise/' +
+        'houserent/' +
+        advertiseCode
+    );
+  }
 }

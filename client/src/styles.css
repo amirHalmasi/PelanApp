@@ -7,6 +7,7 @@
 }
 body {
   /* overflow: auto; */
+  overflow: hidden;
 
   /* background-color: #fff; */
   /* background-image: url("assets/body6.jpg");
@@ -16,8 +17,8 @@ body {
   /* background: linear-gradient(#ffffff, #c5c5c5, #a7a7a7); */
   /* 
   */
-  width: 100vw;
-  height: 100vh !important;
+  width: 100dvw;
+  height: 100dvh !important;
 }
 ::-webkit-scrollbar {
   /* width: 10px; */

@@ -387,6 +387,81 @@ namespace Api.Controllers
             }
         }
 
+
+        // getSpecific advertise with ADVERTISE cODE
+        [HttpGet("houserent/{advertiseCode}")]
+        public async Task<ActionResult<IEnumerable<object>>> GetSpecificAdvertises(string AdvertiseCode)
+        {
+            try
+            {
+                var rentAdvertises = await _context.HouseRentAdvertise
+                    .Where(h => h.AdvertiseCode == AdvertiseCode)
+                    .ToListAsync();
+
+                // var sellAdvertises = await _context.HouseSellAdvertise
+                //     .Where(h => h.CityId == city_id)
+                //     .ToListAsync();
+
+                var Advertises = rentAdvertises.Cast<object>()
+                    // .Concat(sellAdvertises.Cast<object>())
+                    .ToList();
+
+                var advertiseWithFiles = new List<object>();
+
+                foreach (var advertise in Advertises)
+                {
+                    string username = (advertise as HouseRentAdvertise).Username;
+                    string advertiseCode = (advertise as HouseRentAdvertise).AdvertiseCode;
+
+                    var lowQualityFiles = GetFilesFromDirectory("Resources/Images", Path.Combine(username, advertiseCode, "lowQuality"));
+                    var highQualityFiles = GetFilesFromDirectory("Resources/Images", Path.Combine(username, advertiseCode, "highQuality"));
+
+                    if (highQualityFiles.Any() && lowQualityFiles.Any())
+                    {
+                        var filePairs = highQualityFiles.Select((highQuality, index) => new
+                        {
+                            HighQuality = highQuality,
+                            LowQuality = lowQualityFiles.ElementAtOrDefault(index)
+                        }).ToList();
+
+                        advertiseWithFiles.Add(new
+                        {
+                            Advertise = advertise,
+                            Files = filePairs,
+                            TodayDate = DateTime.Now
+                        });
+                    }
+                    else
+                    {
+                        var lowQualityPlaceHolderFiles = GetFilesFromDirectory("Resources/Images", "placeholder/lowQuality");
+                        var placeholderFiles = GetFilesFromDirectory("Resources/Images", "placeholder/highQuality");
+
+                        if (placeholderFiles.Any() && lowQualityPlaceHolderFiles.Any())
+                        {
+                            var filePairs = placeholderFiles.Select((highQuality, index) => new
+                            {
+                                HighQuality = highQuality,
+                                LowQuality = lowQualityPlaceHolderFiles.ElementAtOrDefault(index)
+                            }).ToList();
+
+                            advertiseWithFiles.Add(new
+                            {
+                                Advertise = advertise,
+                                Files = filePairs,
+                                TodayDate = DateTime.Now
+                            });
+                        }
+                    }
+                }
+
+                return Ok(advertiseWithFiles);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An error occurred while retrieving the advertisements." });
+            }
+        }
+
         // [AllowAnonymous]
         // [HttpGet]
         // // public ActionResult<List<AppUser>> 

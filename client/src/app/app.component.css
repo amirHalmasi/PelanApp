@@ -1,7 +1,8 @@
 .root-parent-container {
-  overflow: auto;
-  width: 100vw;
-  min-height: 100vh !important;
+  /* overflow: auto; */
+  overflow: hidden;
+  width: 100dvw;
+  min-height: 100dvh !important;
   /* border: 2px solid red; */
   /* background-image: url("../assets/body6.jpg");
   background-repeat: no-repeat;
@@ -39,8 +40,8 @@
 .router-outlet-container {
   width: 100%;
   /* height: 85vh; */
-  margin: 2vh 0;
-  /* overflow-y: auto; */
+  margin: 1vh 0;
+  overflow-y: auto;
   /*overflow-x: hidden; */
   /* padding: 10px; */
   /* border: 2px solid red; */

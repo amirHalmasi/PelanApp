@@ -4,7 +4,7 @@
       class="col col-xs-10 col-sm-8 col-md-6 col-lg-4 card form-container-class"
     >
       <div class="card-body">
-        <div class="row card-title text-center justify-content-center mb-5">
+        <div class="row card-title text-center justify-content-center">
           <h3 class="font-title">
             {{ isEditPage_On ? "ویرایش" : "ثبت" }} آگهی
             <!-- <h2 style="display: inline-block" class="font-title brand-font"> -->
@@ -35,7 +35,7 @@
             </ng-template>
 
             <div
-              class="col-xs-12 col-sm-6 col-md-4 col-lg-3 m-2 btn-group btn-group red-border"
+              class="col-xs-12 col-sm-6 col-md-4 col-lg-3 m-2 btn-group btn-group-sm red-border"
               role="group"
               *ngIf="!isEditPage_On; else editPage"
             >
@@ -69,7 +69,10 @@
         <!-- <main [@routerTransition]="getState(o)">
           <router-outlet #o="outlet"></router-outlet>
         </main> -->
-        <main [@routeAnimations]="prepareRoute(outlet)">
+        <main
+          [@routeAnimations]="prepareRoute(outlet)"
+          style="height: 66dvh; overflow: hidden; overflow-y: auto"
+        >
           <!-- <app-uploadfile
             (onUploadFinished)="uploadFinish($event)"
           ></app-uploadfile>

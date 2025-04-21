@@ -4,7 +4,11 @@ import { StoreAdvetisePageService } from './store-advertise-page.service';
 import { HttpClient } from '@angular/common/http';
 import { ModalServiceService } from 'src/app/services/modal-service.service';
 import { Router } from '@angular/router';
-import { CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf } from '@angular/cdk/scrolling';
+import {
+  CdkVirtualScrollViewport,
+  CdkFixedSizeVirtualScroll,
+  CdkVirtualForOf,
+} from '@angular/cdk/scrolling';
 import * as moment from 'jalali-moment';
 import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
 import { NumberSepratorPipe } from '../house-page/number-seprator.pipe';
@@ -15,25 +19,25 @@ import { LoadingAtmComponent } from '../loading-atm/loading-atm.component';
 import { NgIf, NgFor, NgClass, NgSwitch, NgSwitchCase } from '@angular/common';
 type Position = 'start' | 'mid' | 'end';
 @Component({
-    selector: 'app-advertise-sell-page',
-    templateUrl: './store-advertise-page.component.html',
-    styleUrls: ['./store-advertise-page.component.css'],
-    standalone: true,
-    imports: [
-        NgIf,
-        LoadingAtmComponent,
-        CdkVirtualScrollViewport,
-        CdkFixedSizeVirtualScroll,
-        CdkVirtualForOf,
-        NgFor,
-        CarouselComponent,
-        NgClass,
-        ElevatorSvgComponent,
-        ParkingSvgComponent,
-        NgSwitch,
-        NgSwitchCase,
-        NumberSepratorPipe,
-    ],
+  selector: 'app-advertise-sell-page',
+  templateUrl: './store-advertise-page.component.html',
+  styleUrls: ['./store-advertise-page.component.css'],
+  standalone: true,
+  imports: [
+    NgIf,
+    LoadingAtmComponent,
+    CdkVirtualScrollViewport,
+    CdkFixedSizeVirtualScroll,
+    CdkVirtualForOf,
+    NgFor,
+    CarouselComponent,
+    NgClass,
+    ElevatorSvgComponent,
+    ParkingSvgComponent,
+    NgSwitch,
+    NgSwitchCase,
+    NumberSepratorPipe,
+  ],
 })
 export class StoreAdvertisePageComponent implements OnInit, OnDestroy {
   items!: any;
@@ -84,7 +88,12 @@ export class StoreAdvertisePageComponent implements OnInit, OnDestroy {
     // this.houseAdvertiseServ.advertiseItem.next(item);
     this.storeAdvertiseServ.advertiseItem = item;
     this.advertiseData.previousRouteURL.next('store');
-    this.route.navigate(['/advertiseDetails', i.toString() + j.toString()]);
+    // this.route.navigate(['/advertiseDetails', i.toString() + j.toString()]);
+    this.route.navigate([
+      '/advertiseDetails',
+      item.commonData.advertiseType,
+      item.commonData.advertiseCode,
+    ]);
     this.showAdvertiseDetails = true;
     this.storeAdvertiseServ.selectedAdvertiseRow.next(i);
   }

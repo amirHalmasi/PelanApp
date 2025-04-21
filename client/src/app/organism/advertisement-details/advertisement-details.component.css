@@ -1,26 +1,31 @@
 * {
   font-family: "IranianSans", "nazanin", "Courier New", Courier, monospace !important;
 
-  margin: 0;
-  padding: 0;
+  /* margin: 0;
+  padding: 0; */
 }
 
 .viewport-detail {
-  height: 78vh;
+  /* height: 78dvh; */
+  height: 87dvh;
   overflow-y: auto;
   scroll-behavior: smooth;
   scroll-snap-type: y mandatory !important;
   /* border-radius: 4% 3% 2% 1% / 4% 3% 2% 1%; */
   /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
   direction: ltr;
-  width: calc(100% - 2rem);
+  /* width: calc(100% - 2rem); */
+  width: 100%;
   /* padding: 0 0.8rem !important; */
   /* border: 1px solid red; */
-  margin: 0 1rem;
+  /* margin: 0 1rem; */
 }
-
+.row-seprator-margin {
+  margin: 0.3rem 0rem;
+}
 .viewport-detail::-webkit-scrollbar {
-  width: 15px;
+  /* width: 15px; */
+  width: 0;
   float: left;
   background-color: transparent;
   /* width: 0; */
@@ -43,6 +48,7 @@
   background-color: transparent;
   border: 0;
   padding: 1.3rem;
+  padding-top: 0;
 }
 .card-body {
   cursor: pointer;
@@ -64,9 +70,8 @@
   flex-direction: row;
   align-items: baseline;
   justify-content: space-between;
-  margin: 1.5rem 0.8rem 0 0 !important;
-  padding: 0 0.3rem;
-  /* padding: 0 0.8rem 0.2rem 0; */
+  /* margin: 1.5rem 0.8rem 0 0 !important; */
+  padding: 0 0.8rem;
 }
 .margin-x-0 {
   margin-left: 0 !important;
@@ -79,10 +84,10 @@
   border-image-source: linear-gradient(
     to left,
     rgba(255, 255, 255, 0),
-    rgb(61, 61, 61),
+    rgba(61, 61, 61, 0.253),
     rgba(255, 255, 255, 0)
   );
-  margin: 0.5rem 0.8rem;
+  /* margin: 0.5rem 0.8rem; */
 
   border-width: 1px;
   border-top: 0;
@@ -97,9 +102,9 @@
 .border-gradient-purple {
   border-image-source: linear-gradient(
     to left,
-    rgb(201, 48, 63) 2%,
-    rgb(12, 102, 234) 33%,
-    rgba(255, 255, 255, 0) 99%
+    rgb(201 48 63 / 48%) 1%,
+    rgb(12 102 234 / 48%) 65%,
+    rgba(255, 255, 255, 0) 98%
   );
   border-top: 0;
   border-right: 0;
@@ -115,14 +120,24 @@
 }
 
 .details {
+  /* text-align: right; */
   text-align: right;
+
   padding: 0.3rem 0.8rem 0.3rem 0;
-  font-size: 1rem;
+  font-size: 0.8rem;
+}
+.simple-details {
+  text-align: center !important;
+  padding-right: 0 !important;
 }
 .card-title {
   /* font-family: "sogand", "Courier New", Courier, monospace !important; */
-  font-size: 1.1rem !important;
+  font-size: 0.875rem !important;
   font-weight: bold;
   text-shadow: 2px 4px 3px rgba(46, 46, 46, 0.138);
   text-align: right;
+}
+.carousel-container-box {
+  aspect-ratio: 1/1 !important;
+  width: 100% !important;
 }

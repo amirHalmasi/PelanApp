@@ -1,4 +1,4 @@
-<div class="container-fluid" style="text-align: center">
+<div class="container-fluid" style="padding: 0; text-align: center">
   <div *ngIf="isLoadingAdvertises; else advertises">
     <app-loading-atm></app-loading-atm>
   </div>
@@ -163,11 +163,12 @@
                           *ngSwitchCase="'rent'"
                           class="card-details detail-text"
                         >
-                          <span class="price"
+                          <!-- <span class="price" -->
+                          <span
                             >{{
                               item.advertise.rentPrice | numberSeprator
                             }}
-                            ریال</span
+                            تومان</span
                           >
                         </h5>
 
@@ -179,11 +180,12 @@
                           *ngSwitchCase="'rent'"
                           class="card-details detail-text"
                         >
-                          <span class="price"
+                          <!-- <span class="price" -->
+                          <span
                             >{{
                               item.advertise.depositPrice | numberSeprator
                             }}
-                            ریال</span
+                            تومان</span
                           >
                         </h5>
                         <!-- قیمت -->
@@ -194,11 +196,12 @@
                           *ngSwitchCase="'sell'"
                           class="card-details detail-text"
                         >
-                          <span class="price"
+                          <!-- <span class="price" -->
+                          <span
                             >{{
                               item.advertise.price | numberSeprator
                             }}
-                            ریال</span
+                            تومان</span
                           >
                         </h5>
                         <h5 *ngSwitchCase="'sell'" class="detail-seprator">
@@ -208,11 +211,8 @@
                           *ngSwitchCase="'sell'"
                           class="card-details detail-text"
                         >
-                          <div
-                            *ngIf="item?.advertise.houseType"
-                            class="col col-xs-12 col-sm-6"
-                          >
-                            <h5 class="w-100 details detail-text">
+                          <div *ngIf="item?.advertise.houseType">
+                            <span class="w-100 details">
                               <container-element
                                 [ngSwitch]="item?.advertise.houseType"
                               >
@@ -220,7 +220,7 @@
                                 <span *ngSwitchCase="'Villaie'">ویلایی</span>
                                 <span *ngSwitchCase="'ShakhsiSaz'">ویلایی</span>
                               </container-element>
-                            </h5>
+                            </span>
                           </div>
                         </h5>
                       </container-element>

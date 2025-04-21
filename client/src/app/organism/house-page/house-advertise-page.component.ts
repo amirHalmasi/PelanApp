@@ -13,7 +13,11 @@ import { HouseAdvetisePageService } from './house-advertise-page.service';
 import { fromEvent, map, Subscription } from 'rxjs';
 import { ModalServiceService } from 'src/app/services/modal-service.service';
 import { Router } from '@angular/router';
-import { CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf } from '@angular/cdk/scrolling';
+import {
+  CdkVirtualScrollViewport,
+  CdkFixedSizeVirtualScroll,
+  CdkVirtualForOf,
+} from '@angular/cdk/scrolling';
 import * as moment from 'jalali-moment';
 import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
 import { NumberSepratorPipe } from './number-seprator.pipe';
@@ -27,28 +31,28 @@ import { NgIf, NgFor, NgClass, NgSwitch, NgSwitchCase } from '@angular/common';
 // import { Component } from '@angular/core';
 type Position = 'start' | 'mid' | 'end';
 @Component({
-    selector: 'app-house-advertise-page',
-    templateUrl: './house-advertise-page.component.html',
-    styleUrls: ['./house-advertise-page.component.css'],
-    animations: [fadeInOut],
-    standalone: true,
-    imports: [
-        NgIf,
-        LoadingAtmComponent,
-        CdkVirtualScrollViewport,
-        CdkFixedSizeVirtualScroll,
-        CdkVirtualForOf,
-        NgFor,
-        CarouselComponent,
-        NgClass,
-        BookmarkSvgComponent,
-        ElevatorSvgComponent,
-        BedroomSvgComponent,
-        ParkingSvgComponent,
-        NgSwitch,
-        NgSwitchCase,
-        NumberSepratorPipe,
-    ],
+  selector: 'app-house-advertise-page',
+  templateUrl: './house-advertise-page.component.html',
+  styleUrls: ['./house-advertise-page.component.css'],
+  animations: [fadeInOut],
+  standalone: true,
+  imports: [
+    NgIf,
+    LoadingAtmComponent,
+    CdkVirtualScrollViewport,
+    CdkFixedSizeVirtualScroll,
+    CdkVirtualForOf,
+    NgFor,
+    CarouselComponent,
+    NgClass,
+    BookmarkSvgComponent,
+    ElevatorSvgComponent,
+    BedroomSvgComponent,
+    ParkingSvgComponent,
+    NgSwitch,
+    NgSwitchCase,
+    NumberSepratorPipe,
+  ],
 })
 export class HouseAdvertisePageComponent
   implements OnInit, OnDestroy, AfterViewInit
@@ -72,7 +76,7 @@ export class HouseAdvertisePageComponent
     private cityModalServ: ModalServiceService,
     // private cdr: ChangeDetectorRef,
     private advertiseData: AdvetiseDataService,
-    private route: Router
+    private router: Router
   ) {
     // console.log('this.deviceWidth', this.deviceWidth);
   }
@@ -95,12 +99,55 @@ export class HouseAdvertisePageComponent
     }
     this.viewPort.scrollToIndex(scrollIndex, 'smooth');
   }
-  navigateTo(i: any, j: any, item: any) {
-    console.log(item);
+  navigateTo(
+    i: any,
+    j: any,
+    item: {
+      advertise: {
+        advertiseCode: string;
+        advertiseSubmitDate: string;
+        advertiseType: string;
+        advertiseViews: number;
+        advertiserUserId: number;
+        branchStatus: string;
+        buildingName: string;
+        cityId: string;
+        depositePrice: string;
+        description: string;
+        entryType: string;
+        flatStatusType: string;
+        floor: string;
+        hasElevator: string;
+        hasParking: string;
+        hasWareHouse: string;
+        houseEmptyDate: string;
+        houseMeter: string;
+        houseType: string;
+        id: number;
+        neighborhood: string;
+        orientation: string;
+        parkingType: string;
+        provinceId: string;
+        rentFlatType: string;
+        rentPrice: string;
+        rooms: string;
+        username: string;
+        wareHouseMeter: string;
+      };
+      files: { highQuality: string; lowQuality: string }[];
+      todayDate: string;
+    }
+  ) {
+    console.log('advertise item data', item);
     // this.houseAdvertiseServ.advertiseItem.next(item);
     this.houseAdvertiseServ.advertiseItem = item;
     this.advertiseData.previousRouteURL.next('house');
-    this.route.navigate(['/advertiseDetails', i.toString() + j.toString()]);
+    // this.route.navigate(['/advertiseDetails', i.toString() + j.toString()]);
+    this.router.navigate([
+      '/advertiseDetails',
+      'house' + item.advertise.advertiseType,
+      item.advertise.advertiseCode,
+    ]);
     this.showAdvertiseDetails = true;
     this.houseAdvertiseServ.selectedAdvertiseRow.next(i);
   }
@@ -198,21 +245,21 @@ export class HouseAdvertisePageComponent
     // return pairArrayCount;
     return pairArrayCount;
   }
-  itemsSlices(itemIndex: number) {
-    // return this.items.slice(itemIndex, itemIndex + 3);
+  // itemsSlices(itemIndex: number) {
+  //   // return this.items.slice(itemIndex, itemIndex + 3);
 
-    if (window.innerWidth < 576) {
-      return this.items.slice(itemIndex, itemIndex + 1);
-    } else if (window.innerWidth >= 576 && window.innerWidth < 768) {
-      return this.items.slice(itemIndex, itemIndex + 2);
-    } else if (window.innerWidth >= 768 && window.innerWidth < 1200) {
-      return this.items.slice(itemIndex, itemIndex + 3);
-    } else if (window.innerWidth <= 1200) {
-      return this.items.slice(itemIndex, itemIndex + 4);
-    }
-    // return this.items.slice(itemIndex, itemIndex + 1);
-    return this.items.slice(itemIndex, itemIndex + 1);
-  }
+  //   if (window.innerWidth < 576) {
+  //     return this.items.slice(itemIndex, itemIndex + 1);
+  //   } else if (window.innerWidth >= 576 && window.innerWidth < 768) {
+  //     return this.items.slice(itemIndex, itemIndex + 2);
+  //   } else if (window.innerWidth >= 768 && window.innerWidth < 1200) {
+  //     return this.items.slice(itemIndex, itemIndex + 3);
+  //   } else if (window.innerWidth <= 1200) {
+  //     return this.items.slice(itemIndex, itemIndex + 4);
+  //   }
+  //   // return this.items.slice(itemIndex, itemIndex + 1);
+  //   return this.items.slice(itemIndex, itemIndex + 1);
+  // }
 
   getAllAdvertises(city_id: string) {
     this.isLoadingAdvertises = true;
