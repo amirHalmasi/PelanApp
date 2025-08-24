@@ -1,16 +1,12 @@
 <div class="container-fluid py-3" style="text-align: center">
   <div class="viewport-detail">
-    <div class="row">
+    <div class="row prevent-select">
       <div
         class="col-xs-12 col-sm-7 order-2 col-md-7 col-xl-8 card advertiseData"
       >
         <div class="card-body" style="direction: rtl">
           <div
-            class="row border-gradient-purple border-gradient pt-2 mb-2 mx-3"
-            style="
-              border-radius: 0.5rem;
-              box-shadow: rgba(99, 99, 99, 0.35) 0px 2px 8px 0px;
-            "
+            class="row border-gradient-purple border-gradient titlise-box pt-2 mb-2 mx-3"
           >
             <div class="title">
               <h5 class="card-title w-100">
@@ -26,6 +22,11 @@
               <button
                 class="btn btn-outline-danger btn-sm"
                 (click)="navigateTo()"
+                *ngIf="
+                  advertiseData?.advertise.advertiserUserId &&
+                  advertiseData?.advertise.advertiserUserId !=
+                    this.currentUserData.userId
+                "
               >
                 گپ
               </button>
@@ -84,10 +85,16 @@
                 'col-md-6': !advertiseData?.advertise.floor
               }"
             >
-              <h5 class="w-100 details simple-details">
+              <app-details
+                [Posible_Values]="possibleValueMeter"
+                [Real_Value]="advertiseData?.advertise.houseMeter.toString()"
+                [Lable]="'متراژ :'"
+                [Aditional_Class]="'simple-details'"
+              ></app-details>
+              <!-- <h5 class="w-100 details simple-details">
                 <span>متراژ : </span>
                 <span>{{ advertiseData?.advertise.houseMeter + " متر" }}</span>
-              </h5>
+              </h5> -->
             </div>
 
             <div
@@ -97,16 +104,28 @@
                 'col-md-6': !advertiseData?.advertise.floor
               }"
             >
-              <h5 class="w-100 details simple-details">
-                <span>تعداد اتاق: </span>
+              <app-details
+                [Posible_Values]="possibleValueRooms"
+                [Real_Value]="advertiseData?.advertise.rooms.toString()"
+                [Lable]="'تعداد اتاق: '"
+                [Aditional_Class]="'simple-details'"
+              ></app-details>
+              <!-- <h5 class="w-100 details simple-details">
+                <span> تعداد اتاق: </span>
                 <span>{{ advertiseData?.advertise.rooms }}</span>
-              </h5>
+              </h5> -->
             </div>
             <div *ngIf="advertiseData?.advertise.floor" class="col-12 col-md-4">
-              <h5 class="w-100 details simple-details">
+              <app-details
+                [Posible_Values]="possibleValueFlat"
+                [Real_Value]="advertiseData?.advertise.floor.toString()"
+                [Lable]="'طبقه: '"
+                [Aditional_Class]="'simple-details'"
+              ></app-details>
+              <!-- <h5 class="w-100 details simple-details">
                 <span>طبقه: </span>
                 <span>{{ advertiseData?.advertise.floor }}</span>
-              </h5>
+              </h5> -->
             </div>
           </div>
 
@@ -114,110 +133,100 @@
             *ngIf="advertiseData?.advertise?.advertiseType === 'rent'"
             class="row seprator row-seprator-margin"
           >
-            <container-element
-              [ngSwitch]="advertiseData?.advertise.branchStatus"
+            <!-- <container-element class="col-12 col-sm-12 col-md-6 col-lg-6"> -->
+            <div
+              *ngIf="advertiseData?.advertise.branchStatus"
               class="col-12 col-sm-12 col-md-6 col-lg-6"
             >
-              <h5 *ngSwitchCase="'ABG_joda'" class="w-100 details">
-                <span>انشعابات: </span>
-                <span class="mark"> مستقل</span>
-              </h5>
-              <h5 *ngSwitchCase="'AB_joda'" class="w-100 details">
-                <span>انشعابات: </span>
-                <!-- آب و برق مستقل گاز مشترک -->
-                فقط گاز مشترک
-              </h5>
-              <h5 *ngSwitchCase="'AG_joda'" class="w-100 details">
-                <span>انشعابات: </span>
-                <!-- آب و گاز مستقل برق مشترک -->
-                فقط برق مشترک
-              </h5>
-              <h5 *ngSwitchCase="'BG_joda'" class="w-100 details">
-                <span>انشعابات: </span>
-                <!-- برق و گاز مستقل آب مشترک -->
-                فقط آپ مشترک
-              </h5>
-              <h5 *ngSwitchCase="'A_joda'" class="w-100 details">
-                <span>انشعابات: </span>فقط آب مستقل
-              </h5>
-              <h5 *ngSwitchCase="'B_joda'" class="w-100 details">
-                <span>انشعابات: </span>فقط برق مستقل
-              </h5>
-              <h5 *ngSwitchCase="'G_joda'" class="w-100 details">
-                <span>انشعابات: </span>فقط گاز مستقل
-              </h5>
-              <h5 *ngSwitchCase="'moshtarak'" class="w-100 details">
-                <span>انشعابات: </span> مشترک
-              </h5>
-            </container-element>
-            <container-element
-              [ngSwitch]="advertiseData?.advertise.entryType"
-              class="col col-xs-12 col-sm-6"
+              <app-details
+                [Posible_Values]="{
+                  ABG_joda: 'مستقل',
+                  AB_joda: 'فقط گاز مشترک',
+                  AG_joda: 'فقط برق مشترک',
+                  BG_joda: 'فقط آب مشترک',
+                  A_joda: 'فقط آب مستقل',
+                  B_joda: 'فقط برق مستقل',
+                  G_joda: 'فقط گاز مستقل',
+                  moshtarak: 'مشترک'
+                }"
+                [Real_Value]="advertiseData?.advertise.branchStatus"
+                [Lable]="'انشعابات: '"
+                [Star_values]="['ABG_joda']"
+              ></app-details>
+            </div>
+
+            <!-- <div class="col col-xs-12 col-sm-6"> -->
+            <div
+              *ngIf="advertiseData?.advertise.entryType"
+              class="col-12 col-sm-12 col-md-6 col-lg-6"
             >
-              <h5 *ngSwitchCase="'independent_entry'" class="w-100 details">
-                <span>ورودی: </span>
-                <span class="mark">مستقل</span>
-              </h5>
-              <h5 *ngSwitchCase="'common_entry'" class="w-100 details">
-                <span>ورودی: </span> <span>مشترک</span>
-              </h5>
-            </container-element>
+              <app-details
+                [Posible_Values]="{
+                  common_entry: 'مشترک',
+                  independent_entry: 'مستقل',
+                  
+                }"
+                [Real_Value]="advertiseData?.advertise.entryType"
+                [Lable]="'ورودی: '"
+                [Star_values]="['independent_entry']"
+              ></app-details>
+            </div>
           </div>
           <div class="row row-seprator-margin">
-            <!-- 
-               flatStatusTypes: any = [
-      { value: 'new', desc: 'نو ساخت' },
-      { value: 'repair', desc: 'تعمیر شده' },
-      // { value: 'luxury', desc: 'لوکس' },
-      { value: 'regular', desc: 'تمیز' },
-    ]; -->
-            <div
-              class="col col-xs-12 col-sm-6"
-              *ngIf="
+            <app-conditional-container
+              [isShown]="
                 advertiseData?.advertise.flatStatusType &&
                 advertiseData?.advertise?.advertiseType === 'rent'
+                  ? true
+                  : false
               "
             >
-              <container-element
-                [ngSwitch]="advertiseData?.advertise.flatStatusType"
-              >
-                <h5 *ngSwitchCase="'new'" class="w-100 details">
-                  <span>وضعیت واحد: </span>
-                  <span class="mark">نوساز</span>
-                </h5>
-                <h5 *ngSwitchCase="'repair'" class="w-100 details">
-                  <span>وضعیت واحد: </span> <span>بازسازی شده</span>
-                </h5>
-                <h5 *ngSwitchCase="'regular'" class="w-100 details">
-                  <span>وضعیت واحد: </span> <span>تمیز</span>
-                </h5>
-              </container-element>
-            </div>
+              <app-details
+                [Posible_Values]="{
+                  New: 'نوساز',
+                  repair: 'بازسازی شده',
+                  regular: 'تمیز'
+                }"
+                [Real_Value]="
+                  advertiseData?.advertise.flatStatusType === 'new'
+                    ? 'New'
+                    : advertiseData?.advertise.flatStatusType
+                "
+                [Lable]="'وضعیت واحد:'"
+                [Star_values]="['New']"
+              ></app-details>
+            </app-conditional-container>
+
             <div
-              class="col col-xs-12 col-sm-6"
+              class="col-12 col-sm-6"
               *ngIf="
                 advertiseData?.advertise.houseType !== 'Mojtama' &&
                 advertiseData?.advertise?.advertiseType === 'sell'
               "
             >
-              <h5 class="w-100 details">
-                <span>جهت : </span>
-
-                <container-element
-                  [ngSwitch]="advertiseData?.advertise.orientation"
-                >
-                  <span *ngSwitchCase="'shomali'">شمالی</span>
-                  <span *ngSwitchCase="'Jonobi'">ویلایی</span>
-
-                  <span *ngSwitchCase="'Nabsh_Shomali'">نبش شمالی</span>
-                  <span *ngSwitchCase="'Nabsh_Junobi'">نبش جنوبی</span>
-                  <span *ngSwitchCase="'Do_Bahr'">دو بر</span>
-                  <span *ngSwitchCase="'Do_Bahr_Do_Nabsh'">دو بر دو نبش</span>
-                </container-element>
-              </h5>
+              <app-details
+                [Posible_Values]="{
+                  shomali: 'شمالی',
+                  Jonobi: 'جنوبی',
+                  Nabsh_Shomali: 'نبش شمالی',
+                  Nabsh_Junobi: 'نبش جنوبی',
+                  Do_Bahr: 'دو بر',
+                  Do_Bahr_Do_Nabsh: 'دو بر دو نبش'
+                }"
+                [Lable]="'جهت: '"
+                [Real_Value]="advertiseData?.advertise.orientation"
+                [Star_values]="[
+                  'Jonobi',
+                  'Nabsh_Shomali',
+                  'Nabsh_Junobi',
+                  'Do_Bahr',
+                  'Do_Bahr_Do_Nabsh'
+                ]"
+              >
+              </app-details>
             </div>
             <div
-              class="col col-xs-12 col-sm-6"
+              class="col-12 col-sm-6"
               *ngIf="
                 advertiseData?.advertise.houseType === 'Mojtama' &&
                 advertiseData?.advertise?.advertiseType === 'sell'
@@ -253,7 +262,7 @@
 
             <!-- م.قعیت -->
             <div
-              class="col col-xs-12 col-sm-6"
+              class="col-12 col-sm-6"
               *ngIf="
                 advertiseData?.advertise?.advertiseType === 'sell' &&
                 advertiseData?.advertise.houseType === 'Villaie'
@@ -272,7 +281,7 @@
             </div>
             <!-- متراژ تجاری -->
             <div
-              class="col col-xs-12 col-sm-6"
+              class="col-12 col-sm-6"
               *ngIf="
                 advertiseData?.advertise?.advertiseType === 'sell' &&
                 advertiseData?.advertise.state === 'Tejari_Maskuni' &&
@@ -287,7 +296,7 @@
             </div>
 
             <div
-              class="col col-xs-12 col-sm-6"
+              class="col-12 col-sm-6"
               *ngIf="
                 advertiseData?.advertise?.advertiseType === 'sell' &&
                 advertiseData?.advertise.houseDocument
@@ -308,7 +317,7 @@
               </h5>
             </div>
             <div
-              class="col col-xs-12 col-sm-6"
+              class="col-12 col-sm-6"
               *ngIf="
                 advertiseData?.advertise.houseType !== 'Villaie' &&
                 advertiseData?.advertise?.advertiseType === 'sell' &&
@@ -329,8 +338,8 @@
           <div
             class="row border-gradient-purple border-gradient pt-2 mb-2 mx-3"
             style="
-              border-radius: 0.5rem;
-              box-shadow: rgba(99, 99, 99, 0.35) 0px 2px 8px 0px;
+              border-radius: 0.3rem;
+              box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
             "
           >
             <div class="title">
@@ -416,8 +425,8 @@
           <div
             class="row border-gradient-purple border-gradient pt-2 mb-2 mx-3"
             style="
-              border-radius: 0.5rem;
-              box-shadow: rgba(99, 99, 99, 0.35) 0px -2px 8px 0px;
+              border-radius: 0.3rem;
+              box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
             "
             *ngIf="advertiseData?.advertise?.description"
           >
@@ -443,7 +452,10 @@
       </div>
       <div class="col-xs-12 col-sm-5 order-1 col-md-5 col-xl-4">
         <div class="carousel-container-box">
-          <app-carousel [imagesFiles]="advertiseData?.files"></app-carousel>
+          <app-carousel
+            [AllowExpand]="true"
+            [imagesFiles]="advertiseData?.files"
+          ></app-carousel>
         </div>
         <!-- <div class="row">
           <div class="title">

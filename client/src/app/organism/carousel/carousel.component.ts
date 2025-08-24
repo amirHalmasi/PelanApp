@@ -1,6 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { slideRightInOut } from 'src/app/services/animation';
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
+
+import {
+  faChevronRight,
+  faExpand,
+  faTimes,
+} from '@fortawesome/free-solid-svg-icons';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -11,25 +15,30 @@ interface carouselImage {
   lowQuality?: string;
 }
 @Component({
-    selector: 'app-carousel',
-    templateUrl: './carousel.component.html',
-    styleUrls: ['./carousel.component.css'],
-    animations: [slideRightInOut],
-    standalone: true,
-    imports: [
-        NgIf,
-        NgClass,
-        NgFor,
-        LazyLoadImageModule,
-        FontAwesomeModule,
-    ],
+  selector: 'app-carousel',
+  templateUrl: './carousel.component.html',
+  styleUrls: ['./carousel.component.css'],
+
+  standalone: true,
+  imports: [NgIf, NgClass, NgFor, LazyLoadImageModule, FontAwesomeModule],
 })
 export class CarouselComponent implements OnInit {
   @Input() imagesFiles: carouselImage[] = [];
-  @Input() indicators: boolean = true;
-  @Input() controls: boolean = true;
-  @Input() icon = { right: faChevronRight, left: faChevronLeft };
+  @Input() AllowExpand: boolean = false;
+  // @Input() indicators: boolean = true;
+  indicators: boolean = true;
+  // @Input() controls: boolean = true;
+  controls: boolean = true;
+  icon = {
+    right: faChevronRight,
+    left: faChevronLeft,
+    expand: faExpand,
+    exit: faTimes,
+  };
+
+  // @Input() icon = { right: faChevronRight, left: faChevronLeft };
   currentUrl!: string;
+  isImageExpanded: boolean = false;
   constructor(private router: Router) {}
   selectedIndex = 0;
   isMoreThanOneImageExist!: boolean;

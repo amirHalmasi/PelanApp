@@ -1,0 +1,249 @@
+ <div
+  class="row filter-container"
+  (click)="closePriceDialog(); closeDateSortDialog(); closeSortDialog()"
+>
+  <div class="d-flex align-items-center gap-2">
+    <div
+      class="btn-group reverse-row col-2"
+      role="group"
+      aria-label="Basic outlined "
+    >
+      <button
+        type="button"
+        class="btn"
+        [ngClass]="{
+              'btn-secondary': selectedType === 'sell',
+              ' btn-outline-secondary': selectedType !== 'sell'
+            }"
+        (click)="
+              onFilterChange('sell');
+              closeSortDialog();
+              closePriceDialog();
+              closeDateSortDialog()
+            "
+      >
+        فروش
+      </button>
+
+      <button
+        type="button"
+        class="btn"
+        [ngClass]="{
+              'btn-secondary': selectedType === 'rent',
+              ' btn-outline-secondary': selectedType !== 'rent'
+            }"
+        (click)="
+              onFilterChange('rent');
+              closeSortDialog();
+              closePriceDialog();
+              closeDateSortDialog()
+            "
+      >
+        اجاره</button
+      ><button
+        type="button"
+        class="btn"
+        [ngClass]="{
+              'btn-secondary': selectedType === 'all',
+              ' btn-outline-secondary': selectedType !== 'all'
+            }"
+        (click)="
+              onFilterChange('all');
+              closeSortDialog();
+              closePriceDialog();
+              closeDateSortDialog()
+            "
+      >
+        همه
+      </button>
+    </div>
+    <!-- مرتب‌سازی -->
+    <!-- <select class="form-select w-auto" (change)="onSortChange($event)">
+          <option value="">مرتب‌سازی بر اساس قیمت</option>
+          <option value="asc">صعودی</option>
+          <option value="desc">نزولی</option>
+        </select> -->
+    <!-- --------------------------- -->
+    <!-- دراپ‌داون کاستوم برای مرتب‌سازی -->
+    <div class="dropdown price-filter-dropdown" [@fadeInOut]>
+      <button
+        class="btn btn-outline-secondary dropdown-toggle"
+        style="min-width: 150px"
+        type="button"
+        (click)="
+              toggleSortDropdown();
+              closePriceDialog();
+              closeDateSortDialog();
+              $event.stopPropagation()
+            "
+        [attr.aria-expanded]="showSortDropdown"
+      >
+        {{ sortOrder === "asc" ? "مرتب‌سازی صعودی" : sortOrder === "desc" ?
+        "مرتب‌سازی نزولی" : "مرتب‌سازی بر اساس قیمت" }}
+      </button>
+
+      <div
+        class="dropdown-menu p-2 shadow"
+        [class.show]="showSortDropdown"
+        style="min-width: 200px; text-align: right"
+      >
+        <button
+          class="btn btn-outline-secondary w-100"
+          style="border: 0"
+          (click)="onSortSelect('asc')"
+        >
+          صعودی
+        </button>
+        <button
+          class="btn btn-outline-secondary w-100"
+          style="border: 0"
+          (click)="onSortSelect('desc')"
+        >
+          نزولی
+        </button>
+      </div>
+    </div>
+
+    <div class="dropdown price-filter-dropdown" [@fadeInOut]>
+      <button
+        class="btn btn-outline-secondary dropdown-toggle"
+        type="button"
+        (click)="
+              toggleDateSortDropdown();
+              closeSortDialog();
+              closePriceDialog();
+              $event.stopPropagation()
+            "
+        [attr.aria-expanded]="showDateSortDropdown"
+      >
+        {{ dateSortOrder === "newest" ? "جدیدترین آگهی‌ها" : dateSortOrder ===
+        "oldest" ? "قدیمی‌ترین آگهی‌ها" : "مرتب‌سازی بر اساس تاریخ" }}
+      </button>
+
+      <div
+        class="dropdown-menu p-2 shadow"
+        [class.show]="showDateSortDropdown"
+        style="min-width: 200px; text-align: right"
+      >
+        <button
+          class="btn btn-outline-secondary w-100"
+          style="border: 0"
+          (click)="onDateSortSelect('newest')"
+        >
+          جدیدترین
+        </button>
+        <button
+          class="btn btn-outline-secondary w-100"
+          style="border: 0"
+          (click)="onDateSortSelect('oldest')"
+        >
+          قدیمی‌ترین
+        </button>
+      </div>
+    </div>
+
+    <!-- فیلتر قیمت -->
+    <!-- برای اجاره -->
+    <ng-container *ngIf="selectedType === 'rent'">
+      <ng-container
+        *ngTemplateOutlet="
+              priceFilterTemplate;
+              context: {
+                title: 'فیلتر اجاره',
+                minLabel: 'حداکثر مبلغ رهن:',
+                maxLabel: 'حداکثر مبلغ اجاره:',
+                minModel: priceFilter.rent.maxDeposit,
+                maxModel: priceFilter.rent.maxRent,
+                minBinding: setRentMaxDeposit.bind(this),
+                maxBinding: setRentMaxRent.bind(this),
+                applyFn: applyFilters.bind(this)
+              }
+            "
+      >
+      </ng-container>
+    </ng-container>
+
+    <!-- برای فروش -->
+    <ng-container *ngIf="selectedType === 'sell'">
+      <ng-container
+        *ngTemplateOutlet="
+              priceFilterTemplate;
+              context: {
+                title: 'فیلتر قیمت',
+                minLabel: 'حداقل قیمت:',
+                maxLabel: 'حداکثر قیمت:',
+                minModel: priceFilter.sell.min,
+                maxModel: priceFilter.sell.max,
+                minBinding: setSellMinPrice.bind(this),
+                maxBinding: setSellMaxPrice.bind(this),
+                applyFn: applyFilters.bind(this)
+              }
+            "
+      >
+      </ng-container>
+    </ng-container>
+
+    <!-- قالب مشترک فیلتر -->
+    <ng-template
+      #priceFilterTemplate
+      let-title="title"
+      let-minLabel="minLabel"
+      let-maxLabel="maxLabel"
+      let-minModel="minModel"
+      let-maxModel="maxModel"
+      let-minBinding="minBinding"
+      let-maxBinding="maxBinding"
+      let-applyFn="applyFn"
+    >
+      <div class="dropdown price-filter-dropdown">
+        <button
+          class="btn btn-outline-secondary dropdown-toggle"
+          type="button"
+          (click)="
+                togglePriceDropdown();
+                closeSortDialog();
+                closeDateSortDialog();
+                $event.stopPropagation()
+              "
+          [attr.aria-expanded]="showPriceFilter"
+          @fadeInOut
+        >
+          {{ title }}
+        </button>
+
+        <div
+          class="dropdown-menu p-3 shadow"
+          [class.show]="showPriceFilter"
+          style="min-width: 250px; text-align: right"
+        >
+          <div class="form-group mb-2">
+            <label class="form-label">{{ minLabel }}</label>
+            <input
+              type="text"
+              class="form-control"
+              [ngModel]="minModel"
+              (ngModelChange)="minBinding($event)"
+            />
+          </div>
+
+          <div class="form-group mb-3">
+            <label class="form-label">{{ maxLabel }}</label>
+            <input
+              type="text"
+              class="form-control"
+              [ngModel]="maxModel"
+              (ngModelChange)="maxBinding($event)"
+            />
+          </div>
+
+          <button
+            class="btn btn-secondary w-100"
+            (click)="applyFn(); togglePriceDropdown()"
+          >
+            اعمال فیلتر
+          </button>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div> 

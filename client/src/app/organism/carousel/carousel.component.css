@@ -11,6 +11,7 @@
 }
 
 .carousel-container {
+  box-shadow: rgba(85, 85, 85, 0.645) 1.95px 1.95px 2.6px;
   position: relative;
   margin: auto;
   text-align: center;
@@ -81,42 +82,17 @@
 .blury {
   filter: blur(18px) !important;
 }
-.overlay1 {
+.icons-layer {
   position: absolute;
-  clip-path: polygon(10% 88%, 90% 88%, 100% 100%, 0% 100%);
-  top: 0px;
-  bottom: 0px;
-  right: 0px;
-  left: 0px;
-  z-index: 2;
-  /* background: rgba(255, 255, 255, 0.637); */
-  background: linear-gradient(
-    0deg,
-    rgb(255 255 255 / 96%) 0%,
-    rgb(255 255 255 / 15%) 20%,
-    rgb(255 255 255 / 30%) 30%,
-    rgb(255 255 255 / 45%) 45%,
-    rgb(114 114 114 / 79%) 60%
-  );
-  /* background: transparent;
-  box-shadow: #0d2948 -55px 4px 0 12px;
-  border-radius: 0 0 57% 34%; */
+  right: 0; /* align to the right */
+  bottom: 0; /* adjust as needed */
+  display: flex;
+  width: 50%;
+  justify-content: flex-end;
+  border: 1px solid red; /* just for debugging */
+  z-index: 2; /* always above overlay */
 }
-.overlay0 {
-  position: absolute;
-  clip-path: polygon(0 54%, 0% 100%, 24% 100%);
-  /* clip-path: polygon(100% 84%, 0 100%, 100% 100%); */
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  z-index: 1;
-  background-color: #ffffff2d;
 
-  /* background: transparent;
-  box-shadow: #0d2948 -55px 4px 0 12px;
-  border-radius: 0 0 57% 34%; */
-}
 .AdvertiseDetailePageStyle {
   /* border-radius: 1rem; */
   border-radius: 0.5rem !important;
@@ -141,6 +117,22 @@
   margin-bottom: 1rem;
   /* overflow: scroll; */
   /* stroke-width: 0; */
+}
+.carousel-expand-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 2%;
+  width: calc(100% - 4%);
+  z-index: 5;
+  /* margin-bottom: 1rem; */
+  box-sizing: content-box;
+  /* background-color: aquamarine; */
+  font-size: 1.5rem;
 }
 .dot {
   cursor: pointer;
@@ -174,7 +166,7 @@
   text-align: center;
   background-color: 0 0;
   border: 0;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 .btn-next {
   background-color: transparent;
@@ -190,26 +182,50 @@
 
 .icon-carousel {
   color: white;
+  padding: 10px;
+  box-sizing: content-box;
   opacity: 0.6;
+  cursor: pointer;
   transition: all 0.5s ease;
 }
 .icon-carousel:hover {
   opacity: 0.9;
+  transform: scale(120%);
 }
 .icon-carousel:active {
   opacity: 0.6;
 }
+.fullscreen-modal {
+  z-index: 10 !important;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fullscreen-image {
+  max-width: 90vw;
+  max-height: 90vh;
+  object-fit: contain;
+  box-shadow: rgba(85, 85, 85, 0.645) 1.95px 1.95px 2.6px;
+}
+
 /* animate image slider */
-.fade {
-  animation-name: fadeIn;
-  animation-duration: 1.5s;
+.fade-in {
+  /* opacity: 1 !important; */
+  animation: fadeIn 0.3s ease-in-out; /* Shorter is better for UX */
 }
 
 @keyframes fadeIn {
-  0% {
-    opacity: 0.4;
+  from {
+    opacity: 0;
   }
-  100% {
+  to {
     opacity: 1;
   }
 }

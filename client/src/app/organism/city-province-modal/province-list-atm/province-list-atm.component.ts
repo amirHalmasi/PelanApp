@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import {
   ModalServiceService,
   province,
@@ -7,21 +7,17 @@ import {
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgFor, NgClass } from '@angular/common';
 @Component({
-    selector: 'app-province-list-atm',
-    templateUrl: './province-list-atm.component.html',
-    styleUrls: ['./province-list-atm.component.css'],
-    standalone: true,
-    imports: [
-        NgFor,
-        NgClass,
-        FontAwesomeModule,
-    ],
+  selector: 'app-province-list-atm',
+  templateUrl: './province-list-atm.component.html',
+  styleUrls: ['./province-list-atm.component.css'],
+  standalone: true,
+  imports: [NgFor, NgClass, FontAwesomeModule],
 })
 export class ProvinceListAtmComponent implements OnInit {
   // isSelectProvinces!: boolean;
   @Input() provinces!: province[];
   @Output() provinceId = new EventEmitter<number>();
-  leftArrowIcon = faArrowLeft;
+  leftArrowIcon = faChevronLeft;
   // const getFruit = fruits.find(fruit => fruit.name === 'apples');
   // https://stackoverflow.com/questions/64470454/javascript-find-objects-in-array-with-property-containing-a-specific-string
   // provinces!: any;

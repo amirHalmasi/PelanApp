@@ -1,8 +1,57 @@
+<!-- Fullscreen Expanded Image Modal -->
+<div
+  *ngIf="isImageExpanded"
+  (click)="isImageExpanded = false"
+  class="fullscreen-modal"
+>
+  <!-- Fullscreen Image -->
+  <img
+    [src]="'https://localhost:5001/' + imagesFiles[selectedIndex].highQuality"
+    class="fullscreen-image"
+    (click)="$event.stopPropagation()"
+  />
+  <div class="carousel-expand-container">
+    <fa-icon
+      class="icon-class icon-carousel"
+      style="
+        background-color: rgb(180 46 46);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+      "
+      [icon]="icon.exit"
+      (click)="isImageExpanded = false"
+      (click)="$event.stopPropagation()"
+    ></fa-icon>
+  </div>
+  <!-- Controls in Fullscreen -->
+  <ng-container *ngIf="controls && isMoreThanOneImageExist">
+    <div class="btn-carousel btn-prev">
+      <fa-icon
+        class="icon-class icon-carousel"
+        [icon]="icon.right"
+        (click)="onPreviousClick()"
+        (click)="$event.stopPropagation()"
+      ></fa-icon>
+    </div>
+    <div class="btn-carousel btn-next">
+      <fa-icon
+        class="icon-class icon-carousel"
+        [icon]="icon.left"
+        (click)="onNextClick()"
+        (click)="$event.stopPropagation()"
+      ></fa-icon>
+    </div>
+  </ng-container>
+</div>
+
+<!-- Carousel Thumbnails -->
 <div
   [ngClass]="{ AdvertiseDetailePageStyle: isInAdvertiseDetail }"
-  *ngIf="imagesFiles && imagesFiles.length > 0"
+  *ngIf="imagesFiles?.length"
   class="carousel-container square-image-container"
 >
+  <!-- All Images -->
   <img
     class="square-image"
     *ngFor="let image of imagesFiles; let i = index"
@@ -12,14 +61,13 @@
     [alt]="i"
     [ngClass]="{
       'image-active': selectedIndex === i,
+      'fade-in': selectedIndex === i,
       advertiseDetaileImage: isInAdvertiseDetail
     }"
     loading="lazy"
   />
-  <!-- <div class="overlay0"></div> -->
-  <div [ngClass]="{ overlay1: !isInAdvertiseDetail }"></div>
-  <!-- <div [ngClass]="{ overlay2: !isInAdvertiseDetail }"></div> -->
-  <!-- <div [ngClass]="{ overlay3: !isInAdvertiseDetail }"></div> -->
+
+  <!-- Indicators -->
   <div
     *ngIf="indicators && isMoreThanOneImageExist && imagesFiles.length < 11"
     class="carousel-dot-container"
@@ -31,29 +79,32 @@
       (click)="selectedImage(i)"
     ></span>
   </div>
-  <div
-    *ngIf="controls && isMoreThanOneImageExist"
-    class="btn-carousel btn-prev"
-  >
+
+  <!-- Expand Icon -->
+  <div class="carousel-expand-container">
     <fa-icon
-      class="icon-class justify-content-center align-item-center icon-carousel icon-prev"
-      [icon]="icon.right"
-      (click)="onPreviousClick()"
+      class="icon-class icon-carousel"
+      [icon]="icon.expand"
+      *ngIf="AllowExpand"
+      (click)="isImageExpanded = true"
     ></fa-icon>
   </div>
-  <div
-    *ngIf="controls && isMoreThanOneImageExist"
-    class="btn-carousel btn-next"
-  >
-    <fa-icon
-      class="icon-class justify-content-center align-item-center icon-carousel icon-prev"
-      [icon]="icon.left"
-      (click)="onNextClick()"
-    ></fa-icon>
-  </div>
-  <!-- <div *ngIf="indicators && imagesFiles.length > 10" class="carousel-dot-container">
-    <span *ngFor="let dot of imagesFiles; let i = index" style="color: white">{{
-      "عکس" + i + "از" + imagesFiles.length
-    }}</span>
-  </div> -->
+
+  <!-- Controls -->
+  <ng-container *ngIf="controls && isMoreThanOneImageExist">
+    <div class="btn-carousel btn-prev">
+      <fa-icon
+        class="icon-class icon-carousel"
+        [icon]="icon.right"
+        (click)="onPreviousClick()"
+      ></fa-icon>
+    </div>
+    <div class="btn-carousel btn-next">
+      <fa-icon
+        class="icon-class icon-carousel"
+        [icon]="icon.left"
+        (click)="onNextClick()"
+      ></fa-icon>
+    </div>
+  </ng-container>
 </div>

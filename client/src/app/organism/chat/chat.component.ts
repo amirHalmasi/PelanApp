@@ -8,20 +8,25 @@ import {
 import { HouseAdvetisePageService } from '../house-page/house-advertise-page.service';
 import { StoreAdvetisePageService } from '../store-page/store-advertise-page.service';
 import { FormsModule } from '@angular/forms';
-import { NgFor, NgClass, NgIf, DatePipe } from '@angular/common';
+import { NgFor, NgClass, NgIf, DatePipe, SlicePipe } from '@angular/common';
+
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
-    selector: 'app-chat',
-    templateUrl: './chat.component.html',
-    styleUrls: ['./chat.component.css'],
-    standalone: true,
-    imports: [
-        NgFor,
-        NgClass,
-        NgIf,
-        FormsModule,
-        DatePipe,
-    ],
+  selector: 'app-chat',
+  templateUrl: './chat.component.html',
+  styleUrls: ['./chat.component.css'],
+  standalone: true,
+  imports: [NgFor, NgClass, NgIf, FormsModule, DatePipe, SlicePipe],
+  animations: [
+    trigger('Fade', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('0.4s ease', style({ opacity: 1 })),
+      ]),
+      // transition(':leave', [animate('0.3s ease', style({ opacity: 0 }))]),
+    ]),
+  ],
 })
 export class ChatComponent implements OnInit, OnDestroy {
   chatRooms: ChatRoomDto[] = [];
@@ -33,6 +38,8 @@ export class ChatComponent implements OnInit, OnDestroy {
     localStorage.getItem('authUser') ||
       '{isJobOwner:"",token:"",userId:0,username:""}'
   );
+
+  maxCharCountShow = 20;
 
   constructor(
     private chatService: ChatService,
@@ -79,8 +86,13 @@ export class ChatComponent implements OnInit, OnDestroy {
       console.log('messages', uniqueMessages);
     });
 
-    if (this.houseAdvertiseServ?.advertiseItem) {
+    if (
+      this.houseAdvertiseServ?.advertiseItem &&
+      this.currentUserData.userId !==
+        this.houseAdvertiseServ?.advertiseItem?.advertise.advertiserUserId
+    ) {
       this.selectedChatRoomId = chatRoomId;
+      console.log('this.selectedChatRoomId', this.selectedChatRoomId);
       this.temporaryChatroom_messageData = {
         chatRoomId: 0,
         senderId: this.currentUserData.userId,
@@ -125,6 +137,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   selectChatRoom(roomId: number) {
     // this.selectedChatRoomId = room.id;
     this.selectedChatRoomId = roomId;
+
     // this.chatService.getMessages(room.id);
     this.chatService.getMessages(roomId);
     console.log(this.selectedChatRoomId, roomId);

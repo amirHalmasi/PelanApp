@@ -22,22 +22,19 @@
         <ul>
           <li
             *ngFor="let room of chatRooms; index as i"
-            style="
-              background: #80808045;
-              padding: 7px;
-              border-radius: 8px;
-              margin: 13px 0;
-            "
             (click)="selectChatRoom(room.id)"
             [ngClass]="{
               'seleted-chatroom': selectedChatRoomId === room.id
             }"
-            class="
-            "
+            class="chat-room"
+            [@Fade]
           >
             <!-- <h4>{{ room.advertisementId }}</h4> -->
             <h4>عنوان آگهی: {{ room.chatRoomTitle }}</h4>
-            <p>آخرین پیام: {{ room.lastMessageContent }}</p>
+            <p style="word-wrap: break-word">
+              آخرین پیام:
+              {{ room.lastMessageContent | slice : 0 : maxCharCountShow }}
+            </p>
             <p style>تاریخ پیام: {{ room.lastMessageDate | date : "short" }}</p>
             <span *ngIf="room.unreadMessagesCount > 0" class="unread-count">
               پیام‌های خوانده نشده: {{ room.unreadMessagesCount }}
@@ -49,12 +46,8 @@
 
     <!-- سمت راست: صفحه چت -->
     <div class="col col-md-9" style="padding: 0">
-      <div
-        class="chat-room"
-        style="height: 100%; width: 100%"
-        *ngIf="selectedChatRoomId"
-      >
-        <div class="messages" style="height: 90%">
+      <div style="height: 100%; width: 100%" *ngIf="selectedChatRoomId">
+        <div class="messages" [@Fade] style="height: 93%">
           <div
             class="message"
             *ngFor="let msg of messages"
@@ -68,13 +61,9 @@
             <small>{{ msg.messageSentDate | date : "shortTime" }}</small>
           </div>
         </div>
-        <div
-          class="row my-1"
-          style="height: 7%; margin: calc((100% - 97%) / 2) 10px"
-        >
+        <div class="row" style="height: 7%">
           <div class="input-container">
             <input
-              class="mx-2"
               [(ngModel)]="newMessage"
               placeholder="پیام خود را وارد کنید."
             />

@@ -16,28 +16,23 @@ import { AdvetiseDataService } from '../services/advertiseData.service';
 import { HouseAdvetisePageService } from '../organism/house-page/house-advertise-page.service';
 import { NgIf, NgClass } from '@angular/common';
 import { NgbCollapse } from '@ng-bootstrap/ng-bootstrap';
+import { AdvetiseHouseDetailsService } from '../organism/advertisement-details/advertisement-details.service';
 
 @Component({
-    selector: 'app-nav-bar',
-    templateUrl: './nav-bar.component.html',
-    styleUrls: ['./nav-bar.component.css'],
-    animations: [
-        trigger('changeButtonClass', [
-            state('initial', style({ transform: 'rotateX(0deg)', opacity: 1 })),
-            state('final', style({ transform: 'rotateX(360deg)', opacity: 1 })),
-            transition('initial <=> final', animate('200ms ease-in')),
-        ]),
-        slideRightInOut,
-        fadeInOut,
-    ],
-    standalone: true,
-    imports: [
-        RouterLink,
-        NgbCollapse,
-        NgIf,
-        RouterLinkActive,
-        NgClass,
-    ],
+  selector: 'app-nav-bar',
+  templateUrl: './nav-bar.component.html',
+  styleUrls: ['./nav-bar.component.css'],
+  animations: [
+    trigger('changeButtonClass', [
+      state('initial', style({ transform: 'rotateX(0deg)', opacity: 1 })),
+      state('final', style({ transform: 'rotateX(360deg)', opacity: 1 })),
+      transition('initial <=> final', animate('200ms ease-in')),
+    ]),
+    slideRightInOut,
+    fadeInOut,
+  ],
+  standalone: true,
+  imports: [RouterLink, NgbCollapse, NgIf, RouterLinkActive, NgClass],
 })
 export class NavBarComponent implements OnInit {
   isCollapsed: boolean = true;
@@ -47,6 +42,7 @@ export class NavBarComponent implements OnInit {
   authUser: any;
 
   isTokenExist!: boolean;
+  currentUrl!: string;
 
   constructor(
     private modalServ: ModalServiceService,
@@ -55,11 +51,22 @@ export class NavBarComponent implements OnInit {
     private navbarServ: NavBarService,
     private houseAdvertiseServ: HouseAdvetisePageService,
     private advertiseDataServ: AdvetiseDataService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private advertiseDetailsServ: AdvetiseHouseDetailsService
   ) {}
   isSelectExpanded: boolean = false;
   isEditPage_On: boolean = false;
   ngOnInit(): void {
+    const cityDataString = localStorage.getItem('cityData');
+    if (cityDataString) {
+      this.cityData = JSON.parse(cityDataString);
+      this.buttonState = this.buttonState === 'initial' ? 'final' : 'initial';
+
+      // this.advertiseDetailsServ.advertiseDetailsURL.subscribe((url) => {
+      //   console.log('url subscribe nav bar from detail advertise', url);
+      // });
+      // console.log('cityDataString', cityDataString);
+    }
     this.advertiseDataServ.previousRouteURL.subscribe({
       next: (preUrl) => {
         preUrl === 'edit/house' || preUrl === 'edit/store'

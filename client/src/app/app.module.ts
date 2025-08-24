@@ -41,6 +41,8 @@ import { StoreAdvertisesProfileComponent } from './organism/my-advertises/store-
 // import { ChatLayoutComponent } from './organism/chat/chat-layout/chat-layout.component';
 import { ChatComponent } from './organism/chat/chat.component';
 import { CityProvinceModalComponent } from './organism/city-province-modal/city-province-modal.component';
+// import { DetailsComponent } from './organism/advertisement-details/house-details/details/details.component';
+
 // import { ChatRoomsComponent } from './organism/chat/chat-layout/chat-rooms/chat-rooms.component';
 // import { ChatRoomsComponent } from './organism/chat/chat-layout/chat-rooms/chat-rooms.component';
 @NgModule({
@@ -59,42 +61,15 @@ import { CityProvinceModalComponent } from './organism/city-province-modal/city-
     NavBarComponent,
     TextInputComponent,
     CityProvinceModalComponent,
-    // CityProvinceModalComponent,
-    // ActionBtnAtomComponent,
-    // ProvinceListAtmComponent,
-    // CityListAtmComponent,
-    // SearchFormComponent,
-    // LoadingAtmComponent,
-    // LoginFromComponent,
+
     HomeComponent,
-    // SignupFromComponent,
+    // DetailsComponent,
+
     SelectWitSearchComponent,
-    // AdvertiseComponent,
-    // AlertComponent,
-    // ProvinceAndCityComponent,
-    // UploadfileComponent,
-    // StoreadvertiseComponent,
-    // CommonComponent,
-    // SellStoreComponent,
-    // RentStoreComponent,
-    // ////////////
-    // HouseAdvertiseComponent,
-    // CommonHouseComponent,
-    // SellComponent,
-    // RentComponent,
-    // GroundAdvertiseComponent,
-    // HouseAdvertisePageComponent,
     StoreAdvertisePageComponent,
-    // ImageSliderComponent,
-    // ElevatorSvgComponent,
-    // ParkingSvgComponent,
-    // BedroomSvgComponent,
     CheckedSvgComponent,
-    // BookmarkSvgComponent,
     UncheckedSvgComponent,
     ThereisOrNotComponent,
-    // NumberSepratorPipe,
-    // SendRequestLoadingAtmComponent,
     AdvertisementDetailsComponent,
     HouseDetailsComponent,
     StoreDetailsComponent,

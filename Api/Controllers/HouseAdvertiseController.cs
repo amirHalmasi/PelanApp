@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Api.Controllers
 {
-   
+
     public class HouseAdvertiseController : BaseApiController
     {
         private readonly DataContext _context;
@@ -50,22 +50,22 @@ namespace Api.Controllers
                 }
 
                 // Update the properties
-                existingAd.AdvertiseType = sellHouseDto.advertiseType;   
+                existingAd.AdvertiseType = sellHouseDto.advertiseType;
                 // existingAd.Username = sellHouseDto.username;
-                existingAd.BuildingName = sellHouseDto.buildingName;       
-                existingAd.Floor = sellHouseDto.floor;       
-                existingAd.HasElevator = sellHouseDto.hasElevator.ToString();       
-                existingAd.HasWareHouse = sellHouseDto.hasHouseWare.ToString();       
-                existingAd.WareHouseMeter = sellHouseDto.wareHouseMeter;       
-                existingAd.HouseMeter = sellHouseDto.houseMeter;       
-                existingAd.HouseType = sellHouseDto.houseType;       
-                existingAd.Orientation = sellHouseDto.orientations;       
-                existingAd.ParkingType = sellHouseDto.parkingType;    
+                existingAd.BuildingName = sellHouseDto.buildingName;
+                existingAd.Floor = sellHouseDto.floor;
+                existingAd.HasElevator = sellHouseDto.hasElevator.ToString();
+                existingAd.HasWareHouse = sellHouseDto.hasHouseWare.ToString();
+                existingAd.WareHouseMeter = sellHouseDto.wareHouseMeter;
+                existingAd.HouseMeter = sellHouseDto.houseMeter;
+                existingAd.HouseType = sellHouseDto.houseType;
+                existingAd.Orientation = sellHouseDto.orientations;
+                existingAd.ParkingType = sellHouseDto.parkingType;
                 existingAd.HasParking = sellHouseDto.hasParking;
-                existingAd.Rooms = sellHouseDto.rooms;    
-                existingAd.ProvinceId = sellHouseDto.province;    
-                existingAd.CityId = sellHouseDto.city;    
-                existingAd.Description = sellHouseDto.desc;    
+                existingAd.Rooms = sellHouseDto.rooms;
+                existingAd.ProvinceId = sellHouseDto.province;
+                existingAd.CityId = sellHouseDto.city;
+                existingAd.Description = sellHouseDto.desc;
                 existingAd.Neighborhood = sellHouseDto.neighborhood;
                 existingAd.State = sellHouseDto.state;
                 existingAd.TejariMeter = sellHouseDto.tejariMeter;
@@ -73,7 +73,7 @@ namespace Api.Controllers
                 existingAd.HouseDocument = sellHouseDto.houseDocument;
                 existingAd.GroundMeter = sellHouseDto.groundMeter;
                 existingAd.Floors = sellHouseDto.floors;
-                existingAd.AllUnits = sellHouseDto.allUnits; 
+                existingAd.AllUnits = sellHouseDto.allUnits;
                 // existingAd.AdvertiseSubmitDate = DateTime.Now;  // Update the submit date
 
                 // Save the updated advertise back to the database
@@ -81,9 +81,9 @@ namespace Api.Controllers
 
                 return new AdvertiseSuccessDto
                 {
-                    AdvertiseType = existingAd.AdvertiseType, 
-                    AdvertiseSubmitDate = existingAd.AdvertiseSubmitDate,       
-                    Username = existingAd.Username,  
+                    AdvertiseType = existingAd.AdvertiseType,
+                    AdvertiseSubmitDate = existingAd.AdvertiseSubmitDate,
+                    Username = existingAd.Username,
                     AdvertiseCode = existingAd.AdvertiseCode,
                 };
             }
@@ -116,32 +116,32 @@ namespace Api.Controllers
                 }
 
                 // Update the properties
-                
-            
-                    existingAd.AdvertiseType = RentHouseDto.advertiseType;  
-                    // existingAd.Username = RentHouseDto.username;                      
-                    existingAd.BuildingName = RentHouseDto.buildingName;      
-                    existingAd.Floor = RentHouseDto.floor;      
-                    existingAd.HasElevator = RentHouseDto.hasElevator.ToString();      
-                    existingAd.HasWareHouse = RentHouseDto.hasHouseWare.ToString();      
-                    existingAd.WareHouseMeter = RentHouseDto.wareHouseMeter;      
-                    existingAd.HouseMeter = RentHouseDto.houseMeter;      
-                    existingAd.HouseType = RentHouseDto.houseType;      
-                    existingAd.Orientation = RentHouseDto.orientations;      
-                    existingAd.ParkingType = RentHouseDto.parkingType;
-                    existingAd.HasParking = RentHouseDto.hasParking;
-                    existingAd.Rooms = RentHouseDto.rooms;   
-                    existingAd.ProvinceId = RentHouseDto.province;   
-                    existingAd.CityId = RentHouseDto.city;   
-                    existingAd.Description = RentHouseDto.desc;   
-                    existingAd.Neighborhood = RentHouseDto.neighborhood;   
-                    existingAd.FlatStatusType = RentHouseDto.flatStatusType;   
-                    existingAd.HouseEmptyDate = DateTime.Now;   
-                    existingAd.EntryType = RentHouseDto.entryType;   
-                    existingAd.DepositPrice = RentHouseDto.depositPrice;   
-                    existingAd.RentPrice = RentHouseDto.rentPrice;   
-                    existingAd.BranchStatus = RentHouseDto.controlType;   
-                    existingAd.RentFlatType = RentHouseDto.rentFlatType;
+
+
+                existingAd.AdvertiseType = RentHouseDto.advertiseType;
+                // existingAd.Username = RentHouseDto.username;                      
+                existingAd.BuildingName = RentHouseDto.buildingName;
+                existingAd.Floor = RentHouseDto.floor;
+                existingAd.HasElevator = RentHouseDto.hasElevator.ToString();
+                existingAd.HasWareHouse = RentHouseDto.hasHouseWare.ToString();
+                existingAd.WareHouseMeter = RentHouseDto.wareHouseMeter;
+                existingAd.HouseMeter = RentHouseDto.houseMeter;
+                existingAd.HouseType = RentHouseDto.houseType;
+                existingAd.Orientation = RentHouseDto.orientations;
+                existingAd.ParkingType = RentHouseDto.parkingType;
+                existingAd.HasParking = RentHouseDto.hasParking;
+                existingAd.Rooms = RentHouseDto.rooms;
+                existingAd.ProvinceId = RentHouseDto.province;
+                existingAd.CityId = RentHouseDto.city;
+                existingAd.Description = RentHouseDto.desc;
+                existingAd.Neighborhood = RentHouseDto.neighborhood;
+                existingAd.FlatStatusType = RentHouseDto.flatStatusType;
+                existingAd.HouseEmptyDate = DateTime.Now;
+                existingAd.EntryType = RentHouseDto.entryType;
+                existingAd.DepositPrice = RentHouseDto.depositPrice;
+                existingAd.RentPrice = RentHouseDto.rentPrice;
+                existingAd.BranchStatus = RentHouseDto.controlType;
+                existingAd.RentFlatType = RentHouseDto.rentFlatType;
                 // existingAd.AdvertiseSubmitDate = DateTime.Now;  // Update the submit date
 
                 // Save the updated advertise back to the database
@@ -149,9 +149,9 @@ namespace Api.Controllers
 
                 return new AdvertiseSuccessDto
                 {
-                    AdvertiseType = existingAd.AdvertiseType, 
-                    AdvertiseSubmitDate = existingAd.AdvertiseSubmitDate,       
-                    Username = existingAd.Username,  
+                    AdvertiseType = existingAd.AdvertiseType,
+                    AdvertiseSubmitDate = existingAd.AdvertiseSubmitDate,
+                    Username = existingAd.Username,
                     AdvertiseCode = existingAd.AdvertiseCode,
                 };
             }
@@ -171,55 +171,55 @@ namespace Api.Controllers
             {
                 return BadRequest(new { message = "Token is missing" });
             }
-        
+
             try
             {
                 var rentHouseData = new HouseRentAdvertise
                 {
-            
-                    AdvertiseType = RentHouseDto.advertiseType,   
+
+                    AdvertiseType = RentHouseDto.advertiseType,
                     Username = RentHouseDto.username,
                     AdvertiserUserId = RentHouseDto.advertiserUserId,
-                    AdvertiseCode = RentHouseDto.advertiseCode,   
-                    BuildingName = RentHouseDto.buildingName,       
-                    Floor = RentHouseDto.floor,       
-                    HasElevator = RentHouseDto.hasElevator.ToString(),       
-                    HasWareHouse = RentHouseDto.hasHouseWare.ToString(),       
-                    WareHouseMeter = RentHouseDto.wareHouseMeter,       
-                    HouseMeter = RentHouseDto.houseMeter,       
-                    HouseType = RentHouseDto.houseType,       
-                    Orientation = RentHouseDto.orientations,       
+                    AdvertiseCode = RentHouseDto.advertiseCode,
+                    BuildingName = RentHouseDto.buildingName,
+                    Floor = RentHouseDto.floor,
+                    HasElevator = RentHouseDto.hasElevator.ToString(),
+                    HasWareHouse = RentHouseDto.hasHouseWare.ToString(),
+                    WareHouseMeter = RentHouseDto.wareHouseMeter,
+                    HouseMeter = RentHouseDto.houseMeter,
+                    HouseType = RentHouseDto.houseType,
+                    Orientation = RentHouseDto.orientations,
                     ParkingType = RentHouseDto.parkingType,
                     HasParking = RentHouseDto.hasParking,
-                    Rooms = RentHouseDto.rooms,    
-                    ProvinceId = RentHouseDto.province,    
-                    CityId = RentHouseDto.city,    
-                    Description = RentHouseDto.desc,    
-                    Neighborhood = RentHouseDto.neighborhood,    
-                    FlatStatusType = RentHouseDto.flatStatusType,    
-                    AdvertiseViews = 0, 
+                    Rooms = RentHouseDto.rooms,
+                    ProvinceId = RentHouseDto.province,
+                    CityId = RentHouseDto.city,
+                    Description = RentHouseDto.desc,
+                    Neighborhood = RentHouseDto.neighborhood,
+                    FlatStatusType = RentHouseDto.flatStatusType,
+                    AdvertiseViews = 0,
                     // submitDate   
-                    AdvertiseSubmitDate = DateTime.Now, 
+                    AdvertiseSubmitDate = DateTime.Now,
                     // HouseEmptyDate = RentHouseDto.HouseEmptyDate,    
-                    HouseEmptyDate = DateTime.Now,    
-                    EntryType = RentHouseDto.entryType,    
-                    DepositPrice = RentHouseDto.depositPrice,    
-                    RentPrice = RentHouseDto.rentPrice,    
-                    BranchStatus = RentHouseDto.controlType,    
+                    HouseEmptyDate = DateTime.Now,
+                    EntryType = RentHouseDto.entryType,
+                    DepositPrice = RentHouseDto.depositPrice,
+                    RentPrice = RentHouseDto.rentPrice,
+                    BranchStatus = RentHouseDto.controlType,
                     RentFlatType = RentHouseDto.rentFlatType
                 };
 
-                
+
                 _context.HouseRentAdvertise.Add(rentHouseData);
                 await _context.SaveChangesAsync();
                 return new AdvertiseSuccessDto
                 {
-                    AdvertiseType = rentHouseData.AdvertiseType, 
-                    AdvertiseSubmitDate = rentHouseData.AdvertiseSubmitDate,       
-                    Username = rentHouseData.Username,  
+                    AdvertiseType = rentHouseData.AdvertiseType,
+                    AdvertiseSubmitDate = rentHouseData.AdvertiseSubmitDate,
+                    Username = rentHouseData.Username,
                     AdvertiserUserId = rentHouseData.AdvertiserUserId,
                     AdvertiseCode = rentHouseData.AdvertiseCode,
-                
+
                 };
             }
             catch (Exception ex)
@@ -238,37 +238,37 @@ namespace Api.Controllers
             {
                 return BadRequest(new { message = "Token is missing" });
             }
-        
+
             try
             {
                 var sellHouseData = new HouseSellAdvertise
                 {
-            
-                    AdvertiseType = sellHouseDto.advertiseType,   
+
+                    AdvertiseType = sellHouseDto.advertiseType,
                     Username = sellHouseDto.username,
                     AdvertiserUserId = sellHouseDto.advertiserUserId,
-                    AdvertiseCode = sellHouseDto.advertiseCode,   
-                    BuildingName = sellHouseDto.buildingName,       
-                    Floor = sellHouseDto.floor,       
-                    HasElevator = sellHouseDto.hasElevator.ToString(),       
-                    HasWareHouse = sellHouseDto.hasHouseWare.ToString(),       
-                    WareHouseMeter = sellHouseDto.wareHouseMeter,       
-                    HouseMeter = sellHouseDto.houseMeter,       
-                    HouseType = sellHouseDto.houseType,       
-                    Orientation = sellHouseDto.orientations,       
-                    ParkingType = sellHouseDto.parkingType,    
+                    AdvertiseCode = sellHouseDto.advertiseCode,
+                    BuildingName = sellHouseDto.buildingName,
+                    Floor = sellHouseDto.floor,
+                    HasElevator = sellHouseDto.hasElevator.ToString(),
+                    HasWareHouse = sellHouseDto.hasHouseWare.ToString(),
+                    WareHouseMeter = sellHouseDto.wareHouseMeter,
+                    HouseMeter = sellHouseDto.houseMeter,
+                    HouseType = sellHouseDto.houseType,
+                    Orientation = sellHouseDto.orientations,
+                    ParkingType = sellHouseDto.parkingType,
 
                     HasParking = sellHouseDto.hasParking,
 
-                    Rooms = sellHouseDto.rooms,    
-                    ProvinceId = sellHouseDto.province,    
-                    CityId = sellHouseDto.city,    
-                    Description = sellHouseDto.desc,    
-                    Neighborhood = sellHouseDto.neighborhood,    
+                    Rooms = sellHouseDto.rooms,
+                    ProvinceId = sellHouseDto.province,
+                    CityId = sellHouseDto.city,
+                    Description = sellHouseDto.desc,
+                    Neighborhood = sellHouseDto.neighborhood,
                     // FlatStatusType = sellHouseDto.flatStatusType,    
-                    AdvertiseViews = 0, 
+                    AdvertiseViews = 0,
                     // submitDate   
-                    AdvertiseSubmitDate = DateTime.Now, 
+                    AdvertiseSubmitDate = DateTime.Now,
                     // HouseEmptyDate = sellHouseDto.HouseEmptyDate,                        
                     State = sellHouseDto.state,
                     TejariMeter = sellHouseDto.tejariMeter,
@@ -276,22 +276,22 @@ namespace Api.Controllers
                     HouseDocument = sellHouseDto.houseDocument,
                     GroundMeter = sellHouseDto.groundMeter,
                     Floors = sellHouseDto.floors,
-                    AllUnits = sellHouseDto.allUnits, 
-                    
-                   
+                    AllUnits = sellHouseDto.allUnits,
+
+
                 };
 
-                
+
                 _context.HouseSellAdvertise.Add(sellHouseData);
                 await _context.SaveChangesAsync();
                 return new AdvertiseSuccessDto
                 {
-                    AdvertiseType = sellHouseData.AdvertiseType, 
-                    AdvertiseSubmitDate = sellHouseData.AdvertiseSubmitDate,       
-                    Username = sellHouseData.Username,  
+                    AdvertiseType = sellHouseData.AdvertiseType,
+                    AdvertiseSubmitDate = sellHouseData.AdvertiseSubmitDate,
+                    Username = sellHouseData.Username,
                     AdvertiserUserId = sellHouseData.AdvertiserUserId,
                     AdvertiseCode = sellHouseData.AdvertiseCode,
-                
+
                 };
             }
             catch (Exception ex)
@@ -300,7 +300,7 @@ namespace Api.Controllers
             }
 
         }
-        
+
 
         private List<string> GetFilesFromDirectory(string baseFolderName, string subFolderName)
         {
@@ -314,6 +314,8 @@ namespace Api.Controllers
             return new List<string>();
         }
 
+
+       
         [HttpGet("{city_id}")]
         public async Task<ActionResult<IEnumerable<object>>> GetAllAdvertises(string city_id)
         {
@@ -387,10 +389,77 @@ namespace Api.Controllers
             }
         }
 
+ [HttpGet("housesell/{advertiseCode}")]
+        public async Task<ActionResult<IEnumerable<object>>> GetSpecificSellAdvertises(string AdvertiseCode)
+        {
+            try
+            {
+                var sellAdvertises = await _context.HouseSellAdvertise
+                    .Where(h => h.AdvertiseCode == AdvertiseCode)
+                    .ToListAsync();
+
+                var advertiseWithFiles = new List<object>();
+
+                foreach (var advertise in sellAdvertises)
+                {
+                    string username = advertise.Username;
+                    string advertiseCode = advertise.AdvertiseCode;
+
+                    var lowQualityFiles = GetFilesFromDirectory("Resources/Images", Path.Combine(username, advertiseCode, "lowQuality"));
+                    var highQualityFiles = GetFilesFromDirectory("Resources/Images", Path.Combine(username, advertiseCode, "highQuality"));
+
+                    var todayDate = DateTime.Now;
+                    var submitDate = advertise.AdvertiseSubmitDate;
+
+                    // Calculate differences
+                    var diffInDays = (todayDate - submitDate).TotalDays;
+                    var diffInHours = (todayDate - submitDate).TotalHours;
+                    var diffInMonths = (todayDate.Year - submitDate.Year) * 12 + todayDate.Month - submitDate.Month;
+
+                    var filePairs = new List<object>();
+                    if (highQualityFiles.Any() && lowQualityFiles.Any())
+                    {
+                        filePairs = highQualityFiles.Select((high, index) => new
+                        {
+                            HighQuality = high,
+                            LowQuality = lowQualityFiles.ElementAtOrDefault(index)
+                        }).ToList<object>();
+                    }
+                    else
+                    {
+                        var placeholderLow = GetFilesFromDirectory("Resources/Images", "placeholder/lowQuality");
+                        var placeholderHigh = GetFilesFromDirectory("Resources/Images", "placeholder/highQuality");
+                        filePairs = placeholderHigh.Select((high, index) => new
+                        {
+                            HighQuality = high,
+                            LowQuality = placeholderLow.ElementAtOrDefault(index)
+                        }).ToList<object>();
+                    }
+
+                    advertiseWithFiles.Add(new
+                    {
+                        Advertise = advertise,
+                        Files = filePairs,
+                        TodayDate = todayDate,
+                        DiffInDays = (int)diffInDays,
+                        DiffInHours = (int)diffInHours,
+                        DiffInMonths = diffInMonths
+                    });
+                }
+
+                return Ok(advertiseWithFiles);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An error occurred while retrieving the advertisements." });
+            }
+        }
+
+
 
         // getSpecific advertise with ADVERTISE cODE
         [HttpGet("houserent/{advertiseCode}")]
-        public async Task<ActionResult<IEnumerable<object>>> GetSpecificAdvertises(string AdvertiseCode)
+        public async Task<ActionResult<IEnumerable<object>>> GetSpecificRentAdvertises(string AdvertiseCode)
         {
             try
             {
@@ -402,56 +471,61 @@ namespace Api.Controllers
                 //     .Where(h => h.CityId == city_id)
                 //     .ToListAsync();
 
-                var Advertises = rentAdvertises.Cast<object>()
-                    // .Concat(sellAdvertises.Cast<object>())
-                    .ToList();
+                // var Advertises = rentAdvertises.Cast<object>()
+                //     // .Concat(sellAdvertises.Cast<object>())
+                //     .ToList();
 
                 var advertiseWithFiles = new List<object>();
 
-                foreach (var advertise in Advertises)
+                foreach (var advertise in rentAdvertises)
                 {
-                    string username = (advertise as HouseRentAdvertise).Username;
-                    string advertiseCode = (advertise as HouseRentAdvertise).AdvertiseCode;
+                    // string username = (advertise as HouseRentAdvertise).Username;
+                    string username = advertise.Username;
+                    string advertiseCode = advertise.AdvertiseCode;
 
                     var lowQualityFiles = GetFilesFromDirectory("Resources/Images", Path.Combine(username, advertiseCode, "lowQuality"));
                     var highQualityFiles = GetFilesFromDirectory("Resources/Images", Path.Combine(username, advertiseCode, "highQuality"));
+                    var todayDate = DateTime.Now;
+                    var submitDate = advertise.AdvertiseSubmitDate;
+
+                    // Calculate differences
+                    var diffInDays = (todayDate - submitDate).TotalDays;
+                    var diffInHours = (todayDate - submitDate).TotalHours;
+                    var diffInMonths = (todayDate.Year - submitDate.Year) * 12 + todayDate.Month - submitDate.Month;
+
+                    var filePairs = new List<object>();
 
                     if (highQualityFiles.Any() && lowQualityFiles.Any())
                     {
-                        var filePairs = highQualityFiles.Select((highQuality, index) => new
-                        {
-                            HighQuality = highQuality,
-                            LowQuality = lowQualityFiles.ElementAtOrDefault(index)
-                        }).ToList();
 
-                        advertiseWithFiles.Add(new
+                        filePairs = highQualityFiles.Select((high, index) => new
                         {
-                            Advertise = advertise,
-                            Files = filePairs,
-                            TodayDate = DateTime.Now
-                        });
+                            HighQuality = high,
+                            LowQuality = lowQualityFiles.ElementAtOrDefault(index)
+                        }).ToList<object>();
+
                     }
                     else
                     {
-                        var lowQualityPlaceHolderFiles = GetFilesFromDirectory("Resources/Images", "placeholder/lowQuality");
-                        var placeholderFiles = GetFilesFromDirectory("Resources/Images", "placeholder/highQuality");
-
-                        if (placeholderFiles.Any() && lowQualityPlaceHolderFiles.Any())
+                        var placeholderLow = GetFilesFromDirectory("Resources/Images", "placeholder/lowQuality");
+                        var placeholderHigh = GetFilesFromDirectory("Resources/Images", "placeholder/highQuality");
+                        filePairs = placeholderHigh.Select((high, index) => new
                         {
-                            var filePairs = placeholderFiles.Select((highQuality, index) => new
-                            {
-                                HighQuality = highQuality,
-                                LowQuality = lowQualityPlaceHolderFiles.ElementAtOrDefault(index)
-                            }).ToList();
-
-                            advertiseWithFiles.Add(new
-                            {
-                                Advertise = advertise,
-                                Files = filePairs,
-                                TodayDate = DateTime.Now
-                            });
-                        }
+                            HighQuality = high,
+                            LowQuality = placeholderLow.ElementAtOrDefault(index)
+                        }).ToList<object>();
                     }
+                    
+                     advertiseWithFiles.Add(new
+                    {
+                        Advertise = advertise,
+                        Files = filePairs,
+                        TodayDate = todayDate,
+                        DiffInDays = (int)diffInDays,
+                        DiffInHours = (int)diffInHours,
+                        DiffInMonths = diffInMonths
+                    });
+                   
                 }
 
                 return Ok(advertiseWithFiles);
@@ -467,7 +541,10 @@ namespace Api.Controllers
         // // public ActionResult<List<AppUser>> 
         // public async Task<ActionResult<IEnumerable<HouseRentAdvertise>>> GetAdvertises(){
         //     return await _context.HouseRentAdvertise.ToListAsync();
-             
+
         // }
+        
+
+       
     }
 }

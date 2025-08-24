@@ -18,6 +18,8 @@ namespace Api.DTOs
         public int UnreadMessagesCount { get; set; }
         public string ChatRoomTitle { get; set; }
         public DateTime? LastMessageDate { get; set; }
+        public long ChatRoomCode { get; set; }
+
     }
 }
 

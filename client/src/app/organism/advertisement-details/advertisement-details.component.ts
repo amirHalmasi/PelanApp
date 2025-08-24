@@ -6,7 +6,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HouseAdvetisePageService } from '../house-page/house-advertise-page.service';
 import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
 import { StoreAdvetisePageService } from '../store-page/store-advertise-page.service';
@@ -15,6 +15,7 @@ import { HouseDetailsComponent } from './house-details/house-details.component';
 import { NgIf } from '@angular/common';
 import { map, Subscription } from 'rxjs';
 import * as moment from 'jalali-moment';
+import { AdvetiseHouseDetailsService } from './advertisement-details.service';
 
 @Component({
   selector: 'app-advertisement-details',
@@ -29,11 +30,14 @@ export class AdvertisementDetailsComponent implements OnInit, OnDestroy {
   isHouse!: boolean;
   isStore!: boolean;
   previousRouteURL$!: Subscription;
+  currentUrl!: string;
   constructor(
     private houseAdvertiseServ: HouseAdvetisePageService,
     private storeAdvertiseServ: StoreAdvetisePageService,
     private advertiseDataServ: AdvetiseDataService,
-    private route: ActivatedRoute
+    private advertiseDetailsServ: AdvetiseHouseDetailsService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     const advertiseType = this.route.snapshot.params['advertiseType'];
     const advertiseCode = +this.route.snapshot.params['advertiseCode'];
@@ -49,7 +53,7 @@ export class AdvertisementDetailsComponent implements OnInit, OnDestroy {
 
     this.previousRouteURL$ = this.advertiseDataServ.previousRouteURL.subscribe({
       next: (previousUrl_Data) => {
-        console.log('previousUrl_Data', previousUrl_Data);
+        console.log('previousUrl_Data advertise detail', previousUrl_Data);
 
         if (
           previousUrl_Data === 'house' &&
@@ -70,46 +74,60 @@ export class AdvertisementDetailsComponent implements OnInit, OnDestroy {
           this.isHouse = false;
         } else {
           if (advertiseType == 'houserent' && advertiseCode) {
-            this.houseAdvertiseServ
-              .getSpecificHouseAdverise(advertiseCode)
-              .pipe(
-                // Calculate the difference in days between todayDate and advertiseSubmitDate
-                map((data: any[]) => {
-                  return data.map((advertiseObj) => {
-                    console.log('all advertise s house ct', advertiseObj);
-                    const advertiseSubmitDate = moment(
-                      advertiseObj.advertise.advertiseSubmitDate
-                    );
-                    const todayDate = moment(advertiseObj.todayDate);
-                    console.log('advertiseSubmitDate', advertiseSubmitDate);
-                    console.log('todayDate', todayDate);
+            this.advertiseDetailsServ
+              .getSpecificHouseRentAdverise(advertiseCode)
+              // .pipe(
+              //   // Calculate the difference in days between todayDate and advertiseSubmitDate
+              //   map((data: any[]) => {
+              //     return data.map((advertiseObj) => {
+              //       console.log('all advertise rent house ct', advertiseObj);
+              //       const advertiseSubmitDate = moment(
+              //         advertiseObj.advertise.advertiseSubmitDate
+              //       );
+              //       const todayDate = moment(advertiseObj.todayDate);
+              //       console.log('advertiseSubmitDate', advertiseSubmitDate);
+              //       console.log('todayDate', todayDate);
 
-                    // Calculate the difference in days
-                    const diffInDay = todayDate.diff(
-                      advertiseSubmitDate,
-                      'days'
-                    );
-                    const diffInHour = todayDate.diff(
-                      advertiseSubmitDate,
-                      'hours'
-                    );
-                    const diffInMonth = todayDate.diff(
-                      advertiseSubmitDate,
-                      'months'
-                    );
+              //       // Calculate the difference in days
+              //       const diffInDay = todayDate.diff(
+              //         advertiseSubmitDate,
+              //         'days'
+              //       );
+              //       const diffInHour = todayDate.diff(
+              //         advertiseSubmitDate,
+              //         'hours'
+              //       );
+              //       const diffInMonth = todayDate.diff(
+              //         advertiseSubmitDate,
+              //         'months'
+              //       );
 
-                    // Add the difference to the object
-                    return {
-                      ...advertiseObj,
-                      diffInDay,
-                      diffInHour,
-                      diffInMonth,
-                    };
-                  });
-                })
-              )
+              //       // Add the difference to the object
+              //       return {
+              //         ...advertiseObj,
+              //         diffInDay,
+              //         diffInHour,
+              //         diffInMonth,
+              //       };
+              //     });
+              //   })
+              // )
               .subscribe({
                 next: (data) => {
+                  console.log('my rent details data', data);
+                  [this.advertiseData] = data;
+                  [this.houseAdvertiseServ.advertiseItem] = data;
+                  console.log(data[0]);
+                  this.isStore = false;
+                  this.isHouse = true;
+                },
+              });
+          } else if (advertiseType == 'housesell' && advertiseCode) {
+            this.advertiseDetailsServ
+              .getSpecificHouseSellAdverise(advertiseCode)
+              .subscribe({
+                next: (data) => {
+                  console.log('my sell details data', data);
                   [this.advertiseData] = data;
                   [this.houseAdvertiseServ.advertiseItem] = data;
                   console.log(data[0]);
@@ -119,16 +137,6 @@ export class AdvertisementDetailsComponent implements OnInit, OnDestroy {
               });
           }
         }
-        //   // this.previuosUrl = previousUrl_Data;
-        // if (previousUrl_Data === 'house') {
-        //   this.isHouse = true;
-        //   this.isStore = false;
-        //   // this.advertiseDataServ.previousRouteURL.next('');
-        // } else if (previousUrl_Data === 'store') {
-        //   this.isStore = true;
-        //   this.isHouse = false;
-        //   // this.advertiseDataServ.previousRouteURL.next('');
-        // }
       },
     });
   }
@@ -136,6 +144,10 @@ export class AdvertisementDetailsComponent implements OnInit, OnDestroy {
     this.previousRouteURL$.unsubscribe();
   }
   ngOnInit(): void {
+    // this.currentUrl = this.router.url;
+    // console.log('advertise detail init url', this.currentUrl);
+    this.advertiseDetailsServ.advertiseDetailsURL.next(this.currentUrl);
+
     // this.advertiseData = this.houseAdvertiseServ.advertiseItem;
     ////////////////////////////////////////////////////// //
     // this.activatedroute.data.subscribe((data) => {

@@ -6,7 +6,15 @@ import {
   Input,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormGroupDirective,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { ReplaySubject, Subject, take, takeUntil } from 'rxjs';
 import { slideRightInOut } from 'src/app/services/animation';
@@ -23,22 +31,22 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-    selector: 'app-province-and-city',
-    templateUrl: './province-and-city.component.html',
-    styleUrls: ['./province-and-city.component.css'],
-    animations: [slideRightInOut],
-    standalone: true,
-    imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatOptionModule,
-        NgxMatSelectSearchModule,
-        NgFor,
-        NgIf,
-        AsyncPipe,
-    ],
+  selector: 'app-province-and-city',
+  templateUrl: './province-and-city.component.html',
+  styleUrls: ['./province-and-city.component.css'],
+  animations: [slideRightInOut],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule,
+    NgxMatSelectSearchModule,
+    NgFor,
+    NgIf,
+    AsyncPipe,
+  ],
 })
 export class ProvinceAndCityComponent {
   provinces!: province[];

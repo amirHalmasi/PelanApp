@@ -3,6 +3,260 @@
     <app-loading-atm></app-loading-atm>
   </div>
   <ng-template #advertises>
+    <!-- دکمه باز کردن سایدبار -->
+    <button
+      class="btn btn-danger d-flex align-items-center gap-1 m-2"
+      (click)="openSidebar()"
+    >
+      <i class="bi bi-funnel"></i>
+      فیلتر
+    </button>
+
+    <!-- سایدبار -->
+    <div
+      class="filter-sidebar"
+      [class.show]="sidebarOpen"
+      (click)="closeSidebar()"
+    >
+      <div class="sidebar-content" (click)="$event.stopPropagation()">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="mb-0">فیلترها</h5>
+          <button
+            class="btn-close"
+            style="border: 0; box-shadow: none"
+            (click)="closeSidebar()"
+          ></button>
+        </div>
+
+        <!-- فیلتر نوع -->
+        <div
+          class="btn-group btn-group-container w-100 mb-3"
+          style="display: flex; flex-direction: row-reverse"
+        >
+          <button
+            type="button"
+            class="btn"
+            [ngClass]="{
+              'btn-secondary': selectedType === 'sell',
+              'btn-outline-secondary': selectedType !== 'sell'
+            }"
+            (click)="onFilterChange('sell')"
+          >
+            فروش
+          </button>
+          <button
+            type="button"
+            class="btn"
+            [ngClass]="{
+              'btn-secondary': selectedType === 'rent',
+              'btn-outline-secondary': selectedType !== 'rent'
+            }"
+            (click)="onFilterChange('rent')"
+          >
+            اجاره
+          </button>
+          <button
+            type="button"
+            class="btn"
+            [ngClass]="{
+              'btn-secondary': selectedType === 'all',
+              'btn-outline-secondary': selectedType !== 'all'
+            }"
+            (click)="onFilterChange('all')"
+          >
+            همه
+          </button>
+        </div>
+
+        <!-- آکاردئون: مرتب‌سازی بر اساس قیمت -->
+        <div class="accordion mb-3">
+          <div
+            class="accordion-item border-gradient border-gradient-purple"
+            style="background: #b0b0b029"
+          >
+            <div class="accordion-header" style="background-color: transparent">
+              <button
+                class="accordion-button collapsed border-gradient border-gradient-purple font-color"
+                style="
+                  border: 0;
+                  box-shadow: none;
+                  background-color: transparent;
+                "
+                type="button"
+                (click)="toggleAccordion('price')"
+              >
+                مرتب‌سازی بر اساس قیمت
+              </button>
+            </div>
+            <div class="accordion-collapse" [class.show]="accordion.price">
+              <div class="accordion-body">
+                <button
+                  class="btn w-100 mb-1"
+                  style="border: 0; border-radius: 0"
+                  [ngClass]="{
+                    'btn-secondary': sortOrder === 'asc',
+                    'btn-outline-secondary font-color': sortOrder !== 'asc'
+                  }"
+                  (click)="onSortSelect('asc'); dateSortOrder = ''"
+                >
+                  صعودی
+                </button>
+                <button
+                  class="btn w-100"
+                  style="border: 0; border-radius: 0"
+                  [ngClass]="{
+                    'btn-secondary': sortOrder === 'desc',
+                    'btn-outline-secondary font-color': sortOrder !== 'desc'
+                  }"
+                  (click)="onSortSelect('desc'); dateSortOrder = ''"
+                >
+                  نزولی
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- آکاردئون: مرتب‌سازی بر اساس تاریخ -->
+        <div class="accordion mb-3">
+          <div
+            class="accordion-item border-gradient border-gradient-purple"
+            style="background: #b0b0b029"
+          >
+            <div class="accordion-header" style="background-color: transparent">
+              <button
+                class="accordion-button collapsed border-gradient border-gradient-purple font-color"
+                style="
+                  border: 0;
+                  box-shadow: none;
+                  background-color: transparent;
+                "
+                type="button"
+                (click)="toggleAccordion('date')"
+              >
+                مرتب‌سازی بر اساس تاریخ
+              </button>
+            </div>
+            <div class="accordion-collapse" [class.show]="accordion.date">
+              <div class="accordion-body">
+                <button
+                  class="btn w-100 mb-1"
+                  style="border: 0; border-radius: 0"
+                  [ngClass]="{
+                    'btn-secondary': dateSortOrder === 'newest',
+                    'btn-outline-secondary font-color':
+                      dateSortOrder !== 'newest'
+                  }"
+                  (click)="onDateSortSelect('newest'); sortOrder = ''"
+                >
+                  جدیدترین
+                </button>
+                <button
+                  class="btn w-100"
+                  style="border: 0; border-radius: 0"
+                  [ngClass]="{
+                    'btn-secondary': dateSortOrder === 'oldest',
+                    'btn-outline-secondary font-color':
+                      dateSortOrder !== 'oldest'
+                  }"
+                  (click)="onDateSortSelect('oldest'); sortOrder = ''"
+                >
+                  قدیمی‌ترین
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- فیلتر قیمت -->
+        <ng-container *ngIf="selectedType === 'sell'">
+          <div class="mb-3">
+            <label class="form-label">حداقل قیمت</label>
+            <input
+              type="text"
+              class="form-control border-gradient price-input"
+              [ngModel]="priceFilter.sell.min"
+              (ngModelChange)="setSellMinPrice($event)"
+            />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">حداکثر قیمت</label>
+            <input
+              type="text"
+              class="form-control border-gradient price-input"
+              [ngModel]="priceFilter.sell.max"
+              (ngModelChange)="setSellMaxPrice($event)"
+            />
+          </div>
+          <button
+            class="btn btn-secondary w-100 mt-3"
+            (click)="applyFilters(); closeSidebar()"
+          >
+            اعمال فیلتر
+          </button>
+        </ng-container>
+
+        <ng-container *ngIf="selectedType === 'rent'">
+          <div class="mb-3">
+            <label
+              class="form-label"
+              style="
+                display: flex;
+                justify-content: space-between;
+                padding-right: 1rem;
+              "
+              >حداکثر مبلغ رهن
+              <fa-icon
+                *ngIf="priceFilter.rent.maxDeposit"
+                class="icon-class icon-carousel"
+                [icon]="icon.eraser"
+                (click)="
+                  priceFilter.rent.maxDeposit = undefined; applyFilters()
+                "
+              ></fa-icon
+            ></label>
+            <input
+              type="text"
+              class="form-control border-gradient price-input"
+              [ngModel]="priceFilter.rent.maxDeposit"
+              (ngModelChange)="setRentMaxDeposit($event)"
+            />
+          </div>
+          <div class="mb-3">
+            <label
+              class="form-label"
+              style="
+                display: flex;
+                justify-content: space-between;
+                padding-right: 1rem;
+              "
+              >حداکثر مبلغ اجاره
+              <fa-icon
+                *ngIf="priceFilter.rent.maxRent"
+                class="icon-class icon-carousel"
+                [icon]="icon.eraser"
+                (click)="priceFilter.rent.maxRent = undefined; applyFilters()"
+              ></fa-icon
+            ></label>
+            <input
+              type="text"
+              class="form-control border-gradient price-input"
+              [ngModel]="priceFilter.rent.maxRent"
+              (ngModelChange)="setRentMaxRent($event)"
+            />
+          </div>
+          <button
+            class="btn btn-secondary w-100 mt-3"
+            (click)="applyFilters(); closeSidebar()"
+          >
+            اعمال فیلتر
+          </button>
+        </ng-container>
+
+        <!-- دکمه اعمال -->
+      </div>
+    </div>
+
     <div class="row">
       <!-- <div class="row"><router-outlet></router-outlet></div> -->
 
@@ -18,7 +272,7 @@
         <cdk-virtual-scroll-viewport
           minBufferPx="180"
           maxBufferPx="360"
-          itemSize="220"
+          itemSize="200"
           class="viewport"
         >
           <div *cdkVirtualFor="let itemPairs of items; let i = index">
@@ -30,11 +284,65 @@
                 [id]="i.toString() + j.toString()"
               >
                 <div
-                  class="card card-shadow horizontal-card"
+                  class="card prevent-select card-shadow horizontal-card"
                   style="overflow: hidden"
                 >
                   <div class="card-head parent-box">
                     <app-carousel [imagesFiles]="item.files"></app-carousel>
+                    <div class="overlay1"></div>
+                    <div
+                      style="
+                        display: flex;
+                        /* border: 1px solid red; */
+                        box-sizing: content-box;
+                        flex-direction: row;
+                        justify-content: flex-end;
+                        width: 10rem;
+                        position: absolute;
+                        bottom: 1%;
+                        left: 8%;
+                      "
+                    >
+                      <div
+                        class="card-details"
+                        style="z-index: 2; margin-left: 0.4rem; cursor: pointer"
+                        [ngClass]="{
+                          'icon-box-shadow': item.advertise.hasElevator
+                        }"
+                      >
+                        <app-elevator-svg
+                          [isShow]="item.advertise.hasElevator"
+                        ></app-elevator-svg>
+                        <!-- <app-thereis-or-not
+                        [determineCheckedOrUnchecked]="
+                          item.advertise.hasElevator
+                        "
+                      ></app-thereis-or-not> -->
+                      </div>
+                      <div
+                        class="card-details"
+                        style="z-index: 2; margin-left: 0.4rem; cursor: pointer"
+                      >
+                        <app-parking-svg
+                          [isShow]="item.advertise.hasParking"
+                        ></app-parking-svg>
+                        <!-- <app-thereis-or-not
+                        [determineCheckedOrUnchecked]="
+                          item.advertise.parkingType &&
+                          item.advertise.parkingType !== 'none'
+                        "
+                      ></app-thereis-or-not> -->
+                      </div>
+                    </div>
+                    <div>
+                      <div class="card-details room-container">
+                        <app-bedroom-svg></app-bedroom-svg>
+                        <span class="room-counts">{{
+                          "       :  " + item.advertise.rooms
+                        }}</span>
+                      </div>
+                    </div>
+
                     <!-- <div class="overlay"></div> -->
                   </div>
                   <div class="card-body" (click)="navigateTo(i, j, item)">
@@ -66,7 +374,7 @@
                             padding: 0.2rem;
                             border-radius: 0.1rem;
                             /* color: red; */
-                            font-size: 0.7rem;
+                            font-size: 0.8rem;
                             font-weight: bold;
                             text-align: left;
                             position: absolute;
@@ -81,69 +389,16 @@
                       <div
                         class="d-flex justify-content-between align-items-baseline"
                       >
-                        <!-- <span
-                          *ngIf="item.advertise.isHighlighted"
-                          class="high-light-main high-light"
-                        >
-                          هایلایت
-                        </span> -->
-                        <app-bookmark-svg
+                        <!-- <app-bookmark-svg
                           style="z-index: 4"
                           *ngIf="item.advertise.isRated || true"
                           class="rated-advertise-high-light"
                         >
-                        </app-bookmark-svg>
+                        </app-bookmark-svg> -->
                       </div>
                     </div>
                     <!-- <div class="card-data-container child-box"> -->
-                    <div
-                      class="card-details"
-                      style="
-                        position: absolute;
-                        left: 70%;
-                        bottom: 1%;
-                        z-index: 2;
-                      "
-                      [ngClass]="{
-                        'icon-box-shadow': item.advertise.hasElevator
-                      }"
-                    >
-                      <span>
-                        <app-elevator-svg
-                          [isShow]="item.advertise.hasElevator"
-                        ></app-elevator-svg
-                      ></span>
-                      <!-- <app-thereis-or-not
-                        [determineCheckedOrUnchecked]="
-                          item.advertise.hasElevator
-                        "
-                      ></app-thereis-or-not> -->
-                    </div>
-                    <div class="card-details room-container">
-                      <app-bedroom-svg></app-bedroom-svg>
-                      <span class="room-counts">{{
-                        "       :  " + item.advertise.rooms
-                      }}</span>
-                    </div>
-                    <div
-                      class="card-details"
-                      style="
-                        position: absolute;
-                        left: 64%;
-                        bottom: 1%;
-                        z-index: 2;
-                      "
-                    >
-                      <app-parking-svg
-                        [isShow]="item.advertise.hasParking"
-                      ></app-parking-svg>
-                      <!-- <app-thereis-or-not
-                        [determineCheckedOrUnchecked]="
-                          item.advertise.parkingType &&
-                          item.advertise.parkingType !== 'none'
-                        "
-                      ></app-thereis-or-not> -->
-                    </div>
+
                     <!-- </div> -->
                     <div
                       [ngClass]="{
@@ -166,7 +421,7 @@
                           <!-- <span class="price" -->
                           <span
                             >{{
-                              item.advertise.rentPrice | numberSeprator
+                              item.advertise.depositPrice | numberSeprator
                             }}
                             تومان</span
                           >
@@ -183,7 +438,7 @@
                           <!-- <span class="price" -->
                           <span
                             >{{
-                              item.advertise.depositPrice | numberSeprator
+                              item.advertise.rentPrice | numberSeprator
                             }}
                             تومان</span
                           >

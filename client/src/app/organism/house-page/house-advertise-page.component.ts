@@ -7,8 +7,8 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { faBed, faCar } from '@fortawesome/free-solid-svg-icons';
-import { fadeInOut } from 'src/app/services/animation';
+import { faBed, faCar, faEraser } from '@fortawesome/free-solid-svg-icons';
+import { AcordionSlideDown, fadeInOut } from 'src/app/services/animation';
 import { HouseAdvetisePageService } from './house-advertise-page.service';
 import { fromEvent, map, Subscription } from 'rxjs';
 import { ModalServiceService } from 'src/app/services/modal-service.service';
@@ -27,16 +27,28 @@ import { ElevatorSvgComponent } from './elevator-svg/elevator-svg.component';
 import { BookmarkSvgComponent } from './bookmark-svg/bookmark-svg.component';
 import { CarouselComponent } from '../carousel/carousel.component';
 import { LoadingAtmComponent } from '../loading-atm/loading-atm.component';
-import { NgIf, NgFor, NgClass, NgSwitch, NgSwitchCase } from '@angular/common';
+import {
+  NgIf,
+  NgFor,
+  NgClass,
+  NgSwitch,
+  NgSwitchCase,
+  CommonModule,
+} from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 // import { Component } from '@angular/core';
 type Position = 'start' | 'mid' | 'end';
 @Component({
   selector: 'app-house-advertise-page',
   templateUrl: './house-advertise-page.component.html',
   styleUrls: ['./house-advertise-page.component.css'],
-  animations: [fadeInOut],
+  animations: [fadeInOut, AcordionSlideDown],
   standalone: true,
   imports: [
+    FontAwesomeModule,
+    CommonModule,
+    FormsModule,
     NgIf,
     LoadingAtmComponent,
     CdkVirtualScrollViewport,
@@ -45,7 +57,7 @@ type Position = 'start' | 'mid' | 'end';
     NgFor,
     CarouselComponent,
     NgClass,
-    BookmarkSvgComponent,
+    // BookmarkSvgComponent,
     ElevatorSvgComponent,
     BedroomSvgComponent,
     ParkingSvgComponent,
@@ -57,6 +69,25 @@ type Position = 'start' | 'mid' | 'end';
 export class HouseAdvertisePageComponent
   implements OnInit, OnDestroy, AfterViewInit
 {
+  icon = {
+    eraser: faEraser,
+  };
+  selectedType: 'all' | 'sell' | 'rent' = 'all'; // حالت اولیه: نمایش همه آگهی‌ها
+  priceFilter = {
+    sell: {
+      min: undefined as string | undefined,
+      max: undefined as string | undefined,
+    },
+    rent: {
+      maxRent: undefined as string | undefined,
+      maxDeposit: undefined as string | undefined,
+    },
+  };
+  sortOrder: 'asc' | 'desc' | '' = '';
+  dateSortOrder: 'newest' | 'oldest' | '' = 'newest';
+  showDateSortDropdown = false;
+  showAdvertiseDetails: boolean = false;
+  showSortDropdown = false;
   items!: any;
   startIndex!: number;
   lastIndex!: number;
@@ -70,7 +101,7 @@ export class HouseAdvertisePageComponent
   );
   isLoadingAdvertises!: boolean;
   houseAdvSubscribtion!: Subscription;
-  showAdvertiseDetails: boolean = false;
+  showPriceFilter: boolean = false;
   constructor(
     private houseAdvertiseServ: HouseAdvetisePageService,
     private cityModalServ: ModalServiceService,
@@ -185,8 +216,8 @@ export class HouseAdvertisePageComponent
         this.flattenChunks(this.items),
         this.arrayElemrntPairCount(this.deviceWidth)
       );
-      console.log('new width', this.deviceWidth);
-      console.log('new structure after resize', this.items);
+      // console.log('new width', this.deviceWidth);
+      // console.log('new structure after resize', this.items);
       // this.cdr.detectChanges();
     });
 
@@ -201,6 +232,15 @@ export class HouseAdvertisePageComponent
           )
         )
       )
+      // .pipe(
+      //   map((data) => {
+      //     this.deviceWidth = window.innerWidth;//added 20/5/404
+      //     this.groupIntoChunks(
+      //       this.flattenChunks(data),
+      //       this.arrayElemrntPairCount(this.deviceWidth)
+      //     );
+      //   })
+      // )
       .subscribe({
         next: (modifiedData) => {
           this.items = modifiedData;
@@ -228,6 +268,7 @@ export class HouseAdvertisePageComponent
     return chunkedArray;
   }
   private flattenChunks(chunkedArray: any[][]): any[] {
+    console.log('flaten', chunkedArray);
     return chunkedArray.reduce((acc, val) => acc.concat(val), []);
   }
   arrayElemrntPairCount(deviceWidth: number) {
@@ -245,42 +286,24 @@ export class HouseAdvertisePageComponent
     // return pairArrayCount;
     return pairArrayCount;
   }
-  // itemsSlices(itemIndex: number) {
-  //   // return this.items.slice(itemIndex, itemIndex + 3);
-
-  //   if (window.innerWidth < 576) {
-  //     return this.items.slice(itemIndex, itemIndex + 1);
-  //   } else if (window.innerWidth >= 576 && window.innerWidth < 768) {
-  //     return this.items.slice(itemIndex, itemIndex + 2);
-  //   } else if (window.innerWidth >= 768 && window.innerWidth < 1200) {
-  //     return this.items.slice(itemIndex, itemIndex + 3);
-  //   } else if (window.innerWidth <= 1200) {
-  //     return this.items.slice(itemIndex, itemIndex + 4);
-  //   }
-  //   // return this.items.slice(itemIndex, itemIndex + 1);
-  //   return this.items.slice(itemIndex, itemIndex + 1);
-  // }
 
   getAllAdvertises(city_id: string) {
     this.isLoadingAdvertises = true;
     this.houseAdvertiseServ
       .getHouseAdvertises(city_id)
       .pipe(
-        // Calculate the difference in days between todayDate and advertiseSubmitDate
         map((data: any[]) => {
-          return data.map((advertiseObj) => {
-            console.log('all advertise s house ct', advertiseObj);
+          // افزودن اختلاف زمانی به هر آگهی
+          const enrichedData = data.map((advertiseObj) => {
             const advertiseSubmitDate = moment(
               advertiseObj.advertise.advertiseSubmitDate
             );
             const todayDate = moment(advertiseObj.todayDate);
 
-            // Calculate the difference in days
             const diffInDay = todayDate.diff(advertiseSubmitDate, 'days');
             const diffInHour = todayDate.diff(advertiseSubmitDate, 'hours');
             const diffInMonth = todayDate.diff(advertiseSubmitDate, 'months');
 
-            // Add the difference to the object
             return {
               ...advertiseObj,
               diffInDay,
@@ -288,14 +311,20 @@ export class HouseAdvertisePageComponent
               diffInMonth,
             };
           });
+
+          // مرتب‌سازی بر اساس تاریخ آگهی به صورت نزولی (جدیدترین بالا)
+          enrichedData.sort((a, b) => {
+            const dateA = moment(a.advertise.advertiseSubmitDate).valueOf();
+            const dateB = moment(b.advertise.advertiseSubmitDate).valueOf();
+            return dateB - dateA; // جدیدترین در بالا
+          });
+
+          return enrichedData;
         })
       )
       .subscribe({
         next: (data) => {
-          console.log('advertises request', data);
           this.houseAdvertiseServ.houseAdvertises.next(data);
-
-          // this.items = data;
         },
         error: (err) => {
           this.isLoadingAdvertises = false;
@@ -303,11 +332,242 @@ export class HouseAdvertisePageComponent
         },
         complete: () => {
           this.isLoadingAdvertises = false;
-          // this.houseAdvertiseServ.houseAdvertises.complete();
         },
       });
   }
 
   icons = { bed: faBed, parking: faCar };
   activeSlideIndex = 0;
+
+  togglePriceDropdown() {
+    this.showPriceFilter = !this.showPriceFilter;
+  }
+  onFilterChange(type: 'sell' | 'rent' | 'all') {
+    this.selectedType = type;
+
+    // فقط در صورتی که از sell به حالت دیگه میریم یا بالعکس، فیلتر قیمت رو ریست کن
+    if (type !== 'sell') {
+      this.priceFilter.sell.min = undefined;
+      this.priceFilter.sell.max = undefined;
+    }
+    if (type !== 'rent') {
+      this.priceFilter.rent.maxDeposit = undefined;
+      this.priceFilter.rent.maxRent = undefined;
+    }
+
+    this.applyFilters();
+  }
+
+  toggleSortDropdown() {
+    this.showSortDropdown = !this.showSortDropdown;
+  }
+
+  onSortSelect(value: '' | 'asc' | 'desc') {
+    this.sortOrder = value;
+    this.showSortDropdown = false;
+    this.applyFilters();
+  }
+
+  applyPriceFilter() {
+    this.applyFilters();
+  }
+  // typeFilter(selectedType:string) {
+  //   if (selectedType !== 'all') {
+  //     filterd = filterd.filter(
+  //       (item) => item.advertise.advertiseType === this.selectedType
+  //     );
+  //   }
+  // }
+  applyFilters() {
+    const flattened = this.flattenChunks(
+      this.houseAdvertiseServ.houseAdvertises.getValue()
+    );
+    let filterd = flattened;
+
+    // ====== فیلتر نوع آگهی ======
+    if (this.selectedType !== 'all') {
+      filterd = filterd.filter(
+        (item) => item.advertise.advertiseType === this.selectedType
+      );
+    }
+
+    // ====== فیلتر قیمت فروش ======
+    if (this.selectedType === 'sell') {
+      const { min, max } = this.priceFilter.sell;
+      if (max !== '' || min !== '') {
+        filterd = filterd.filter((item) => {
+          const price = +item.advertise.price; // به ریال
+          const minCheck = min ? price >= +min : true;
+          const maxCheck = max ? price <= +max : true;
+          return minCheck && maxCheck;
+        });
+      } else {
+        filterd = flattened;
+        filterd = filterd.filter(
+          (item) => item.advertise.advertiseType === this.selectedType
+        );
+      }
+    }
+
+    // ====== فیلتر قیمت اجاره ======
+    if (this.selectedType === 'rent') {
+      const { maxRent, maxDeposit } = this.priceFilter.rent;
+      if (maxDeposit !== '' || maxDeposit !== '') {
+        filterd = filterd.filter((item) => {
+          const deposit = +item.advertise.depositPrice;
+          const rent = +item.advertise.rentPrice;
+
+          const depositCheck = maxDeposit ? deposit <= +maxDeposit : true;
+          const rentCheck = maxRent ? rent <= +maxRent : true;
+
+          // اگر هر دو مقدار وارد شدن → هر دو باید درست باشن
+          // اگر یکی وارد شد → همون رو چک کن
+          return depositCheck && rentCheck;
+        });
+      } else {
+        filterd = flattened;
+        filterd = filterd.filter(
+          (item) => item.advertise.advertiseType === this.selectedType
+        );
+      }
+    }
+
+    // ====== مرتب‌سازی قیمت ======
+    if (this.sortOrder) {
+      filterd = filterd.sort((a, b) => {
+        // مرتب‌سازی فروش
+        if (
+          a.advertise.advertiseType === 'sell' &&
+          b.advertise.advertiseType === 'sell'
+        ) {
+          const aPrice = +a.advertise.price;
+          const bPrice = +b.advertise.price;
+          return this.sortOrder === 'asc' ? aPrice - bPrice : bPrice - aPrice;
+        }
+
+        // مرتب‌سازی اجاره
+        if (
+          a.advertise.advertiseType === 'rent' &&
+          b.advertise.advertiseType === 'rent'
+        ) {
+          const aDeposit = +a.advertise.depositPrice;
+          const bDeposit = +b.advertise.depositPrice;
+
+          if (aDeposit !== bDeposit) {
+            return this.sortOrder === 'asc'
+              ? aDeposit - bDeposit
+              : bDeposit - aDeposit;
+          } else {
+            const aRent = +a.advertise.rentPrice;
+            const bRent = +b.advertise.rentPrice;
+            return this.sortOrder === 'asc' ? aRent - bRent : bRent - aRent;
+          }
+        }
+
+        // وقتی همه آگهی‌ها انتخاب شده
+        if (this.selectedType === 'all') {
+          if (
+            a.advertise.advertiseType === 'sell' &&
+            b.advertise.advertiseType === 'rent'
+          )
+            return -1;
+          if (
+            a.advertise.advertiseType === 'rent' &&
+            b.advertise.advertiseType === 'sell'
+          )
+            return 1;
+        }
+
+        return 0;
+      });
+    }
+
+    // ====== مرتب‌سازی تاریخ وقتی قیمت فعال نیست ======
+    if (!this.sortOrder) {
+      if (this.dateSortOrder === 'newest') {
+        filterd = filterd.sort(
+          (a, b) =>
+            new Date(b.advertise.advertiseSubmitDate).getTime() -
+            new Date(a.advertise.advertiseSubmitDate).getTime()
+        );
+      } else if (this.dateSortOrder === 'oldest') {
+        filterd = filterd.sort(
+          (a, b) =>
+            new Date(a.advertise.advertiseSubmitDate).getTime() -
+            new Date(b.advertise.advertiseSubmitDate).getTime()
+        );
+      }
+    }
+
+    // ====== خروجی نهایی ======
+    this.items = this.groupIntoChunks(
+      filterd,
+      this.arrayElemrntPairCount(this.deviceWidth)
+    );
+  }
+
+  // مقداردهی به فیلتر فروش
+  setSellMinPrice(val: string) {
+    this.priceFilter.sell.min = val;
+  }
+
+  setSellMaxPrice(val: string) {
+    this.priceFilter.sell.max = val;
+  }
+
+  // مقداردهی به فیلتر اجاره
+  setRentMaxDeposit(val: string) {
+    this.priceFilter.rent.maxDeposit = val.toString();
+  }
+
+  setRentMaxRent(val: string) {
+    this.priceFilter.rent.maxRent = val.toString();
+  }
+  closePriceDialog() {
+    this.showPriceFilter = false;
+  }
+  closeSortDialog() {
+    this.showSortDropdown = false;
+  }
+  closeDateSortDialog() {
+    this.showDateSortDropdown = false;
+  }
+
+  toggleDateSortDropdown() {
+    this.showDateSortDropdown = !this.showDateSortDropdown;
+  }
+
+  onDateSortSelect(value: '' | 'newest' | 'oldest') {
+    this.dateSortOrder = value;
+    this.sortOrder = '';
+    this.showDateSortDropdown = false;
+    this.applyFilters();
+  }
+  sidebarOpen = false;
+  accordion = {
+    price: false,
+    date: false,
+  };
+
+  openSidebar() {
+    this.sidebarOpen = true;
+    if (this.dateSortOrder) {
+      this.accordion['date'] = true;
+    } else if (this.sortOrder) {
+      this.accordion['price'] = true;
+    }
+  }
+
+  closeSidebar() {
+    this.sidebarOpen = false;
+    if (this.sortOrder == '') {
+      this.accordion['price'] = false;
+    } else if (this.dateSortOrder == '') {
+      this.accordion['date'] = false;
+    }
+  }
+
+  toggleAccordion(key: 'price' | 'date') {
+    this.accordion[key] = !this.accordion[key];
+  }
 }

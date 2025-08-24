@@ -3,10 +3,10 @@
   justify-content: center;
   align-items: center;
   /* text-align: center; */
-  font-size: 1.3rem;
+  font-size: 1rem;
 }
 .my-list-element * {
-  font-family: "IranSans", "nazanin", "Courier New", Courier, monospace;
+  font-family: "IranianSans", "nazanin", "Courier New", Courier, monospace;
 }
 .my-list-element {
   display: flex;
@@ -20,7 +20,7 @@
   /* border: 10px solid rgb(16, 44, 9); */
 }
 .my-list-cells {
-  font-size: 1rem;
+  font-size: 0.875rem;
   font-weight: 500;
   height: 100%;
   width: 30%;
@@ -92,7 +92,7 @@
   display: block;
   transition: 0.2s;
   font-size: 1rem;
-  color: rgb(12, 102, 234);
+  color: rgba(8, 98, 233, 0.549);
   font-weight: 700;
 }
 
@@ -100,8 +100,14 @@
   padding-bottom: 6px;
   font-weight: 700;
   border-width: 3px;
-  border-image: linear-gradient(to right, rgb(201, 48, 63), rgb(12, 102, 234));
+  /* border-image: linear-gradient(to right, rgb(201, 48, 63), rgb(12, 102, 234)); */
   border-image-slice: 1;
+  border-image-source: linear-gradient(
+    to left,
+    rgb(201 48 63 / 12%) 1%,
+    rgb(12 102 234 / 15%) 65%,
+    rgba(255, 255, 255, 0) 98%
+  );
 }
 
 /* reset input */

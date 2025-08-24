@@ -1,9 +1,9 @@
 <nav class="navbar navbar-expand-lg bg-light rtl-dir">
   <div class="container-fluid custome-header">
     <!-- <div class="col justify-content-evenly"> -->
-    <div class="row w-100 justify-content-between">
+    <div class="row w-100 justify-content-between fixed-height">
       <a
-        class="navbar-brand col-3"
+        class="navbar-brand col-3 align-brand-center"
         (click)="isCollapsed = true"
         [routerLink]="'home'"
         >پلان</a
@@ -105,7 +105,17 @@
             [routerLink]="['/advertise']"
             aria-current="page"
             (click)="isCollapsed = !isCollapsed"
-            >{{ isEditPage_On ? "ویرایش آکهی" : "درج آگهی" }}</a
+            *ngIf="isEditPage_On"
+          >
+            ویرایش آکهی</a
+          >
+          <a
+            class="nav-link"
+            [routerLink]="['/advertise/house']"
+            aria-current="page"
+            (click)="isCollapsed = !isCollapsed"
+            *ngIf="!isEditPage_On"
+            >درج آگهی</a
           >
         </li>
         <li
@@ -165,7 +175,7 @@
               'btn-success': cityData && cityData.city_name != ''
             }"
             [@changeButtonClass]="buttonState"
-            style="font-size: 0.8rem"
+            style="font-size: 1rem"
           >
             {{ cityData ? cityData.city_name : "انتخاب شهر" }}
           </button>

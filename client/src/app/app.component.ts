@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
 })
 export class AppComponent implements OnInit {
   ngOnInit(): void {
-    localStorage.removeItem('cityData');
+    // localStorage.removeItem('cityData');
   }
   title = 'Client';
   isMOdalOpen!: boolean;

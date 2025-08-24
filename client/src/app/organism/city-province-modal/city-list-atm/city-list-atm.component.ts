@@ -1,6 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import {
   ModalServiceService,
   city,
@@ -13,24 +18,24 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgIf, NgFor, NgClass } from '@angular/common';
 
 @Component({
-    selector: 'app-city-list-atm',
-    templateUrl: './city-list-atm.component.html',
-    styleUrls: ['./city-list-atm.component.css'],
-    standalone: true,
-    imports: [
-        NgIf,
-        FormsModule,
-        ReactiveFormsModule,
-        NgFor,
-        NgClass,
-        FontAwesomeModule,
-        LoadingAtmComponent,
-    ],
+  selector: 'app-city-list-atm',
+  templateUrl: './city-list-atm.component.html',
+  styleUrls: ['./city-list-atm.component.css'],
+  standalone: true,
+  imports: [
+    NgIf,
+    FormsModule,
+    ReactiveFormsModule,
+    NgFor,
+    NgClass,
+    FontAwesomeModule,
+    LoadingAtmComponent,
+  ],
 })
 export class CityListAtmComponent implements OnInit {
   @Input() province_id!: number;
   @Output() citySelected = new EventEmitter();
-  leftArrowIcon = faArrowLeft;
+  leftArrowIcon = faChevronLeft;
   cities!: city[];
   citiesConstant!: city[];
   isloading!: boolean;
@@ -50,6 +55,7 @@ export class CityListAtmComponent implements OnInit {
       searchInput: [''], // You can set default value or validators here
     });
     // this.modalServ.isLoading.next(true);
+
     this.isloading = true;
     this.modalServ.getCities(this.province_id).subscribe((province_cities) => {
       console.log('cties', province_cities);

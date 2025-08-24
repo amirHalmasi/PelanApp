@@ -22,6 +22,9 @@ import { MyAdvertisesComponent } from './organism/my-advertises/my-advertises.co
 import { HouseAdvertisesProfileComponent } from './organism/my-advertises/house-advertises-profile/house-advertises-profile.component';
 import { StoreAdvertisesProfileComponent } from './organism/my-advertises/store-advertises-profile/store-advertises-profile.component';
 import { ChatComponent } from './organism/chat/chat.component';
+import { canMatchAdvertiseGuard } from './guards/can-match-advertise-page-guard';
+// import { canMatchAdvertiseGuard } from './guards/can-activate-add-advertises-page.guard';
+// import { canActivateAddAdvertisePageGuard } from './guards/can-activate-add-advertises-page.guard';
 
 const routes: Routes = [
   {
@@ -49,6 +52,7 @@ const routes: Routes = [
   },
   {
     path: 'houseAdvertise',
+    canActivate: [CanActivateHousePageGuard],
     loadChildren: () =>
       import('./organism/house-page/house-advertise-page.module').then(
         (m) => m.HouseAdvertisePageModule
@@ -84,6 +88,9 @@ const routes: Routes = [
   },
   {
     path: 'advertise',
+    // canActivate: [canActivateAddAdvertisePageGuard],
+
+    canMatch: [canMatchAdvertiseGuard],
     loadChildren: () =>
       import('./organism/advertise/advertise.module').then(
         (m) => m.AdvertiseModule
@@ -122,7 +129,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'home',
+    redirectTo: '',
   },
 ];
 

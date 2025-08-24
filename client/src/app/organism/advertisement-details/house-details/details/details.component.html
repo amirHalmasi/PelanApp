@@ -1,0 +1,7 @@
+<h5 class="w-100 details" #content [ngClass]="classes">
+  <!-- <h5 class="w-100 details" [class]="'w-100 details ' + classes"></h5> -->
+  <span>{{ lable }} </span>
+  <span [ngClass]="{ mark: star_Value?.includes(value) }">{{
+    value_text_persian
+  }}</span>
+</h5>

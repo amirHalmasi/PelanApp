@@ -6,7 +6,7 @@ import { CanActivateHousePageGuard } from 'src/app/guards/can-activate-house-pag
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'houseAdvertise',
     component: HouseAdvertisePageComponent,
     canActivate: [CanActivateHousePageGuard],
   },

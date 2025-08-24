@@ -3,10 +3,10 @@
   justify-content: center;
   align-items: center;
   /* text-align: center; */
-  font-size: 1.3rem;
+  font-size: 1rem;
 }
 .my-list-element * {
-  font-family: "IranSans", "nazanin", "Courier New", Courier, monospace;
+  font-family: "IranianSans", "nazanin", "Courier New", Courier, monospace;
 }
 .my-list-element {
   display: flex;
@@ -20,7 +20,7 @@
   /* border: 10px solid rgb(16, 44, 9); */
 }
 .my-list-cells {
-  font-size: 1rem;
+  font-size: 0.875rem;
   font-weight: 500;
   height: 100%;
   width: 30%;

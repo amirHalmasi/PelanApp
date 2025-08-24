@@ -1,0 +1,11 @@
+<!-- @if (shouldShow()) {
+<div class="col col-xs-12 col-sm-6">
+  @if (contentTemplate()) {
+  <ng-container [ngTemplateOutlet]="contentTemplate()" />
+  }
+</div>
+} -->
+<div class="col col-xs-12 col-sm-6" *ngIf="isShown">
+  <ng-content></ng-content>
+  <!-- <ng-container *ngTemplateOutlet="content"></ng-container> -->
+</div>
