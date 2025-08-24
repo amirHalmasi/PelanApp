@@ -25,6 +25,9 @@ namespace Api.Data
         public DbSet<StoreSellAdvertise> StoreSellAdvertises { get; set; }
         public DbSet<storeCommonAdvertise> StoreCommonAdvertises { get; set; }
 
+
+        
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // تنظیم رابطه AppUser با Message برای فرستنده
@@ -65,6 +68,11 @@ namespace Api.Data
             // تنظیم اندیس برای بهبود عملکرد کوئری‌ها روی Message
             modelBuilder.Entity<Message>()
                 .HasIndex(m => new { m.SenderId, m.RecipientId });
+
+
+            modelBuilder.Entity<AppUser>()
+            .HasIndex(u => u.AgentLinkId)
+            .IsUnique();
 
             base.OnModelCreating(modelBuilder);
         }

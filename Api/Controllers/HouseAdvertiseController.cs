@@ -161,145 +161,277 @@ namespace Api.Controllers
             }
         }
 
-        [Authorize]
-        [HttpPost("rent")]
-        public async Task<ActionResult<AdvertiseSuccessDto>> AddRentHouseAdvertise(houseRentAddAdvertiseDto RentHouseDto)
+
+
+[Authorize]
+[HttpPost("rent")]
+public async Task<ActionResult<AdvertiseSuccessDto>> AddRentHouseAdvertise(houseRentAddAdvertiseDto RentHouseDto)
+{
+    try
+    {
+        // گرفتن اطلاعات کاربر از توکن
+        var userId = User.FindFirst("userId")?.Value;
+        var username = User.FindFirst("username")?.Value;
+
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized(new { message = "Invalid token" });
+
+        var rentHouseData = new HouseRentAdvertise
         {
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            AdvertiseType = RentHouseDto.advertiseType,
+            Username = username,                              // از توکن گرفته میشه
+            AdvertiserUserId = int.Parse(userId),             // از توکن گرفته میشه
+            AdvertiseCode = RentHouseDto.advertiseCode,
+            BuildingName = RentHouseDto.buildingName,
+            Floor = RentHouseDto.floor,
+            HasElevator = RentHouseDto.hasElevator.ToString(),
+            HasWareHouse = RentHouseDto.hasHouseWare.ToString(),
+            WareHouseMeter = RentHouseDto.wareHouseMeter,
+            HouseMeter = RentHouseDto.houseMeter,
+            HouseType = RentHouseDto.houseType,
+            Orientation = RentHouseDto.orientations,
+            ParkingType = RentHouseDto.parkingType,
+            HasParking = RentHouseDto.hasParking,
+            Rooms = RentHouseDto.rooms,
+            ProvinceId = RentHouseDto.province,
+            CityId = RentHouseDto.city,
+            Description = RentHouseDto.desc,
+            Neighborhood = RentHouseDto.neighborhood,
+            FlatStatusType = RentHouseDto.flatStatusType,
+            AdvertiseViews = 0,
+            AdvertiseSubmitDate = DateTime.Now,
+            HouseEmptyDate = DateTime.Now,
+            EntryType = RentHouseDto.entryType,
+            DepositPrice = RentHouseDto.depositPrice,
+            RentPrice = RentHouseDto.rentPrice,
+            BranchStatus = RentHouseDto.controlType,
+            RentFlatType = RentHouseDto.rentFlatType
+        };
 
-            if (string.IsNullOrEmpty(token))
-            {
-                return BadRequest(new { message = "Token is missing" });
-            }
+        _context.HouseRentAdvertise.Add(rentHouseData);
+        await _context.SaveChangesAsync();
 
-            try
-            {
-                var rentHouseData = new HouseRentAdvertise
-                {
-
-                    AdvertiseType = RentHouseDto.advertiseType,
-                    Username = RentHouseDto.username,
-                    AdvertiserUserId = RentHouseDto.advertiserUserId,
-                    AdvertiseCode = RentHouseDto.advertiseCode,
-                    BuildingName = RentHouseDto.buildingName,
-                    Floor = RentHouseDto.floor,
-                    HasElevator = RentHouseDto.hasElevator.ToString(),
-                    HasWareHouse = RentHouseDto.hasHouseWare.ToString(),
-                    WareHouseMeter = RentHouseDto.wareHouseMeter,
-                    HouseMeter = RentHouseDto.houseMeter,
-                    HouseType = RentHouseDto.houseType,
-                    Orientation = RentHouseDto.orientations,
-                    ParkingType = RentHouseDto.parkingType,
-                    HasParking = RentHouseDto.hasParking,
-                    Rooms = RentHouseDto.rooms,
-                    ProvinceId = RentHouseDto.province,
-                    CityId = RentHouseDto.city,
-                    Description = RentHouseDto.desc,
-                    Neighborhood = RentHouseDto.neighborhood,
-                    FlatStatusType = RentHouseDto.flatStatusType,
-                    AdvertiseViews = 0,
-                    // submitDate   
-                    AdvertiseSubmitDate = DateTime.Now,
-                    // HouseEmptyDate = RentHouseDto.HouseEmptyDate,    
-                    HouseEmptyDate = DateTime.Now,
-                    EntryType = RentHouseDto.entryType,
-                    DepositPrice = RentHouseDto.depositPrice,
-                    RentPrice = RentHouseDto.rentPrice,
-                    BranchStatus = RentHouseDto.controlType,
-                    RentFlatType = RentHouseDto.rentFlatType
-                };
-
-
-                _context.HouseRentAdvertise.Add(rentHouseData);
-                await _context.SaveChangesAsync();
-                return new AdvertiseSuccessDto
-                {
-                    AdvertiseType = rentHouseData.AdvertiseType,
-                    AdvertiseSubmitDate = rentHouseData.AdvertiseSubmitDate,
-                    Username = rentHouseData.Username,
-                    AdvertiserUserId = rentHouseData.AdvertiserUserId,
-                    AdvertiseCode = rentHouseData.AdvertiseCode,
-
-                };
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { error = "An error occurred while processing your request." });
-            }
-
-        }
-        [Authorize]
-        [HttpPost("sell")]
-        public async Task<ActionResult<AdvertiseSuccessDto>> AddSellHouseAdvertise(houseSellAddAdvertiseDto sellHouseDto)
+        return new AdvertiseSuccessDto
         {
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-
-            if (string.IsNullOrEmpty(token))
-            {
-                return BadRequest(new { message = "Token is missing" });
-            }
-
-            try
-            {
-                var sellHouseData = new HouseSellAdvertise
-                {
-
-                    AdvertiseType = sellHouseDto.advertiseType,
-                    Username = sellHouseDto.username,
-                    AdvertiserUserId = sellHouseDto.advertiserUserId,
-                    AdvertiseCode = sellHouseDto.advertiseCode,
-                    BuildingName = sellHouseDto.buildingName,
-                    Floor = sellHouseDto.floor,
-                    HasElevator = sellHouseDto.hasElevator.ToString(),
-                    HasWareHouse = sellHouseDto.hasHouseWare.ToString(),
-                    WareHouseMeter = sellHouseDto.wareHouseMeter,
-                    HouseMeter = sellHouseDto.houseMeter,
-                    HouseType = sellHouseDto.houseType,
-                    Orientation = sellHouseDto.orientations,
-                    ParkingType = sellHouseDto.parkingType,
-
-                    HasParking = sellHouseDto.hasParking,
-
-                    Rooms = sellHouseDto.rooms,
-                    ProvinceId = sellHouseDto.province,
-                    CityId = sellHouseDto.city,
-                    Description = sellHouseDto.desc,
-                    Neighborhood = sellHouseDto.neighborhood,
-                    // FlatStatusType = sellHouseDto.flatStatusType,    
-                    AdvertiseViews = 0,
-                    // submitDate   
-                    AdvertiseSubmitDate = DateTime.Now,
-                    // HouseEmptyDate = sellHouseDto.HouseEmptyDate,                        
-                    State = sellHouseDto.state,
-                    TejariMeter = sellHouseDto.tejariMeter,
-                    Price = sellHouseDto.price,
-                    HouseDocument = sellHouseDto.houseDocument,
-                    GroundMeter = sellHouseDto.groundMeter,
-                    Floors = sellHouseDto.floors,
-                    AllUnits = sellHouseDto.allUnits,
+            AdvertiseType = rentHouseData.AdvertiseType,
+            AdvertiseSubmitDate = rentHouseData.AdvertiseSubmitDate,
+            Username = rentHouseData.Username,
+            AdvertiserUserId = rentHouseData.AdvertiserUserId,
+            AdvertiseCode = rentHouseData.AdvertiseCode,
+        };
+    }
+    catch (Exception)
+    {
+        return StatusCode(500, new { error = "An error occurred while processing your request." });
+    }
+}
 
 
-                };
+[Authorize]
+[HttpPost("sell")]
+public async Task<ActionResult<AdvertiseSuccessDto>> AddSellHouseAdvertise(houseSellAddAdvertiseDto sellHouseDto)
+{
+    try
+    {
+        // گرفتن اطلاعات کاربر از توکن
+        var userId = User.FindFirst("userId")?.Value;
+        var username = User.FindFirst("username")?.Value;
+
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized(new { message = "Invalid token" });
+
+        var sellHouseData = new HouseSellAdvertise
+        {
+            AdvertiseType = sellHouseDto.advertiseType,
+            Username = username,                              // از توکن گرفته میشه
+            AdvertiserUserId = int.Parse(userId),             // از توکن گرفته میشه
+            AdvertiseCode = sellHouseDto.advertiseCode,
+            BuildingName = sellHouseDto.buildingName,
+            Floor = sellHouseDto.floor,
+            HasElevator = sellHouseDto.hasElevator.ToString(),
+            HasWareHouse = sellHouseDto.hasHouseWare.ToString(),
+            WareHouseMeter = sellHouseDto.wareHouseMeter,
+            HouseMeter = sellHouseDto.houseMeter,
+            HouseType = sellHouseDto.houseType,
+            Orientation = sellHouseDto.orientations,
+            ParkingType = sellHouseDto.parkingType,
+            HasParking = sellHouseDto.hasParking,
+            Rooms = sellHouseDto.rooms,
+            ProvinceId = sellHouseDto.province,
+            CityId = sellHouseDto.city,
+            Description = sellHouseDto.desc,
+            Neighborhood = sellHouseDto.neighborhood,
+            AdvertiseViews = 0,
+            AdvertiseSubmitDate = DateTime.Now,
+            State = sellHouseDto.state,
+            TejariMeter = sellHouseDto.tejariMeter,
+            Price = sellHouseDto.price,
+            HouseDocument = sellHouseDto.houseDocument,
+            GroundMeter = sellHouseDto.groundMeter,
+            Floors = sellHouseDto.floors,
+            AllUnits = sellHouseDto.allUnits,
+        };
+
+        _context.HouseSellAdvertise.Add(sellHouseData);
+        await _context.SaveChangesAsync();
+
+        return new AdvertiseSuccessDto
+        {
+            AdvertiseType = sellHouseData.AdvertiseType,
+            AdvertiseSubmitDate = sellHouseData.AdvertiseSubmitDate,
+            Username = sellHouseData.Username,
+            AdvertiserUserId = sellHouseData.AdvertiserUserId,
+            AdvertiseCode = sellHouseData.AdvertiseCode,
+        };
+    }
+    catch (Exception)
+    {
+        return StatusCode(500, new { error = "An error occurred while processing your request." });
+    }
+}
 
 
-                _context.HouseSellAdvertise.Add(sellHouseData);
-                await _context.SaveChangesAsync();
-                return new AdvertiseSuccessDto
-                {
-                    AdvertiseType = sellHouseData.AdvertiseType,
-                    AdvertiseSubmitDate = sellHouseData.AdvertiseSubmitDate,
-                    Username = sellHouseData.Username,
-                    AdvertiserUserId = sellHouseData.AdvertiserUserId,
-                    AdvertiseCode = sellHouseData.AdvertiseCode,
 
-                };
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { error = "An error occurred while processing your request." });
-            }
 
-        }
+        // [Authorize]
+        // [HttpPost("rent")]
+        // public async Task<ActionResult<AdvertiseSuccessDto>> AddRentHouseAdvertise(houseRentAddAdvertiseDto RentHouseDto)
+        // {
+        //     var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+        //     if (string.IsNullOrEmpty(token))
+        //     {
+        //         return BadRequest(new { message = "Token is missing" });
+        //     }
+
+        //     try
+        //     {
+        //         var rentHouseData = new HouseRentAdvertise
+        //         {
+
+        //             AdvertiseType = RentHouseDto.advertiseType,
+        //             Username = RentHouseDto.username,
+        //             AdvertiserUserId = RentHouseDto.advertiserUserId,
+        //             AdvertiseCode = RentHouseDto.advertiseCode,
+        //             BuildingName = RentHouseDto.buildingName,
+        //             Floor = RentHouseDto.floor,
+        //             HasElevator = RentHouseDto.hasElevator.ToString(),
+        //             HasWareHouse = RentHouseDto.hasHouseWare.ToString(),
+        //             WareHouseMeter = RentHouseDto.wareHouseMeter,
+        //             HouseMeter = RentHouseDto.houseMeter,
+        //             HouseType = RentHouseDto.houseType,
+        //             Orientation = RentHouseDto.orientations,
+        //             ParkingType = RentHouseDto.parkingType,
+        //             HasParking = RentHouseDto.hasParking,
+        //             Rooms = RentHouseDto.rooms,
+        //             ProvinceId = RentHouseDto.province,
+        //             CityId = RentHouseDto.city,
+        //             Description = RentHouseDto.desc,
+        //             Neighborhood = RentHouseDto.neighborhood,
+        //             FlatStatusType = RentHouseDto.flatStatusType,
+        //             AdvertiseViews = 0,
+        //             // submitDate   
+        //             AdvertiseSubmitDate = DateTime.Now,
+        //             // HouseEmptyDate = RentHouseDto.HouseEmptyDate,    
+        //             HouseEmptyDate = DateTime.Now,
+        //             EntryType = RentHouseDto.entryType,
+        //             DepositPrice = RentHouseDto.depositPrice,
+        //             RentPrice = RentHouseDto.rentPrice,
+        //             BranchStatus = RentHouseDto.controlType,
+        //             RentFlatType = RentHouseDto.rentFlatType
+        //         };
+
+
+        //         _context.HouseRentAdvertise.Add(rentHouseData);
+        //         await _context.SaveChangesAsync();
+        //         return new AdvertiseSuccessDto
+        //         {
+        //             AdvertiseType = rentHouseData.AdvertiseType,
+        //             AdvertiseSubmitDate = rentHouseData.AdvertiseSubmitDate,
+        //             Username = rentHouseData.Username,
+        //             AdvertiserUserId = rentHouseData.AdvertiserUserId,
+        //             AdvertiseCode = rentHouseData.AdvertiseCode,
+
+        //         };
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return StatusCode(500, new { error = "An error occurred while processing your request." });
+        //     }
+
+        // }
+        // [Authorize]
+        // [HttpPost("sell")]
+        // public async Task<ActionResult<AdvertiseSuccessDto>> AddSellHouseAdvertise(houseSellAddAdvertiseDto sellHouseDto)
+        // {
+        //     var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+        //     if (string.IsNullOrEmpty(token))
+        //     {
+        //         return BadRequest(new { message = "Token is missing" });
+        //     }
+
+        //     try
+        //     {
+        //         var sellHouseData = new HouseSellAdvertise
+        //         {
+
+        //             AdvertiseType = sellHouseDto.advertiseType,
+        //             Username = sellHouseDto.username,
+        //             AdvertiserUserId = sellHouseDto.advertiserUserId,
+        //             AdvertiseCode = sellHouseDto.advertiseCode,
+        //             BuildingName = sellHouseDto.buildingName,
+        //             Floor = sellHouseDto.floor,
+        //             HasElevator = sellHouseDto.hasElevator.ToString(),
+        //             HasWareHouse = sellHouseDto.hasHouseWare.ToString(),
+        //             WareHouseMeter = sellHouseDto.wareHouseMeter,
+        //             HouseMeter = sellHouseDto.houseMeter,
+        //             HouseType = sellHouseDto.houseType,
+        //             Orientation = sellHouseDto.orientations,
+        //             ParkingType = sellHouseDto.parkingType,
+
+        //             HasParking = sellHouseDto.hasParking,
+
+        //             Rooms = sellHouseDto.rooms,
+        //             ProvinceId = sellHouseDto.province,
+        //             CityId = sellHouseDto.city,
+        //             Description = sellHouseDto.desc,
+        //             Neighborhood = sellHouseDto.neighborhood,
+        //             // FlatStatusType = sellHouseDto.flatStatusType,    
+        //             AdvertiseViews = 0,
+        //             // submitDate   
+        //             AdvertiseSubmitDate = DateTime.Now,
+        //             // HouseEmptyDate = sellHouseDto.HouseEmptyDate,                        
+        //             State = sellHouseDto.state,
+        //             TejariMeter = sellHouseDto.tejariMeter,
+        //             Price = sellHouseDto.price,
+        //             HouseDocument = sellHouseDto.houseDocument,
+        //             GroundMeter = sellHouseDto.groundMeter,
+        //             Floors = sellHouseDto.floors,
+        //             AllUnits = sellHouseDto.allUnits,
+
+
+        //         };
+
+
+        //         _context.HouseSellAdvertise.Add(sellHouseData);
+        //         await _context.SaveChangesAsync();
+        //         return new AdvertiseSuccessDto
+        //         {
+        //             AdvertiseType = sellHouseData.AdvertiseType,
+        //             AdvertiseSubmitDate = sellHouseData.AdvertiseSubmitDate,
+        //             Username = sellHouseData.Username,
+        //             AdvertiserUserId = sellHouseData.AdvertiserUserId,
+        //             AdvertiseCode = sellHouseData.AdvertiseCode,
+
+        //         };
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return StatusCode(500, new { error = "An error occurred while processing your request." });
+        //     }
+
+        // }
 
 
         private List<string> GetFilesFromDirectory(string baseFolderName, string subFolderName)
@@ -389,7 +521,7 @@ namespace Api.Controllers
             }
         }
 
- [HttpGet("housesell/{advertiseCode}")]
+        [HttpGet("housesell/{advertiseCode}")]
         public async Task<ActionResult<IEnumerable<object>>> GetSpecificSellAdvertises(string AdvertiseCode)
         {
             try

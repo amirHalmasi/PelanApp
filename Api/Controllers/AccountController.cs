@@ -63,14 +63,51 @@ namespace Api.Controllers
                 IsJobOwner=registerDto.IsJobOwner
 
             };
+           // 🔹 تولید AgentLinkId فقط برای صاحبین ملک
+            if (user.IsJobOwner == 1)
+            {
+                user.AgentLinkId = GenerateAgentLinkId();
+            }
+
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
+
+            var token = _tokenService.CreateToken(user);
+
+                // 🔹 ست کردن JWT در HttpOnly Cookie
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddHours(8)
+            };
+            Response.Cookies.Append("access_token", token, cookieOptions);
+
+            // برگرداندن فقط اطلاعات غیر حساس
+            // return new UserDto
+            // {                
+            //     IsJobOwner = user.IsJobOwner.ToString(),
+            //     AgentLinkId = user.AgentLinkId
+            // };
+
             return new UserDto
             {
                 Username = user.UserName,
                 IsJobOwner = user.IsJobOwner.ToString(),
-                Token = _tokenService.CreateToken(user),
+                // Token = _tokenService.CreateToken(user),
+                Token = token,
+                AgentLinkId = user.AgentLinkId // اگر میخوای مستقیم برگرده
             };
+        }
+        private string GenerateAgentLinkId()
+        {
+            var bytes = RandomNumberGenerator.GetBytes(16); // 128-bit تصادفی
+            var jobOwnerTokenId = Convert.ToBase64String(bytes)
+                    .Replace("+", "-")
+                    .Replace("/", "_")
+                    .TrimEnd('='); // طول ~22 کاراکتر، مناسب URL
+            return jobOwnerTokenId;
         }
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
@@ -90,13 +127,36 @@ namespace Api.Controllers
                     return Unauthorized("Invalid password");
                 }
             }
+
+            var token = _tokenService.CreateToken(user);
+
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddHours(8)
+            };
+            Response.Cookies.Append("access_token", token, cookieOptions);
+
+            // return new UserDto
+            // {
+            //     // Username = user.UserName,
+            //     // UserId = user.Id,
+            //     IsJobOwner = user.IsJobOwner.ToString(),
+            //     LoginDate = DateTime.Now,
+            //     AgentLinkId = user.AgentLinkId
+            // };
+
             return new UserDto
             {
                 Username = user.UserName,
                 UserId = user.Id,
                 IsJobOwner = user.IsJobOwner.ToString(),
-                Token = _tokenService.CreateToken(user),
-                LoginDate = DateTime.Now
+                Token = token,
+                // Token = _tokenService.CreateToken(user),
+                LoginDate = DateTime.Now,
+                AgentLinkId = user.AgentLinkId
             };
 
         } 

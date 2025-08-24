@@ -11,6 +11,8 @@ namespace Api.DTOs
         public int UserId { get; set; }
         public string IsJobOwner { get; set; }
         public string Token { get; set; }
+        public string AgentLinkId { get; set; }
+        
         public DateTime LoginDate { get; set; }
         // بعدا اضافه شده
         // public int Id { get; set; }

@@ -32,6 +32,10 @@ namespace Api.Entities
         public byte[] PasswordSalt{ get; set; }
         public DateTime? Created { get; set; } = DateTime.Now;
 
+         // 🔹 توکن عمومی امن برای لینک اختصاصی (در URL استفاده می‌شود)
+        public string AgentLinkId { get; set; }  // nullable: فقط برای صاحبین املاک لازم است
+
+
         // ارتباط با پیام‌ها
         public ICollection<Message> MessagesSent { get; set; }
         public ICollection<Message> MessagesReceived { get; set; }
