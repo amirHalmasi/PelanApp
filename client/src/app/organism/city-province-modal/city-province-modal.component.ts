@@ -11,7 +11,12 @@ import {
   flipInOut,
   slideRightInOut,
 } from 'src/app/services/animation';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { HouseAdvetisePageService } from '../house-page/house-advertise-page.service';
@@ -19,23 +24,24 @@ import { CityListAtmComponent } from './city-list-atm/city-list-atm.component';
 import { ProvinceListAtmComponent } from './province-list-atm/province-list-atm.component';
 import { ActionBtnAtomComponent } from './action-btn-atom/action-btn-atom.component';
 import { NgIf } from '@angular/common';
+import { ProvinceAndCityService } from '../province-and-city-select-list/province-and-city.service';
 // to add font awesome run this command bellow:
 // ng add @fortawesome/angular-fontawesome
 //https://piped.video/watch?v=AFVgwCtYgVo
 @Component({
-    selector: 'app-city-province-modal',
-    templateUrl: './city-province-modal.component.html',
-    styleUrls: ['./city-province-modal.component.css'],
-    animations: [fadeInOut, flipInOut, slideRightInOut],
-    standalone: true,
-    imports: [
-        NgIf,
-        ActionBtnAtomComponent,
-        FormsModule,
-        ReactiveFormsModule,
-        ProvinceListAtmComponent,
-        CityListAtmComponent,
-    ],
+  selector: 'app-city-province-modal',
+  templateUrl: './city-province-modal.component.html',
+  styleUrls: ['./city-province-modal.component.css'],
+  animations: [fadeInOut, flipInOut, slideRightInOut],
+  standalone: true,
+  imports: [
+    NgIf,
+    ActionBtnAtomComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    ProvinceListAtmComponent,
+    CityListAtmComponent,
+  ],
 })
 export class CityProvinceModalComponent implements OnInit, OnDestroy {
   isModalOpen!: boolean;
@@ -71,7 +77,8 @@ export class CityProvinceModalComponent implements OnInit, OnDestroy {
 
   constructor(
     private modalServ: ModalServiceService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private provinceAndCityService: ProvinceAndCityService
   ) {}
   ngOnDestroy(): void {
     this.provinceSubscription.unsubscribe();
@@ -88,18 +95,23 @@ export class CityProvinceModalComponent implements OnInit, OnDestroy {
       this.isSelectProvincesOpen = isSelectProvincesOpen;
     });
 
-    this.modalServ.getProvinces().subscribe({
-      next: (receivedProvinces) => {
-        console.log('main modal comp', receivedProvinces);
-        this.modalServ.provinces.next(receivedProvinces);
-        this.provinces = receivedProvinces;
-        this.provincesConstant = receivedProvinces;
-        // this.modalServ.provinces.next(receivedProvinces);
-      },
-      error: (err) => {
-        console.error(err);
-      },
-    });
+    if (this.provinceAndCityService.provincesList) {
+      this.provinces = this.provinceAndCityService.provincesList;
+      this.provincesConstant = this.provinceAndCityService.provincesList;
+    }
+
+    // this.modalServ.getProvinces().subscribe({
+    //   next: (receivedProvinces) => {
+    //     console.log('main modal comp', receivedProvinces);
+    //     this.modalServ.provinces.next(receivedProvinces);
+    //     this.provinces = receivedProvinces;
+    //     this.provincesConstant = receivedProvinces;
+    //     // this.modalServ.provinces.next(receivedProvinces);
+    //   },
+    //   error: (err) => {
+    //     console.error(err);
+    //   },
+    // });
   }
   onKeyPress_onlyPersianLettersAndSpace(event: KeyboardEvent): void {
     const charCode = event.which ? event.which : event.keyCode;

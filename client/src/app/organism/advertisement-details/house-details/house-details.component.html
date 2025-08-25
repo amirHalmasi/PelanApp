@@ -22,11 +22,7 @@
               <button
                 class="btn btn-outline-danger btn-sm"
                 (click)="navigateTo()"
-                *ngIf="
-                  advertiseData?.advertise.advertiserUserId &&
-                  advertiseData?.advertise.advertiserUserId !=
-                    this.currentUserData.userId
-                "
+                *ngIf="advertiseData?.advertise.advertiserUserId"
               >
                 گپ
               </button>

@@ -121,8 +121,9 @@ export class NavBarComponent implements OnInit {
     this.http
       .post(
         'https://localhost:5001/api/account/logout',
+
         {},
-        { headers: headers }
+        { withCredentials: true }
       )
       .subscribe({
         next: (res) => {

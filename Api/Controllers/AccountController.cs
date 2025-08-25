@@ -16,14 +16,7 @@ namespace Api.Controllers
 {
     public class AccountController : BaseApiController
     {
-        // private readonly DataContext _context;
-        // private readonly ITokenService _tokenservice;
-
-        // public AccountController(DataContext context,ITokenService tokenService)
-        // {
-        //     _context = context;
-        //     _tokenservice = tokenService;
-        // }
+        
         private readonly DataContext _context;
         private readonly ITokenService _tokenService;
         private readonly ITokenBlacklistService _tokenBlacklistService;
@@ -109,57 +102,54 @@ namespace Api.Controllers
                     .TrimEnd('='); // طول ~22 کاراکتر، مناسب URL
             return jobOwnerTokenId;
         }
+
+
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
         {
-            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
+            try
+            {
+                var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
+                if(user == null) return Unauthorized("Invalid username");
 
-            if(user == null){
-                return Unauthorized("Invalid username");
-            }
+                using var hmac = new HMACSHA512(user.PasswordSalt ?? throw new Exception("PasswordSalt is null"));
+                var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
 
-            using var hmac =new HMACSHA512(user.PasswordSalt);
-
-            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
-
-            for (int i = 0; i < computedHash.Length; i++){
-                if (computedHash[i] != user.PasswordHash[i]){
+                if (computedHash.Length != user.PasswordHash.Length)
                     return Unauthorized("Invalid password");
+
+                for (int i = 0; i < computedHash.Length; i++)
+                {
+                    if (computedHash[i] != user.PasswordHash[i])
+                        return Unauthorized("Invalid password");
                 }
+
+                var token = _tokenService.CreateToken(user);
+
+                Response.Cookies.Append("access_token", token, new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict,
+                    Expires = DateTime.UtcNow.AddHours(8)
+                });
+
+                return new UserDto
+                {
+                    IsJobOwner = user.IsJobOwner.ToString(),
+                    LoginDate = DateTime.Now,
+                    AgentLinkId = user.AgentLinkId
+                };
             }
-
-            var token = _tokenService.CreateToken(user);
-
-            var cookieOptions = new CookieOptions
+            catch (Exception ex)
             {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Strict,
-                Expires = DateTime.UtcNow.AddHours(8)
-            };
-            Response.Cookies.Append("access_token", token, cookieOptions);
+                return StatusCode(500, ex.Message);
+            }
+        }
 
-            // return new UserDto
-            // {
-            //     // Username = user.UserName,
-            //     // UserId = user.Id,
-            //     IsJobOwner = user.IsJobOwner.ToString(),
-            //     LoginDate = DateTime.Now,
-            //     AgentLinkId = user.AgentLinkId
-            // };
 
-            return new UserDto
-            {
-                Username = user.UserName,
-                UserId = user.Id,
-                IsJobOwner = user.IsJobOwner.ToString(),
-                Token = token,
-                // Token = _tokenService.CreateToken(user),
-                LoginDate = DateTime.Now,
-                AgentLinkId = user.AgentLinkId
-            };
 
-        } 
+        
 
         private async Task<bool> UserExists(string UserId){
             return await _context.Users.AnyAsync(x=>
@@ -167,24 +157,55 @@ namespace Api.Controllers
         }
 
         
-        
-        
-        
         [HttpPost("logout")]
         public async Task<ActionResult> Logout()
         {
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-
-            if (string.IsNullOrEmpty(token))
+            // خواندن JWT از کوکی
+            var token = Request.Cookies["access_token"];
+            if (!string.IsNullOrEmpty(token))
             {
-                return BadRequest(new { message = "Token is missing" });
+                await _tokenBlacklistService.AddTokenToBlacklistAsync(token);
+                Response.Cookies.Delete("access_token");
+                return Ok(new { message = "Logged out successfully" });
             }
 
-            // Add token to blacklist
-            await _tokenBlacklistService.AddTokenToBlacklistAsync(token);
-
-            return Ok(new { message = "Logged out successfully" });
+            return BadRequest(new { message = "Token not found" });
         }
+        
+        
+    
+
+        // [Authorize]
+        [HttpGet("me")]
+        public async Task<ActionResult<UserInfoDto>> GetCurrentUser()
+        {
+            // گرفتن userId از Claim داخل توکن
+            var userIdClaim = User.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
+            if (userIdClaim == null) return Unauthorized();
+
+            var user = await _context.Users.FindAsync(int.Parse(userIdClaim));
+            if (user == null) return NotFound();
+
+            return new UserInfoDto
+            {
+                UserId = user.Id,
+                Username = user.UserName,
+                IsJobOwner = user.IsJobOwner.ToString(),
+                AgentLinkId = user.AgentLinkId
+            };
+        }
+        private string GetUsernameFromToken()
+        {
+            var token = Request.Cookies["access_token"];
+            if (string.IsNullOrEmpty(token)) return null;
+
+            var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var usernameClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
+
+            return usernameClaim;
+        }
+
         private List<string> GetFilesFromDirectory(string baseFolderName, string subFolderName)
         {
             var folderPath = Path.Combine(Directory.GetCurrentDirectory(), baseFolderName, subFolderName);

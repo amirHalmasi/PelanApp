@@ -28,10 +28,10 @@ import { ConditionalContainerComponent } from './conditional-container/condition
 })
 export class HouseDetailsComponent implements OnInit {
   advertiseData!: any;
-  currentUserData: any = JSON.parse(
-    localStorage.getItem('authUser') ||
-      '{isJobOwner:"",token:"",userId:0,username:""}'
-  );
+  // currentUserData: any = JSON.parse(
+  //   localStorage.getItem('authUser') ||
+  //     '{isJobOwner:"",token:"",userId:0,username:""}'
+  // );
   constructor(
     private route: Router,
     private houseAdvertiseServ: HouseAdvetisePageService // private advertiseDataServ: AdvetiseDataService
@@ -40,12 +40,12 @@ export class HouseDetailsComponent implements OnInit {
     this.advertiseData = this.houseAdvertiseServ.advertiseItem;
   }
   navigateTo() {
-    if (
-      this.advertiseData.advertise.advertiserUserId !==
-      this.currentUserData.userId
-    ) {
-      this.route.navigate(['/chat']);
-    }
+    // if (
+    //   this.advertiseData.advertise.advertiserUserId !==
+    //   this.currentUserData.userId
+    // ) {
+    this.route.navigate(['/chat']);
+    // }
   }
   get possibleValueMeter() {
     return {

@@ -13,11 +13,11 @@ import { Title } from '@angular/platform-browser';
 
 import { ActivatedRoute, Router } from '@angular/router';
 @Component({
-    selector: 'app-home',
-    templateUrl: './home.component.html',
-    styleUrls: ['./home.component.css'],
-    animations: [flipInOut],
-    standalone: true,
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css'],
+  animations: [flipInOut],
+  standalone: true,
 })
 export class HomeComponent implements OnInit {
   constructor(

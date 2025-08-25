@@ -42,32 +42,24 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddScoped<ITokenBlacklistService, InMemoryTokenBlacklistService>();
-            ///////////////////////////////////////////////////////////////////////////////// 
-            // services.AddScoped<ITokenService,TokenService>();
-            // services.AddDbContext<DataContext>(options=>{
-                
-            //     options.UseSqlite(_config.GetConnectionString("DefaultConnection"));
-            //     //Shorthand for _config.GetSection("ConnectionStrings")["DefaultConnection"]
-            // });
+            services.AddScoped<ITokenService, TokenService>();
             services.AddApplicationServices(_config);
-            // services.AddApplicationServices(_config);
-            ///////////////////////////////////////////////////////////////////////////////// 
             
             services.AddControllers();
-            services.AddCors();
-            ///////////////////////////////////////////////////////////////////////////////// 
-            // services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options=>{
-            //     options.TokenValidationParameters = new TokenValidationParameters
-            //     {
-            //         ValidateIssuerSigningKey = true,
-            //         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["TokenKey"])),
-            //         ValidateIssuer = false,
-            //         ValidateAudience = false,
-
-            //     };
-            // });
-            //  services.AddScoped<ITokenBlacklistService, InMemoryTokenBlacklistService>();
+            // services.AddCors();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder =>
+                {
+                    builder
+                        .WithOrigins("https://localhost:4200")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
+            });
             services.AddIdentityServices(_config);
             ///////////////////////////////////////////////////////////////////////////////// 
 
@@ -81,10 +73,6 @@ namespace API
             });
            
 
-            // services.AddSwaggerGen(c =>
-            // {
-            //     c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPIv5", Version = "v1" });
-            // });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -99,22 +87,31 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+
+             // 🔹 استفاده از CORS Policy قبل از Authentication
+            app.UseCors("CorsPolicy");
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseMiddleware<TokenBlacklistMiddleware>();
+
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider =new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
                 RequestPath = new PathString("/Resources")
             });
-            app.UseCors(policy => {
-                policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
-                policy.AllowCredentials(); // Include this if your client includes credentials.
-            });
-            app.UseAuthentication();
+            // app.UseCors(policy => {
+            //     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+            //     policy.AllowCredentials(); // Include this if your client includes credentials.
+            // });
+            
+            // app.UseAuthentication();
             
 
-            app.UseAuthorization();
+            // app.UseAuthorization();
 
-            app.UseMiddleware<TokenBlacklistMiddleware>();
+            // app.UseMiddleware<TokenBlacklistMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

@@ -5,10 +5,21 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { numberValidator } from 'src/assets/validation/password.validator';
 import { persianLetterValidator } from 'src/assets/validation/persian-letters.validator';
-import { ImageDto, UploadFinishedEvent, UploadfileComponent } from '../uploadfile/uploadfile.component';
+import {
+  ImageDto,
+  UploadFinishedEvent,
+  UploadfileComponent,
+} from '../uploadfile/uploadfile.component';
 import { HttpClient } from '@angular/common/http';
 import { NumberToWordsService } from '../numberToword.service';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -39,28 +50,28 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgIf, NgFor, NgClass } from '@angular/common';
 
 @Component({
-    selector: 'app-house-advertise',
-    templateUrl: './house-advertise.component.html',
-    styleUrls: ['./house-advertise.component.css'],
-    standalone: true,
-    imports: [
-        UploadfileComponent,
-        NgIf,
-        NgFor,
-        FontAwesomeModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatOptionModule,
-        CommonHouseComponent,
-        SellComponent,
-        RentComponent,
-        MatInputModule,
-        ProvinceAndCityComponent,
-        NgClass,
-        ActionBtnAtomComponent,
-    ],
+  selector: 'app-house-advertise',
+  templateUrl: './house-advertise.component.html',
+  styleUrls: ['./house-advertise.component.css'],
+  standalone: true,
+  imports: [
+    UploadfileComponent,
+    NgIf,
+    NgFor,
+    FontAwesomeModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule,
+    CommonHouseComponent,
+    SellComponent,
+    RentComponent,
+    MatInputModule,
+    ProvinceAndCityComponent,
+    NgClass,
+    ActionBtnAtomComponent,
+  ],
 })
 export class HouseAdvertiseComponent implements OnInit, OnDestroy {
   // @ViewChild('houseTypeSelect') houseTypeSelect!: MatSelect;

@@ -44,53 +44,5 @@ public string CreateToken(AppUser user)
     return tokenHandler.WriteToken(token);
 }
 
-// //////////////////////////////////
-// public string CreateToken(AppUser user)
-// {
-//     var claims = new List<Claim>
-//     {
-//         new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()),  // فقط userId
-//         new Claim("isJobOwner", user.IsJobOwner.ToString())             // لازم باشد
-//     };
-
-//     var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
-
-//     var tokenDescriptor = new SecurityTokenDescriptor
-//     {
-//         Subject = new ClaimsIdentity(claims),
-//         Expires = DateTime.Now.AddHours(8), // کوتاه‌تر برای امنیت
-//         SigningCredentials = creds
-//     };
-
-//     var tokenHandler = new JwtSecurityTokenHandler();
-//     var token = tokenHandler.CreateToken(tokenDescriptor);
-//     return tokenHandler.WriteToken(token);
-// }
-
-        // //////////////////////////////////
-        //        ‼️before:               //
-        // /////////////////////////////////
-        // public string CreateToken(AppUser user)
-        // {
-        //    var claims = new List<Claim>
-        //    {
-        //     new Claim(JwtRegisteredClaimNames.NameId, user.Id.ToString()), // اضافه کردن userId
-        //     new Claim(JwtRegisteredClaimNames.NameId, user.UserName),
-            
-        //    };
-
-        //    var creds = new SigningCredentials(_key,SecurityAlgorithms.HmacSha512Signature);
-
-        //    var tokenDescriptor = new SecurityTokenDescriptor
-        //    {
-        //         Subject = new ClaimsIdentity(claims),
-        //         Expires = DateTime.Now.AddDays(1),
-        //         SigningCredentials = creds 
-        //    };
-
-        //    var tokenHandler = new JwtSecurityTokenHandler();
-        //    var token = tokenHandler.CreateToken(tokenDescriptor);
-        //    return tokenHandler.WriteToken(token);
-        // }
     }
 }
