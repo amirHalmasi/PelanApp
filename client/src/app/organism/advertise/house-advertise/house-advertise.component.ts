@@ -34,7 +34,7 @@ import { CanDeactivateType } from '../../signup-from/can-deactivate-gaurde';
 import { SweetAlertService } from 'src/app/services/sweetalert.service';
 import { advertiseSuccesDto } from '../advertises.service';
 import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
-import { HouseAdvetiseProfileService } from '../../my-advertises/house-advertise-profile.service';
+import { HouseAdvetiseProfileService } from '../../my-advertises/my-advertises-profile.service';
 import { city, province } from 'src/app/services/modal-service.service';
 import { ProvinceAndCityService } from '../../province-and-city-select-list/province-and-city.service';
 import { ActionBtnAtomComponent } from '../../city-province-modal/action-btn-atom/action-btn-atom.component';
@@ -48,6 +48,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgIf, NgFor, NgClass } from '@angular/common';
+import { NavBarService } from 'src/app/nav-bar/nav-bar.service';
 
 @Component({
   selector: 'app-house-advertise',
@@ -133,7 +134,8 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
     private sweetAlertService: SweetAlertService,
     private fileUploadServ: FileUploadservice,
     private advertiseDataServ: AdvetiseDataService,
-    private houseAdvertiseServ: HouseAdvetiseProfileService
+    private houseAdvertiseServ: HouseAdvetiseProfileService,
+    private navbarServ: NavBarService // private route: Router
   ) {
     // console.log(
     //   'route states house',
@@ -247,13 +249,13 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
           highQualityFiles: this.houseAdvertiseServ.advertiseItem.files.map(
             (file: any) => ({
               path: file.highQuality,
-              fileName: file.highQuality.split('\\').pop(),
+              fileName: file.lowQuality.split('/').pop() || file.lowQuality,
             })
           ),
           lowQualityFiles: this.houseAdvertiseServ.advertiseItem.files.map(
             (file: any) => ({
               path: file.lowQuality,
-              fileName: file.lowQuality.split('\\').pop(),
+              fileName: file.lowQuality.split('/').pop() || file.lowQuality,
             })
           ),
         };
@@ -280,68 +282,6 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
       }
     });
   }
-  // submit() {
-  //   // this.imageData = event.imageData;
-  //   // this.username = event.username;
-  //   // this.advertiseCode = event.advertiseCode;
-  //   // this.fileUploadServ.uploadedImageData.subscribe((data: fileUploadData) => {
-  //   //   console.log('upload image Data house', data);
-  //   //   if (data.imageData.length > 0) {
-  //   //     this.imageData = data.imageData;
-  //   //   }
-  //   //   this.imageData = [];
-  //   // });
-  //   if (!this.imageData.length) {
-  //     this.imageUploadMessage = 'عکس آگهی را آپلود کنید.';
-  //     return;
-  //   }
-  //   this.imageUploadMessage = '';
-  //   console.log(this.advertiseCode, this.imageData, this.username);
-  //   console.log(this.advertiseHouseForm.value);
-
-  //   // console.log(transformedValue);
-
-  //   // let registerUrl = 'https://localhost:5001/api/account/register';
-
-  //   // this.http.post(registerUrl, transformedValue).subscribe({
-  //   //   next: (res) => {
-  //   //     console.log(res);
-  //   //   },
-  //   //   error: (err) => {
-  //   //     // console.error(err);
-  //   //     return new Promise<boolean>(() => {
-  //   //       this.sweetAlertService.floatAlert('مشخصات فردی تکراری است ', 'error');
-  //   //     });
-  //   //   },
-  //   //   complete: () => {
-  //   //     this.isSignin = true;
-  //   //     if (this.isSignin) {
-  //   //       // return confirm('Do you really want to leave?');
-  //   //       //convert defalt confirm to sweetalert2 one👇
-  //   //       return new Promise<boolean>((resolve) => {
-  //   //         this.sweetAlertService
-  //   //           .alert(
-  //   //             'توجه',
-  //   //             'نام کاربری کد ملی و کلمه عبور شماره موبایل است',
-  //   //             'warning'
-  //   //           )
-  //   //           .then((result) => {
-  //   //             // console.log('sweetalert result');
-  //   //             // console.log(result);
-  //   //             if (result.isConfirmed) {
-  //   //               this.router.navigate(['/login']);
-  //   //             } // Resolve with the user's choice
-  //   //           })
-  //   //           .catch(() => {
-  //   //             resolve(false); // In case of an error, consider it as not confirmed
-  //   //           });
-  //   //       });
-  //   //     } else {
-  //   //       return true;
-  //   //     }
-  //   //   },
-  //   // });
-  // }
 
   formValuePatch(advertiseData: any) {
     const provinceValue = this.provinceListServ.provincesList.filter(
@@ -441,19 +381,19 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
     );
   }
   deleteImage(image: ImageDto) {
-    const authUser = JSON.parse(
-      localStorage.getItem('authUser') || '{isJobOwner:"",token:"",username:""}'
-    );
+    // const authUser = JSON.parse(
+    //   localStorage.getItem('authUser') || '{isJobOwner:"",token:"",username:""}'
+    // );
     // console.log(authUser.token);
-    const headers = {
-      Authorization: `Bearer ${authUser.token}`,
-    };
+    // const headers = {
+    //   Authorization: `Bearer ${authUser.token}`,
+    // };
+    console.log('image.fileName', image.fileName);
+    const fileNameOnly = image.fileName?.split('/').pop() || image.fileName;
     this.http
       .delete(
-        `https://localhost:5001/api/upload/delete?username=${this.getUsername()}&advertiseCode=${this.getAdvertiseCode()}&fileName=${
-          image.fileName
-        }`,
-        { headers: headers }
+        `https://localhost:5001/api/upload/delete?advertiseCode=${this.getAdvertiseCode()}&fileName=${fileNameOnly}`,
+        { withCredentials: true }
       )
       .subscribe({
         next: (res) => {
@@ -465,24 +405,14 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
             (imgData: ImageDto) => imgData.fileName !== image.fileName
           );
 
-          // Remove the deleted image from imageData array
-          // this.fileUploadData.imageData.highQualityFiles =
-          //   this.fileUploadData.imageData.highQualityFiles.filter(
-          //     (img) => img.path !== image.path
-          //   );
-          // this.fileUploadData.imageData.lowQualityFiles =
-          //   this.fileUploadData.imageData.lowQualityFiles.filter(
-          //     (img) => img.path !== image.path
-          //   );
           console.log(
             'this.imageData delete function next',
-            // this.fileUploadData.imageData
+
             this.files
           );
         },
         error: (error) => {
           console.error('Error deleting image:', error);
-          // Handle error
         },
         complete: () => {
           console.log(
@@ -494,20 +424,10 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
           this.fileUploadServ.uploadedImageData.next({
             username: this.username,
             advertiseCode: this.advertiseCode,
+            // advertiseCode: '4271377953',
             // imageData: this.fileUploadData.imageData,
             imageData: this.files,
           });
-          // if (this.files.length === 0) {
-          //   this.fileUploadServ.uploadedImageData.next({
-          //     ...this.fileUploadData,
-          //     // imageData: this.fileUploadData.imageData,
-          //     imageData: {
-          //       highQualityFiles: [{ path: '', fileName: '' }],
-          //       lowQualityFiles: [{ path: '', fileName: '' }],
-          //     },
-          //   });
-          // }
-          // this.preUrl===''
         },
       });
   }
@@ -614,19 +534,20 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
     }
     // const advertiseCode = this.advertiseHouseForm.value.advertiseCode;
     const advertiseCode = this.advertiseCode;
-    const authUser = JSON.parse(
-      localStorage.getItem('authUser') || '{isJobOwner:"",token:"",username:""}'
-    );
+    // const authUser = JSON.parse(
+    //   localStorage.getItem('authUser') || '{isJobOwner:"",token:"",username:""}'
+    // );
 
-    const headers = {
-      Authorization: `Bearer ${authUser.token}`,
-    };
+    // const headers = {
+    //   Authorization: `Bearer ${authUser.token}`,
+    // };
+    console.log('transformedValue', transformedValue);
     this.http
       .patch(
         `https://localhost:5001/api/houseadvertise/${transformedValue.advertiseType}/${advertiseCode}`,
         transformedValue,
         {
-          headers: headers,
+          withCredentials: true,
         }
       )
       .subscribe({
@@ -635,6 +556,12 @@ export class HouseAdvertiseComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           console.error('Error updating the advertise', error);
+          if (error.status === 401) {
+            localStorage.removeItem('authUser');
+            this.navbarServ.isTokenExist.next(false);
+            // هدایت به صفحه لاگین
+            this.router.navigate(['/login']);
+          }
         },
         complete: () => {
           this.houseAdvertiseServ.advertiseItem = '';

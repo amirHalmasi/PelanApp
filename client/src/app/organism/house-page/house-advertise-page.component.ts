@@ -187,20 +187,20 @@ export class HouseAdvertisePageComponent
     this.resizeSubscription$.unsubscribe();
   }
   ngAfterViewInit(): void {
-    this.items ? console.log(this.items) : console.log('view init');
-    this.houseAdvertiseServ.hasItems.subscribe({
-      next: (isItems) => {
-        if (isItems && !this.isLoadingAdvertises) {
-          this.houseAdvertiseServ.selectedAdvertiseRow.subscribe(
-            (data: number) => {
-              setTimeout(() => {
-                this.viewPort.scrollToIndex(+data, 'auto');
-              }, 100);
-            }
-          );
-        }
-      },
-    });
+    // this.items ? console.log(this.items) : console.log('view init');
+    // this.houseAdvertiseServ.hasItems.subscribe({
+    //   next: (isItems) => {
+    //     if (isItems && !this.isLoadingAdvertises) {
+    //       this.houseAdvertiseServ.selectedAdvertiseRow.subscribe(
+    //         (data: number) => {
+    //           setTimeout(() => {
+    //             this.viewPort.scrollToIndex(+data, 'auto');
+    //           }, 100);
+    //         }
+    //       );
+    //     }
+    //   },
+    // });
   }
   ngOnInit(): void {
     // this.ViewportWidth();
@@ -324,6 +324,7 @@ export class HouseAdvertisePageComponent
       )
       .subscribe({
         next: (data) => {
+          console.log('advertise my dsate data is:::::::::', data);
           this.houseAdvertiseServ.houseAdvertises.next(data);
         },
         error: (err) => {

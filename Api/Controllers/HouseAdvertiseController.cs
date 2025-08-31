@@ -28,14 +28,32 @@ namespace Api.Controllers
             _tokenBlacklistService = tokenBlacklistService;
         }
 
+        private string GetUsernameFromToken()
+        {
+            var token = Request.Cookies["access_token"];
+            if (string.IsNullOrEmpty(token)) return null;
+
+            var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+            var usernameClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "username")?.Value;
+
+            return usernameClaim;
+        }
+        [Authorize]
         [HttpPatch("sell/{advertiseCode}")]
         public async Task<ActionResult<AdvertiseSuccessDto>> UpdateSellHouseAdvertise(string advertiseCode, houseSellAddAdvertiseDto sellHouseDto)
         {
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            // var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
-            if (string.IsNullOrEmpty(token))
+            // if (string.IsNullOrEmpty(token))
+            // {
+            //     return BadRequest(new { message = "Token is missing" });
+            // }
+            var username = GetUsernameFromToken(); // ✅ از توکن بخون
+            
+            if (string.IsNullOrEmpty(username))
             {
-                return BadRequest(new { message = "Token is missing" });
+                return Unauthorized(new { message = "Invalid or missing token" });
             }
 
             try
@@ -93,15 +111,21 @@ namespace Api.Controllers
             }
         }
 
-
+        [Authorize]
         [HttpPatch("rent/{advertiseCode}")]
         public async Task<ActionResult<AdvertiseSuccessDto>> UpdateSellHouseAdvertise(string advertiseCode, houseRentAddAdvertiseDto RentHouseDto)
         {
-            var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            // var token = HttpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
 
-            if (string.IsNullOrEmpty(token))
+            // if (string.IsNullOrEmpty(token))
+            // {
+            //     return BadRequest(new { message = "Token is missing" });
+            // }
+            var username = GetUsernameFromToken(); // ✅ از توکن بخون
+            
+            if (string.IsNullOrEmpty(username))
             {
-                return BadRequest(new { message = "Token is missing" });
+                return Unauthorized(new { message = "Invalid or missing token" });
             }
 
             try
@@ -434,19 +458,32 @@ public async Task<ActionResult<AdvertiseSuccessDto>> AddSellHouseAdvertise(house
         // }
 
 
+        // private List<string> GetFilesFromDirectory(string baseFolderName, string subFolderName)
+        // {
+        //     var folderPath = Path.Combine(Directory.GetCurrentDirectory(), baseFolderName, subFolderName);
+        //     if (Directory.Exists(folderPath))
+        //     {
+        //         return Directory.GetFiles(folderPath)
+        //                         .Select(file => Path.Combine(baseFolderName, subFolderName, Path.GetFileName(file)))
+        //                         .ToList();
+        //     }
+        //     return new List<string>();
+        // }
+
         private List<string> GetFilesFromDirectory(string baseFolderName, string subFolderName)
         {
             var folderPath = Path.Combine(Directory.GetCurrentDirectory(), baseFolderName, subFolderName);
             if (Directory.Exists(folderPath))
             {
                 return Directory.GetFiles(folderPath)
-                                .Select(file => Path.Combine(baseFolderName, subFolderName, Path.GetFileName(file)))
+                                .Select(file =>
+                                    Path.Combine(baseFolderName, subFolderName, Path.GetFileName(file))
+                                        .Replace("\\", "/") // 👈 بک‌اسلش رو با اسلش عوض کن
+                                )
                                 .ToList();
             }
             return new List<string>();
         }
-
-
        
         [HttpGet("{city_id}")]
         public async Task<ActionResult<IEnumerable<object>>> GetAllAdvertises(string city_id)

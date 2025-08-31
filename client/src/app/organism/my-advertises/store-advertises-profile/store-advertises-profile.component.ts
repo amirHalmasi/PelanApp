@@ -1,36 +1,41 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { HouseAdvetiseProfileService } from '../house-advertise-profile.service';
+import { HouseAdvetiseProfileService } from '../my-advertises-profile.service';
 import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
 import { fromEvent, map, Subscription } from 'rxjs';
-import { CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf } from '@angular/cdk/scrolling';
+import {
+  CdkVirtualScrollViewport,
+  CdkFixedSizeVirtualScroll,
+  CdkVirtualForOf,
+} from '@angular/cdk/scrolling';
 import { NumberSepratorPipe } from '../../house-page/number-seprator.pipe';
 import { ParkingSvgComponent } from '../../house-page/parking-svg/parking-svg.component';
 import { ElevatorSvgComponent } from '../../house-page/elevator-svg/elevator-svg.component';
 import { CarouselComponent } from '../../carousel/carousel.component';
 import { LoadingAtmComponent } from '../../loading-atm/loading-atm.component';
 import { NgIf, NgClass, NgFor, NgSwitch, NgSwitchCase } from '@angular/common';
+import { NavBarService } from 'src/app/nav-bar/nav-bar.service';
 type Position = 'start' | 'mid' | 'end';
 @Component({
-    selector: 'app-store-advertises-profile',
-    templateUrl: './store-advertises-profile.component.html',
-    styleUrls: ['./store-advertises-profile.component.css'],
-    standalone: true,
-    imports: [
-        NgIf,
-        LoadingAtmComponent,
-        CdkVirtualScrollViewport,
-        CdkFixedSizeVirtualScroll,
-        CdkVirtualForOf,
-        NgClass,
-        NgFor,
-        CarouselComponent,
-        ElevatorSvgComponent,
-        ParkingSvgComponent,
-        NgSwitch,
-        NgSwitchCase,
-        NumberSepratorPipe,
-    ],
+  selector: 'app-store-advertises-profile',
+  templateUrl: './store-advertises-profile.component.html',
+  styleUrls: ['./store-advertises-profile.component.css'],
+  standalone: true,
+  imports: [
+    NgIf,
+    LoadingAtmComponent,
+    CdkVirtualScrollViewport,
+    CdkFixedSizeVirtualScroll,
+    CdkVirtualForOf,
+    NgClass,
+    NgFor,
+    CarouselComponent,
+    ElevatorSvgComponent,
+    ParkingSvgComponent,
+    NgSwitch,
+    NgSwitchCase,
+    NumberSepratorPipe,
+  ],
 })
 export class StoreAdvertisesProfileComponent implements OnInit {
   items!: any;
@@ -49,6 +54,7 @@ export class StoreAdvertisesProfileComponent implements OnInit {
   showAdvertiseDetails: boolean = false;
   constructor(
     private houseAdvertiseServ: HouseAdvetiseProfileService,
+    private navbarServ: NavBarService,
     // private cityModalServ: ModalServiceService,
     // private cdr: ChangeDetectorRef,
     private advertiseData: AdvetiseDataService,
@@ -101,22 +107,7 @@ export class StoreAdvertisesProfileComponent implements OnInit {
     this.storeAdvSubscribtion$.unsubscribe();
     this.resizeSubscription$.unsubscribe();
   }
-  ngAfterViewInit(): void {
-    //
-    // this.houseAdvertiseServ.hasItems.subscribe({
-    //   next: (isItems) => {
-    //     if (isItems && !this.isLoadingAdvertises) {
-    //       this.houseAdvertiseServ?.selectedAdvertiseRow.subscribe(
-    //         (data: number) => {
-    //           setTimeout(() => {
-    //             this.viewPort.scrollToIndex(+data, 'auto');
-    //           }, 100);
-    //         }
-    //       );
-    //     }
-    //   },
-    // });
-  }
+  ngAfterViewInit(): void {}
   ngOnInit(): void {
     this.resizeSubscription$ = fromEvent(window, 'resize').subscribe(() => {
       this.deviceWidth = window.innerWidth;
@@ -150,12 +141,21 @@ export class StoreAdvertisesProfileComponent implements OnInit {
     this.isLoadingAdvertises = true;
     this.houseAdvertiseServ.getStoreAdvertises(user_id).subscribe({
       next: (data) => {
-        // console.log('advertises request', data);
+        console.log(
+          ':::::::::::::::::::::  store advertises request   ::::::::::::::::::',
+          data
+        );
         this.houseAdvertiseServ.storeProfileAdvertises.next(data);
       },
       error: (err) => {
         this.isLoadingAdvertises = false;
-        // console.error('Error fetching advertises', err);
+        console.log('error', err);
+        if (err.status === 401) {
+          localStorage.removeItem('authUser');
+          this.navbarServ.isTokenExist.next(false);
+          // هدایت به صفحه لاگین
+          this.route.navigate(['/login']);
+        }
       },
       complete: () => {
         this.isLoadingAdvertises = false;
@@ -176,15 +176,17 @@ export class StoreAdvertisesProfileComponent implements OnInit {
   }
   arrayElemrntPairCount(deviceWidth: number) {
     let pairArrayCount = 1;
-
+    // console.log('Viewport width:', window.innerWidth);
     if (deviceWidth < 576) {
       pairArrayCount = 1;
     } else if (deviceWidth >= 576 && deviceWidth < 768) {
       pairArrayCount = 2;
-    } else if (deviceWidth >= 768 && deviceWidth < 1200) {
+    } else if (deviceWidth >= 768 && deviceWidth < 992) {
       pairArrayCount = 3;
-    } else if (deviceWidth >= 1200) {
+    } else if (deviceWidth >= 992 && deviceWidth < 1400) {
       pairArrayCount = 4;
+    } else if (deviceWidth >= 1400) {
+      pairArrayCount = 6;
     }
     return pairArrayCount;
   }

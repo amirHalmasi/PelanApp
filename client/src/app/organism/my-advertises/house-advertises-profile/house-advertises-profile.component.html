@@ -1,9 +1,16 @@
-<div class="container-fluid" style="text-align: center">
-  <div *ngIf="isLoadingAdvertises; else advertises">
+<!-- <div class="container-fluid" style="text-align: center"> -->
+<div
+  class="row d-flex justify-content-center align-items-center"
+  style="text-align: center"
+>
+  <div
+    class="row justify-content-center align-items-center view-height"
+    *ngIf="isLoadingAdvertises; else advertises"
+  >
     <app-loading-atm></app-loading-atm>
   </div>
   <ng-template #advertises>
-    <div class="row">
+    <div class="row padding-0">
       <!-- <div class="row"><router-outlet></router-outlet></div> -->
 
       <h2 *ngIf="items?.length === 0 && userData; else houseAdvertise">
@@ -16,10 +23,10 @@
       <button (click)="scroll('end')">Scroll end</button> -->
       <ng-template #houseAdvertise>
         <cdk-virtual-scroll-viewport
-          minBufferPx="450"
-          maxBufferPx="550"
-          itemSize="400"
-          class="viewport"
+          minBufferPx="50"
+          maxBufferPx="100"
+          itemSize="290"
+          class="viewport view-height"
         >
           <div
             *cdkVirtualFor="
@@ -29,37 +36,96 @@
             "
           >
             <!-- Start a new row every 3 items -->
-            <div
+            <!-- <div
               class="row"
               style="scroll-snap-align: start"
               [ngClass]="{
                 'advertise-row': !last,
                 
               }"
-            >
-              <div
-                class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-xl-3"
+            > -->
+            <div class="row" style="scroll-snap-align: start">
+              <!-- <div
+                class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xxl-2"
                 *ngFor="let item of itemPairs; let j = index; let first = first"
                 [id]="i.toString() + j.toString()"
                 [ngClass]="{
                     'devider-border': !first,
                     
                   }"
+              > -->
+              <div
+                class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xxl-2 mb-4"
+                *ngFor="let item of itemPairs; let j = index; let first = first"
+                [id]="i.toString() + j.toString()"
               >
                 <div
-                  class="card my-3 mx-2 card-shadow"
+                  class="card prevent-select card-shadow"
                   style="overflow: hidden"
                 >
+                  <!-- <div class="card-head parent-box">
+                    <app-carousel [imagesFiles]="item.files"></app-carousel>
+                  </div> -->
                   <div class="card-head parent-box">
                     <app-carousel [imagesFiles]="item.files"></app-carousel>
+                    <div class="overlay1"></div>
+                    <div
+                      style="
+                        display: flex;
+                        /* border: 1px solid red; */
+                        box-sizing: content-box;
+                        flex-direction: row;
+                        justify-content: flex-end;
+                        width: 10rem;
+                        position: absolute;
+                        bottom: 1%;
+                        left: 8%;
+                      "
+                    >
+                      <div
+                        class="card-details"
+                        style="z-index: 2; margin-left: 0.4rem; cursor: pointer"
+                      >
+                        <app-elevator-svg
+                          [isShow]="item.advertise.hasElevator"
+                        ></app-elevator-svg>
+                        <!-- <app-thereis-or-not
+                        [determineCheckedOrUnchecked]="
+                          item.advertise.hasElevator
+                        "
+                      ></app-thereis-or-not> -->
+                      </div>
+                      <div
+                        class="card-details"
+                        style="z-index: 2; margin-left: 0.4rem; cursor: pointer"
+                      >
+                        <app-parking-svg
+                          [isShow]="item.advertise.hasParking"
+                        ></app-parking-svg>
+                        <!-- <app-thereis-or-not
+                        [determineCheckedOrUnchecked]="
+                          item.advertise.parkingType &&
+                          item.advertise.parkingType !== 'none'
+                        "
+                      ></app-thereis-or-not> -->
+                      </div>
+                    </div>
+                    <div>
+                      <div class="card-details room-container">
+                        <app-bedroom-svg></app-bedroom-svg>
+                        <span class="room-counts">{{
+                          "       :  " + item.advertise.rooms
+                        }}</span>
+                      </div>
+                    </div>
+
                     <!-- <div class="overlay"></div> -->
                   </div>
+
                   <div class="card-body" (click)="navigateTo(item)">
-                    <div
-                      class="title border-gradient-purple border-gradient mt-2"
-                    >
+                    <div class="title border-gradient-purple border-gradient">
                       <h5
-                        class="card-title"
+                        class="card-title margin-0"
                         [ngClass]="{
                           red: item.advertise.advertiseType === 'rent',
                           blue: item.advertise.advertiseType === 'sell'
@@ -177,7 +243,7 @@
                       </div>
                     </div>
                     <!-- <div class="card-data-container child-box"> -->
-                    <div
+                    <!-- <div
                       class="card-details"
                       style="
                         position: absolute;
@@ -191,13 +257,9 @@
                           [isShow]="item.advertise.hasElevator === 'true'"
                         ></app-elevator-svg
                       ></span>
-                      <!-- <app-thereis-or-not
-                        [determineCheckedOrUnchecked]="
-                          item.advertise.hasElevator
-                        "
-                      ></app-thereis-or-not> -->
-                    </div>
-                    <div
+                      
+                    </div> -->
+                    <!-- <div
                       class="card-details"
                       style="
                         position: absolute;
@@ -209,19 +271,15 @@
                       <app-parking-svg
                         [isShow]="item.advertise.hasParking === 'true'"
                       ></app-parking-svg>
-                      <!-- <app-thereis-or-not
-                        [determineCheckedOrUnchecked]="
-                          item.advertise.parkingType &&
-                          item.advertise.parkingType !== 'none'
-                        "
-                      ></app-thereis-or-not> -->
-                    </div>
-                    <div class="card-details room-container">
+                      
+                    </div> -->
+
+                    <!-- <div class="card-details room-container">
                       <app-bedroom-svg></app-bedroom-svg>
                       <span class="room-counts">{{
                         "       :  " + item.advertise.rooms
                       }}</span>
-                    </div>
+                    </div> -->
                     <!-- </div> -->
                     <div
                       [ngClass]="{
@@ -234,11 +292,7 @@
                         [ngSwitch]="item.advertise.advertiseType"
                         class="w-100"
                       >
-                        <h5
-                          *ngSwitchCase="'rent'"
-                          style="font-weight: bold"
-                          class="detail-seprator"
-                        >
+                        <h5 *ngSwitchCase="'rent'" class="detail-seprator">
                           اجاره
                         </h5>
                         <h5
@@ -254,11 +308,7 @@
                         </h5>
 
                         <!-- اجاره -->
-                        <h5
-                          *ngSwitchCase="'rent'"
-                          style="font-weight: bold"
-                          class="detail-seprator"
-                        >
+                        <h5 *ngSwitchCase="'rent'" class="detail-seprator">
                           رهن
                         </h5>
                         <h5
@@ -290,24 +340,28 @@
                         <h5 *ngSwitchCase="'sell'" class="detail-seprator">
                           نوع واحد
                         </h5>
-                        <h5
-                          *ngSwitchCase="'sell'"
-                          class="card-details detail-text"
-                        >
-                          <div
+                        <h5 *ngSwitchCase="'sell'" class="margin-0 padding-0">
+                          <h5
                             *ngIf="item?.advertise.houseType"
-                            class="col col-xs-12 col-sm-6"
+                            class="col-12 w-100 details card-details detail-text"
                           >
-                            <h5 class="w-100 details detail-text">
-                              <container-element
-                                [ngSwitch]="item?.advertise.houseType"
+                            <container-element
+                              [ngSwitch]="item?.advertise.houseType"
+                            >
+                              <span class="housetype" *ngSwitchCase="'Mojtama'">
+                                مجتمع آپارتمانی
+                              </span>
+                              <span class="housetype" *ngSwitchCase="'Villaie'">
+                                ویلایی
+                              </span>
+                              <span
+                                class="housetype"
+                                *ngSwitchCase="'ShakhsiSaz'"
                               >
-                                <span *ngSwitchCase="'Mojtama'">مجتمع</span>
-                                <span *ngSwitchCase="'Villaie'">ویلایی</span>
-                                <span *ngSwitchCase="'ShakhsiSaz'">ویلایی</span>
-                              </container-element>
-                            </h5>
-                          </div>
+                                شخصی ساز
+                              </span>
+                            </container-element>
+                          </h5>
                         </h5>
                       </container-element>
                     </div>

@@ -14,8 +14,7 @@ export class HouseAdvetiseProfileService {
   selectedAdvertiseRow = new BehaviorSubject<number>(3);
   advertiseItem!: any;
   getStoreAdvertises(username: string) {
-    let advertisesUrl =
-      'https://localhost:5001/api/account/storeAdvertises/' + username;
+    let advertisesUrl = 'https://localhost:5001/api/account/storeAdvertises';
     // const authUser = JSON.parse(
     //   localStorage.getItem('authUser') || '{isJobOwner:"",token:"",username:""}'
     // );
@@ -26,13 +25,13 @@ export class HouseAdvetiseProfileService {
 
     return this.http
       .get<any>(
-        advertisesUrl
+        advertisesUrl,
+        { withCredentials: true }
         // , { headers }
       )
       .pipe(
         // Calculate the difference in days between todayDate and advertiseSubmitDate
         map((data: any) => {
-          console.log('all store data', data);
           return data.storeAdvertisements.map((advertiseObj: any) => {
             const advertiseSubmitDate = moment(
               advertiseObj.commonData.advertiseSubmitDate
@@ -55,26 +54,21 @@ export class HouseAdvetiseProfileService {
         })
       );
   }
-  getAllAdvertises(username: string) {
+  // getAllAdvertises(username: string) {
+  getHouseAdvertises() {
     let advertisesUrl =
-      'https://localhost:5001/api/account/allAdvertises/' + username;
-    // const authUser = JSON.parse(
-    //   localStorage.getItem('authUser') || '{isJobOwner:"",token:"",username:""}'
-    // );
-
-    // const headers = {
-    //   Authorization: `Bearer ${authUser.token}`,
-    // };
+      // 'https://localhost:5001/api/account/allAdvertises/' + username;
+      'https://localhost:5001/api/account/houseAdvertises';
 
     return this.http
       .get<any>(
-        advertisesUrl
+        advertisesUrl,
+        { withCredentials: true }
         // , { headers }
       )
       .pipe(
         // Calculate the difference in days between todayDate and advertiseSubmitDate
         map((data: any) => {
-          console.log('all data', data);
           return data.houseAdvertisements.map((advertiseObj: any) => {
             const advertiseSubmitDate = moment(
               advertiseObj.advertise.advertiseSubmitDate

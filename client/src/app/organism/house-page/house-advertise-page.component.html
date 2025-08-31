@@ -270,8 +270,8 @@
       <button (click)="scroll('end')">Scroll end</button> -->
       <ng-template #houseAdvertise>
         <cdk-virtual-scroll-viewport
-          minBufferPx="180"
-          maxBufferPx="360"
+          minBufferPx="50"
+          maxBufferPx="100"
           itemSize="200"
           class="viewport"
         >
@@ -306,9 +306,6 @@
                       <div
                         class="card-details"
                         style="z-index: 2; margin-left: 0.4rem; cursor: pointer"
-                        [ngClass]="{
-                          'icon-box-shadow': item.advertise.hasElevator
-                        }"
                       >
                         <app-elevator-svg
                           [isShow]="item.advertise.hasElevator"

@@ -201,10 +201,22 @@ namespace Api.Controllers
 
             var handler = new System.IdentityModel.Tokens.Jwt.JwtSecurityTokenHandler();
             var jwtToken = handler.ReadJwtToken(token);
-            var usernameClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "userId")?.Value;
+            var usernameClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == "username")?.Value;
 
             return usernameClaim;
         }
+
+        // private List<string> GetFilesFromDirectory(string baseFolderName, string subFolderName)
+        // {
+        //     var folderPath = Path.Combine(Directory.GetCurrentDirectory(), baseFolderName, subFolderName);
+        //     if (Directory.Exists(folderPath))
+        //     {
+        //         return Directory.GetFiles(folderPath)
+        //                         .Select(file => Path.Combine(baseFolderName, subFolderName, Path.GetFileName(file)))
+        //                         .ToList();
+        //     }
+        //     return new List<string>();
+        // }
 
         private List<string> GetFilesFromDirectory(string baseFolderName, string subFolderName)
         {
@@ -212,12 +224,14 @@ namespace Api.Controllers
             if (Directory.Exists(folderPath))
             {
                 return Directory.GetFiles(folderPath)
-                                .Select(file => Path.Combine(baseFolderName, subFolderName, Path.GetFileName(file)))
+                                .Select(file =>
+                                    Path.Combine(baseFolderName, subFolderName, Path.GetFileName(file))
+                                        .Replace("\\", "/") // 👈 بک‌اسلش رو با اسلش عوض کن
+                                )
                                 .ToList();
             }
             return new List<string>();
         }
-
 
         
         private List<object> GetAdvertiseFiles(string username, string advertiseCode)
@@ -383,31 +397,101 @@ namespace Api.Controllers
                 return StatusCode(500, new { error = "An error occurred while retrieving the advertisements." });
             }
         }
-       
 
-       [HttpGet("storeAdvertises/{username}")]
-        public async Task<ActionResult<IEnumerable<object>>> GetStoreAdvertises(string username)
+
+        [Authorize]
+        [HttpGet("houseAdvertises")]
+        public async Task<ActionResult<IEnumerable<object>>> GetHouseAdvertises()
         {
             try
             {
-                // var rentAdvertises = await _context.HouseRentAdvertise
-                //     .Where(h => h.Username == username)
-                //     .OrderByDescending(h => h.AdvertiseSubmitDate)
-                //     .ToListAsync();
+                var username = GetUsernameFromToken(); // از کوکی JWT بخون
+                if (string.IsNullOrEmpty(username)) return Unauthorized();
+                var rentAdvertises = await _context.HouseRentAdvertise
+                    .Where(h => h.Username == username)
+                    .OrderByDescending(h => h.AdvertiseSubmitDate)
+                    .ToListAsync();
 
-                // var sellAdvertises = await _context.HouseSellAdvertise
-                //     .Where(h => h.Username == username)
-                //     .OrderByDescending(h => h.AdvertiseSubmitDate)
-                //     .ToListAsync();
+                var sellAdvertises = await _context.HouseSellAdvertise
+                    .Where(h => h.Username == username)
+                    .OrderByDescending(h => h.AdvertiseSubmitDate)
+                    .ToListAsync();
 
-                // var allHouseAdvertises = rentAdvertises.Cast<object>()
-                //     .Concat(sellAdvertises.Cast<object>())
-                //     .ToList();
+                var allHouseAdvertises = rentAdvertises.Cast<object>()
+                    .Concat(sellAdvertises.Cast<object>())
+                    .ToList();
 
-                // var advertiseHouseWithFiles = new List<object>();
+                var advertiseHouseWithFiles = new List<object>();
 
+                foreach (var advertise in allHouseAdvertises)
+                {
+                    string user_name = advertise is HouseRentAdvertise rentAdvertise ? rentAdvertise.Username : (advertise as HouseSellAdvertise).Username;
+                    string advertise_code = advertise is HouseRentAdvertise rentAd ? rentAd.AdvertiseCode : (advertise as HouseSellAdvertise).AdvertiseCode;
 
-                // Join StoreRentAdvertises with StoreCommonAdvertises
+                    var lowQualityFiles = GetFilesFromDirectory("Resources/Images", Path.Combine(user_name, advertise_code, "lowQuality"));
+                    var highQualityFiles = GetFilesFromDirectory("Resources/Images", Path.Combine(user_name, advertise_code, "highQuality"));
+
+                    if (highQualityFiles.Any() && lowQualityFiles.Any())
+                    {
+                        var filePairs = highQualityFiles.Select((highQuality, index) => new
+                        {
+                            HighQuality = highQuality,
+                            LowQuality = lowQualityFiles.ElementAtOrDefault(index)
+                        }).ToList();
+
+                        advertiseHouseWithFiles.Add(new
+                        {
+                            Advertise = advertise,
+                            Files = filePairs,
+                            TodayDate = DateTime.Now
+                        });
+                    }
+                    else
+                    {
+                        var lowQualityPlaceHolderFiles = GetFilesFromDirectory("Resources/Images", "placeholder/lowQuality");
+                        var placeholderFiles = GetFilesFromDirectory("Resources/Images", "placeholder/highQuality");
+
+                        if (placeholderFiles.Any() && lowQualityPlaceHolderFiles.Any())
+                        {
+                            var filePairs = placeholderFiles.Select((highQuality, index) => new
+                            {
+                                HighQuality = highQuality,
+                                LowQuality = lowQualityPlaceHolderFiles.ElementAtOrDefault(index)
+                            }).ToList();
+
+                            advertiseHouseWithFiles.Add(new
+                            {
+                                Advertise = advertise,
+                                Files = filePairs,
+                                TodayDate = DateTime.Now
+                            });
+                        }
+                    }
+                }
+
+                return Ok(new
+                {
+                    HouseAdvertisements = advertiseHouseWithFiles,
+                    // StoreAdvertisements = allStoreAdvertises
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An error occurred while retrieving the advertisements." });
+            }
+        }
+
+        
+        [Authorize]
+        [HttpGet("storeAdvertises")]
+        public async Task<ActionResult<IEnumerable<object>>> GetStoreAdvertises()
+        {
+            try
+            {
+                
+                var username = GetUsernameFromToken(); // از کوکی JWT بخون
+                if (string.IsNullOrEmpty(username)) return Unauthorized();
+
                 var rentStoreAdvertises = await (from rent in _context.StoreRentAdvertises
                                             join common in _context.StoreCommonAdvertises
                                             on new { rent.Username, rent.AdvertiseCode } equals new { common.Username, common.AdvertiseCode }
@@ -452,54 +536,7 @@ namespace Api.Controllers
                     .ToList();
 
 
-                // ////////////////////////////////////////////
-                // ////////////////////////////////////////////
-
-                // foreach (var advertise in allHouseAdvertises)
-                // {
-                //     string user_name = advertise is HouseRentAdvertise rentAdvertise ? rentAdvertise.Username : (advertise as HouseSellAdvertise).Username;
-                //     string advertise_code = advertise is HouseRentAdvertise rentAd ? rentAd.AdvertiseCode : (advertise as HouseSellAdvertise).AdvertiseCode;
-
-                //     var lowQualityFiles = GetFilesFromDirectory("Resources/Images", Path.Combine(user_name, advertise_code, "lowQuality"));
-                //     var highQualityFiles = GetFilesFromDirectory("Resources/Images", Path.Combine(user_name, advertise_code, "highQuality"));
-
-                //     if (highQualityFiles.Any() && lowQualityFiles.Any())
-                //     {
-                //         var filePairs = highQualityFiles.Select((highQuality, index) => new
-                //         {
-                //             HighQuality = highQuality,
-                //             LowQuality = lowQualityFiles.ElementAtOrDefault(index)
-                //         }).ToList();
-
-                //         advertiseHouseWithFiles.Add(new
-                //         {
-                //             Advertise = advertise,
-                //             Files = filePairs,
-                //             TodayDate = DateTime.Now
-                //         });
-                //     }
-                //     else
-                //     {
-                //         var lowQualityPlaceHolderFiles = GetFilesFromDirectory("Resources/Images", "placeholder/lowQuality");
-                //         var placeholderFiles = GetFilesFromDirectory("Resources/Images", "placeholder/highQuality");
-
-                //         if (placeholderFiles.Any() && lowQualityPlaceHolderFiles.Any())
-                //         {
-                //             var filePairs = placeholderFiles.Select((highQuality, index) => new
-                //             {
-                //                 HighQuality = highQuality,
-                //                 LowQuality = lowQualityPlaceHolderFiles.ElementAtOrDefault(index)
-                //             }).ToList();
-
-                //             advertiseHouseWithFiles.Add(new
-                //             {
-                //                 Advertise = advertise,
-                //                 Files = filePairs,
-                //                 TodayDate = DateTime.Now
-                //             });
-                //         }
-                //     }
-                // }
+                
 
                 return Ok(new
                 {

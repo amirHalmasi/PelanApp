@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { FileUploadservice } from './fileUpload.service';
 import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
-import { HouseAdvetiseProfileService } from '../../my-advertises/house-advertise-profile.service';
+import { HouseAdvetiseProfileService } from '../../my-advertises/my-advertises-profile.service';
 import { AlertComponent } from './alert/alert.component';
 import { NgIf } from '@angular/common';
 
@@ -21,11 +21,11 @@ export interface UploadFinishedEvent {
 }
 
 @Component({
-    selector: 'app-uploadfile',
-    templateUrl: './uploadfile.component.html',
-    styleUrls: ['./uploadfile.component.css'],
-    standalone: true,
-    imports: [NgIf, AlertComponent],
+  selector: 'app-uploadfile',
+  templateUrl: './uploadfile.component.html',
+  styleUrls: ['./uploadfile.component.css'],
+  standalone: true,
+  imports: [NgIf, AlertComponent],
 })
 export class UploadfileComponent {
   public message: string = '';
@@ -47,23 +47,7 @@ export class UploadfileComponent {
   ) {}
 
   ngOnInit(): void {
-    // this.advertiseData.previousRouteURL.subscribe((preRoute) => {
-    //   console.log('preRoute', preRoute);
-    //   if (preRoute === 'edit/house') {
-    //     this.advertiseCode =
-    //       this.houseAdvertiseServ.advertiseItem.advertise.advertiseCode;
-    //   }
-    // });
-    // const user = JSON.parse(localStorage.getItem('authUser') || '{}');
-    // this.username = user.username;
-    // this.advertiseCode = Math.floor(Math.random() * 1000000000); // Generate random advertise code
     console.log('advertise Code', this.advertiseCode);
-
-    // this.fileUploadServ.advertiseCode.subscribe({
-    //   next: (data) => {
-    //     console.log('advertise Code async', data);
-    //   },
-    // });
   }
 
   public uploadFiles(files: FileList): void {
@@ -73,19 +57,13 @@ export class UploadfileComponent {
 
     const formData = new FormData();
 
-    formData.append('username', this.username);
+    // formData.append('username', this.username);
     formData.append('advertiseCode', this.advertiseCode.toString());
 
     for (let i = 0; i < files.length; i++) {
       formData.append('files', files[i], files[i].name);
     }
-    const authUser = JSON.parse(
-      localStorage.getItem('authUser') || '{isJobOwner:"",token:"",username:""}'
-    );
-    // console.log(authUser.token);
-    const headers = {
-      Authorization: `Bearer ${authUser.token}`,
-    };
+
     this.http
       .post<{
         highQualityFiles: ImageDto[];
@@ -93,7 +71,8 @@ export class UploadfileComponent {
       }>('https://localhost:5001/api/upload', formData, {
         reportProgress: true,
         observe: 'events',
-        headers: headers,
+        withCredentials: true,
+        // headers: headers,
       })
       .subscribe({
         next: (event) => {
@@ -107,13 +86,10 @@ export class UploadfileComponent {
             console.log(' event.body', event.body);
 
             this.uploadedFiles = event.body ?? {
-              // highQualityFiles: [{ path: '', fileName: '' }],
-              // lowQualityFiles: [{ path: '', fileName: '' }],
               highQualityFiles: [],
               lowQualityFiles: [],
             };
             this.alertType = 'success';
-            // Emit the event object with additional data
           }
         },
         error: (err) => {
@@ -142,12 +118,34 @@ export class UploadfileComponent {
       });
   }
 
-  public onFileChange(event: Event): void {
-    console.log('add image advertise code file changes', this.advertiseCode);
-    const input = event.target as HTMLInputElement;
+  // public onFileChange(event: Event): void {
+  //   console.log('add image advertise code file changes', this.advertiseCode);
+  //   const input = event.target as HTMLInputElement;
 
-    if (input.files) {
-      this.uploadFiles(input.files);
+  //   if (input.files) {
+  //     this.uploadFiles(input.files);
+  //   }
+  // }
+
+  public onFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files) return;
+
+    const files: FileList = input.files;
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    const maxSizeInBytes = 1 * 1024 * 1024; // 1MB
+
+    const invalidFiles = Array.from(files).filter(
+      (f) => !allowedTypes.includes(f.type) || f.size > maxSizeInBytes
+    );
+
+    if (invalidFiles.length > 0) {
+      this.message =
+        'فقط تصاویر با فرمت JPG، PNG یا GIF و حداکثر حجم 1 مگابایت مجاز هستند.';
+      this.alertType = 'error';
+      return;
     }
+
+    this.uploadFiles(files);
   }
 }

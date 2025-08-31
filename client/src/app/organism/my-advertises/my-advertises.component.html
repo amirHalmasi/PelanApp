@@ -1,23 +1,29 @@
-<div class="container-fluid mt-2">
+<div class="container-fluid padding-0">
   <div class="row justify-content-center parent-container">
-    <div
+    <!-- <div
       class="col col-xs-12 col-sm-12 col-md-6 col-lg-4 card form-container-class"
-    >
-      <!-- <div class="card-body"> -->
-      <div>
-        <div class="row card-title text-center justify-content-center mb-3">
-          <h3 class="font-title">
+    > -->
+    <!-- <div class="card-body"> -->
+    <div>
+      <div
+        class="row justify-content-center card-title my-advertises-header text-center mb-3"
+      >
+        <div class="row d-flex align-content-center">
+          <h3 class="font-title prevent-select">
             آگهی های شما در <span class="brand-font">پلان</span>
           </h3>
+        </div>
+
+        <div class="row justify-content-center">
           <div
-            class="col-xs-12 col-sm-6 col-md-4 col-lg-3 btn-group btn-group red-border"
+            class="col col-xs-6 col-sm-3 col-md-2 col-lg-2 btn-group btn-group-sm red-border"
             role="group"
           >
             <a
               type="button "
               routerLinkActive="active-link"
               [routerLink]="['userHouseAdvertises']"
-              class="btn btn-outline-danger border-x-not disactive"
+              class="btn btn-outline-danger disactive"
             >
               خانه</a
             >
@@ -32,14 +38,15 @@
               type="button "
               routerLinkActive="active-link"
               [routerLink]="['userStoreAdvertises']"
-              class="btn btn-outline-danger border-x-not disactive"
+              class="btn btn-outline-danger disactive"
               >مغازه</a
             >
           </div>
         </div>
-
-        <router-outlet #outlet="outlet"></router-outlet>
       </div>
+
+      <div class="row"><router-outlet #outlet="outlet"></router-outlet></div>
     </div>
+    <!-- </div> -->
   </div>
 </div>

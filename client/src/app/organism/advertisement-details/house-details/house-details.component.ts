@@ -1,4 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnDestroy,
+  AfterViewInit,
+} from '@angular/core';
 import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
 import { HouseAdvetisePageService } from '../../house-page/house-advertise-page.service';
 import { Router } from '@angular/router';
@@ -26,8 +32,9 @@ import { ConditionalContainerComponent } from './conditional-container/condition
     ConditionalContainerComponent,
   ],
 })
-export class HouseDetailsComponent implements OnInit {
+export class HouseDetailsComponent implements OnInit, OnDestroy {
   advertiseData!: any;
+  private resizeListener!: () => void;
   // currentUserData: any = JSON.parse(
   //   localStorage.getItem('authUser') ||
   //     '{isJobOwner:"",token:"",userId:0,username:""}'
@@ -38,6 +45,28 @@ export class HouseDetailsComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.advertiseData = this.houseAdvertiseServ.advertiseItem;
+  }
+  ngAfterViewInit(): void {
+    // ست کردن vh واقعی بعد از رندر اولیه
+    this.setRealVh();
+
+    // لیسنر تغییر سایز و زوم
+    this.resizeListener = this.setRealVh.bind(this);
+    window.addEventListener('resize', this.resizeListener);
+  }
+  ngOnDestroy(): void {
+    // پاک کردن لیسنر تا حافظه لیک نشه
+    if (this.resizeListener) {
+      window.removeEventListener('resize', this.resizeListener);
+    }
+  }
+
+  private setRealVh() {
+    // Fix for vh issue: محاسبه ارتفاع واقعی viewport و ست کردن در CSS Variable (--vh)
+    // برای اینکه محتوا پشت تسک‌بار یا نوار مرورگر قایم نشه (به‌جای 100vh)
+    const vh = window.innerHeight * 0.01;
+    console.log('vh', vh);
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
   }
   navigateTo() {
     // if (

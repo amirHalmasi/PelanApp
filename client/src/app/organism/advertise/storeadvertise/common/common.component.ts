@@ -7,8 +7,14 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormGroup, FormGroupDirective, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HouseAdvetiseProfileService } from 'src/app/organism/my-advertises/house-advertise-profile.service';
+import {
+  FormGroup,
+  FormGroupDirective,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { HouseAdvetiseProfileService } from 'src/app/organism/my-advertises/my-advertises-profile.service';
 import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
 import { slideRightInOut } from 'src/app/services/animation';
 import { numberValidator } from 'src/assets/validation/password.validator';
@@ -21,22 +27,22 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-    selector: 'app-common',
-    templateUrl: './common.component.html',
-    styleUrls: ['./common.component.css'],
-    animations: [slideRightInOut],
-    standalone: true,
-    imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        NgIf,
-        MatSelectModule,
-        NgFor,
-        MatOptionModule,
-        MatCheckboxModule,
-    ],
+  selector: 'app-common',
+  templateUrl: './common.component.html',
+  styleUrls: ['./common.component.css'],
+  animations: [slideRightInOut],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    NgIf,
+    MatSelectModule,
+    NgFor,
+    MatOptionModule,
+    MatCheckboxModule,
+  ],
 })
 export class CommonComponent implements OnChanges, OnInit, OnChanges {
   @Input() advertiseTypeInput!: string;

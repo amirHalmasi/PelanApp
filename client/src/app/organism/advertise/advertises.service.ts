@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
 import { SweetAlertService } from 'src/app/services/sweetalert.service';
-import { HouseAdvetiseProfileService } from '../my-advertises/house-advertise-profile.service';
+import { HouseAdvetiseProfileService } from '../my-advertises/my-advertises-profile.service';
 export interface advertiseSuccesDto {
   AdvertiseType: string;
   AdvertiseSubmitDate: string;

@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Api.Services;
 using Api.Interfaces;
+using Microsoft.Extensions.FileProviders;
 
 namespace API
 {
@@ -97,6 +98,15 @@ namespace API
 
             // Configure the HTTP request pipeline.
             app.UseHttpsRedirection();
+
+            app.UseStaticFiles(); // wwwroot
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "Resources")),
+                RequestPath = "/Resources"
+            });
+
             app.UseRouting();
 
             app.UseCors("CorsPolicy"); // حتما قبل از Authentication

@@ -1,9 +1,20 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { flipInOut, slideRightInOut } from 'src/app/services/animation';
 import { numberValidator } from 'src/assets/validation/password.validator';
 import { persianLetterValidator } from 'src/assets/validation/persian-letters.validator';
-import { ImageDto, UploadFinishedEvent, UploadfileComponent } from '../uploadfile/uploadfile.component';
+import {
+  ImageDto,
+  UploadFinishedEvent,
+  UploadfileComponent,
+} from '../uploadfile/uploadfile.component';
 import { HttpClient } from '@angular/common/http';
 import { NumberToWordsService } from '../numberToword.service';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -18,7 +29,7 @@ import { SweetAlertService } from 'src/app/services/sweetalert.service';
 import { AdvertisesService } from '../advertises.service';
 import { ProvinceAndCityService } from '../../province-and-city-select-list/province-and-city.service';
 import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
-import { HouseAdvetiseProfileService } from '../../my-advertises/house-advertise-profile.service';
+import { HouseAdvetiseProfileService } from '../../my-advertises/my-advertises-profile.service';
 import { city, province } from 'src/app/services/modal-service.service';
 import { ActionBtnAtomComponent } from '../../city-province-modal/action-btn-atom/action-btn-atom.component';
 import { ProvinceAndCityComponent } from '../../province-and-city-select-list/province-and-city.component';
@@ -33,29 +44,29 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgIf, NgFor, NgClass } from '@angular/common';
 
 @Component({
-    selector: 'app-storeadvertise',
-    templateUrl: './storeadvertise.component.html',
-    styleUrls: ['./storeadvertise.component.css'],
-    animations: [slideRightInOut],
-    standalone: true,
-    imports: [
-        UploadfileComponent,
-        NgIf,
-        NgFor,
-        FontAwesomeModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        MatOptionModule,
-        CommonComponent,
-        SellStoreComponent,
-        RentStoreComponent,
-        MatInputModule,
-        ProvinceAndCityComponent,
-        NgClass,
-        ActionBtnAtomComponent,
-    ],
+  selector: 'app-storeadvertise',
+  templateUrl: './storeadvertise.component.html',
+  styleUrls: ['./storeadvertise.component.css'],
+  animations: [slideRightInOut],
+  standalone: true,
+  imports: [
+    UploadfileComponent,
+    NgIf,
+    NgFor,
+    FontAwesomeModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule,
+    CommonComponent,
+    SellStoreComponent,
+    RentStoreComponent,
+    MatInputModule,
+    ProvinceAndCityComponent,
+    NgClass,
+    ActionBtnAtomComponent,
+  ],
 })
 export class StoreadvertiseComponent implements OnInit, OnDestroy {
   // @ViewChild('houseTypeSelect') houseTypeSelect!: MatSelect;
@@ -230,13 +241,13 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
           highQualityFiles: this.houseAdvertiseServ.advertiseItem.files.map(
             (file: any) => ({
               path: file.highQuality,
-              fileName: file.highQuality.split('\\').pop(),
+              fileName: file.lowQuality.split('/').pop() || file.lowQuality,
             })
           ),
           lowQualityFiles: this.houseAdvertiseServ.advertiseItem.files.map(
             (file: any) => ({
               path: file.lowQuality,
-              fileName: file.lowQuality.split('\\').pop(),
+              fileName: file.lowQuality.split('/').pop() || file.lowQuality,
             })
           ),
         };
@@ -474,56 +485,53 @@ export class StoreadvertiseComponent implements OnInit, OnDestroy {
     );
   }
   deleteImage(image: ImageDto) {
-    const authUser = JSON.parse(
-      localStorage.getItem('authUser') || '{isJobOwner:"",token:"",username:""}'
-    );
+    // const authUser = JSON.parse(
+    //   localStorage.getItem('authUser') || '{isJobOwner:"",token:"",username:""}'
+    // );
     // console.log(authUser.token);
-    const headers = {
-      Authorization: `Bearer ${authUser.token}`,
-    };
+    // const headers = {
+    //   Authorization: `Bearer ${authUser.token}`,
+    // };
+    console.log('image.fileName', image.fileName);
+    const fileNameOnly = image.fileName?.split('/').pop() || image.fileName;
     this.http
       .delete(
-        `https://localhost:5001/api/upload/delete?username=${this.getUsername()}&advertiseCode=${this.getAdvertiseCode()}&fileName=${
-          image.fileName
-        }`,
-        { headers: headers }
+        `https://localhost:5001/api/upload/delete?advertiseCode=${this.getAdvertiseCode()}&fileName=${fileNameOnly}`,
+        { withCredentials: true }
       )
       .subscribe({
         next: (res) => {
           console.log('deleteImage response', res);
-
           this.files.highQualityFiles = this.files.highQualityFiles.filter(
             (imgData: ImageDto) => imgData.fileName !== image.fileName
           );
           this.files.lowQualityFiles = this.files.lowQualityFiles.filter(
             (imgData: ImageDto) => imgData.fileName !== image.fileName
           );
-          // Remove the deleted image from imageData array
-          // this.fileUploadData.imageData.highQualityFiles =
-          //   this.fileUploadData.imageData.highQualityFiles.filter(
-          //     (img) => img.path !== image.path
-          //   );
-          // this.fileUploadData.imageData.lowQualityFiles =
-          //   this.fileUploadData.imageData.lowQualityFiles.filter(
-          //     (img) => img.path !== image.path
-          //   );
+
+          console.log(
+            'this.imageData delete function next',
+
+            this.files
+          );
         },
         error: (error) => {
           console.error('Error deleting image:', error);
-          // Handle error
         },
         complete: () => {
+          console.log(
+            'this.imageData delete function complete',
+            // this.fileUploadData.imageData
+            this.fileUploadData
+          );
+
           this.fileUploadServ.uploadedImageData.next({
             username: this.username,
             advertiseCode: this.advertiseCode,
+            // advertiseCode: '4271377953',
             // imageData: this.fileUploadData.imageData,
             imageData: this.files,
           });
-
-          // this.fileUploadServ.uploadedImageData.next({
-          //   ...this.fileUploadData,
-          //   imageData: this.fileUploadData.imageData,
-          // });
         },
       });
   }

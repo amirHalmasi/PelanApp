@@ -11,18 +11,19 @@
 }
 .viewport-detail {
   /* height: 78dvh; */
+  min-height: 87vh; /* اضافه کن تا همیشه حداقل ارتفاع داشته باشه */
   height: 87dvh;
-  /* overflow-y: auto; */
+  height: calc(var(--vh, 1vh) * 85);
+  overflow-x: hidden;
+  overflow-y: auto;
+
   scroll-behavior: smooth;
   scroll-snap-type: y mandatory !important;
-  /* border-radius: 4% 3% 2% 1% / 4% 3% 2% 1%; */
-  /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+
   direction: ltr;
-  /* width: calc(100% - 2rem); */
+
   width: 100%;
-  /* padding: 0 0.8rem !important; */
-  /* border: 1px solid red; */
-  /* margin: 0 1rem; */
+  padding-bottom: 50px;
 }
 .row-seprator-margin {
   margin: 0.3rem 0rem;
@@ -141,7 +142,7 @@
 }
 .card-title {
   /* font-family: "sogand", "Courier New", Courier, monospace !important; */
-  font-size: 0.875rem !important;
+  font-size: 0.875rem;
   font-weight: bold;
   text-shadow: 2px 4px 3px rgba(46, 46, 46, 0.138);
   text-align: right;
@@ -149,4 +150,54 @@
 .carousel-container-box {
   aspect-ratio: 1/1 !important;
   width: 100% !important;
+}
+@media (min-width: 1200px) {
+  .details {
+    font-size: 0.925rem;
+    padding: 0.6rem 1rem 0.6rem 0;
+  }
+  .card-title {
+    font-size: 1.075rem;
+  }
+  .title > * {
+    font-size: 0.925rem;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .details {
+    font-size: 0.9rem;
+  }
+  .card-title {
+    font-size: 1.075rem;
+  }
+  .title > * {
+    font-size: 0.9rem;
+  }
+}
+
+/*  Medium devices (tablets, 768px to 991px)  */
+@media (min-width: 768px) and (max-width: 991px) {
+  .details {
+    font-size: 0.8rem;
+  }
+  .card-title {
+    font-size: 0.875rem;
+  }
+  .title > * {
+    font-size: 0.875rem;
+  }
+}
+
+/* Small devices (phones, less than 768px) */
+@media (max-width: 767px) {
+  .details {
+    font-size: 0.8rem;
+  }
+  .card-title {
+    font-size: 0.875rem;
+  }
+  .title > * {
+    font-size: 0.875rem;
+  }
 }

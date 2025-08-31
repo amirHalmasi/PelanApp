@@ -4,9 +4,13 @@ import { HouseAdvetisePageService } from '../../house-page/house-advertise-page.
 import { ModalServiceService } from 'src/app/services/modal-service.service';
 import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
 import { Router } from '@angular/router';
-import { CdkVirtualScrollViewport, CdkFixedSizeVirtualScroll, CdkVirtualForOf } from '@angular/cdk/scrolling';
+import {
+  CdkVirtualScrollViewport,
+  CdkFixedSizeVirtualScroll,
+  CdkVirtualForOf,
+} from '@angular/cdk/scrolling';
 import * as moment from 'jalali-moment';
-import { HouseAdvetiseProfileService } from '../house-advertise-profile.service';
+import { HouseAdvetiseProfileService } from '../my-advertises-profile.service';
 import { NumberSepratorPipe } from '../../house-page/number-seprator.pipe';
 import { BedroomSvgComponent } from '../../house-page/bedroom-svg/bedroom-svg.component';
 import { ParkingSvgComponent } from '../../house-page/parking-svg/parking-svg.component';
@@ -14,28 +18,29 @@ import { ElevatorSvgComponent } from '../../house-page/elevator-svg/elevator-svg
 import { CarouselComponent } from '../../carousel/carousel.component';
 import { LoadingAtmComponent } from '../../loading-atm/loading-atm.component';
 import { NgIf, NgClass, NgFor, NgSwitch, NgSwitchCase } from '@angular/common';
+import { NavBarService } from 'src/app/nav-bar/nav-bar.service';
 type Position = 'start' | 'mid' | 'end';
 @Component({
-    selector: 'app-house-advertises-profile',
-    templateUrl: './house-advertises-profile.component.html',
-    styleUrls: ['./house-advertises-profile.component.css'],
-    standalone: true,
-    imports: [
-        NgIf,
-        LoadingAtmComponent,
-        CdkVirtualScrollViewport,
-        CdkFixedSizeVirtualScroll,
-        CdkVirtualForOf,
-        NgClass,
-        NgFor,
-        CarouselComponent,
-        ElevatorSvgComponent,
-        ParkingSvgComponent,
-        BedroomSvgComponent,
-        NgSwitch,
-        NgSwitchCase,
-        NumberSepratorPipe,
-    ],
+  selector: 'app-house-advertises-profile',
+  templateUrl: './house-advertises-profile.component.html',
+  styleUrls: ['./house-advertises-profile.component.css'],
+  standalone: true,
+  imports: [
+    NgIf,
+    LoadingAtmComponent,
+    CdkVirtualScrollViewport,
+    CdkFixedSizeVirtualScroll,
+    CdkVirtualForOf,
+    NgClass,
+    NgFor,
+    CarouselComponent,
+    ElevatorSvgComponent,
+    ParkingSvgComponent,
+    BedroomSvgComponent,
+    NgSwitch,
+    NgSwitchCase,
+    NumberSepratorPipe,
+  ],
 })
 export class HouseAdvertisesProfileComponent {
   items!: any;
@@ -57,7 +62,8 @@ export class HouseAdvertisesProfileComponent {
     // private cityModalServ: ModalServiceService,
     // private cdr: ChangeDetectorRef,
     private advertiseData: AdvetiseDataService,
-    private route: Router
+    private navbarServ: NavBarService,
+    private route: Router // private route: Route
   ) {
     // console.log('this.deviceWidth', this.deviceWidth);
   }
@@ -123,7 +129,8 @@ export class HouseAdvertisesProfileComponent {
       // this.cdr.detectChanges();
     });
 
-    this.getAllAdvertises(this.userData.username);
+    this.getAllAdvertises();
+    // this.getAllAdvertises(this.userData.username);
 
     this.houseAdvSubscribtion = this.houseAdvertiseServ.houseProfileAdvertises
       .pipe(
@@ -170,10 +177,12 @@ export class HouseAdvertisesProfileComponent {
       pairArrayCount = 1;
     } else if (deviceWidth >= 576 && deviceWidth < 768) {
       pairArrayCount = 2;
-    } else if (deviceWidth >= 768 && deviceWidth < 1200) {
+    } else if (deviceWidth >= 768 && deviceWidth < 992) {
       pairArrayCount = 3;
-    } else if (deviceWidth >= 1200) {
+    } else if (deviceWidth >= 992 && deviceWidth < 1400) {
       pairArrayCount = 4;
+    } else if (deviceWidth >= 1400) {
+      pairArrayCount = 6;
     }
     return pairArrayCount;
   }
@@ -193,18 +202,28 @@ export class HouseAdvertisesProfileComponent {
   //   return this.items.slice(itemIndex, itemIndex + 1);
   // }
 
-  getAllAdvertises(user_id: string) {
+  // getAllAdvertises(user_id: string) {
+  getAllAdvertises() {
     this.isLoadingAdvertises = true;
-    this.houseAdvertiseServ.getAllAdvertises(user_id).subscribe({
+    this.houseAdvertiseServ.getHouseAdvertises().subscribe({
       next: (data) => {
-        console.log('advertises request', data);
+        console.log(
+          ':::::::::::::::::::::  house advertises request   ::::::::::::::::::',
+          data
+        );
         this.houseAdvertiseServ.houseProfileAdvertises.next(data);
 
         // this.items = data;
       },
       error: (err) => {
         this.isLoadingAdvertises = false;
-        console.error('Error fetching advertises', err);
+        console.log('error', err);
+        if (err.status === 401) {
+          localStorage.removeItem('authUser');
+          this.navbarServ.isTokenExist.next(false);
+          // هدایت به صفحه لاگین
+          this.route.navigate(['/login']);
+        }
       },
       complete: () => {
         this.isLoadingAdvertises = false;

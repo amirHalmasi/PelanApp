@@ -7,13 +7,19 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormGroup, FormGroupDirective, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormGroup,
+  FormGroupDirective,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 // import { NumberToWordsService } from '../../numberToword.service';
 import { numberValidator } from 'src/assets/validation/password.validator';
 import { persianLetterValidator } from 'src/assets/validation/persian-letters.validator';
 import { slideRightInOut } from 'src/app/services/animation';
 import { AdvetiseDataService } from 'src/app/services/advertiseData.service';
-import { HouseAdvetiseProfileService } from 'src/app/organism/my-advertises/house-advertise-profile.service';
+import { HouseAdvetiseProfileService } from 'src/app/organism/my-advertises/my-advertises-profile.service';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { MatOptionModule } from '@angular/material/core';
@@ -22,22 +28,22 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-    selector: 'app-common-house',
-    templateUrl: './common-house.component.html',
-    styleUrls: ['./common-house.component.css'],
-    animations: [slideRightInOut],
-    standalone: true,
-    imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatSelectModule,
-        NgFor,
-        MatOptionModule,
-        NgIf,
-        MatInputModule,
-        MatCheckboxModule,
-    ],
+  selector: 'app-common-house',
+  templateUrl: './common-house.component.html',
+  styleUrls: ['./common-house.component.css'],
+  animations: [slideRightInOut],
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    NgFor,
+    MatOptionModule,
+    NgIf,
+    MatInputModule,
+    MatCheckboxModule,
+  ],
 })
 export class CommonHouseComponent implements OnInit, OnChanges {
   @Output() buildingTypeEvent = new EventEmitter<string>();
